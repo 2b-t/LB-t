@@ -55,8 +55,10 @@ void collision_bgk(Continuum<F_TYPE>& macro, Lattice<F_TYPE>& lattice, bool cons
                     /// load distributions
                     F_TYPE f[lattice.ND] = {0.0};
 
+                    #pragma GCC unroll (2)
                     for(unsigned int n = 0; n <= 1; ++n)
                     {
+                        #pragma GCC unroll (16)
                         for(unsigned int d = 0; d < lattice.HSPEED; ++d)
                         {
                             f[n*lattice.OFF + d] = lattice.AA_Read<odd>(x_n, y_n, z_n, n, d, p);
@@ -69,8 +71,10 @@ void collision_bgk(Continuum<F_TYPE>& macro, Lattice<F_TYPE>& lattice, bool cons
                     F_TYPE u   = 0.0;
                     F_TYPE v   = 0.0;
                     F_TYPE w   = 0.0;
+                    #pragma GCC unroll (2)
                     for(unsigned int n = 0; n <= 1; ++n)
                     {
+                        #pragma GCC unroll (16)
                         for(unsigned int d = 0; d < lattice.HSPEED; ++d)
                         {
                             unsigned int const curr = n*lattice.OFF + d;
@@ -93,8 +97,10 @@ void collision_bgk(Continuum<F_TYPE>& macro, Lattice<F_TYPE>& lattice, bool cons
 
                     F_TYPE const uu = - 1.0/(2.0*lattice.CS*lattice.CS)*(u*u + v*v + w*w);
 
+                    #pragma GCC unroll (2)
                     for(unsigned int n = 0; n <= 1; ++n)
                     {
+                        #pragma GCC unroll (16)
                         for(unsigned int d = 0; d < lattice.HSPEED; ++d)
                         {
                             size_t const curr = n*lattice.OFF + d;
@@ -105,8 +111,10 @@ void collision_bgk(Continuum<F_TYPE>& macro, Lattice<F_TYPE>& lattice, bool cons
                     f[lattice.OFF] = f[0];
 
                     /// collision and streaming
+                    #pragma GCC unroll (2)
                     for(unsigned int n = 0; n <= 1; ++n)
                     {
+                        #pragma GCC unroll (16)
                         for(unsigned int d = 0; d < lattice.HSPEED; ++d)
                         {
                             size_t const curr = n*lattice.OFF + d;

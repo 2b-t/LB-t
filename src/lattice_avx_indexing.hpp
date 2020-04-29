@@ -9,10 +9,10 @@ inline void __attribute__((always_inline)) Lattice<T>::Load(unsigned int const (
 {
     /*if(odd == false)
     {
-        #pragma GCC unroll 2
+        #pragma GCC unroll (2)
         for(unsigned int n = 0; n <= 1; ++n)
         {
-            #pragma GCC unroll 4
+            #pragma GCC unroll (4)
             for (size_t d = 0; d < OFF; d += AVX_REG_SIZE)
             {
                 _mm256_store_pd(&f[n*OFF + d], _mm256_load_pd(&F[AA_IndexRead<odd>(x,y,z,n,d,p)]));
@@ -22,10 +22,10 @@ inline void __attribute__((always_inline)) Lattice<T>::Load(unsigned int const (
     }
     else*/
     {
-        #pragma GCC unroll 2
+        #pragma GCC unroll (2)
         for(unsigned int n = 0; n <= 1; ++n)
         {
-            #pragma GCC unroll 16
+            #pragma GCC unroll (16)
             for(unsigned int d = 0; d < OFF; ++d)
             {
                 f[n*OFF + d] = F[AA_IndexRead<odd>(x,y,z,n,d,p)];
@@ -41,10 +41,10 @@ inline void __attribute__((always_inline)) Lattice<T>::Store(unsigned int const 
 {
     /*if(odd == false)
     {
-        #pragma GCC unroll 2
+        #pragma GCC unroll (2)
         for(unsigned int n = 0; n <= 1; ++n)
         {
-            #pragma GCC unroll 4
+            #pragma GCC unroll (4)
             for (size_t d = 0; d < OFF; d += AVX_REG_SIZE)
             {
                 _mm256_store_pd(&F[AA_IndexWrite<odd>(x,y,z,n,d,p)], _mm256_load_pd(&f[n*OFF + d]));
@@ -53,10 +53,10 @@ inline void __attribute__((always_inline)) Lattice<T>::Store(unsigned int const 
     }
     else*/
     {
-        #pragma GCC unroll 2
+        #pragma GCC unroll (2)
         for(unsigned int n = 0; n <= 1; ++n)
         {
-            #pragma GCC unroll 16
+            #pragma GCC unroll (16)
             for(unsigned int d = 0; d < OFF; ++d)
             {
                 F[AA_IndexWrite<odd>(x,y,z,n,d,p)] = f[n*OFF + d];

@@ -11,6 +11,7 @@
 #include <iostream>
 
 #include "memory_alignment.hpp"
+#include "constexpr_func.hpp"
 
 
 /**\class    Lattice
@@ -35,54 +36,58 @@ class Lattice
         unsigned int const NPOP  = 1; //number of populations
 
         /// lattice characteristics
-        unsigned int        const     DIM    =  3;
-        static unsigned int constexpr SPEEDS = 27;
-        static unsigned int constexpr HSPEED = 14;
+        static constexpr unsigned int DIM    =  3;
+        static constexpr unsigned int SPEEDS = 27;
+        static constexpr unsigned int HSPEED = 14; //(SPEEDS + 1)/2
 
         /// linear memory layout
-        static unsigned int constexpr PAD = ((CACHE_LINE - sizeof(T)*SPEEDS % CACHE_LINE) % CACHE_LINE) / sizeof(T); //padding: number of size T
-        static unsigned int constexpr ND  = SPEEDS + PAD;
-        static unsigned int constexpr OFF = ND/2;
+        static constexpr unsigned int PAD = ((CACHE_LINE - sizeof(T)*SPEEDS % CACHE_LINE) % CACHE_LINE) / sizeof(T); //padding: number of size T
+        static constexpr unsigned int ND  = SPEEDS + PAD;
+        static constexpr unsigned int OFF = ND/2;
         size_t const MEM_SIZE = sizeof(T)*NZ*NY*NX*static_cast<size_t>(NPOP)*static_cast<size_t>(ND); //size of array in bytes
 
 
         /// weights
-        alignas(CACHE_LINE) std::array<T, ND> const W = {{8.0/27.0,                         //positive velocities
-                                                          2.0/27.0,  2.0/27.0,  2.0/27.0,
-                                                          1.0/54.0,  1.0/54.0,  1.0/54.0,
-                                                          1.0/54.0,  1.0/54.0,  1.0/54.0,
-                                                          1.0/216.0, 1.0/216.0,
-                                                          1.0/216.0, 1.0/216.0,
-                                                          0.0, 0.0,                         //padding
-                                                          8.0/27.0,                         //negative velocities
-                                                          2.0/27.0,  2.0/27.0,  2.0/27.0,
-                                                          1.0/54.0,  1.0/54.0,  1.0/54.0,
-                                                          1.0/54.0,  1.0/54.0,  1.0/54.0,
-                                                          1.0/216.0, 1.0/216.0,
-                                                          1.0/216.0, 1.0/216.0,
-                                                          0.0, 0.0}};
+        static constexpr std::array<T, ND> W =
+        {{8.0/27.0,                         //positive velocities
+          2.0/27.0,  2.0/27.0,  2.0/27.0,
+          1.0/54.0,  1.0/54.0,  1.0/54.0,
+          1.0/54.0,  1.0/54.0,  1.0/54.0,
+          1.0/216.0, 1.0/216.0,
+          1.0/216.0, 1.0/216.0,
+          0.0, 0.0,                         //padding
+          8.0/27.0,                         //negative velocities
+          2.0/27.0,  2.0/27.0,  2.0/27.0,
+          1.0/54.0,  1.0/54.0,  1.0/54.0,
+          1.0/54.0,  1.0/54.0,  1.0/54.0,
+          1.0/216.0, 1.0/216.0,
+          1.0/216.0, 1.0/216.0,
+          0.0, 0.0}};
 
         /// velocities
-        alignas(CACHE_LINE) std::array<T, ND> const DX = {{ 0,  1,  0,  0,  1,  1,  1,    //postive velocities
-                                                            1,  0,  0,  1,  1,  1,  1,
-                                                            0,  0,                        //padding
-                                                            0, -1,  0,  0, -1, -1, -1,    //negative velocities
-                                                           -1,  0,  0, -1, -1, -1, -1,
-                                                            0,  0}};
-        alignas(CACHE_LINE) std::array<T, ND> const DY = {{ 0,  0,  1,  0,  1, -1,  0,
-                                                            0,  1,  1,  1, -1,  1, -1,
-                                                            0,  0,
-                                                            0,  0, -1,  0, -1,  1,  0,
-                                                            0, -1, -1, -1,  1, -1,  1,
-                                                            0,  0}};
-        alignas(CACHE_LINE) std::array<T, ND> const DZ = {{ 0,  0,  0,  1,  0,  0,  1,
-                                                           -1,  1, -1,  1,  1, -1, -1,
-                                                            0,  0,
-                                                            0,  0,  0, -1,  0,  0, -1,
-                                                            1, -1,  1, -1, -1,  1,  1,
-                                                            0,  0}};
+        static constexpr std::array<T, ND> DX =
+        {{ 0,  1,  0,  0,  1,  1,  1,    //postive velocities
+           1,  0,  0,  1,  1,  1,  1,
+           0,  0,                        //padding
+           0, -1,  0,  0, -1, -1, -1,    //negative velocities
+          -1,  0,  0, -1, -1, -1, -1,
+           0,  0}};
+        static constexpr std::array<T, ND> DY =
+        {{ 0,  0,  1,  0,  1, -1,  0,
+           0,  1,  1,  1, -1,  1, -1,
+           0,  0,
+           0,  0, -1,  0, -1,  1,  0,
+           0, -1, -1, -1,  1, -1,  1,
+           0,  0}};
+        static constexpr std::array<T, ND> DZ =
+        {{ 0,  0,  0,  1,  0,  0,  1,
+          -1,  1, -1,  1,  1, -1, -1,
+           0,  0,
+           0,  0,  0, -1,  0,  0, -1,
+           1, -1,  1, -1, -1,  1,  1,
+           0,  0}};
 
-        static T constexpr CS = 1.0/std::sqrt(3.0); //lattice speed of sound
+        static constexpr T CS = 1.0/cef::sqrt(3.0); //lattice speed of sound
         T const TAU   = NU/(CS*CS) + 1.0/ 2.0;       //laminar relaxation time
         T const OMEGA = 1.0/TAU;                    //collision frequency
 
@@ -106,7 +111,7 @@ class Lattice
                 unsigned int const no_populations = 1):
             RE(Reynolds), RHO_0(RHO), U(U_char), L(L_char), NX(X), NY(Y), NZ(Z), NPOP(no_populations)
         {
-            F = (T*) aligned_alloc(CACHE_LINE, MEM_SIZE);
+            F = static_cast<T*>(aligned_alloc(CACHE_LINE, MEM_SIZE));
             ExportParameters();
 
             if (F == nullptr)
@@ -160,8 +165,8 @@ class Lattice
                           T const (&f)[ND], unsigned int const p = 0);
 
         /// import and export: population back-up
-        void Import(char const * name);
-        void Export(char const * name) const;
+        void Import(char const* name);
+        void Export(char const* name) const;
         void ExportParameters() const;
 };
 

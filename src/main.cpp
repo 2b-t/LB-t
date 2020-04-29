@@ -20,7 +20,7 @@ int main(int argc, char** argv)
     /// set up OpenMP
     #ifdef _OPENMP
         Parallelism OpenMP;
-        //OpenMP.SetThreadsNum(1);
+        OpenMP.SetThreadsNum(1);
     #endif
 
     /// print disclaimer
@@ -30,29 +30,29 @@ int main(int argc, char** argv)
     }
 
     /// settings
-    F_TYPE       constexpr Re    = 10.0;
-    F_TYPE       constexpr U     = 0.05;
-    unsigned int constexpr L     = 50;
-    unsigned int constexpr NX    = 320;
-    unsigned int constexpr NY    = 128;
-    unsigned int constexpr NZ    = 128;
-    unsigned int constexpr NT    = 400;
-    F_TYPE       constexpr RHO_0 = 1.0;
-    F_TYPE       constexpr U_0   = U;
-    F_TYPE       constexpr V_0   = 0.0;
-    F_TYPE       constexpr W_0   = 0.0;
+    constexpr F_TYPE       Re    = 10.0;
+    constexpr F_TYPE       U     = 0.05;
+    constexpr unsigned int L     = 50;
+    constexpr unsigned int NX    = 64;
+    constexpr unsigned int NY    = 64;
+    constexpr unsigned int NZ    = 64;
+    constexpr unsigned int NT    = 100;
+    constexpr F_TYPE       RHO_0 = 1.0;
+    constexpr F_TYPE       U_0   = U;
+    constexpr F_TYPE       V_0   = 0.0;
+    constexpr F_TYPE       W_0   = 0.0;
 
     /// set up lattice, microscopic value and collision operator
     Lattice<F_TYPE>   D3Q27(Re,RHO_0,U,L,NX,NY,NZ);
     Continuum<F_TYPE> Macro(NX,NY,NZ);
 
     /// define boundary conditions and import scenario
-    std::vector<boundary_element<double>> wall;
-    std::vector<boundary_element<double>> inlet;
-    std::vector<boundary_element<double>> outlet;
+    std::vector<boundary_element<F_TYPE>> wall;
+    std::vector<boundary_element<F_TYPE>> inlet;
+    std::vector<boundary_element<F_TYPE>> outlet;
 
-    unsigned int const radius = L/4;
-    unsigned int const position[3] = {NX/2, NY/2, NZ/2};
+    constexpr unsigned int radius = L/4;
+    constexpr unsigned int position[3] = {NX/2, NY/2, NZ/2};
     Cylinder_3D(D3Q27, radius, position, "x", true, wall, inlet, outlet);
 
     /// define initial conditions

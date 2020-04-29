@@ -10,7 +10,7 @@
 
 
 template <bool odd>
-void boundary_bounceback_halfway(std::vector<boundary_element<double>> const& wall, Lattice<double>& lattice, unsigned int const p = 0)
+void boundary_bounceback_halfway(std::vector<boundary_element<F_TYPE>> const& wall, Lattice<F_TYPE>& lattice, unsigned int const p = 0)
 {
     #pragma omp parallel for default(none) shared(wall,lattice,p) schedule(static,32)
     for(size_t i = 0; i < wall.size(); ++i)

@@ -21,8 +21,8 @@
     class Parallelism
     {
         private:
-            const size_t threads_max = omp_get_num_procs(); //variable for maximum number of threads
-            size_t       threads_num = omp_get_num_procs(); //number of currently used threads (default all)
+            const size_t _threads_max = omp_get_num_procs(); //variable for maximum number of threads
+            size_t       _threads_num = omp_get_num_procs(); //number of currently used threads (default all)
 
         public:
             /**\fn        Parallelism
@@ -35,7 +35,7 @@
              *
              * \param[in] nested: boolean true/false parameter
             */
-            void SetNestedParallelism(const bool);
+            void SetNestedParallelism(bool const nested);
 
             /**\fn        SetThreadsNum
              * \brief     Change number of used threads.
@@ -43,7 +43,7 @@
              * \param[in] threads_set: number of wished threads (max is given by threads_max)
              * \return    Return exit success or failure
             */
-            int SetThreadsNum(const size_t);
+            int SetThreadsNum(size_t const threads_set);
 
             /**\fn        GetThreadsMax
              * \brief     Get number of maximum number of possible threads.
