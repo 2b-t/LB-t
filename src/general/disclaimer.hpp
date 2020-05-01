@@ -6,14 +6,11 @@
  * \mainpage Disclaimer and compiler settings
 */
 
-
-#include <unordered_map>
 #include <iostream>
-
-/// include OpenMP only if available on machine
 #if __has_include (<omp.h>)
     #include <omp.h>
 #endif
+#include <unordered_map>
 
 
 /**\fn        print_disclaimer
@@ -21,7 +18,6 @@
 */
 void print_disclaimer()
 {
-    /// check for vectorisation, boost and OpenMP
     std::cout << "2b-t (2019)" << std::endl;
     std::cout << std::endl;
     std::cout << "COMPILER SETTINGS" << std::endl;
@@ -79,7 +75,6 @@ void print_disclaimer()
     #else
         std::cout << "not supported" << std::endl;
     #endif
-
 
     return;
 }

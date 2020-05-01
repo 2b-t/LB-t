@@ -7,10 +7,8 @@
  *           can make use of evaluation and optimisation at compile time.
 */
 
-
 #include <limits>
 #include <assert.h>
-
 
 namespace cef
 {
@@ -46,7 +44,7 @@ namespace cef
                ? static_cast<T>(sqrtNewton(x_d, x_d, 0.0))
                : ret_NaN;
     }
-    
+
     /**\fn        cef::ceil
      * \brief     Ceiling function that can be evaluated as a constant expression at compile time
      *

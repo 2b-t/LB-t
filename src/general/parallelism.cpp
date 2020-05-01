@@ -9,7 +9,7 @@
 #ifdef _OPENMP
     Parallelism::Parallelism()
     {
-        omp_set_num_threads(_threads_max);
+        omp_set_num_threads(threads_max_);
     }
 
     void Parallelism::SetNestedParallelism(bool const nested)
@@ -17,12 +17,12 @@
         omp_set_nested(nested);
     }
 
-    int Parallelism::SetThreadsNum(size_t const threads_set)
+    int Parallelism::SetThreadsNum(int const threads_num)
     {
-        if(threads_set <= _threads_max)
+        if(threads_num <= threads_max_)
         {
-            _threads_num = threads_set;
-            omp_set_num_threads(_threads_num);
+            threads_num_ = threads_num;
+            omp_set_num_threads(threads_num_);
 
             return EXIT_SUCCESS;
         }
@@ -33,17 +33,17 @@
 
     }
 
-    size_t Parallelism::GetThreadsMax()
+    int Parallelism::GetThreadsMax()
     {
-        return _threads_max;
+        return threads_max_;
     }
 
-    size_t Parallelism::GetThreadsNum()
+    int Parallelism::GetThreadsNum()
     {
         return omp_get_max_threads();
     }
 
-    size_t Parallelism::GetThreadsCurr()
+    int Parallelism::GetThreadsCurr()
     {
         return omp_get_num_threads();
     }

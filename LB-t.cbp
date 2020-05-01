@@ -43,30 +43,23 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="src/boundary.hpp" />
-		<Unit filename="src/boundary_bounceback.hpp" />
-		<Unit filename="src/collision_bgk.hpp" />
-		<Unit filename="src/collision_bgk_avx.hpp" />
-		<Unit filename="src/constexpr_func.hpp" />
-		<Unit filename="src/continuum.hpp" />
-		<Unit filename="src/continuum_backup.hpp" />
-		<Unit filename="src/continuum_export.hpp" />
-		<Unit filename="src/continuum_indexing.hpp" />
-		<Unit filename="src/disclaimer.hpp" />
-		<Unit filename="src/error_handling.hpp" />
-		<Unit filename="src/geometry.hpp" />
-		<Unit filename="src/initialisation.hpp" />
-		<Unit filename="src/lattice.hpp" />
-		<Unit filename="src/lattice_avx_indexing.hpp" />
-		<Unit filename="src/lattice_backup.hpp" />
-		<Unit filename="src/lattice_indexing.hpp" />
+		<Unit filename="src/boundary/boundary.hpp" />
+		<Unit filename="src/continuum/continuum.hpp" />
+		<Unit filename="src/continuum/continuum_export.hpp" />
+		<Unit filename="src/continuum/continuum_import.hpp" />
+		<Unit filename="src/continuum/continuum_indexing.hpp" />
+		<Unit filename="src/general/constexpr_func.hpp" />
+		<Unit filename="src/general/disclaimer.hpp" />
+		<Unit filename="src/general/memory_alignment.hpp" />
+		<Unit filename="src/general/parallelism.cpp" />
+		<Unit filename="src/general/parallelism.hpp" />
+		<Unit filename="src/general/paths.hpp" />
+		<Unit filename="src/general/timer.hpp" />
+		<Unit filename="src/geometry/cylinder.hpp" />
+		<Unit filename="src/lattice/D0Q0.hpp" />
+		<Unit filename="src/lattice/D3Q27.hpp" />
+		<Unit filename="src/lattice/lattice_unit_test.hpp" />
 		<Unit filename="src/main.cpp" />
-		<Unit filename="src/memory_alignment.hpp" />
-		<Unit filename="src/parallelism.cpp" />
-		<Unit filename="src/parallelism.hpp" />
-		<Unit filename="src/paths.cpp" />
-		<Unit filename="src/paths.hpp" />
-		<Unit filename="src/timer.hpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
