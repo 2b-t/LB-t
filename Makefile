@@ -1,26 +1,25 @@
 # Makefile
 # Tobit Flatscher - github.com/2b-t (2020)
 
-# Compiler settings (alternatively: export COMPILER=)
+# Compiler settings (alternatively: 'export COMPILER=ICC' in console)
 COMPILER = ICC
 
-# Define directories
+# Define sub-directories to be included in compilation
 SRCDIR   = src
 OBJDIR   = obj
 BINDIR   = bin
 
-# Define source files to be compiled
 SOURCES  = $(wildcard $(SRCDIR)/*.cpp) $(wildcard $(SRCDIR)/*/*.cpp)
 INCLUDES = $(wildcard $(SRCDIR)/*.hpp) $(wildcard $(SRCDIR)/*/*.hpp)
 OBJECTS  = $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 PROGRAM	 = main.$(COMPILER)
 
-# compiler flags
+# Compiler flags
 WARNINGS   = -Wall -pedantic -Wextra -Weffc++ -Woverloaded-virtual  -Wfloat-equal -Wshadow -Wredundant-decls -Winline -fmax-errors=1
-CXXFLAGS  += -O3 -std=c++17 -flto -funroll-all-loops -finline-functions -mavx2 -march=native -DNDEBUG
+CXXFLAGS  += -std=c++17 -O3 -flto -funroll-all-loops -finline-functions -mavx2 -march=native -DNDEBUG
 LINKFLAGS += -O3 -flto
 
-# compiler settings
+# Compiler settings for specific compiler
 ifeq ($(COMPILER),ICC)
 	# Intel compiler ICC
 	CXX        = icpc

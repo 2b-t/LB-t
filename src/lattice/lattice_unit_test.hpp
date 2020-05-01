@@ -10,6 +10,23 @@
 
 namespace lattice
 {
+    /**\fn         Array stream operator
+     * \brief      For printing an array in an easy way
+     *
+     * \param[in]  os    input stream
+     * \param[in]  arr   array to print
+     * \return     output stream
+    */
+    template <typename T, size_t N>
+    std::ostream& operator<<(std::ostream& os, std::array<T,N> const& arr)
+    {
+        for (auto it = arr.begin(); it != arr.end(); ++it)
+        {
+            os << "\t" << *it;
+        }
+        return os;
+    }
+
     /**\class    UnitTest
      * \brief    Unit test for lattice classes
     */
@@ -57,18 +74,20 @@ namespace lattice
                 std::cout << "Amount of padding            (PAD):    " << latticeClass::PAD    << std::endl;
                 std::cout << "Number of bytes per node     (ND):     " << latticeClass::ND     << std::endl;
                 std::cout << std::endl;
-                std::cout << "Weights (W): " << std::endl;
-                testStdContainerAlignment(latticeClass::W);
-                printStdContainer(latticeClass::W);
+
                 std::cout << "Lattice velocity in x-direcion (DX): " << std::endl;
                 testStdContainerAlignment(latticeClass::DX);
-                printStdContainer(latticeClass::DX);
+                std::cout << latticeClass::DX << std::endl;
                 std::cout << "Lattice velocity in y-direcion (DY): " << std::endl;
                 testStdContainerAlignment(latticeClass::DY);
-                printStdContainer(latticeClass::DY);
+                std::cout << latticeClass::DY << std::endl;
                 std::cout << "Lattice velocity in z-direcion (DZ): " << std::endl;
                 testStdContainerAlignment(latticeClass::DZ);
-                printStdContainer(latticeClass::DZ);
+                std::cout << latticeClass::DZ << std::endl;
+
+                std::cout << "Weights (W): " << std::endl;
+                testStdContainerAlignment(latticeClass::W);
+                std::cout << latticeClass::W << std::endl;
             }
 
             /**\fn    testClass

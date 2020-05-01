@@ -32,43 +32,43 @@ namespace lattice
 
             /// discrete velocities
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> DX =
-            {{ 0,  1,  0,  0,  1,  1,  1,        //postive velocities
-               1,  0,  0,  1,  1,  1,  1,
-               0,  0,                            //padding
-               0, -1,  0,  0, -1, -1, -1,        //negative velocities
-              -1,  0,  0, -1, -1, -1, -1,
-               0,  0 }};
+            { 0,  1,  0,  0,  1,  1,  1,        //postive velocities
+              1,  0,  0,  1,  1,  1,  1,
+              0,  0,                            //padding
+              0, -1,  0,  0, -1, -1, -1,        //negative velocities
+             -1,  0,  0, -1, -1, -1, -1,
+              0,  0 };
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> DY =
-            {{ 0,  0,  1,  0,  1, -1,  0,
-               0,  1,  1,  1, -1,  1, -1,
-               0,  0,
-               0,  0, -1,  0, -1,  1,  0,
-               0, -1, -1, -1,  1, -1,  1,
-               0,  0 }};
+            { 0,  0,  1,  0,  1, -1,  0,
+              0,  1,  1,  1, -1,  1, -1,
+              0,  0,
+              0,  0, -1,  0, -1,  1,  0,
+              0, -1, -1, -1,  1, -1,  1,
+              0,  0 };
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> DZ =
-            {{ 0,  0,  0,  1,  0,  0,  1,
-              -1,  1, -1,  1,  1, -1, -1,
-               0,  0,
-               0,  0,  0, -1,  0,  0, -1,
-               1, -1,  1, -1, -1,  1,  1,
-               0,  0 }};
+            { 0,  0,  0,  1,  0,  0,  1,
+             -1,  1, -1,  1,  1, -1, -1,
+              0,  0,
+              0,  0,  0, -1,  0,  0, -1,
+              1, -1,  1, -1, -1,  1,  1,
+              0,  0 };
 
             /// corresponding weights
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> W =
-            {{ 8.0/27.0,                         //positive velocities
-               2.0/27.0,  2.0/27.0,  2.0/27.0,
-               1.0/54.0,  1.0/54.0,  1.0/54.0,
-               1.0/54.0,  1.0/54.0,  1.0/54.0,
-               1.0/216.0, 1.0/216.0,
-               1.0/216.0, 1.0/216.0,
-               0.0, 0.0,                         //padding
-               8.0/27.0,                         //negative velocities
-               2.0/27.0,  2.0/27.0,  2.0/27.0,
-               1.0/54.0,  1.0/54.0,  1.0/54.0,
-               1.0/54.0,  1.0/54.0,  1.0/54.0,
-               1.0/216.0, 1.0/216.0,
-               1.0/216.0, 1.0/216.0,
-               0.0, 0.0 }};
+            { 8.0/27.0,                         //positive velocities
+              2.0/27.0,  2.0/27.0,  2.0/27.0,
+              1.0/54.0,  1.0/54.0,  1.0/54.0,
+              1.0/54.0,  1.0/54.0,  1.0/54.0,
+              1.0/216.0, 1.0/216.0,
+              1.0/216.0, 1.0/216.0,
+              0.0, 0.0,                         //padding
+              8.0/27.0,                         //negative velocities
+              2.0/27.0,  2.0/27.0,  2.0/27.0,
+              1.0/54.0,  1.0/54.0,  1.0/54.0,
+              1.0/54.0,  1.0/54.0,  1.0/54.0,
+              1.0/216.0, 1.0/216.0,
+              1.0/216.0, 1.0/216.0,
+              0.0, 0.0 };
 
             /// lattice speed of sound
             static constexpr T CS = 1.0/cef::sqrt(3.0);

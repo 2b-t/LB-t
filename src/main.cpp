@@ -14,8 +14,6 @@
 #include "geometry/cylinder.hpp"
 #include "lattice/D3Q27.hpp"
 
-#include "lattice/lattice_unit_test.hpp"
-
 
 int main(int argc, char** argv)
 {
@@ -43,8 +41,6 @@ int main(int argc, char** argv)
             std::cerr << "       '--version' or '--v'    Show build version"           << std::endl;
         }
     }
-
-    lattice::UnitTest<lattice::D3Q27<double>> test;
 
     /// settings -----------------------------------------------------------------------------------
     // floating point accuracy

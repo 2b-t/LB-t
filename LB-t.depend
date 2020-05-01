@@ -21,7 +21,7 @@
 1588199939 /home/tobit/Documents/Github/LB-t/src/general/parallelism.hpp
 	<omp.h>
 
-1588326386 source:/home/tobit/Documents/Github/LB-t/src/main.cpp
+1588331136 source:/home/tobit/Documents/Github/LB-t/src/main.cpp
 	<array>
 	<iostream>
 	<memory>
@@ -36,6 +36,7 @@
 	"general/timer.hpp"
 	"geometry/cylinder.hpp"
 	"lattice/D3Q27.hpp"
+	"lattice/lattice_unit_test.hpp"
 
 1588289986 /home/tobit/Documents/Github/LB-t/src/boundary/boundary.hpp
 
@@ -92,7 +93,7 @@
 	<vector>
 	"../boundary/boundary.hpp"
 
-1588200338 /home/tobit/Documents/Github/LB-t/src/lattice/D3Q27.hpp
+1588331066 /home/tobit/Documents/Github/LB-t/src/lattice/D3Q27.hpp
 	<memory>
 	<array>
 	"../general/constexpr_func.hpp"
@@ -101,4 +102,10 @@
 1588198940 /home/tobit/Documents/Github/LB-t/src/general/constexpr_func.hpp
 	<limits>
 	<assert.h>
+
+1588331917 /home/tobit/Documents/Github/LB-t/src/lattice/lattice_unit_test.hpp
+	<array>
+	<iostream>
+	<numeric>
+	"../general/memory_alignment.hpp"
 
