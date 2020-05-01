@@ -32,12 +32,12 @@ namespace lattice
             static constexpr unsigned int  ND = 0;
 
             /// discrete velocities
-            alignas(CACHE_LINE) static constexpr std::array<T, 1> DX = {0.0};
-            alignas(CACHE_LINE) static constexpr std::array<T, 1> DY = {0.0};
-            alignas(CACHE_LINE) static constexpr std::array<T, 1> DZ = {0.0};
+            __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, 1> DX = {0.0};
+            __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, 1> DY = {0.0};
+            __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, 1> DZ = {0.0};
 
             /// corresponding weights
-            alignas(CACHE_LINE) static constexpr std::array<T, 1> W = {0.0};
+            __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, 1> W = {0.0};
 
             /// lattice speed of sound
             static constexpr T CS = 0.0;

@@ -10,15 +10,15 @@ OBJDIR   = obj
 BINDIR   = bin
 
 # Define source files to be compiled
-SOURCES  = $(wildcard $(SRCDIR)/*.cpp)
-INCLUDES = $(wildcard $(SRCDIR)/*.hpp)
+SOURCES  = $(wildcard $(SRCDIR)/*.cpp) $(wildcard $(SRCDIR)/*/*.cpp)
+INCLUDES = $(wildcard $(SRCDIR)/*.hpp) $(wildcard $(SRCDIR)/*/*.hpp)
 OBJECTS  = $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 PROGRAM	 = main.$(COMPILER)
 
 # compiler flags
 WARNINGS   = -Wall -pedantic -Wextra -Weffc++ -Woverloaded-virtual  -Wfloat-equal -Wshadow -Wredundant-decls -Winline -fmax-errors=1
-CXXFLAGS  += -O3 -std=c++17 -funroll-all-loops -finline-functions -mavx2 -march=native -DNDEBUG
-LINKFLAGS += -O3
+CXXFLAGS  += -O3 -std=c++17 -flto -funroll-all-loops -finline-functions -mavx2 -march=native -DNDEBUG
+LINKFLAGS += -O3 -flto
 
 # compiler settings
 ifeq ($(COMPILER),ICC)
@@ -41,10 +41,12 @@ endif
 default: $(BINDIR)/$(PROGRAM)
 
 $(BINDIR)/$(PROGRAM): $(OBJECTS)
+	@mkdir -p $(@D)
 	$(LINKER)  $(OBJECTS)  $(LINKFLAGS) -o $@
 	@echo "Linking complete!"
 	
 $(OBJECTS): $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
+	@mkdir -p $(@D)
 	@$(CXX) $(CXXFLAGS) -c $< -o $@
 	@echo "Compiled "$<" successfully!"
 
