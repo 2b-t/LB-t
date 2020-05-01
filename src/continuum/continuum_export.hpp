@@ -12,7 +12,7 @@
 #include <string>
 #include <vector>
 
-#include "../boundary/boundary.hpp"
+#include "../population/boundary/boundary.hpp"
 #include "../general/paths.hpp"
 
 
@@ -47,7 +47,7 @@ void Continuum<NX,NY,NZ,T>::Export(std::string const name, unsigned int const st
 {
     std::string const fileName = OUTPUT_BIN_PATH + std::string("/") + name + std::string("_") + std::to_string(step) + std::string(".bin");
     FILE * const exportFile = fopen(fileName.c_str(), "wb+");
-    fwrite(M_, 1, memSize_, exportFile);
+    fwrite(M_, 1, MEM_SIZE_, exportFile);
     fclose(exportFile);
 }
 

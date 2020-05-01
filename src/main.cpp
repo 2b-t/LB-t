@@ -5,14 +5,20 @@
 #include <string.h>
 #include <vector>
 
-#include "boundary/boundary.hpp"
 #include "continuum/continuum.hpp"
+#include "continuum/initialisation.hpp"
 #include "general/disclaimer.hpp"
 #include "general/memory_alignment.hpp"
 #include "general/parallelism.hpp"
+#include "general/parameters_export.hpp"
 #include "general/timer.hpp"
 #include "geometry/cylinder.hpp"
 #include "lattice/D3Q27.hpp"
+#include "population/boundary/boundary.hpp"
+#include "population/boundary/boundary_bounceback.hpp"
+#include "population/collision/collision_bgk.hpp"
+#include "population/initialisation.hpp"
+#include "population/population.hpp"
 
 
 int main(int argc, char** argv)
@@ -66,9 +72,11 @@ int main(int argc, char** argv)
     constexpr F_TYPE       V_0   = 0.0;
     constexpr F_TYPE       W_0   = 0.0;
 
+    ExportParameters(NX, NY, NZ, NT, Re, RHO_0, L, U);
+
     /// set up microscopic and macroscopic arrays --------------------------------------------------
-    //Population<lattice::D3Q27<F_TYPE>>   D3Q27(Re,RHO_0,U,L,NX,NY,NZ);
     Continuum<NX,NY,NZ,F_TYPE> Macro;
+    Population<NX,NY,NZ,DdQq>  Micro(Re,U,L);
 
     /// define boundary conditions -----------------------------------------------------------------
     alignas(CACHE_LINE) std::vector<boundaryElement<F_TYPE>> wall;
@@ -80,8 +88,8 @@ int main(int argc, char** argv)
     Cylinder3D<NX,NY,NZ>(radius, position, "x", true, wall, inlet, outlet);
 
     /// define initial conditions ------------------------------------------------------------------
-    //init_continuum(Macro, D3Q27, RHO_0, U_0, V_0, W_0);
-    //init_lattice(Macro,   D3Q27);
+    InitContinuum<NX,NY,NZ>(Macro, RHO_0, U_0, V_0, W_0);
+    InitLattice<NX,NY,NZ,DdQq>(Macro, Micro);
 
     /// main loop ----------------------------------------------------------------------------------
     Timer Stopwatch;
@@ -89,11 +97,11 @@ int main(int argc, char** argv)
 
     for (size_t i = 0; i < NT; i+=2)
     {
-        //collision_bgk<false>(Macro, D3Q27, true, 0);
-        //boundary_bounceback_halfway<false>(wall, D3Q27, 0);
+        collision_bgk<false,NX,NY,NZ,DdQq>(Macro, Micro, true, 0);
+        boundary_bounceback_halfway<false,NX,NY,NZ>(wall, Micro, 0);
 
-        //collision_bgk<true>(Macro,  D3Q27, true, 0);
-        //boundary_bounceback_halfway<true>(wall, D3Q27, 0);
+        collision_bgk<true,NX,NY,NZ,DdQq>(Macro, Micro, true, 0);
+        boundary_bounceback_halfway<true,NX,NY,NZ>(wall, Micro, 0);
 
         if (i%20 == 0)
         {

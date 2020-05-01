@@ -1,11 +1,18 @@
-#ifndef LATTICE_AVX_INDEXING_HPP_INCLUDED
-#define LATTICE_AVX_INDEXING_HPP_INCLUDED
+#ifndef POPULATION_AVX_INDEXING_HPP_INCLUDED
+#define POPULATION_AVX_INDEXING_HPP_INCLUDED
+
+/**
+ * \file     population_indexing_avx.hpp
+ * \mainpage Class members for indexing population with AVX2 intrinsics
+*/
+
 
 #include "memory_alignment.hpp"
 
-template <typename T> template <bool odd>
-inline void __attribute__((always_inline)) Lattice<T>::Load(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
-                                                            T (&f)[ND], unsigned int const p) const
+
+template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP> template <bool odd>
+inline void __attribute__((always_inline)) Population<NX,NY,NZ,LT,NPOP>::Load(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
+                                                                              T (&f)[ND], unsigned int const p) const
 {
     /*if(odd == false)
     {
@@ -35,9 +42,9 @@ inline void __attribute__((always_inline)) Lattice<T>::Load(unsigned int const (
     }
 }
 
-template <typename T> template <bool odd>
-inline void __attribute__((always_inline)) Lattice<T>::Store(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
-                                                             T const (&f)[ND], unsigned int const p)
+template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP> template <bool odd>
+inline void __attribute__((always_inline)) Population<NX,NY,NZ,LT,NPOP>::Store(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
+                                                                               T const (&f)[ND], unsigned int const p)
 {
     /*if(odd == false)
     {
@@ -66,4 +73,4 @@ inline void __attribute__((always_inline)) Lattice<T>::Store(unsigned int const 
 }
 
 
-#endif //LATTICE_AVX_INDEXING_HPP_INCLUDED
+#endif // POPULATION_AVX_INDEXING_HPP_INCLUDED

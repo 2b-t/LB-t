@@ -10,7 +10,7 @@
 #include <string.h>
 #include <vector>
 
-#include "../boundary/boundary.hpp"
+#include "../population/boundary/boundary.hpp"
 
 
 /**\fn         Cylinder_3D

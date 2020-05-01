@@ -2,7 +2,7 @@
 #define TIMER_HPP_INCLUDED
 
 /**
- * \file     Timer.hpp
+ * \file     timer.hpp
  * \mainpage An artificial class that allows for a convenient usage of a stopwatch.
 */
 

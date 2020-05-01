@@ -29,12 +29,12 @@ void Continuum<NX,NY,NZ,T>::Import(std::string const name, unsigned int const st
     if(fopen(fileName, "rb+") != nullptr)
     {
         FILE * const importFile = fopen(fileName, "rb+");
-        fread(M_, 1, memSize_, importFile);
+        fread(M_, 1, MEM_SIZE_, importFile);
         fclose(importFile);
     }
     else
     {
-        std::cerr << "Error: Could not import macroscopic values to disk." << std::endl;
+        std::cerr << "Error: Could not import macroscopic values from disk." << std::endl;
     }
 }
 

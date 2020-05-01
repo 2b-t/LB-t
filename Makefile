@@ -1,7 +1,7 @@
 # Makefile
 # Tobit Flatscher - github.com/2b-t (2020)
 
-# Compiler settings (alternatively: 'export COMPILER=ICC' in console)
+# Compiler settings: ICC or GCC (alternatively: 'export COMPILER=ICC' in console)
 COMPILER = ICC
 
 # Define sub-directories to be included in compilation
@@ -28,7 +28,7 @@ ifeq ($(COMPILER),ICC)
 	LINKFLAGS += -qopenmp
 	COMPILER   = ICC
 else
-	# Gnu Compiler GCC
+	# Gnu compiler GCC
 	CXX        = g++
 	LINKER     = g++
 	CXXFLAGS  += -fopenmp

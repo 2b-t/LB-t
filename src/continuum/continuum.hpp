@@ -16,7 +16,7 @@
 #include <string.h>
 #include <vector>
 
-#include "../boundary/boundary.hpp"
+#include "../population/boundary/boundary.hpp"
 #include "../general/memory_alignment.hpp"
 
 
@@ -28,10 +28,10 @@ class Continuum
 {
     public:
         static constexpr unsigned int NM_ = 4; //number of macroscopic values: rho, ux, uy, uz
-        static constexpr size_t  memSize_ = sizeof(T)*static_cast<size_t>(NZ)*static_cast<size_t>(NY)*static_cast<size_t>(NX)*static_cast<size_t>(NM_); //size of array in byte
+        static constexpr size_t MEM_SIZE_ = sizeof(T)*static_cast<size_t>(NZ)*static_cast<size_t>(NY)*static_cast<size_t>(NX)*static_cast<size_t>(NM_); //size of array in byte
 
         /// population allocated in heap
-        T* const M_ = (T*) aligned_alloc(CACHE_LINE, memSize_);
+        T* const M_ = static_cast<T*>(aligned_alloc(CACHE_LINE, MEM_SIZE_));
 
 
         /// class constructor
@@ -39,7 +39,7 @@ class Continuum
         {
             if (M_ == nullptr)
             {
-                std::cerr << "Fatal error: Population could not be allocated." << std::endl;
+                std::cerr << "Fatal error: Continuum could not be allocated." << std::endl;
             }
         }
 
