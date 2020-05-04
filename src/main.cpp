@@ -19,6 +19,7 @@
 #include "population/boundary/boundary_bounceback.hpp"
 #include "population/collision/collision_bgk.hpp"
 #include "population/collision/collision_bgk_avx2.hpp"
+#include "population/collision/collision_trt.hpp"
 #include "population/initialisation.hpp"
 #include "population/population.hpp"
 
@@ -78,7 +79,7 @@ int main(int argc, char** argv)
     constexpr F_TYPE   W_0 = 0.0;
 
     // save values to disk after each time step (disable for benchmark)
-    constexpr bool save = true;
+    constexpr bool save = false;
 
     ExportParameters(NX, NY, NZ, NT, Re, RHO_0, L, U);
 
@@ -108,10 +109,10 @@ int main(int argc, char** argv)
 
     for (size_t i = 0; i < NT; i+=2)
     {
-        CollideStreamBGK_AVX2<false,NX,NY,NZ,DdQq>(Macro, Micro, save, 0);
+        CollideStreamTRT<false,NX,NY,NZ,DdQq>(Macro, Micro, save, 0);
         BounceBackHalfway<false,NX,NY,NZ>(wall, Micro, 0);
 
-        CollideStreamBGK_AVX2<true,NX,NY,NZ,DdQq>(Macro, Micro, save, 0);
+        CollideStreamTRT<true,NX,NY,NZ,DdQq>(Macro, Micro, save, 0);
         BounceBackHalfway<true,NX,NY,NZ>(wall, Micro, 0);
 
         if ((save == true) && (i % (NT/10) == 0))

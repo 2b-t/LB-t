@@ -4,6 +4,11 @@
 /**
  * \file     D3Q27.hpp
  * \mainpage Discretisation parameters for D3Q27-lattice
+ * 
+ * \note     "Lattice BGK models for Navier-Stokes equation"
+ *           Y.H. Qian, D. D'Humières, P. Lallemand
+ *           Europhysics Letters (EPL) Vol. 17 (1992)
+ *           DOI: 10.1209/0295-5075/17/6/001
 */
 
 #include <memory>
@@ -71,6 +76,15 @@ namespace lattice
               1.0/216.0, 1.0/216.0,
               1.0/216.0, 1.0/216.0,
               0.0, 0.0 };
+
+			/// logical mask
+            __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> MASK =
+            { 1, 1, 1, 1, 1, 1, 1,
+              1, 1, 1, 1, 1, 1, 1,
+              0, 0,
+              0, 1, 1, 1, 1, 1, 1,
+              1, 1, 1, 1, 1, 1, 1,
+              0,  0 };
 
             /// lattice speed of sound
             static constexpr T CS = 1.0/cef::sqrt(3.0);

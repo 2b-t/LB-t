@@ -40,6 +40,9 @@ namespace lattice
 
             /// corresponding weights
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> W = {0.0};
+            
+            /// logical mask
+            __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> MASK = {0.0}
 
             /// lattice speed of sound
             static constexpr T CS = 0.0;

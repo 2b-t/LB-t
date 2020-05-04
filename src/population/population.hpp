@@ -52,14 +52,17 @@ class Population
         /// pointer to population
         T* const F_ = static_cast<T*>(aligned_alloc(CACHE_LINE, MEM_SIZE_));
 
-        T const NU_;    //kinematic viscosity
-        T const TAU_;   //laminar relaxation time
-        T const OMEGA_; //collision frequency
+        T const NU_;            //kinematic viscosity
+        T const TAU_;           //laminar relaxation time
+        T const OMEGA_;         //collision frequency (positive populations)
+        T const LAMBDA_ = 0.25; //magic parameter
+        T const OMEGA_M_;       //collision frequency (negative populations)
 
 
         /// constructor
-        Population(T const Re, T const U, unsigned int const L):
-            NU_(U*static_cast<T>(L) / Re), TAU_(NU_/(LT::CS*LT::CS) + 1.0/ 2.0), OMEGA_(1.0/TAU_)
+        Population(T const Re, T const U, unsigned int const L, T const LAMBDA = 0.25):
+            NU_(U*static_cast<T>(L) / Re), TAU_(NU_/(LT::CS*LT::CS) + 1.0/ 2.0), OMEGA_(1.0/TAU_),
+            LAMBDA_(LAMBDA), OMEGA_M_((TAU_ - 1.0/2.0) / (LAMBDA_ + 1.0/2.0*( TAU_ - 1.0/2.0)))
         {
             if (F_ == nullptr)
             {

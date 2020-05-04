@@ -4,6 +4,11 @@
 /**
  * \file     D3Q19.hpp
  * \mainpage Discretisation parameters for D3Q19-lattice
+ * 
+ * \note     "Lattice BGK models for Navier-Stokes equation"
+ *           Y.H. Qian, D. D'Humières, P. Lallemand
+ *           Europhysics Letters (EPL) Vol. 17 (1992)
+ *           DOI: 10.1209/0295-5075/17/6/001
 */
 
 #include <memory>
@@ -52,13 +57,20 @@ namespace lattice
             /// corresponding weights
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> W =
             { 1.0/3.0,                          //positive velocities
-              1.0/8.0,  1.0/8.0,  1.0/8.0,
+              1.0/18.0, 1.0/18.0, 1.0/18.0,
               1.0/36.0, 1.0/36.0, 1.0/36.0,
               1.0/36.0, 1.0/36.0, 1.0/36.0,
               1.0/3.0,                          //negative velocities
-              1.0/8.0,  1.0/8.0,  1.0/8.0,
+              1.0/18.0, 1.0/18.0, 1.0/18.0,
               1.0/36.0, 1.0/36.0, 1.0/36.0,
               1.0/36.0, 1.0/36.0, 1.0/36.0 };
+
+			/// logical mask
+            __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> MASK =
+            { 1, 1, 1, 1, 1, 1, 1,
+              1, 1, 1,
+              0, 1, 1, 1, 1, 1, 1,
+              1, 1, 1 };
 
             /// lattice speed of sound
             static constexpr T CS = 1.0/cef::sqrt(3.0);

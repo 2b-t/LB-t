@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<FileVersion major="1" minor="0" />
+	<ActiveTarget name="Release" />
+	<File name="src/general/memory_alignment.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="238" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src/population/population.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2704" topLine="36" />
+		</Cursor>
+	</File>
+	<File name="src/main.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2739" topLine="75" />
+		</Cursor>
+	</File>
+	<File name="src/population/collision/collision_bgk_avx512.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1538" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src/population/boundary/boundary_bounceback.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1527" topLine="18" />
+		</Cursor>
+	</File>
+	<File name="src/population/collision/collision_trt.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="6389" topLine="118" />
+		</Cursor>
+	</File>
+	<File name="src/population/collision/collision_bgk_avx2.hpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="7093" topLine="35" />
+		</Cursor>
+	</File>
+	<File name="src/population/collision/collision_bgk.hpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3530" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src/lattice/D3Q27.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3190" topLine="50" />
+		</Cursor>
+	</File>
+	<File name="src/lattice/D3Q19.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2259" topLine="37" />
+		</Cursor>
+	</File>
+	<File name="src/continuum/initialisation.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="543" topLine="29" />
+		</Cursor>
+	</File>
+</CodeBlocks_layout_file>

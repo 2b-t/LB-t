@@ -1,10 +1,10 @@
-#ifndef COLLISION_BGK_AVX2_HPP_INCLUDED
-#define COLLISION_BGK_AVX2_HPP_INCLUDED
+#ifndef COLLISION_BGK_AVX512_HPP_INCLUDED
+#define COLLISION_BGK_AVX512_HPP_INCLUDED
 
 /**
- * \file     collision_bgk_avx2.hpp
- * \mainpage BGK collision operator with AVX2 intrinsics
- * \warning  Requires AVX2 and cache-aligned arrays
+ * \file     collision_bgk_avx512.hpp
+ * \mainpage BGK collision operator with AVX512 intrinsics
+ * \warning  Requires AVX512 and cache-aligned arrays
  * 
  * \note     "A Model for Collision Processes in Gases. I. Small Amplitude Processes in Charged
  *           and Neutral One-Component Systems"
@@ -24,29 +24,37 @@
 #include "../population.hpp"
 
 
-#ifdef __AVX2__
+#ifdef __AVX512CD__
 
-#include <immintrin.h>
+#if __has_include (<zmmintrin.h>)
+    #include <zmmintrin.h>
+#else
+    #include <immintrin.h>
+#endif
 
-/// size of the intrinsics (AVX2: 256/8=32) and corresponding number of doubles in an intrinsic
-#define AVX2_SIZE          sizeof(__m256d)
-#define AVX2_REG_SIZE      sizeof(__m256d)/sizeof(double)
+// size of the intrinsic (AVX512: 512/8=64) and corresponding number of values of type INTR
+#define AVX512_INTR_SIZE     sizeof(__m512d)
+#define AVX512_REG_SIZE      sizeof(__m512d)/sizeof(double)
 
 
-/**\fn        _mm256_reduce_add_pd
- * \brief     Horizontal add function of all four numbers in a 256bit AVX2 double intrinsic
+#ifndef __INTEL_COMPILER
+/**\fn        _mm512_reduce_add_pd
+ * \brief     Horizontal add function of all four numbers in a 512bit AVX2 double intrinsic
  *
- * \param[in] _a: a 256bit AVX2 intrinsic with 4 double numbers
+ * \param[in] _a   a 512bit AVX512 intrinsic with 8 double numbers
  * \return    The horizontal added intrinsic as a double number
 */
-static inline double __attribute__((always_inline)) _mm256_reduce_add_pd(__m256d const _a)
+static inline double _mm512_reduce_add_pd(__m512d const _a)
 {
-    __m256d const _sum = _mm256_hadd_pd(_a, _a);
-    return ((double*)&_sum)[0] + ((double*)&_sum)[2];
+    __m256d const _b = _mm256_add_pd(_mm512_castpd512_pd256(_a), _mm512_extractf64x4_pd(_a, 1));
+    __m128d const _c = _mm_add_pd(_mm256_castpd256_pd128(_b), _mm256_extractf128_pd(_b, 1));
+    double const *f = (double*)(&_c);
+    return _mm_cvtsd_f64(_c) + f[1];
 }
+#endif
 
-/**\fn            CollideStreamBGK_AVX2
- * \brief         BGK collision operator for arbitrary cache-aligned lattices with AVX2 intrinsics
+/**\fn            CollideStreamBGK_AVX512
+ * \brief         BGK collision operator for arbitrary cache-aligned lattices with AVX512 intrinsics
  *
  * \param[out]    macro   continuum object holding macroscopic variables
  * \param[in,out] micro   population object holding microscopic variables
@@ -54,7 +62,7 @@ static inline double __attribute__((always_inline)) _mm256_reduce_add_pd(__m256d
  * \param[in]     p       relevant population (default 0)
 */
 template <bool odd, unsigned int NX, unsigned int NY, unsigned int NZ, class LT, class POP, typename T>
-void CollideStreamBGK_AVX2(Continuum<NX,NY,NZ,T>& macro, POP& micro, bool const save = false, unsigned int const p = 0)
+void CollideStreamBGK_AVX512(Continuum<NX,NY,NZ,T>& macro, POP& micro, bool const save = false, unsigned int const p = 0)
 {
     #pragma omp parallel for default(none) shared(macro, micro) firstprivate(save, p) schedule(static,1)
     for(unsigned int block = 0; block < micro.NUM_BLOCKS_; ++block)
@@ -104,23 +112,23 @@ void CollideStreamBGK_AVX2(Continuum<NX,NY,NZ,T>& macro, POP& micro, bool const 
                     }
 
                     /// determine macroscopic values by means of intrinsics
-                    __m256d _rho = _mm256_setzero_pd();
-                    __m256d _u   = _mm256_setzero_pd();
-                    __m256d _v   = _mm256_setzero_pd();
-                    __m256d _w   = _mm256_setzero_pd();
+                    __m512d _rho = _mm512_setzero_pd();
+                    __m512d _u   = _mm512_setzero_pd();
+                    __m512d _v   = _mm512_setzero_pd();
+                    __m512d _w   = _mm512_setzero_pd();
 
-                    for (size_t i = 0; i < LT::ND; i += AVX2_REG_SIZE)
+                    for (size_t i = 0; i < LT::ND; i += AVX512_REG_SIZE)
                     {
-                        _rho = _mm256_add_pd(_mm256_load_pd(&f[i]), _rho);
-                        _u   = _mm256_fmadd_pd(_mm256_load_pd(&LT::DX[i]), _mm256_load_pd(&f[i]), _u);
-                        _v   = _mm256_fmadd_pd(_mm256_load_pd(&LT::DY[i]), _mm256_load_pd(&f[i]), _v);
-                        _w   = _mm256_fmadd_pd(_mm256_load_pd(&LT::DZ[i]), _mm256_load_pd(&f[i]), _w);
+                        _rho = _mm512_add_pd(_mm512_load_pd(&f[i]), _rho);
+                        _u   = _mm512_fmadd_pd(_mm512_load_pd(&LT::DX[i]), _mm512_load_pd(&f[i]), _u);
+                        _v   = _mm512_fmadd_pd(_mm512_load_pd(&LT::DY[i]), _mm512_load_pd(&f[i]), _v);
+                        _w   = _mm512_fmadd_pd(_mm512_load_pd(&LT::DZ[i]), _mm512_load_pd(&f[i]), _w);
                     }
 
-                    double const rho = _mm256_reduce_add_pd(_rho);
-                    double const u   = _mm256_reduce_add_pd(_u)/rho;
-                    double const v   = _mm256_reduce_add_pd(_v)/rho;
-                    double const w   = _mm256_reduce_add_pd(_w)/rho;
+                    double const rho = _mm512_reduce_add_pd(_rho);
+                    double const u   = _mm512_reduce_add_pd(_u)/rho;
+                    double const v   = _mm512_reduce_add_pd(_v)/rho;
+                    double const w   = _mm512_reduce_add_pd(_w)/rho;
 
                     if (save == true)
                     {
@@ -133,33 +141,33 @@ void CollideStreamBGK_AVX2(Continuum<NX,NY,NZ,T>& macro, POP& micro, bool const 
                     /// calculate equilibrium distribution
                     alignas(CACHE_LINE) double feq[LT::ND] = {0.0};
 
-                    __m256d const _uu = _mm256_set1_pd(-1.0/(2.0*LT::CS*LT::CS)*(u*u + v*v + w*w));
-                    _rho = _mm256_set1_pd(rho);
-                    _u   = _mm256_set1_pd(u);
-                    _v   = _mm256_set1_pd(v);
-                    _w   = _mm256_set1_pd(w);
+                    __m512d const _uu = _mm512_set1_pd(-1.0/(2.0*LT::CS*LT::CS)*(u*u + v*v + w*w));
+                    _rho = _mm512_set1_pd(rho);
+                    _u   = _mm512_set1_pd(u);
+                    _v   = _mm512_set1_pd(v);
+                    _w   = _mm512_set1_pd(w);
 
-                    for (size_t i = 0; i < LT::ND; i += AVX2_REG_SIZE)
+                    for (size_t i = 0; i < LT::ND; i += AVX512_REG_SIZE)
                     {
-                        __m256d _cu = _mm256_mul_pd(_mm256_load_pd(&LT::DX[i]), _u);
-                        _cu = _mm256_fmadd_pd(_mm256_load_pd(&LT::DY[i]), _v, _cu);
-                        _cu = _mm256_fmadd_pd(_mm256_load_pd(&LT::DZ[i]), _w, _cu);
-                        _cu = _mm256_mul_pd(_cu, _mm256_set1_pd(1.0/(LT::CS*LT::CS)));
+                        __m512d _cu = _mm512_mul_pd(_mm512_load_pd(&LT::DX[i]), _u);
+                        _cu = _mm512_fmadd_pd(_mm512_load_pd(&LT::DY[i]), _v, _cu);
+                        _cu = _mm512_fmadd_pd(_mm512_load_pd(&LT::DZ[i]), _w, _cu);
+                        _cu = _mm512_mul_pd(_cu, _mm512_set1_pd(1.0/(LT::CS*LT::CS)));
 
-                        __m256d _res = _mm256_fmadd_pd(_mm256_set1_pd(0.5), _cu, _mm256_set1_pd(1.0));
-                        _res = _mm256_fmadd_pd(_cu, _res, _uu);
+                        __m512d _res = _mm512_fmadd_pd(_mm512_set1_pd(0.5), _cu, _mm512_set1_pd(1.0));
+                        _res = _mm512_fmadd_pd(_cu, _res, _uu);
 
-                        _res = _mm256_fmadd_pd(_res, _rho, _rho);
-                        _res = _mm256_mul_pd(_mm256_load_pd(&LT::W[i]), _res);
-                        _mm256_store_pd(&feq[i], _res);
+                        _res = _mm512_fmadd_pd(_res, _rho, _rho);
+                        _res = _mm512_mul_pd(_mm512_load_pd(&LT::W[i]), _res);
+                        _mm512_store_pd(&feq[i], _res);
                     }
 
                     /// collision
-                    for (size_t i = 0; i < LT::ND; i += AVX2_REG_SIZE)
+                    for (size_t i = 0; i < LT::ND; i += AVX512_REG_SIZE)
                     {
-                        __m256d _res = _mm256_sub_pd(_mm256_load_pd(&feq[i]), _mm256_load_pd(&f[i]));
-                        _res = _mm256_fmadd_pd(_mm256_set1_pd(micro.OMEGA_), _res, _mm256_load_pd(&f[i]));
-                        _mm256_store_pd(&f[i], _mm256_mul_pd(_mm256_load_pd(&LT::MASK[i]), _res));
+                        __m512d _res = _mm512_sub_pd(_mm512_load_pd(&feq[i]), _mm512_load_pd(&f[i]));
+                        _res = _mm512_fmadd_pd(_mm512_set1_pd(micro.OMEGA_), _res, _mm512_load_pd(&f[i]));
+                        _mm512_store_pd(&f[i], _mm512_mul_pd(_mm512_load_pd(&LT::MASK[i]), _res));
                     }
 
                     /// collision and streaming

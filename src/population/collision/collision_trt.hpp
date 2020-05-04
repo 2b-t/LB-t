@@ -1,15 +1,15 @@
-#ifndef COLLISION_BGK_HPP_INCLUDED
-#define COLLISION_BGK_HPP_INCLUDED
+#ifndef COLLISION_TRT_HPP_INCLUDED
+#define COLLISION_TRT_HPP_INCLUDED
 
 /**
- * \file     collision_bgk.hpp
- * \mainpage BGK collision operator
- * 
- * \note     "A Model for Collision Processes in Gases. I. Small Amplitude Processes in Charged
- *           and Neutral One-Component Systems"
- *           P.L. Bhatnagar, E.P. Gross, M. Krook
- *           Physical Review 94 (1954)
- *           DOI: 10.1103/PhysRev.94.511
+ * \file     collision_trt.hpp
+ * \mainpage TRT collision operator
+ *
+ * \note     "Two-relaxation-time Lattice Boltzmann scheme: about parametrization, velocity,
+ *           pressure and mixed boundary conditions"
+ *           I. Ginzburg, F. Verhaeghe, D. Humiéres
+ *           Communications in Computational Physics Vol. 3 (2008)
+ *           Online: http://global-sci.org/intro/article_detail/cicp/7862.html
 */
 
 #include <algorithm>
@@ -22,8 +22,8 @@
 #include "../../continuum/continuum.hpp"
 #include "../population.hpp"
 
-/**\fn            CollideStreamBGK
- * \brief         BGK collision operator for arbitrary lattice
+/**\fn            CollideStreamTRT
+ * \brief         TRT collision operator for arbitrary lattice
  *
  * \param[out]    macro   continuum object holding macroscopic variables
  * \param[in,out] micro   population object holding microscopic variables
@@ -31,7 +31,7 @@
  * \param[in]     p       relevant population (default 0)
 */
 template <bool odd, unsigned int NX, unsigned int NY, unsigned int NZ, class LT, class POP, typename T>
-void CollideStreamBGK(Continuum<NX,NY,NZ,T>& macro, POP& micro, bool const save = false, unsigned int const p = 0)
+void CollideStreamTRT(Continuum<NX,NY,NZ,T>& macro, POP& micro, bool const save = false, unsigned int const p = 0)
 {
     #pragma omp parallel for default(none) shared(macro, micro) firstprivate(save, p) schedule(static,1)
     for(unsigned int block = 0; block < micro.NUM_BLOCKS_; ++block)
@@ -126,16 +126,27 @@ void CollideStreamBGK(Continuum<NX,NY,NZ,T>& macro, POP& micro, bool const save 
                         }
                     }
 
-                    /// collision and streaming
-                    #pragma GCC unroll (2)
-                    for(unsigned int n = 0; n <= 1; ++n)
+                    alignas(CACHE_LINE) T fp[LT::OFF] = {0.0};
+                    alignas(CACHE_LINE) T fm[LT::OFF] = {0.0};
+
+                    #pragma GCC unroll (15)
+                    for(unsigned int d = 1; d < LT::HSPEED; ++d)
                     {
-                        #pragma GCC unroll (16)
-                        for(unsigned int d = n; d < LT::HSPEED; ++d)
-                        {
-                            unsigned int const curr = n*LT::OFF + d;
-                            micro.F_[micro. template AA_IndexWrite<odd>(x_n,y_n,z_n,n,d,p)] = f[curr] + micro.OMEGA_*(feq[curr] - f[curr]);
-                        }
+                        fp[d] = 0.5*(f[d] + f[LT::OFF + d] - (feq[d] + feq[LT::OFF + d]));
+                        fm[d] = 0.5*(f[d] - f[LT::OFF + d] - (feq[d] - feq[LT::OFF + d]));
+                    }
+
+                    /// collision and streaming
+                    micro.F_[micro. template AA_IndexWrite<odd>(x_n,y_n,z_n,0,0,p)] = f[0] + micro.OMEGA_*(feq[0] - f[0]);
+                    #pragma GCC unroll (15)
+                    for(unsigned int d = 1; d < LT::HSPEED; ++d)
+                    {
+                        micro.F_[micro. template AA_IndexWrite<odd>(x_n,y_n,z_n,0,d,p)] = f[d] - micro.OMEGA_*fp[d] - micro.OMEGA_M_*fm[d];
+                    }
+                    #pragma GCC unroll (15)
+                    for(unsigned int d = 1; d < LT::HSPEED; ++d)
+                    {
+                        micro.F_[micro. template AA_IndexWrite<odd>(x_n,y_n,z_n,1,d,p)] = f[LT::OFF + d] - micro.OMEGA_*fp[d] + micro.OMEGA_M_*fm[d];
                     }
                 }
             }
@@ -143,4 +154,4 @@ void CollideStreamBGK(Continuum<NX,NY,NZ,T>& macro, POP& micro, bool const save 
     }
 }
 
-#endif //COLLISION_BGK_HPP_INCLUDED
+#endif //COLLISION_TRT_HPP_INCLUDED
