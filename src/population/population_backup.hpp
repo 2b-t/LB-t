@@ -23,7 +23,7 @@
  * \param[in]   name   the import file name of the scalar
  */
 template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP>
-void Population<NX,NY,NZ,LT,NPOP>::Import(std::string name)
+void Population<NX,NY,NZ,LT,NPOP>::Import(std::string const name)
 {
     std::string const fileName = BACKUP_IMPORT_PATH + std::string("/") + name + std::string(".bin");
     FILE * const importFile;
@@ -38,6 +38,7 @@ void Population<NX,NY,NZ,LT,NPOP>::Import(std::string name)
     else
     {
         std::cerr << "Error: Could not import population from disk." << std::endl;
+        exit(EXIT_FAILURE);
     }
 }
 
@@ -47,7 +48,7 @@ void Population<NX,NY,NZ,LT,NPOP>::Import(std::string name)
  * \param[in]   name   the export file name of the scalar
  */
 template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP>
-void Population<NX,NY,NZ,LT,NPOP>::Export(std::string name) const
+void Population<NX,NY,NZ,LT,NPOP>::Export(std::string const name) const
 {
     std::string const fileName = BACKUP_EXPORT_PATH + std::string("/") + name + std::string(".bin");
     FILE * const exportFile;

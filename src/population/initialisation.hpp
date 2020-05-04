@@ -16,10 +16,17 @@
 #include "population.hpp"
 
 
-template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, class POP, typename T, bool odd = false>
+/**\fn          InitLattice
+ * \brief       Initialise microscopic distributions from continuum values
+ *
+ * \param[in]  macro   continuum object holding macroscopic variables
+ * \param[out] micro   population object holding microscopic variables
+ * \param[in]  p       relevant population (default 0)
+*/
+template <bool odd, unsigned int NX, unsigned int NY, unsigned int NZ, class LT, class POP, typename T>
 void InitLattice(Continuum<NX,NY,NZ,T> const& macro, POP& micro, unsigned int const p = 0)
 {
-    #pragma omp parallel for default(none) shared(macro, micro) firstprivate(p) schedule(static,1)
+    //#pragma omp parallel for default(none) shared(macro, micro) firstprivate(p) schedule(static,1)
     for(unsigned int block = 0; block < micro.NUM_BLOCKS_; ++block)
     {
         unsigned int x_n[3] = {0, 0, 0};
@@ -31,21 +38,21 @@ void InitLattice(Continuum<NX,NY,NZ,T> const& macro, POP& micro, unsigned int co
 
         for(unsigned int z = z_start; z < z_end; ++z)
         {
-            unsigned int const y_start = micro.BLOCK_SIZE_*((block % (micro.NUM_BLOCKS_X_*micro.NUM_BLOCKS_Y_)) / micro.NUM_BLOCKS_X_);
-            unsigned int const   y_end = std::min(y_start + micro.BLOCK_SIZE_, NY);
-
             z_n[0] = (NZ + z - 1) % NZ;
             z_n[1] =       z;
             z_n[2] = (     z + 1) % NZ;
 
+            unsigned int const y_start = micro.BLOCK_SIZE_*((block % (micro.NUM_BLOCKS_X_*micro.NUM_BLOCKS_Y_)) / micro.NUM_BLOCKS_X_);
+            unsigned int const   y_end = std::min(y_start + micro.BLOCK_SIZE_, NY);
+
             for(unsigned int y = y_start; y < y_end; ++y)
             {
-                unsigned int const x_start = micro.BLOCK_SIZE_*(block % micro.NUM_BLOCKS_X_);
-                unsigned int const   x_end = std::min(x_start + micro.BLOCK_SIZE_, NX);
-
                 y_n[0] = (NY + y - 1) % NY;
                 y_n[1] =       y;
                 y_n[2] = (     y + 1) % NY;
+
+                unsigned int const x_start = micro.BLOCK_SIZE_*(block % micro.NUM_BLOCKS_X_);
+                unsigned int const   x_end = std::min(x_start + micro.BLOCK_SIZE_, NX);
 
                 for(unsigned int x = x_start; x < x_end; ++x)
                 {
@@ -60,11 +67,13 @@ void InitLattice(Continuum<NX,NY,NZ,T> const& macro, POP& micro, unsigned int co
 
                     T const uu = - 1.0/(2.0*LT::CS*LT::CS)*(u*u + v*v + w*w);
 
+                    //#pragma GCC unroll (2)
                     for(unsigned int n = 0; n <= 1; ++n)
                     {
-                        for(unsigned int d = 0; d < micro.OFF_; ++d)
+                        //#pragma GCC unroll (16)
+                        for(unsigned int d = n; d < LT::OFF; ++d)
                         {
-                            size_t const curr = n*micro.OFF_ + d;
+                            unsigned int const curr = n*LT::OFF + d;
                             T const cu = 1.0/(LT::CS*LT::CS)*(u*LT::DX[curr] + v*LT::DY[curr] + w*LT::DZ[curr]);
                             micro. template AA_Read<odd>(x_n,y_n,z_n,n,d,p) = LT::W[curr]*(rho + rho*(cu*(1.0 + 0.5*cu) + uu));
                         }

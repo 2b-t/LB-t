@@ -28,7 +28,7 @@ class Continuum
 {
     public:
         static constexpr unsigned int NM_ = 4; //number of macroscopic values: rho, ux, uy, uz
-        static constexpr size_t MEM_SIZE_ = sizeof(T)*static_cast<size_t>(NZ)*static_cast<size_t>(NY)*static_cast<size_t>(NX)*static_cast<size_t>(NM_); //size of array in byte
+        static constexpr size_t MEM_SIZE_ = sizeof(T)*NZ*NY*NX*static_cast<size_t>(NM_); //size of array in byte
 
         /// population allocated in heap
         T* const M_ = static_cast<T*>(aligned_alloc(CACHE_LINE, MEM_SIZE_));
@@ -40,6 +40,7 @@ class Continuum
             if (M_ == nullptr)
             {
                 std::cerr << "Fatal error: Continuum could not be allocated." << std::endl;
+                exit(EXIT_FAILURE);
             }
         }
 

@@ -1,6 +1,11 @@
 #ifndef LATTICE_UNIT_TEST_HPP_INCLUDED
 #define LATTICE_UNIT_TEST_HPP_INCLUDED
 
+/**
+ * \file     lattice_unit_test.hpp
+ * \mainpage Output of static lattice parameters and unit test for lattices
+*/
+
 #include <array>
 #include <iostream>
 #include <numeric>

@@ -15,6 +15,16 @@
 #include "continuum.hpp"
 #include "../general/constexpr_func.hpp"
 
+
+/**\fn          InitContinuum
+ * \brief       Initialise continuum values density and velocities
+ *
+ * \param[out]  macro   the continuum object that should be initialised
+ * \param[in]   RHO_0   the uniform initial density across the flow field
+ * \param[in]   U_0     the uniform initial velocity in x-direction across the flow field
+ * \param[in]   V_0     the uniform initial velocity in y-direction across the flow field
+ * \param[in]   V_0     the uniform initial velocity in z-direction across the flow field
+*/
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T>
 void InitContinuum(Continuum<NX,NY,NZ,T>& macro, T const RHO_0, T const U_0, T const V_0, T const W_0)
 {

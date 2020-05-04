@@ -100,9 +100,9 @@ template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned 
 inline size_t __attribute__((always_inline)) Population<NX,NY,NZ,LT,NPOP>::AA_IndexRead(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
                                                                                         unsigned int const n,       unsigned int const d,       unsigned int const p) const
 {
-    return SpatialToLinear(x[1 + O_E(odd, static_cast<size_t>(LT::DX[!n*OFF_+d]), 0)],
-                           y[1 + O_E(odd, static_cast<size_t>(LT::DY[!n*OFF_+d]), 0)],
-                           z[1 + O_E(odd, static_cast<size_t>(LT::DZ[!n*OFF_+d]), 0)],
+    return SpatialToLinear(x[1 + O_E(odd, static_cast<int>(LT::DX[!n*OFF_+d]), 0)],
+                           y[1 + O_E(odd, static_cast<int>(LT::DY[!n*OFF_+d]), 0)],
+                           z[1 + O_E(odd, static_cast<int>(LT::DZ[!n*OFF_+d]), 0)],
                            O_E(odd, n, !n),
                            d, p);
 }
@@ -111,9 +111,9 @@ template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned 
 inline size_t __attribute__((always_inline)) Population<NX,NY,NZ,LT,NPOP>::AA_IndexWrite(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
                                                                                          unsigned int const n,       unsigned int const d,       unsigned int const p) const
 {
-    return SpatialToLinear(x[1 + O_E(odd, static_cast<size_t>(LT::DX[n*OFF_+d]), 0)],
-                           y[1 + O_E(odd, static_cast<size_t>(LT::DY[n*OFF_+d]), 0)],
-                           z[1 + O_E(odd, static_cast<size_t>(LT::DZ[n*OFF_+d]), 0)],
+    return SpatialToLinear(x[1 + O_E(odd, static_cast<int>(LT::DX[n*OFF_+d]), 0)],
+                           y[1 + O_E(odd, static_cast<int>(LT::DY[n*OFF_+d]), 0)],
+                           z[1 + O_E(odd, static_cast<int>(LT::DZ[n*OFF_+d]), 0)],
                            O_E(odd, !n, n),
                            d, p);
 }

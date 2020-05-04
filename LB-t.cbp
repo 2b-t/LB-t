@@ -51,23 +51,25 @@
 		<Unit filename="src/general/constexpr_func.hpp" />
 		<Unit filename="src/general/disclaimer.hpp" />
 		<Unit filename="src/general/memory_alignment.hpp" />
+		<Unit filename="src/general/output.hpp" />
 		<Unit filename="src/general/parallelism.cpp" />
 		<Unit filename="src/general/parallelism.hpp" />
 		<Unit filename="src/general/parameters_export.hpp" />
 		<Unit filename="src/general/paths.hpp" />
 		<Unit filename="src/general/timer.hpp" />
 		<Unit filename="src/geometry/cylinder.hpp" />
+		<Unit filename="src/lattice/D3Q19.hpp" />
 		<Unit filename="src/lattice/D3Q27.hpp" />
 		<Unit filename="src/lattice/lattice_unit_test.hpp" />
 		<Unit filename="src/main.cpp" />
 		<Unit filename="src/population/boundary/boundary.hpp" />
 		<Unit filename="src/population/boundary/boundary_bounceback.hpp" />
 		<Unit filename="src/population/collision/collision_bgk.hpp" />
+		<Unit filename="src/population/collision/collision_bgk_avx2.hpp" />
 		<Unit filename="src/population/initialisation.hpp" />
 		<Unit filename="src/population/population.hpp" />
 		<Unit filename="src/population/population_backup.hpp" />
 		<Unit filename="src/population/population_indexing.hpp" />
-		<Unit filename="src/population/population_indexing_avx.hpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

@@ -15,7 +15,7 @@
  * \param[in]  y   y coordinate of cell
  * \param[in]  z   z coordinate of cell
  * \param[in]  m   macroscopic value (0: density, 1-3: ux, uy,uz)
-* \return      requested linear scalar index
+ * \return      requested linear scalar index
 */
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T>
 inline size_t __attribute__((always_inline)) Continuum<NX,NY,NZ,T>::SpatialToLinear(unsigned int const x, unsigned int const y, unsigned int const z,

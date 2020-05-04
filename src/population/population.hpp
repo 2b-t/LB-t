@@ -33,13 +33,13 @@ class Population
         /// lattice characteristics
         static constexpr unsigned int    DIM_ = LT::DIM;
         static constexpr unsigned int SPEEDS_ = LT::SPEEDS;
-        static constexpr unsigned int HSPEED_ = (SPEEDS_ + 1)/2;
+        static constexpr unsigned int HSPEED_ = LT::HSPEED;
 
         /// linear memory layout
         static constexpr unsigned int PAD_ = LT::PAD;
         static constexpr unsigned int  ND_ = LT::ND;
-        static constexpr unsigned int OFF_ = ND_/2;
-        static constexpr size_t  MEM_SIZE_ = sizeof(T)*static_cast<size_t>(NZ)*static_cast<size_t>(NY)*static_cast<size_t>(NX)*static_cast<size_t>(NPOP)*static_cast<size_t>(ND_);
+        static constexpr unsigned int OFF_ = LT::OFF;
+        static constexpr size_t  MEM_SIZE_ = sizeof(T)*NZ*NY*NX*NPOP*static_cast<size_t>(ND_);
 
         /// parallelism: 3D blocks
         //  each cell gets a block of cells instead of a single cell
@@ -58,12 +58,13 @@ class Population
 
 
         /// constructor
-        Population(T const RE, T const U, unsigned int const L):
-            NU_(U*static_cast<T>(L) / RE), TAU_(NU_/(LT::CS*LT::CS) + 1.0/ 2.0), OMEGA_(1.0/TAU_)
+        Population(T const Re, T const U, unsigned int const L):
+            NU_(U*static_cast<T>(L) / Re), TAU_(NU_/(LT::CS*LT::CS) + 1.0/ 2.0), OMEGA_(1.0/TAU_)
         {
             if (F_ == nullptr)
             {
                 std::cerr << "Fatal error: Population could not be allocated." << std::endl;
+                exit(EXIT_FAILURE);
             }
         }
 
@@ -102,23 +103,13 @@ class Population
         inline auto const& AA_Write(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
                                     unsigned int const n,       unsigned int const d,       unsigned int const p = 0) const;
 
-        /// AVX functions
-        template <bool odd>
-        inline void Load(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
-                         T (&f)[ND_], unsigned int const p = 0) const;
-
-        template <bool odd>
-        inline void Store(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
-                          T const (&f)[ND_], unsigned int const p = 0);
-
         /// import and export: population back-up
-        void Import(std::string name);
-        void Export(std::string name) const;
+        void Import(std::string const name);
+        void Export(std::string const name) const;
 };
 
 /// include related header files
 #include "population_indexing.hpp"
-//#include "population_indexing_avx.hpp"
 #include "population_backup.hpp"
 
 #endif // POPULATION_HPP_INCLUDED

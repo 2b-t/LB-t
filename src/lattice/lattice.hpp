@@ -26,10 +26,12 @@ namespace lattice
             /// lattice discretisation parameters
             static constexpr unsigned int    DIM = 0;
             static constexpr unsigned int SPEEDS = 0;
+            static constexpr unsigned int HSPEED = (SPEEDS + 1)/2;
 
             /// linear memory layout padding
             static constexpr unsigned int PAD = ((CACHE_LINE - sizeof(T)*SPEEDS % CACHE_LINE) % CACHE_LINE) / sizeof(T);
             static constexpr unsigned int  ND = SPEEDS + PAD;
+            static constexpr unsigned int OFF = ND/2;
 
             /// discrete velocities
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> DX = {0.0};

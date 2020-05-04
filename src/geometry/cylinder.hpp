@@ -13,7 +13,7 @@
 #include "../population/boundary/boundary.hpp"
 
 
-/**\fn         Cylinder_3D
+/**\fn         Cylinder3D
  * \brief      Load pre-defined scenario of a three-dimensional flow around cylinder
  *
  * \param[in]  radius           unsigned integer that holds the radius of the cylinder
@@ -43,7 +43,7 @@ void Cylinder3D(unsigned int const radius, std::array<unsigned int,3> const& pos
                 for(unsigned int x = 0; x < NX; ++x)
                 {
                     // create element
-                    boundaryElement<T> const element = {x, y, z, 0.0, 0.0, 0.0, 0.0};
+                    boundaryElement<T> const element = {x, y, z, 1.0, 0.0, 0.0, 0.0};
 
                     // add to corresponding boundary
                     if ((x-position[0])*(x-position[0]) + (y-position[1])*(y-position[1]) <= radius*radius)
@@ -72,6 +72,7 @@ void Cylinder3D(unsigned int const radius, std::array<unsigned int,3> const& pos
     else
     {
         std::cerr << "Warning: Geometry orientation " << orientation << " not found." << std::endl;
+        exit(EXIT_FAILURE);
     }
 }
 

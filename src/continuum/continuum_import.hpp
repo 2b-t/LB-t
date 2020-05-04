@@ -35,6 +35,7 @@ void Continuum<NX,NY,NZ,T>::Import(std::string const name, unsigned int const st
     else
     {
         std::cerr << "Error: Could not import macroscopic values from disk." << std::endl;
+        exit(EXIT_FAILURE);
     }
 }
 
