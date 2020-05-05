@@ -4,11 +4,7 @@
 /**
  * \file     D3Q27.hpp
  * \mainpage Discretisation parameters for D3Q27-lattice
- * 
- * \note     "Lattice BGK models for Navier-Stokes equation"
- *           Y.H. Qian, D. D'Humières, P. Lallemand
- *           Europhysics Letters (EPL) Vol. 17 (1992)
- *           DOI: 10.1209/0295-5075/17/6/001
+ * \warning  Static classes with more complex members such as std::vector and std::array require C++17
 */
 
 #include <memory>
@@ -21,7 +17,12 @@ namespace lattice
 {
     /**\class    D3Q27
      * \brief    Class for D3Q27 lattice
-     * \warning  Static classes with more complex members such as std::vector and std::array require C++17
+     * \note     "Lattice BGK models for Navier-Stokes equation"
+     *           Y.H. Qian, D. D'Humières, P. Lallemand
+     *           Europhysics Letters (EPL) Vol. 17 (1992)
+     *           DOI: 10.1209/0295-5075/17/6/001
+     *
+     * \tparam   T   floating data type used for simulation
     */
     template <typename T = double>
     class D3Q27
@@ -77,7 +78,7 @@ namespace lattice
               1.0/216.0, 1.0/216.0,
               0.0, 0.0 };
 
-			/// logical mask
+			/// logical mask for relevant populations
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> MASK =
             { 1, 1, 1, 1, 1, 1, 1,
               1, 1, 1, 1, 1, 1, 1,

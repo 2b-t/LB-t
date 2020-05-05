@@ -20,8 +20,13 @@
 #include "../general/memory_alignment.hpp"
 
 
-/**\class Continuum
- * \brief Class for the macroscopic variables
+/**\class  Continuum
+ * \brief  Class for the macroscopic variables
+ *
+ * \tparam NX   simulation domain resolution in x-direction
+ * \tparam NY   simulation domain resolution in y-direction
+ * \tparam NZ   simulation domain resolution in z-direction
+ * \tparam T    floating data type used for simulation
 */
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T = double>
 class Continuum

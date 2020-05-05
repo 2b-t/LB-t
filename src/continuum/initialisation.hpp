@@ -19,14 +19,18 @@
 /**\fn          InitContinuum
  * \brief       Initialise continuum values density and velocities
  *
- * \param[out]  macro   the continuum object that should be initialised
+ * \tparam      NX      simulation domain resolution in x-direction
+ * \tparam      NY      simulation domain resolution in y-direction
+ * \tparam      NZ      simulation domain resolution in z-direction
+ * \tparam      T       floating data type used for simulation
+ * \param[out]  pop     the continuum object that should be initialised
  * \param[in]   RHO_0   the uniform initial density across the flow field
  * \param[in]   U_0     the uniform initial velocity in x-direction across the flow field
  * \param[in]   V_0     the uniform initial velocity in y-direction across the flow field
  * \param[in]   V_0     the uniform initial velocity in z-direction across the flow field
 */
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T>
-void InitContinuum(Continuum<NX,NY,NZ,T>& macro, T const RHO_0, T const U_0, T const V_0, T const W_0)
+void InitContinuum(Continuum<NX,NY,NZ,T>& con, T const RHO_0, T const U_0, T const V_0, T const W_0)
 {
     /// parallelism: 3D blocks
     //  each cell gets a block of cells instead of a single cell
@@ -36,7 +40,7 @@ void InitContinuum(Continuum<NX,NY,NZ,T>& macro, T const RHO_0, T const U_0, T c
     constexpr unsigned int NUM_BLOCKS_X = cef::ceil(static_cast<double>(NX) / BLOCK_SIZE);
     constexpr unsigned int   NUM_BLOCKS = NUM_BLOCKS_X*NUM_BLOCKS_Y*NUM_BLOCKS_Z;
 
-    #pragma omp parallel for default(none) shared(macro) firstprivate(RHO_0, U_0, V_0, W_0) schedule(static,1)
+    #pragma omp parallel for default(none) shared(con) firstprivate(RHO_0,U_0,V_0,W_0) schedule(static,1)
     for(unsigned int block = 0; block < NUM_BLOCKS; ++block)
     {
         unsigned int const z_start = BLOCK_SIZE * (block / (NUM_BLOCKS_X*NUM_BLOCKS_Y));
@@ -54,10 +58,10 @@ void InitContinuum(Continuum<NX,NY,NZ,T>& macro, T const RHO_0, T const U_0, T c
 
                 for(unsigned int x = x_start; x < x_end; ++x)
                 {
-                    macro(x, y, z, 0) = RHO_0;
-                    macro(x, y, z, 1) = U_0;
-                    macro(x, y, z, 2) = V_0;
-                    macro(x, y, z, 3) = W_0;
+                    con(x, y, z, 0) = RHO_0;
+                    con(x, y, z, 1) = U_0;
+                    con(x, y, z, 2) = V_0;
+                    con(x, y, z, 3) = W_0;
                 }
             }
         }

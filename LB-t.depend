@@ -7,7 +7,7 @@
 1588199939 /home/tobit/Documents/Github/LB-t/src/general/parallelism.hpp
 	<omp.h>
 
-1588622164 source:/home/tobit/Documents/Github/LB-t/src/main.cpp
+1588635794 source:/home/tobit/Documents/Github/LB-t/src/main.cpp
 	<array>
 	<iostream>
 	<memory>
@@ -28,10 +28,11 @@
 	"population/boundary/boundary_bounceback.hpp"
 	"population/collision/collision_bgk.hpp"
 	"population/collision/collision_bgk_avx2.hpp"
+	"population/collision/collision_trt.hpp"
 	"population/initialisation.hpp"
 	"population/population.hpp"
 
-1588464348 /home/tobit/Documents/Github/LB-t/src/continuum/continuum.hpp
+1588633299 /home/tobit/Documents/Github/LB-t/src/continuum/continuum.hpp
 	<algorithm>
 	<array>
 	<cassert>
@@ -47,7 +48,7 @@
 	"continuum_import.hpp"
 	"continuum_export.hpp"
 
-1588289986 /home/tobit/Documents/Github/LB-t/src/population/boundary/boundary.hpp
+1588635291 /home/tobit/Documents/Github/LB-t/src/population/boundary/boundary.hpp
 
 1588621783 /home/tobit/Documents/Github/LB-t/src/general/memory_alignment.hpp
 
@@ -107,17 +108,18 @@
 	<vector>
 	"../population/boundary/boundary.hpp"
 
-1588625396 /home/tobit/Documents/Github/LB-t/src/lattice/D3Q27.hpp
+1588629296 /home/tobit/Documents/Github/LB-t/src/lattice/D3Q27.hpp
 	<memory>
 	<array>
 	"../general/constexpr_func.hpp"
 	"../general/memory_alignment.hpp"
 
-1588625434 /home/tobit/Documents/Github/LB-t/src/population/boundary/boundary_bounceback.hpp
+1588636014 /home/tobit/Documents/Github/LB-t/src/population/boundary/boundary_bounceback.hpp
 	<omp.h>
 	"boundary.hpp"
+	"../population.hpp"
 
-1588625481 /home/tobit/Documents/Github/LB-t/src/population/collision/collision_bgk.hpp
+1588629000 /home/tobit/Documents/Github/LB-t/src/population/collision/collision_bgk.hpp
 	<algorithm>
 	<cmath>
 	<omp.h>
@@ -125,7 +127,7 @@
 	"../../continuum/continuum.hpp"
 	"../population.hpp"
 
-1588626255 /home/tobit/Documents/Github/LB-t/src/population/population.hpp
+1588633853 /home/tobit/Documents/Github/LB-t/src/population/population.hpp
 	<algorithm>
 	<array>
 	<cassert>
@@ -139,16 +141,16 @@
 	"population_indexing.hpp"
 	"population_backup.hpp"
 
-1588547492 /home/tobit/Documents/Github/LB-t/src/population/population_indexing.hpp
+1588635168 /home/tobit/Documents/Github/LB-t/src/population/population_indexing.hpp
 
-1588527400 /home/tobit/Documents/Github/LB-t/src/population/population_backup.hpp
+1588633910 /home/tobit/Documents/Github/LB-t/src/population/population_backup.hpp
 	<iostream>
 	<fstream>
 	<sstream>
 	<string.h>
 	"../general/paths.hpp"
 
-1588625494 /home/tobit/Documents/Github/LB-t/src/population/collision/collision_bgk_avx2.hpp
+1588629128 /home/tobit/Documents/Github/LB-t/src/population/collision/collision_bgk_avx2.hpp
 	<algorithm>
 	<cmath>
 	<omp.h>
@@ -157,7 +159,7 @@
 	"../population.hpp"
 	<immintrin.h>
 
-1588541290 /home/tobit/Documents/Github/LB-t/src/population/initialisation.hpp
+1588635714 /home/tobit/Documents/Github/LB-t/src/population/initialisation.hpp
 	<algorithm>
 	<cmath>
 	<omp.h>
@@ -169,4 +171,12 @@
 	<array>
 	"../general/constexpr_func.hpp"
 	"../general/memory_alignment.hpp"
+
+1588629162 /home/tobit/Documents/Github/LB-t/src/population/collision/collision_trt.hpp
+	<algorithm>
+	<cmath>
+	<omp.h>
+	"../../general/memory_alignment.hpp"
+	"../../continuum/continuum.hpp"
+	"../population.hpp"
 

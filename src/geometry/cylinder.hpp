@@ -6,7 +6,6 @@
  * \mainpage 3D cylinder sample geometry import
 */
 
-
 #include <string.h>
 #include <vector>
 
@@ -16,6 +15,10 @@
 /**\fn         Cylinder3D
  * \brief      Load pre-defined scenario of a three-dimensional flow around cylinder
  *
+ * \tparam     NX               simulation domain resolution in x-direction
+ * \tparam     NY               simulation domain resolution in y-direction
+ * \tparam     NZ               simulation domain resolution in z-direction
+ * \tparam     T                floating data type used for simulation
  * \param[in]  radius           unsigned integer that holds the radius of the cylinder
  * \param[in]  position         array of unsigned integers that holds the position of the center of the
  *                              cylinder
@@ -42,10 +45,10 @@ void Cylinder3D(unsigned int const radius, std::array<unsigned int,3> const& pos
             {
                 for(unsigned int x = 0; x < NX; ++x)
                 {
-                    // create element
+                    /// create element
                     boundaryElement<T> const element = {x, y, z, 1.0, 0.0, 0.0, 0.0};
 
-                    // add to corresponding boundary
+                    /// add to corresponding boundary
                     if ((x-position[0])*(x-position[0]) + (y-position[1])*(y-position[1]) <= radius*radius)
                     {
                         wall.push_back(element);

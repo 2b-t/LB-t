@@ -6,7 +6,6 @@
  * \mainpage Class for microscopic populations
 */
 
-
 #include <algorithm>
 #include <array>
 #include <cassert>
@@ -22,12 +21,17 @@
 
 /**\class Population
  * \brief Class that holds macroscopic values
+ * \tparam NX     simulation domain resolution in x-direction
+ * \tparam NY     simulation domain resolution in y-direction
+ * \tparam NZ     simulation domain resolution in z-direction
+ * \tparam LT     static lattice::DdQq class containing discretisation parameters
+ * \tparam NPOP   number of populations stored side by side in the lattice (default = 1)
 */
 template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP = 1>
 class Population
 {
     public:
-        /// current lattice data type
+        /// import current lattice floating data type
         typedef typename std::remove_const<decltype(LT::CS)>::type T;
 
         /// lattice characteristics
@@ -52,11 +56,12 @@ class Population
         /// pointer to population
         T* const F_ = static_cast<T*>(aligned_alloc(CACHE_LINE, MEM_SIZE_));
 
-        T const NU_;            //kinematic viscosity
-        T const TAU_;           //laminar relaxation time
-        T const OMEGA_;         //collision frequency (positive populations)
-        T const LAMBDA_ = 0.25; //magic parameter
-        T const OMEGA_M_;       //collision frequency (negative populations)
+        /// physical parameters
+        T const NU_;            // kinematic simulation viscosity
+        T const TAU_;           // laminar relaxation time
+        T const OMEGA_;         // collision frequency (positive populations)
+        T const LAMBDA_ = 0.25; // magic parameter of TRT model
+        T const OMEGA_M_;       // collision frequency (negative populations)
 
 
         /// constructor
@@ -81,9 +86,9 @@ class Population
         /// indexing functions
         inline size_t SpatialToLinear(unsigned int const x, unsigned int const y, unsigned int const z,
                                       unsigned int const n, unsigned int const d, unsigned int const p = 0) const;
-        void LinearToSpatial(unsigned int& x, unsigned int& y, unsigned int& z,
-                             unsigned int& p, unsigned int& n, unsigned int& d,
-                             size_t const index) const;
+        void          LinearToSpatial(unsigned int& x, unsigned int& y, unsigned int& z,
+                                      unsigned int& p, unsigned int& n, unsigned int& d,
+                                      size_t const index) const;
 
         template <bool odd>
         inline size_t AA_IndexRead(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],

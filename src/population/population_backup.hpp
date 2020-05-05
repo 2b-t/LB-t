@@ -6,7 +6,6 @@
  * \mainpage Class members for backing-up (export and import) microscopic populations
 */
 
-
 #include <iostream>
 #include <fstream>
 #include <sstream>

@@ -65,7 +65,7 @@ int main(int argc, char** argv)
     constexpr unsigned int NX = 192;
     constexpr unsigned int NY = 64;
     constexpr unsigned int NZ = 64;
-    constexpr unsigned int NT = 1000;
+    constexpr unsigned int NT = 500;
 
     // physics
     constexpr F_TYPE       Re = 50.0;
@@ -79,7 +79,7 @@ int main(int argc, char** argv)
     constexpr F_TYPE   W_0 = 0.0;
 
     // save values to disk after each time step (disable for benchmark)
-    constexpr bool save = false;
+    constexpr bool save = true;
 
     ExportParameters(NX, NY, NZ, NT, Re, RHO_0, L, U);
 
@@ -109,11 +109,13 @@ int main(int argc, char** argv)
 
     for (size_t i = 0; i < NT; i+=2)
     {
-        CollideStreamTRT<false,NX,NY,NZ,DdQq>(Macro, Micro, save, 0);
-        BounceBackHalfway<false,NX,NY,NZ>(wall, Micro, 0);
+        // even time step
+        CollideStreamBGK<false,NX,NY,NZ,DdQq>(Macro, Micro, save, 0);
+        BounceBackHalfway<false,NX,NY,NZ,DdQq>(wall, Micro, 0);
 
-        CollideStreamTRT<true,NX,NY,NZ,DdQq>(Macro, Micro, save, 0);
-        BounceBackHalfway<true,NX,NY,NZ>(wall, Micro, 0);
+        // odd time step
+        CollideStreamBGK<true,NX,NY,NZ,DdQq>(Macro, Micro, save, 0);
+        BounceBackHalfway<true,NX,NY,NZ,DdQq>(wall, Micro, 0);
 
         if ((save == true) && (i % (NT/10) == 0))
         {

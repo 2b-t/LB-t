@@ -8,14 +8,14 @@
 
 
 /**\fn         SpatialToLinear
- * \brief      Inline function for scalar indexing by means of two functions
+ * \brief      Inline function for converting 3D population coordinates to scalar index
  * \warning    Inline function! Has to be declared in header!
  *
  * \param[in]  x   x coordinate of cell
  * \param[in]  y   y coordinate of cell
  * \param[in]  z   z coordinate of cell
  * \param[in]  m   macroscopic value (0: density, 1-3: ux, uy,uz)
- * \return      requested linear scalar index
+ * \return     requested linear scalar index
 */
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T>
 inline size_t __attribute__((always_inline)) Continuum<NX,NY,NZ,T>::SpatialToLinear(unsigned int const x, unsigned int const y, unsigned int const z,
@@ -26,7 +26,7 @@ inline size_t __attribute__((always_inline)) Continuum<NX,NY,NZ,T>::SpatialToLin
 
 
 /**\fn         LinearToSpatial
- * \brief      Generate scalar coordinates from scalar index
+ * \brief      Generate 3D population coordinates from scalar index
  *
  * \param[out] x       return value x coordinate of cell
  * \param[out] y       return value y coordinate of cell
@@ -52,6 +52,15 @@ void Continuum<NX,NY,NZ,T>::LinearToSpatial(unsigned int& x, unsigned int& y, un
 }
 
 
+/**\fn         operator()
+ * \brief      Access scalar values at given coordinates
+ *
+ * \param[in]  x   x coordinate of cell
+ * \param[in]  y   y coordinate of cell
+ * \param[in]  z   z coordinate of cell
+ * \param[in]  m   macroscopic value (0: density, 1-3: ux, uy,uz)
+ * \return     the requested scalar value
+*/
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T>
 inline T& __attribute__((always_inline)) Continuum<NX,NY,NZ,T>::operator() (unsigned int const x, unsigned int const y, unsigned int const z,
                                                                             unsigned int const m)
