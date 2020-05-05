@@ -79,14 +79,13 @@ int main(int argc, char** argv)
     constexpr F_TYPE   W_0 = 0.0;
 
     // save values to disk after each time step (disable for benchmark)
-    constexpr bool save = true;
-
-    ExportParameters(NX, NY, NZ, NT, Re, RHO_0, L, U);
+    constexpr bool save = false;
 
     /// set up microscopic and macroscopic arrays --------------------------------------------------
     Continuum<NX,NY,NZ,F_TYPE> Macro;
     Population<NX,NY,NZ,DdQq>  Micro(Re,U,L);
-    InitialOutput<NX,NY,NZ,NT,DdQq>(Micro, Re, RHO_0, U, L);
+    InitialOutput(Micro, NT, Re, RHO_0, U, L);
+    ExportParameters(Micro, NT, Re, RHO_0, U, L);
 
     /// define boundary conditions -----------------------------------------------------------------
     alignas(CACHE_LINE) std::vector<boundaryElement<F_TYPE>> wall;
@@ -98,8 +97,8 @@ int main(int argc, char** argv)
     Cylinder3D<NX,NY,NZ>(radius, position, "x", true, wall, inlet, outlet);
 
     /// define initial conditions ------------------------------------------------------------------
-    InitContinuum<NX,NY,NZ>(Macro, RHO_0, U_0, V_0, W_0);
-    InitLattice<false,NX,NY,NZ,DdQq>(Macro, Micro);
+    InitContinuum(Macro, RHO_0, U_0, V_0, W_0);
+    InitLattice<false>(Macro, Micro);
 
     /// main loop ----------------------------------------------------------------------------------
     std::cout << "Simulation started..." << std::endl;
@@ -110,16 +109,16 @@ int main(int argc, char** argv)
     for (size_t i = 0; i < NT; i+=2)
     {
         // even time step
-        CollideStreamBGK<false,NX,NY,NZ,DdQq>(Macro, Micro, save, 0);
-        BounceBackHalfway<false,NX,NY,NZ,DdQq>(wall, Micro, 0);
+        CollideStreamBGK<false>(Macro, Micro, save, 0);
+        BounceBackHalfway<false>(wall, Micro, 0);
 
         // odd time step
-        CollideStreamBGK<true,NX,NY,NZ,DdQq>(Macro, Micro, save, 0);
-        BounceBackHalfway<true,NX,NY,NZ,DdQq>(wall, Micro, 0);
+        CollideStreamBGK<true>(Macro, Micro, save, 0);
+        BounceBackHalfway<true>(wall, Micro, 0);
 
         if ((save == true) && (i % (NT/10) == 0))
         {
-            StatusOutput<NT>(i);
+            StatusOutput(i, NT);
             //Macro.SetZero(wall);
             //Macro.Export("step",i);
             Macro.ExportVtk(i);
@@ -128,7 +127,7 @@ int main(int argc, char** argv)
 
     Stopwatch.Stop();
 
-    PerformanceOutput<NX,NY,NZ,NT>(Macro, Micro, NT, Stopwatch.GetRuntime());
+    PerformanceOutput(Macro, Micro, NT, NT, Stopwatch.GetRuntime());
 
     /// export -------------------------------------------------------------------------------------
     /*Macro.SetZero(wall);

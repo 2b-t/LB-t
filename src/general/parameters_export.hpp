@@ -12,23 +12,26 @@
 #include <string.h>
 
 #include "../general/paths.hpp"
+#include "../population/population.hpp"
 
 
 /**\fn        ExportParameters
  * \brief     Export parameters to disk
  *
- * \param[in] NX      spatial resolution of the simulation domain in x-direction
- * \param[in] NY      spatial resolution of the simulation domain in y-direction
- * \param[in] NZ      spatial resolution of the simulation domain in z-direction
+ * \tparam    NX      spatial resolution of the simulation domain in x-direction
+ * \tparam    NY      spatial resolution of the simulation domain in y-direction
+ * \tparam    NZ      spatial resolution of the simulation domain in z-direction
+ * \tparam    LT      static lattice::DdQq class containing discretisation parameters
+ * \tparam    T       floating data type used for simulation
+ * \param[in] pop     population object holding microscopic variables
  * \param[in] NT      number of simulation time steps
- * \param[in] RE      Reynolds number of the simulation
+ * \param[in] Re      Reynolds number of the simulation
  * \param[in] RHO_0   simulation density
  * \param[in] L       characteristic length scale of the problem
  * \param[in] U       characteristic velocity (measurement for temporal resolution)
 */
-template <typename T>
-void ExportParameters(unsigned int const NX, unsigned int const NY, unsigned int const NZ,
-                      unsigned int const NT, T const RE, T const RHO_0, unsigned int const L, T const U)
+template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, typename T>
+void ExportParameters(Population<NX,NY,NZ,LT> const& pop, unsigned int const NT, T const Re, T const RHO_0, T const U, unsigned int const L)
 {
     std::string const fileName = OUTPUT_BIN_PATH + std::string("/parameters.txt");
     FILE * const exportFile = fopen(fileName.c_str(), "w");
@@ -36,28 +39,34 @@ void ExportParameters(unsigned int const NX, unsigned int const NY, unsigned int
     fprintf(exportFile, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
     fprintf(exportFile, "~                           ~\n");
     fprintf(exportFile, "~      LB-t                 ~\n");
-    fprintf(exportFile, "~      December 2019        ~\n");
+    fprintf(exportFile, "~      2019-2020            ~\n");
+    fprintf(exportFile, "~      Tobit Flatscher      ~\n");
     fprintf(exportFile, "~      github.com/2b-t      ~\n");
     fprintf(exportFile, "~      Parameter file       ~\n");
     fprintf(exportFile, "~                           ~\n");
     fprintf(exportFile, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
     fprintf(exportFile, "\n");
     fprintf(exportFile, "~~~~~Spatial resolution~~~~~~\n");
-    fprintf(exportFile, "NX     %u\n", NX);
-    fprintf(exportFile, "NY     %u\n", NY);
-    fprintf(exportFile, "NZ     %u\n", NZ);
+    fprintf(exportFile, "NX               %u\n", NX);
+    fprintf(exportFile, "NY               %u\n", NY);
+    fprintf(exportFile, "NZ               %u\n", NZ);
     fprintf(exportFile, "\n");
     fprintf(exportFile, "~~~~~Temporal resolution~~~~~\n");
-    fprintf(exportFile, "NT     %u\n", NT);
+    fprintf(exportFile, "NT               %u\n", NT);
     fprintf(exportFile, "\n");
     fprintf(exportFile, "~~~~~Physical parameters~~~~~\n");
-    fprintf(exportFile, "RE     %.2f\n", static_cast<double>(RE));
-    fprintf(exportFile, "RHO_0  %.2f\n", static_cast<double>(RHO_0));
-    fprintf(exportFile, "L      %u\n",   L);
-    fprintf(exportFile, "U      %.4f\n", static_cast<double>(U));
+    fprintf(exportFile, "RE               %.2f\n", static_cast<double>(Re));
+    fprintf(exportFile, "RHO_0            %.2f\n", static_cast<double>(RHO_0));
+    fprintf(exportFile, "L                %u\n",   L);
+    fprintf(exportFile, "U                %.4f\n", static_cast<double>(U));
     fprintf(exportFile, "\n");
-    fprintf(exportFile, "~~~~~~~Solver settings~~~~~~~\n");
-    fprintf(exportFile, "coming soon...");
+    fprintf(exportFile, "~~~~~~~~~~~Lattice~~~~~~~~~~~\n");
+    fprintf(exportFile, "lattice      D%uQ%u\n", LT::DIM, LT::SPEEDS);
+    fprintf(exportFile, "nu               %f\n", pop.NU_);
+    fprintf(exportFile, "tau              %f\n", pop.TAU_);
+    fprintf(exportFile, "omega            %f\n", pop.OMEGA_);
+    fprintf(exportFile, "magic parameter  %f\n", pop.LAMBDA_);
+    fprintf(exportFile, "omega_2 (TRT)    %f\n", pop.OMEGA_M_);
 
     fclose(exportFile);
 }

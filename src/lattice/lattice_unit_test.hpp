@@ -16,8 +16,10 @@
 namespace lattice
 {
     /**\fn         Array stream operator
-     * \brief      For printing an array in an easy way
+     * \brief      For printing a std::array in an easy way
      *
+     * \tparam     T     data type of array
+     * \tparam     N     number of elements in array
      * \param[in]  os    input stream
      * \param[in]  arr   array to print
      * \return     output stream
@@ -34,6 +36,8 @@ namespace lattice
 
     /**\class    UnitTest
      * \brief    Unit test for lattice classes
+     *
+     * \tparam   LatticeClass   the corresponding static lattice object
     */
     template <class latticeClass>
     class UnitTest
@@ -42,6 +46,7 @@ namespace lattice
             /**\fn        printStdContainer
              * \brief     Print any standard container
              *
+             * \tparam    C               a std:: container class
              * \param[in] stdConatainer   a std container
             */
             template<class C>
@@ -58,6 +63,7 @@ namespace lattice
             /**\fn        testStdContainerAlignment
              * \brief     Test alignment in memory of any standard container
              *
+             * \tparam    C               a std:: container class
              * \param[in] stdConatainer   a std container
             */
             template<class C>

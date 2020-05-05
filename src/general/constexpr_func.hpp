@@ -16,6 +16,7 @@ namespace cef
      * \brief     Square root implementation with recursive Newton-Raphson method that can
      *            be evaluated as a constant expression at compile time
      *
+     * \tparam    T      data type of the corresponding number
      * \param[in] x      the number of interest
      * \param[in] curr   the result from the current iteration
      * \param[in] prev   the result from the previous iteration
@@ -48,6 +49,7 @@ namespace cef
     /**\fn        cef::ceil
      * \brief     Ceiling function that can be evaluated as a constant expression at compile time
      *
+     * \tparam    T     data type of the corresponding number
      * \param[in] num   the number that should be ceiled
      * \return    The square root of \param num
     */

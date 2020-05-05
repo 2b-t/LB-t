@@ -21,39 +21,38 @@ class Timer
         double                                         runtime_    = 0.0;                                       ///< double value of runtime in seconds
 
     public:
+        /**\fn    Start
+         * \brief Start stopwatch
+        */
+        void Start()
+        {
+            start_ = std::chrono::high_resolution_clock::now();
+        }
 
-    /**\fn    Start
-	 * \brief Start stopwatch
-	*/
-	void Start()
-	{
-        start_ = std::chrono::high_resolution_clock::now();
-    }
+        /**\fn     Stop
+         * \brief  Stop stopwatch
+         *
+         * \return Runtime in seconds
+        */
+        double Stop()
+        {
+            stop_       = std::chrono::high_resolution_clock::now();
+            start_stop_ = std::chrono::duration_cast<std::chrono::duration<double>>(stop_ - start_);
+            runtime_    = start_stop_.count();
+            return runtime_;
+        }
 
-	/**\fn     Stop
-	 * \brief  Stop stopwatch
-	 *
-	 * \return Runtime in seconds
-	*/
-    double Stop()
-    {
-        stop_       = std::chrono::high_resolution_clock::now();
-        start_stop_ = std::chrono::duration_cast<std::chrono::duration<double>>(stop_ - start_);
-        runtime_    = start_stop_.count();
-        return runtime_;
-    }
-
-	/**\fn     GetRuntime
-	 * \brief  Return runtime in seconds
-	 *
-	 * \return Runtime in seconds
-	*/
-    double GetRuntime()
-    {
-        std::chrono::high_resolution_clock::time_point const       current_ = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double>                  const start_current_ = std::chrono::duration_cast<std::chrono::duration<double>>(current_ - start_);
-        return start_current_.count();
-    }
+        /**\fn     GetRuntime
+         * \brief  Return runtime in seconds
+         *
+         * \return Runtime in seconds
+        */
+        double GetRuntime()
+        {
+            std::chrono::high_resolution_clock::time_point const       current_ = std::chrono::high_resolution_clock::now();
+            std::chrono::duration<double>                  const start_current_ = std::chrono::duration_cast<std::chrono::duration<double>>(current_ - start_);
+            return start_current_.count();
+        }
 };
 
 #endif // TIMER_HPP_INCLUDED
