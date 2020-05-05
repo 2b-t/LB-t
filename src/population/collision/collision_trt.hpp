@@ -24,12 +24,12 @@
  *                Communications in Computational Physics Vol. 3 (2008)
  *                Online: http://global-sci.org/intro/article_detail/cicp/7862.html
  *
- * \tparam        odd   even (0, false) or odd (1, true) time step
- * \tparam        NX    simulation domain resolution in x-direction
- * \tparam        NY    simulation domain resolution in y-direction
- * \tparam        NZ    simulation domain resolution in z-direction
- * \tparam        LT    static lattice::DdQq class containing discretisation parameters
- * \tparam        T     floating data type used for simulation
+ * \tparam        odd    even (0, false) or odd (1, true) time step
+ * \tparam        NX     simulation domain resolution in x-direction
+ * \tparam        NY     simulation domain resolution in y-direction
+ * \tparam        NZ     simulation domain resolution in z-direction
+ * \tparam        LT     static lattice::DdQq class containing discretisation parameters
+ * \tparam        T      floating data type used for simulation
  * \param[out]    con    continuum object holding macroscopic variables
  * \param[in,out] pop    population object holding microscopic variables
  * \param[in]     save   save current macroscopic values to disk (Boolean true/false)

@@ -2,7 +2,7 @@
 #define LATTICE_HPP_INCLUDED
 
 /**
- * \file     prototype.hpp
+ * \file     lattice.hpp
  * \mainpage Prototype lattice class holding lattice discretisation parameters.
  *           Copy and modify for new models
  * \warning  Static classes with more complex members such as std::vector and std::array require C++17
