@@ -78,7 +78,7 @@ namespace lattice
               1.0/216.0, 1.0/216.0,
               0.0, 0.0 };
 
-			/// logical mask for relevant populations
+            /// logical mask for relevant populations
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> MASK =
             { 1, 1, 1, 1, 1, 1, 1,
               1, 1, 1, 1, 1, 1, 1,
