@@ -68,9 +68,9 @@ int main(int argc, char** argv)
     constexpr unsigned int NT = 500;
 
     // physics
-    constexpr F_TYPE       Re = 50.0;
-    constexpr F_TYPE        U = 0.025;
-    constexpr unsigned int  L = NY/5;
+    constexpr F_TYPE      Re = 50.0;
+    constexpr F_TYPE       U = 0.025;
+    constexpr unsigned int L = NY/5;
 
     // initial conditions
     constexpr F_TYPE RHO_0 = 1.0;

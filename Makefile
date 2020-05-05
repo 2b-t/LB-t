@@ -2,7 +2,7 @@
 # Tobit Flatscher - github.com/2b-t (2020)
 
 # Compiler settings: ICC or GCC (alternatively: 'export COMPILER=ICC' in console)
-COMPILER = ICC
+COMPILER = GCC
 
 # Define sub-directories to be included in compilation
 SRCDIR   = src
