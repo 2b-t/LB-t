@@ -15,7 +15,7 @@
 
 namespace lattice
 {
-    /**\class    D3Q27
+    /**\class    lattice::D3Q27
      * \brief    Class for D3Q27 lattice
      * \note     "Lattice BGK models for Navier-Stokes equation"
      *           Y.H. Qian, D. D'Humières, P. Lallemand

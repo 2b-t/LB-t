@@ -14,9 +14,9 @@
 #include "../general/constexpr_func.hpp"
 #include "../general/memory_alignment.hpp"
 
-namespace lattice
+namespace DdQq
 {
-    /**\class    Lattice
+    /**\class    DdQq::Lattice
      * \brief    Prototype class for regular lattices, copy and paste for new lattices
      * \warning  Is not working as ND = 0!
      *
