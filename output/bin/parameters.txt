@@ -1,0 +1,31 @@
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~                           ~
+~      LB-t                 ~
+~      2019-2020            ~
+~      Tobit Flatscher      ~
+~      github.com/2b-t      ~
+~      Parameter file       ~
+~                           ~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+~~~~~Spatial resolution~~~~~~
+NX               192
+NY               64
+NZ               64
+
+~~~~~Temporal resolution~~~~~
+NT               500
+
+~~~~~Physical parameters~~~~~
+RE               50.00
+RHO_0            1.00
+L                12
+U                0.0250
+
+~~~~~~~~~~~Lattice~~~~~~~~~~~
+lattice      D3Q27
+nu               0.006000
+tau              0.518000
+omega            1.930502
+magic parameter  0.250000
+omega_2 (TRT)    0.069498

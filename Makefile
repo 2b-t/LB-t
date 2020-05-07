@@ -5,9 +5,10 @@
 COMPILER = GCC
 
 # Define sub-directories to be included in compilation
-SRCDIR   = src
-OBJDIR   = obj
-BINDIR   = bin
+SRCDIR  = src
+OBJDIR  = obj
+BINDIR  = bin
+REQDIRS = backup output/bin output/vtk
 
 SOURCES  = $(wildcard $(SRCDIR)/*.cpp) $(wildcard $(SRCDIR)/*/*.cpp)
 INCLUDES = $(wildcard $(SRCDIR)/*.hpp) $(wildcard $(SRCDIR)/*/*.hpp)
@@ -40,6 +41,7 @@ endif
 default: $(BINDIR)/$(PROGRAM)
 
 $(BINDIR)/$(PROGRAM): $(OBJECTS)
+	@mkdir -p $(REQDIRS)
 	@mkdir -p $(@D)
 	$(LINKER)  $(OBJECTS)  $(LINKFLAGS) -o $@
 	@echo "Linking complete!"

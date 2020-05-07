@@ -6,6 +6,18 @@
 This is a parallel lattice-Boltzmann computational fluid dynamics (CFD) solver framework based on C++17 and OpenMP. The file includes a Makefile for ICC and GCC.
 **Work in progress...**
 
+## How to
+Copy this folder or directly **clone this repository** by typing
+```
+$ git clone https://github.com/2b-t/LB-t.git
+```
+Compile the file with Make by typing 
+```
+$ make run
+```
+in your Linux shell or open the `LB-t.cbp` file in Code::Blocks. In the latter case make sure that directories `backup/`, `output/bin/` and `output/vtk/` exist. In the case of the Makefile they are created automatically.
+For visualisation there are two options available: Either you can output `.vtk`-files and display them in [Paraview](https://www.paraview.org/) or use Matlab or Octave with the [simple visualisation file I have written](https://github.com/2b-t/CFD-visualisation.git).
+
 ## Optimisations
 - Linear memory layout with vectorisation-friendly lattice numbering scheme
 - Indexing with A-A pattern for reduced memory bandwith and better parallel scalability
