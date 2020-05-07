@@ -14,16 +14,16 @@
 #include "../general/constexpr_func.hpp"
 #include "../general/memory_alignment.hpp"
 
-namespace DdQq
+namespace lattice
 {
-    /**\class    DdQq::Lattice
+    /**\class    lattice::DdQq<T>
      * \brief    Prototype class for regular lattices, copy and paste for new lattices
      * \warning  Is not working as ND = 0!
      *
      * \tparam   T   floating data type used for simulation
     */
     template <typename T = double>
-    class Lattice
+    class DdQq
     {
         public:
             /// lattice discretisation parameters
