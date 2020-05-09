@@ -32,14 +32,15 @@ template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T = double
 class Continuum
 {
     public:
-        static constexpr unsigned int NM_ = 4; //number of macroscopic values: rho, ux, uy, uz
-        static constexpr size_t MEM_SIZE_ = sizeof(T)*NZ*NY*NX*static_cast<size_t>(NM_); //size of array in byte
+        static constexpr unsigned int NM_ = 4; // number of macroscopic values: rho, ux, uy, uz
+        static constexpr size_t MEM_SIZE_ = sizeof(T)*NZ*NY*NX*static_cast<size_t>(NM_); // size of array in byte
 
         /// population allocated in heap
         T* const M_ = static_cast<T*>(aligned_alloc(CACHE_LINE, MEM_SIZE_));
 
 
-        /// class constructor
+        /**\brief Class constructor
+		*/
         Continuum()
         {
             if (M_ == nullptr)
@@ -49,7 +50,8 @@ class Continuum
             }
         }
 
-        /// class destructor
+        /**\brief Class destructor
+		*/
         ~Continuum()
         {
             free(M_);

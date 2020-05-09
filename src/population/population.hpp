@@ -19,8 +19,8 @@
 #include "../general/constexpr_func.hpp"
 
 
-/**\class Population
- * \brief Class that holds macroscopic values
+/**\class  Population
+ * \brief  Class that holds macroscopic values
  * \tparam NX     simulation domain resolution in x-direction
  * \tparam NY     simulation domain resolution in y-direction
  * \tparam NZ     simulation domain resolution in z-direction
@@ -64,7 +64,12 @@ class Population
         T const OMEGA_M_;       // collision frequency (negative populations)
 
 
-        /// constructor
+        /**\brief Class constructor
+         * \param Re       simulation Reynolds number
+         * \param U        characteristic velocity of the simulation in lattice units
+         * \param L        characteristic length of the simulation in lattice units
+         * \param LAMBDA   magic parameter for TRT collision operator
+		*/
         Population(T const Re, T const U, unsigned int const L, T const LAMBDA = 0.25):
             NU_(U*static_cast<T>(L) / Re), TAU_(NU_/(LT::CS*LT::CS) + 1.0/ 2.0), OMEGA_(1.0/TAU_),
             LAMBDA_(LAMBDA), OMEGA_M_((TAU_ - 1.0/2.0) / (LAMBDA_ + 1.0/2.0*( TAU_ - 1.0/2.0)))
@@ -76,7 +81,8 @@ class Population
             }
         }
 
-        /// destructor
+        /**\brief Class destructor
+		*/
         ~Population()
         {
             std::cout << "See you, comrade!" << std::endl;

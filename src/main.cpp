@@ -17,12 +17,13 @@
 #include "lattice/D3Q27.hpp"
 #include "population/boundary/boundary.hpp"
 #include "population/boundary/boundary_bounceback.hpp"
+#include "population/boundary/boundary_orientation.hpp"
+#include "population/boundary/boundary_type.hpp"
 #include "population/collision/collision_bgk.hpp"
 #include "population/collision/collision_bgk_avx2.hpp"
 #include "population/collision/collision_trt.hpp"
 #include "population/initialisation.hpp"
 #include "population/population.hpp"
-
 
 int main(int argc, char** argv)
 {

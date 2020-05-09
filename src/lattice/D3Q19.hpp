@@ -40,20 +40,14 @@ namespace lattice
 
             /// discrete velocities
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> DX =
-            { 0,  1,  0,  0,  1,  1,  1,        //postive velocities
-              1,  0,  0,
-              0, -1,  0,  0, -1, -1, -1,        //negative velocities
-             -1,  0,  0 };
+            { 0,  1,  0,  0,  1,  1,  1,  1,  0,  0,       //postive velocities
+              0, -1,  0,  0, -1, -1, -1, -1,  0,  0 };     //negative velocities
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> DY =
-            { 0,  0,  1,  0,  1, -1,  0,
-              0,  1,  1,
-              0,  0, -1,  0, -1,  1,  0,
-              0, -1, -1 };
+            { 0,  0,  1,  0,  1, -1,  0,  0,  1,  1,
+              0,  0, -1,  0, -1,  1,  0,  0, -1, -1 };
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> DZ =
-            { 0,  0,  0,  1,  0,  0,  1,
-             -1,  1, -1,
-              0,  0,  0, -1,  0,  0, -1,
-              1, -1,  1 };
+            { 0,  0,  0,  1,  0,  0,  1, -1,  1, -1,
+              0,  0,  0, -1,  0,  0, -1,  1, -1,  1 };
 
             /// corresponding weights
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> W =
@@ -68,10 +62,8 @@ namespace lattice
 
             /// logical mask for relevant populations
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> MASK =
-            { 1, 1, 1, 1, 1, 1, 1,
-              1, 1, 1,
-              0, 1, 1, 1, 1, 1, 1,
-              1, 1, 1 };
+            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+              0, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 
             /// lattice speed of sound
             static constexpr T CS = 1.0/cef::sqrt(3.0);
