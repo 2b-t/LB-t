@@ -29,7 +29,7 @@ namespace type
     class Boundary
     {
         public:
-			template <typename T>
+            template <typename T>
             inline std::array<T,4> getMacroscopicValues(std::array<T,4> const& boundary, std::array<T,4> const& interp)
             {
                 return static_cast<Type*>(this)->implementation(boundary, interp);
@@ -44,7 +44,7 @@ namespace type
     class Velocity: public Boundary<Velocity<Orientation>, Orientation>
     {
         public:
-			template <typename T>
+            template <typename T>
             inline std::array<T,4> implementation(std::array<T,4> const& boundary, std::array<T,4> const& interp)
             {
                 return { interp[0], boundary[1], boundary[2], boundary[3] };
@@ -59,7 +59,7 @@ namespace type
     class Pressure: public Boundary<Pressure<Orientation>, Orientation>
     {
         public:
-			template <typename T>
+            template <typename T>
             inline std::array<T,4> implementation(std::array<T,4> const& boundary, std::array<T,4> const& interp)
             {
                 return { boundary[0],
