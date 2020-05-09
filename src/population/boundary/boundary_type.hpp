@@ -21,10 +21,10 @@
 namespace type
 {
     /**\class  Boundary
-	 * \brief  Base class for types of boundaries
-	 * \tparam Type          type of boundary (velocity, pressure)
-	 * \tparam Orientation   orientation of the current boundary given by an orientation class with members x, y, z
-	*/
+     * \brief  Base class for types of boundaries
+     * \tparam Type          type of boundary (velocity, pressure)
+     * \tparam Orientation   orientation of the current boundary given by an orientation class with members x, y, z
+    */
     template <class Type, class Orientation>
     class Boundary
     {
@@ -36,10 +36,10 @@ namespace type
             }
     };
 
-	/**\class  Velocity
-	 * \brief  Derived class for velocity boundaries: enforce normal and tangential velocities
-	 * \tparam Orientation   orientation of the current boundary given by an orientation class with members x, y, z
-	*/
+    /**\class  Velocity
+     * \brief  Derived class for velocity boundaries: enforce normal and tangential velocities
+     * \tparam Orientation   orientation of the current boundary given by an orientation class with members x, y, z
+    */
     template <class Orientation>
     class Velocity: public Boundary<Velocity<Orientation>, Orientation>
     {
@@ -51,10 +51,10 @@ namespace type
             }
     };
 
-	/**\class  Pressure
-	 * \brief  Derived class for pressure boundaries: enforce rho and tangential velocities
-	 * \tparam Orientation   orientation of the current boundary given by an orientation class with members x, y, z
-	*/
+    /**\class  Pressure
+     * \brief  Derived class for pressure boundaries: enforce rho and tangential velocities
+     * \tparam Orientation   orientation of the current boundary given by an orientation class with members x, y, z
+    */
     template <class Orientation>
     class Pressure: public Boundary<Pressure<Orientation>, Orientation>
     {
@@ -63,9 +63,9 @@ namespace type
             inline std::array<T,4> implementation(std::array<T,4> const& boundary, std::array<T,4> const& interp)
             {
                 return { boundary[0],
-					     T_N(Orientation::x, boundary[1], interp[1]),
-				         T_N(Orientation::y, boundary[2], interp[2]),
-				         T_N(Orientation::z, boundary[3], interp[3]) };
+                         T_N(Orientation::x, boundary[1], interp[1]),
+                         T_N(Orientation::y, boundary[2], interp[2]),
+                         T_N(Orientation::z, boundary[3], interp[3]) };
             }
     };
 }
