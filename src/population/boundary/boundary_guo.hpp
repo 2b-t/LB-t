@@ -31,7 +31,7 @@
  * \tparam     Orientation     boundary orientation (orientation::Left, orientation::Right)
  * \tparam     LT              static lattice::DdQq class containing discretisation parameters
  * \tparam     T               floating data type used for simulation
- * \param      boundary_type   type of the boundary (orientation and type)
+ * \param[in]  boundary_type   type of the boundary (orientation and type)
  * \param[in]  boundary        vector holding all corresponding boundary condition elements
  * \param[out] pop             population object holding microscopic variables
  * \param[in]  p               relevant population (default = 0)

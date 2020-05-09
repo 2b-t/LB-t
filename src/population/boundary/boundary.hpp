@@ -21,10 +21,10 @@ struct boundaryElement
     unsigned int const z;
 
     /// macroscopic properties
-    T rho; // density
-    T u;  // velocity in x-direction
-    T v;  // velocity in y-direction
-    T w;  // velocity in z-direction
+    T const rho; // density
+    T const u;   // velocity in x-direction
+    T const v;   // velocity in y-direction
+    T const w;   // velocity in z-direction
 };
 
 #endif // BOUNDARY_HPP_INCLUDED
