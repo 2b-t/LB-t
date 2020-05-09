@@ -8,6 +8,7 @@
 
 #include <array>
 
+
 /**\def       T_N (orient,t,n)
  * \brief     Macro for determining if the velocity is tangential of normal
  *
@@ -15,7 +16,7 @@
  * \param[in] t        value that is returned if the velocity is tangental
  * \param[in] n        value that is returned if the velocity is normal
 */
-#define T_N(orient,t,n)    orient == 0 ? t : n
+#define T_N(orient,t,n)    (orient == 0) ? t : n
 
 
 namespace type
@@ -29,10 +30,19 @@ namespace type
     class Boundary
     {
         public:
+            /**\fn        getMacroscopicValues
+             * \brief     Determine if the values of the boundary or the interpolated values from the simulation should be used
+             * \warning   Uses Curiously Recurring Template Pattern (CRTP)
+             *
+             * \tparam    T          floating data type used for simulation
+             * \param[in] boundary   values at the boundary
+             * \param[in] interp     interpolated values
+             * \return    an array that contains a mixture of enforced or interpolated values depending on the precise boundary
+            */
             template <typename T>
-            inline std::array<T,4> getMacroscopicValues(std::array<T,4> const& boundary, std::array<T,4> const& interp)
+            inline std::array<T,4> getMacroscopicValues(std::array<T,4> const& boundary, std::array<T,4> const& interp) const
             {
-                return static_cast<Type*>(this)->implementation(boundary, interp);
+                return static_cast<Type const*>(this)->implementation(boundary, interp);
             }
     };
 
@@ -45,7 +55,7 @@ namespace type
     {
         public:
             template <typename T>
-            inline std::array<T,4> implementation(std::array<T,4> const& boundary, std::array<T,4> const& interp)
+            inline std::array<T,4> implementation(std::array<T,4> const& boundary, std::array<T,4> const& interp) const
             {
                 return { interp[0], boundary[1], boundary[2], boundary[3] };
             }
@@ -60,7 +70,7 @@ namespace type
     {
         public:
             template <typename T>
-            inline std::array<T,4> implementation(std::array<T,4> const& boundary, std::array<T,4> const& interp)
+            inline std::array<T,4> implementation(std::array<T,4> const& boundary, std::array<T,4> const& interp) const
             {
                 return { boundary[0],
                          T_N(Orientation::x, boundary[1], interp[1]),

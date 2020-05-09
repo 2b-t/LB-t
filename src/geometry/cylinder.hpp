@@ -30,12 +30,16 @@
  *                              a velocity boundary
  * \param[out] press_boundary   a pointer to a vector of relevant linear indices that correspond to
  *                              a pressure boundary
+ * \param[in]  RHO              simulation density
+ * \param[in]  U                characteristic velocity (measurement for temporal resolution)
+ * \param[in]  L                characteristic length scale of the problem
 */
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T = double>
 void Cylinder3D(unsigned int const radius, std::array<unsigned int,3> const& position,
                 std::string const& orientation, bool const walls,
                 std::vector<boundaryElement<T>>& wall,
-                std::vector<boundaryElement<T>>& inlet, std::vector<boundaryElement<T>>& outlet)
+                std::vector<boundaryElement<T>>& inlet, std::vector<boundaryElement<T>>& outlet,
+                T const RHO, T const U, T const V, T const W)
 {
     if (orientation == "x")
     {
@@ -46,7 +50,7 @@ void Cylinder3D(unsigned int const radius, std::array<unsigned int,3> const& pos
                 for(unsigned int x = 0; x < NX; ++x)
                 {
                     /// create element
-                    boundaryElement<T> const element = {x, y, z, 1.0, 0.0, 0.0, 0.0};
+                    boundaryElement<T> const element = {x, y, z, RHO, U, V, W};
 
                     /// add to corresponding boundary
                     if ((x-position[0])*(x-position[0]) + (y-position[1])*(y-position[1]) <= radius*radius)

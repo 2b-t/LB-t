@@ -17,6 +17,7 @@
 #include "lattice/D3Q27.hpp"
 #include "population/boundary/boundary.hpp"
 #include "population/boundary/boundary_bounceback.hpp"
+#include "population/boundary/boundary_guo.hpp"
 #include "population/boundary/boundary_orientation.hpp"
 #include "population/boundary/boundary_type.hpp"
 #include "population/collision/collision_bgk.hpp"
@@ -30,7 +31,7 @@ int main(int argc, char** argv)
     /// set up OpenMP ------------------------------------------------------------------------------
     #ifdef _OPENMP
         Parallelism OpenMP;
-        OpenMP.SetThreadsNum(1);
+        //OpenMP.SetThreadsNum(1);
     #endif
 
     /// print disclaimer ---------------------------------------------------------------------------
@@ -64,12 +65,12 @@ int main(int argc, char** argv)
 
     // spatial and temporal resolution
     constexpr unsigned int NX = 192;
-    constexpr unsigned int NY = 64;
-    constexpr unsigned int NZ = 64;
-    constexpr unsigned int NT = 500;
+    constexpr unsigned int NY = 96;
+    constexpr unsigned int NZ = 96;
+    constexpr unsigned int NT = 5000;
 
     // physics
-    constexpr F_TYPE      Re = 50.0;
+    constexpr F_TYPE      Re = 100.0;
     constexpr F_TYPE       U = 0.025;
     constexpr unsigned int L = NY/5;
 
@@ -80,7 +81,7 @@ int main(int argc, char** argv)
     constexpr F_TYPE   W_0 = 0.0;
 
     // save values to disk after each time step (disable for benchmark)
-    constexpr bool save = false;
+    constexpr bool save = true;
 
     /// set up microscopic and macroscopic arrays --------------------------------------------------
     Continuum<NX,NY,NZ,F_TYPE> Macro;
@@ -94,8 +95,8 @@ int main(int argc, char** argv)
     alignas(CACHE_LINE) std::vector<boundaryElement<F_TYPE>> outlet;
 
     constexpr unsigned int radius = L/2;
-    constexpr std::array<unsigned int,3> position = {NX/2, NY/2, NZ/2};
-    Cylinder3D<NX,NY,NZ>(radius, position, "x", true, wall, inlet, outlet);
+    constexpr std::array<unsigned int,3> position = {NX/4, NY/2, NZ/2};
+    Cylinder3D<NX,NY,NZ>(radius, position, "x", true, wall, inlet, outlet, RHO_0, U_0, V_0, W_0);
 
     /// define initial conditions ------------------------------------------------------------------
     InitContinuum(Macro, RHO_0, U_0, V_0, W_0);
@@ -110,17 +111,21 @@ int main(int argc, char** argv)
     for (size_t i = 0; i < NT; i+=2)
     {
         // even time step
+        Guo<false>(type::Velocity<orientation::Left>(),  inlet,  Micro, 0);
+        Guo<false>(type::Pressure<orientation::Right>(), outlet, Micro, 0);
         CollideStreamBGK<false>(Macro, Micro, save, 0);
         BounceBackHalfway<false>(wall, Micro, 0);
 
         // odd time step
+        Guo<true>(type::Velocity<orientation::Left>(), inlet, Micro, 0);
+        Guo<true>(type::Pressure<orientation::Right>(), outlet, Micro, 0);
         CollideStreamBGK<true>(Macro, Micro, save, 0);
         BounceBackHalfway<true>(wall, Micro, 0);
 
         if ((save == true) && (i % (NT/10) == 0))
         {
             StatusOutput(i, NT);
-            //Macro.SetZero(wall);
+            Macro.SetZero(wall);
             //Macro.Export("step",i);
             Macro.ExportVtk(i);
         }
@@ -130,7 +135,7 @@ int main(int argc, char** argv)
 
     PerformanceOutput(Macro, Micro, NT, NT, Stopwatch.GetRuntime());
 
-    /// export -------------------------------------------------------------------------------------
+    /// final export -------------------------------------------------------------------------------
     /*Macro.SetZero(wall);
     Macro.Export("step",NT);
     Macro.ExportVtk(NT);

@@ -64,6 +64,7 @@
 		<Unit filename="src/main.cpp" />
 		<Unit filename="src/population/boundary/boundary.hpp" />
 		<Unit filename="src/population/boundary/boundary_bounceback.hpp" />
+		<Unit filename="src/population/boundary/boundary_guo.hpp" />
 		<Unit filename="src/population/boundary/boundary_orientation.hpp" />
 		<Unit filename="src/population/boundary/boundary_type.hpp" />
 		<Unit filename="src/population/collision/collision_bgk.hpp" />

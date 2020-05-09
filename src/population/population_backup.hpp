@@ -49,12 +49,22 @@ void Population<NX,NY,NZ,LT,NPOP>::Import(std::string const name)
 template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP>
 void Population<NX,NY,NZ,LT,NPOP>::Export(std::string const name) const
 {
-    std::string const fileName = BACKUP_EXPORT_PATH + std::string("/") + name + std::string(".bin");
-    FILE * const exportFile;
+    struct stat info;
 
-    exportFile = fopen(fileName.c_str(), "wb+");
-    fwrite(F_, 1, MEM_SIZE_, exportFile);
-    fclose(exportFile);
+    if (stat(BACKUP_EXPORT_PATH.c_str(), &info) == 0 && S_ISDIR(info.st_mode))
+    {
+        std::string const fileName = BACKUP_EXPORT_PATH + std::string("/") + name + std::string(".bin");
+        FILE * const exportFile;
+
+        exportFile = fopen(fileName.c_str(), "wb+");
+        fwrite(F_, 1, MEM_SIZE_, exportFile);
+        fclose(exportFile);
+    }
+    else
+    {
+        std::cerr << "Fatal error: Directory '" << BACKUP_EXPORT_PATH << "' not found." << std::endl;
+        exit(EXIT_FAILURE);
+    }
 }
 
 #endif //LATTICE_BACKUP_HPP_INCLUDED

@@ -22,9 +22,9 @@ struct boundaryElement
 
     /// macroscopic properties
     T rho; // density
-    T ux;  // velocity in x-direction
-    T uy;  // velocity in y-direction
-    T uz;  // velocity in z-direction
+    T u;  // velocity in x-direction
+    T v;  // velocity in y-direction
+    T w;  // velocity in z-direction
 };
 
 #endif // BOUNDARY_HPP_INCLUDED

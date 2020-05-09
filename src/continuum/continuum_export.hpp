@@ -10,6 +10,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <sys/stat.h>
 #include <vector>
 
 #include "../population/boundary/boundary.hpp"
@@ -45,10 +46,20 @@ void Continuum<NX,NY,NZ,T>::SetZero(std::vector<boundaryElement<T>> const& bound
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T>
 void Continuum<NX,NY,NZ,T>::Export(std::string const name, unsigned int const step) const
 {
-    std::string const fileName = OUTPUT_BIN_PATH + std::string("/") + name + std::string("_") + std::to_string(step) + std::string(".bin");
-    FILE * const exportFile = fopen(fileName.c_str(), "wb+");
-    fwrite(M_, 1, MEM_SIZE_, exportFile);
-    fclose(exportFile);
+    struct stat info;
+
+    if (stat(OUTPUT_BIN_PATH.c_str(), &info) == 0 && S_ISDIR(info.st_mode))
+    {
+        std::string const fileName = OUTPUT_BIN_PATH + std::string("/") + name + std::string("_") + std::to_string(step) + std::string(".bin");
+        FILE * const exportFile = fopen(fileName.c_str(), "wb+");
+        fwrite(M_, 1, MEM_SIZE_, exportFile);
+        fclose(exportFile);
+    }
+    else
+    {
+        std::cerr << "Fatal error: Directory '" << OUTPUT_BIN_PATH << "' not found." << std::endl;
+        exit(EXIT_FAILURE);
+    }
 }
 
 

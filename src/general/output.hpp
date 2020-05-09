@@ -20,28 +20,28 @@
 /**\fn        InitialOutput
  * \brief     Simulation parameters and OpenMP settings output to console.
  *
- * \tparam    NX      spatial resolution of the simulation domain in x-direction
- * \tparam    NY      spatial resolution of the simulation domain in y-direction
- * \tparam    NZ      spatial resolution of the simulation domain in z-direction
- * \tparam    LT      static lattice::DdQq class containing discretisation parameters
- * \tparam    T       floating data type used for simulation
- * \param[in] pop     population object holding microscopic variables
- * \param[in] NT      number of simulation time steps
- * \param[in] Re      Reynolds number of the simulation
- * \param[in] RHO_0   simulation density
- * \param[in] U       characteristic velocity (measurement for temporal resolution)
- * \param[in] L       characteristic length scale of the problem
+ * \tparam    NX    spatial resolution of the simulation domain in x-direction
+ * \tparam    NY    spatial resolution of the simulation domain in y-direction
+ * \tparam    NZ    spatial resolution of the simulation domain in z-direction
+ * \tparam    LT    static lattice::DdQq class containing discretisation parameters
+ * \tparam    T     floating data type used for simulation
+ * \param[in] pop   population object holding microscopic variables
+ * \param[in] NT    number of simulation time steps
+ * \param[in] Re    Reynolds number of the simulation
+ * \param[in] RHO   simulation density
+ * \param[in] U     characteristic velocity (measurement for temporal resolution)
+ * \param[in] L     characteristic length scale of the problem
 */
 template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, typename T>
 void InitialOutput(Population<NX,NY,NZ,LT> const& pop, unsigned int const NT,
-                   T const Re, T const RHO_0, T const U, unsigned int const L)
+                   T const Re, T const RHO, T const U, unsigned int const L)
 {
     printf("LBM simulation\n\n");
     printf("     domain size: %ux%ux%u\n", NX, NY, NZ);
     printf("         lattice: D%uQ%u\n", LT::DIM, LT::SPEEDS);
 
     printf(" Reynolds number: %.2f\n", Re);
-    printf(" initial density: %.2g\n", RHO_0);
+    printf(" initial density: %.2g\n", RHO);
     printf("    char. length: %.2u\n", L);
     printf("  char. velocity: %.2g\n", U);
     printf("\n");
@@ -50,10 +50,12 @@ void InitialOutput(Population<NX,NY,NZ,LT> const& pop, unsigned int const NT,
     printf("\n");
     printf("      #timesteps: %u\n", NT);
     printf("\n");
-    printf("OpenMP\n");
-    printf("   #max. threads: %i\n", omp_get_num_procs());
-    printf("        #threads: %i\n", omp_get_max_threads());
-    printf("\n");
+    #ifdef _OPENMP
+        printf("OpenMP\n");
+        printf("   #max. threads: %i\n", omp_get_num_procs());
+        printf("        #threads: %i\n", omp_get_max_threads());
+        printf("\n");
+    #endif
 }
 
 /**\fn        StatusOutput
