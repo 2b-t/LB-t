@@ -47,6 +47,7 @@ Make sure that the latter plug-in is copied to the Output folder and the files a
 - Beginner-friendly documentation with [Doxygen](http://www.doxygen.nl/)
 
 ## Planned features
+- Reducing code redundancy by introducing functions for e.g. the calculating the equilibrium distribution
 - Encapsulating collision operators into an appropriate class instead of using functions
 - [Latt's regularised](10.1103/PhysRevE.77.056703) pressure and velocity boundaries
 - [BGK with Smagorinsky turbulence model](arXiv:comp-gas/9401004) for turbulent flows

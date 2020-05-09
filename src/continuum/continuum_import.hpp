@@ -23,12 +23,11 @@
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T>
 void Continuum<NX,NY,NZ,T>::Import(std::string const name, unsigned int const step)
 {
-    char fileName[256];
-    sprintf(fileName, "%s/%s_%u.bin", OUTPUT_BIN_PATH, name, step);
+    std::string const fileName = OUTPUT_BIN_PATH + std::string("/") + name + std::string("_") + std::to_string(step) + std::string(".bin");
 
-    if(fopen(fileName, "rb+") != nullptr)
+    if(fopen(fileName.c_str(), "rb+") != nullptr)
     {
-        FILE * const importFile = fopen(fileName, "rb+");
+        FILE * const importFile = fopen(fileName.c_str(), "rb+");
         fread(M_, 1, MEM_SIZE_, importFile);
         fclose(importFile);
     }
