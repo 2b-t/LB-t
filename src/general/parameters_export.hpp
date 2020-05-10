@@ -66,7 +66,7 @@ void ExportParameters(Population<NX,NY,NZ,LT> const& pop, unsigned int const NT,
         fprintf(exportFile, "U                %.4f\n", static_cast<double>(U));
         fprintf(exportFile, "\n");
         fprintf(exportFile, "~~~~~~~~~~~Lattice~~~~~~~~~~~\n");
-        fprintf(exportFile, "lattice      D%uQ%u\n", LT::DIM, LT::SPEEDS);
+        fprintf(exportFile, "lattice          D%uQ%u\n", LT::DIM, LT::SPEEDS);
         fprintf(exportFile, "nu               %f\n", pop.NU_);
         fprintf(exportFile, "tau              %f\n", pop.TAU_);
         fprintf(exportFile, "omega            %f\n", pop.OMEGA_);

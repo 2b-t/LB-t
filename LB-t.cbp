@@ -67,6 +67,7 @@
 		<Unit filename="src/population/boundary/boundary_guo.hpp" />
 		<Unit filename="src/population/boundary/boundary_orientation.hpp" />
 		<Unit filename="src/population/boundary/boundary_type.hpp" />
+		<Unit filename="src/population/collision/collision_bgk-s.hpp" />
 		<Unit filename="src/population/collision/collision_bgk.hpp" />
 		<Unit filename="src/population/collision/collision_bgk_avx2.hpp" />
 		<Unit filename="src/population/collision/collision_bgk_avx512.hpp" />

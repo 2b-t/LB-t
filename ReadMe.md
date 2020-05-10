@@ -40,6 +40,7 @@ Make sure that the latter plug-in is copied to the `output/` folder and the file
 ## Current features
 - [D3Q19 and D3Q27 lattices](10.1209/0295-5075/17/6/001)
 - [BGK](10.1103/PhysRev.94.511) and [TRT collision operators](http://global-sci.org/intro/article_detail/cicp/7862.html)
+- [BGK with Smagorinsky turbulence model](https://arxiv.org/abs/comp-gas/9401004) for turbulent flows
 - [Halfway bounce-back](10.1007/BF02181482) boundaries for solid walls
 - [Guo's interpolation](910.1088/1009-1963/11/4/310) pressure and velocity boundaries
 - Periodic boundary conditions (if nothing else specified)
@@ -50,5 +51,4 @@ Make sure that the latter plug-in is copied to the `output/` folder and the file
 - Reducing code redundancy by introducing functions for e.g. the calculating the equilibrium distribution
 - Encapsulating collision operators into an appropriate class instead of using functions
 - [Latt's regularised](10.1103/PhysRevE.77.056703) pressure and velocity boundaries
-- [BGK with Smagorinsky turbulence model](arXiv:comp-gas/9401004) for turbulent flows
 - [Interpolated bounce-back](10.1063/1.1399290) for higher accuracy

@@ -21,6 +21,7 @@
 #include "population/boundary/boundary_orientation.hpp"
 #include "population/boundary/boundary_type.hpp"
 #include "population/collision/collision_bgk.hpp"
+#include "population/collision/collision_bgk-s.hpp"
 #include "population/collision/collision_bgk_avx2.hpp"
 #include "population/collision/collision_trt.hpp"
 #include "population/initialisation.hpp"
@@ -67,11 +68,11 @@ int main(int argc, char** argv)
     constexpr unsigned int NX = 192;
     constexpr unsigned int NY = 96;
     constexpr unsigned int NZ = 96;
-    constexpr unsigned int NT = 5000;
+    constexpr unsigned int NT = 10000;
 
     // physics
-    constexpr F_TYPE      Re = 100.0;
-    constexpr F_TYPE       U = 0.025;
+    constexpr F_TYPE      Re = 1000.0;
+    constexpr F_TYPE       U = 0.05;
     constexpr unsigned int L = NY/5;
 
     // initial conditions
@@ -113,13 +114,13 @@ int main(int argc, char** argv)
         // even time step
         Guo<false,type::Velocity,orientation::Left>(inlet,  Micro, 0);
         Guo<false,type::Pressure,orientation::Right>(outlet, Micro, 0);
-        CollideStreamBGK<false>(Macro, Micro, save, 0);
+        CollideStreamBGK_Smagorinsky<false>(Macro, Micro, save, 0);
         BounceBackHalfway<false>(wall, Micro, 0);
 
         // odd time step
         Guo<true,type::Velocity,orientation::Left>(inlet, Micro, 0);
         Guo<true,type::Pressure,orientation::Right>(outlet, Micro, 0);
-        CollideStreamBGK<true>(Macro, Micro, save, 0);
+        CollideStreamBGK_Smagorinsky<true>(Macro, Micro, save, 0);
         BounceBackHalfway<true>(wall, Micro, 0);
 
         if ((save == true) && (i % (NT/10) == 0))
