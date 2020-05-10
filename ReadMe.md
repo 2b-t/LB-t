@@ -2,6 +2,8 @@
 
 *Author: Tobit Flatscher (December 2019 - May 2020)
 
+[![Turbulent gaseous flow in porous media](/doc/PorousMedia_Re3750Sc1.jpeg](https://www.youtube.com/watch?v=7SR4vhMnWZc "Turbulent gaseous flow in porous media")
+
 ## Overview
 This is a **three-dimensional parallel lattice-Boltzmann computational fluid dynamics (CFD) solver framework based on C++17 and [OpenMP](https://www.openmp.org/)**. The files includes a Makefile for the Intel Compiler ICC as well as the Gnu Compiler GCC.
 It is a personal project of mine with the main interest of pushing the performance of such methods while keeping the code generic. Thus, I have *not thoroughly tested* and verified the implementation. The main goal of this project is to aid people starting with their own LBM code by giving them idea how one could implement certain features in a generic way with compile time features without losing a lot of performance.
