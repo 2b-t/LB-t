@@ -23,23 +23,22 @@
  *          Chinese Physics, Volume 11, Number 4 (2002)
  *          DOI: 10.1088/1009-1963/11/4/310
  *
- * \tparam     odd             even (0, false) or odd (1, true) time step
- * \tparam     NX              simulation domain resolution in x-direction
- * \tparam     NY              simulation domain resolution in y-direction
- * \tparam     NZ              simulation domain resolution in z-direction
- * \tparam     Type            type of the boundary condition (type::Pressure or type::Velocity)
- * \tparam     Orientation     boundary orientation (orientation::Left, orientation::Right)
- * \tparam     LT              static lattice::DdQq class containing discretisation parameters
- * \tparam     T               floating data type used for simulation
- * \param[in]  boundary_type   type of the boundary (orientation and type)
- * \param[in]  boundary        vector holding all corresponding boundary condition elements
- * \param[out] pop             population object holding microscopic variables
- * \param[in]  p               relevant population (default = 0)
+ * \tparam     odd           even (0, false) or odd (1, true) time step
+ * \tparam     Type          type of the boundary condition (type::Pressure or type::Velocity)
+ * \tparam     Orientation   boundary orientation (orientation::Left, orientation::Right)
+ * \tparam     NX            simulation domain resolution in x-direction
+ * \tparam     NY            simulation domain resolution in y-direction
+ * \tparam     NZ            simulation domain resolution in z-direction
+ * \tparam     LT            static lattice::DdQq class containing discretisation parameters
+ * \tparam     T             floating data type used for simulation
+ * \param[in]  boundary      vector holding all corresponding boundary condition elements
+ * \param[out] pop           population object holding microscopic variables
+ * \param[in]  p             relevant population (default = 0)
 */
-template <bool odd, unsigned int NX, unsigned int NY, unsigned int NZ, class Type, class Orientation, class LT, typename T>
-void Guo(type::Boundary<Type, Orientation> const& boundary_type, std::vector<boundaryElement<T>> const& boundary, Population<NX,NY,NZ,LT>& pop, unsigned int const p = 0)
+template <bool odd, template <class Orientation> class Type, class Orientation, unsigned int NX, unsigned int NY, unsigned int NZ, class LT, typename T>
+void Guo(std::vector<boundaryElement<T>> const& boundary, Population<NX,NY,NZ,LT>& pop, unsigned int const p = 0)
 {
-    #pragma omp parallel for default(none) shared(boundary_type,boundary,pop,p) schedule(static,32)
+    #pragma omp parallel for default(none) shared(boundary,pop,p) schedule(static,32)
     for(size_t i = 0; i < boundary.size(); ++i)
     {
         /// for neighbouring cell
@@ -112,7 +111,7 @@ void Guo(type::Boundary<Type, Orientation> const& boundary_type, std::vector<bou
                                              boundary[i].v,
                                              boundary[i].w};
         std::array<double,4> const interp = {rho, u, v, w};
-        std::array<double,4> res = boundary_type.getMacroscopicValues(bound, interp);
+        std::array<double,4> res = Type<Orientation>::getMacroscopicValues(bound, interp);
         rho = res[0];
         u   = res[1];
         v   = res[2];

@@ -21,18 +21,16 @@
 
 namespace type
 {
-    /**\class  Boundary
-     * \brief  Base class for types of boundaries
-     * \tparam Type          type of boundary (velocity, pressure)
+    /**\class  Velocity
+     * \brief  Class for velocity boundaries: enforce normal and tangential velocities
      * \tparam Orientation   orientation of the current boundary given by an orientation class with members x, y, z
     */
-    template <class Type, class Orientation>
-    class Boundary
+    template <class Orientation>
+    class Velocity
     {
         public:
             /**\fn        getMacroscopicValues
              * \brief     Determine if the values of the boundary or the interpolated values from the simulation should be used
-             * \warning   Uses Curiously Recurring Template Pattern (CRTP)
              *
              * \tparam    T          floating data type used for simulation
              * \param[in] boundary   values at the boundary
@@ -40,37 +38,22 @@ namespace type
              * \return    an array that contains a mixture of enforced or interpolated values depending on the precise boundary
             */
             template <typename T>
-            inline std::array<T,4> getMacroscopicValues(std::array<T,4> const& boundary, std::array<T,4> const& interp) const
-            {
-                return static_cast<Type const*>(this)->implementation(boundary, interp);
-            }
-    };
-
-    /**\class  Velocity
-     * \brief  Derived class for velocity boundaries: enforce normal and tangential velocities
-     * \tparam Orientation   orientation of the current boundary given by an orientation class with members x, y, z
-    */
-    template <class Orientation>
-    class Velocity: public Boundary<Velocity<Orientation>, Orientation>
-    {
-        public:
-            template <typename T>
-            inline std::array<T,4> implementation(std::array<T,4> const& boundary, std::array<T,4> const& interp) const
+            static inline std::array<T,4> getMacroscopicValues(std::array<T,4> const& boundary, std::array<T,4> const& interp)
             {
                 return { interp[0], boundary[1], boundary[2], boundary[3] };
             }
     };
 
     /**\class  Pressure
-     * \brief  Derived class for pressure boundaries: enforce rho and tangential velocities
+     * \brief  Class for pressure boundaries: enforce rho and tangential velocities
      * \tparam Orientation   orientation of the current boundary given by an orientation class with members x, y, z
     */
     template <class Orientation>
-    class Pressure: public Boundary<Pressure<Orientation>, Orientation>
+    class Pressure
     {
         public:
             template <typename T>
-            inline std::array<T,4> implementation(std::array<T,4> const& boundary, std::array<T,4> const& interp) const
+            static inline std::array<T,4> getMacroscopicValues(std::array<T,4> const& boundary, std::array<T,4> const& interp)
             {
                 return { boundary[0],
                          T_N(Orientation::x, boundary[1], interp[1]),

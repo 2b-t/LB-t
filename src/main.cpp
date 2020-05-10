@@ -111,14 +111,14 @@ int main(int argc, char** argv)
     for (size_t i = 0; i < NT; i+=2)
     {
         // even time step
-        Guo<false>(type::Velocity<orientation::Left>(),  inlet,  Micro, 0);
-        Guo<false>(type::Pressure<orientation::Right>(), outlet, Micro, 0);
+        Guo<false,type::Velocity,orientation::Left>(inlet,  Micro, 0);
+        Guo<false,type::Pressure,orientation::Right>(outlet, Micro, 0);
         CollideStreamBGK<false>(Macro, Micro, save, 0);
         BounceBackHalfway<false>(wall, Micro, 0);
 
         // odd time step
-        Guo<true>(type::Velocity<orientation::Left>(), inlet, Micro, 0);
-        Guo<true>(type::Pressure<orientation::Right>(), outlet, Micro, 0);
+        Guo<true,type::Velocity,orientation::Left>(inlet, Micro, 0);
+        Guo<true,type::Pressure,orientation::Right>(outlet, Micro, 0);
         CollideStreamBGK<true>(Macro, Micro, save, 0);
         BounceBackHalfway<true>(wall, Micro, 0);
 
