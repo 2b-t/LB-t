@@ -2,7 +2,7 @@
 
 *Author: Tobit Flatscher (December 2019 - May 2020)
 
-[![Turbulent gaseous flow in porous media](/doc/PorousMedia_Re3750Sc1.jpeg](https://www.youtube.com/watch?v=7SR4vhMnWZc "Turbulent gaseous flow in porous media")
+[![Turbulent gaseous flow in porous media](/doc/PorousMedia_Re3750Sc1.jpeg)](https://www.youtube.com/watch?v=7SR4vhMnWZc "Turbulent gaseous flow in porous media")
 
 ## Overview
 This is a **three-dimensional parallel lattice-Boltzmann computational fluid dynamics (CFD) solver framework based on C++17 and [OpenMP](https://www.openmp.org/)**. The files includes a Makefile for the Intel Compiler ICC as well as the Gnu Compiler GCC.
