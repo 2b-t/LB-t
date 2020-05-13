@@ -37,8 +37,8 @@
 template <bool odd, unsigned int NX, unsigned int NY, unsigned int NZ, class LT, typename T>
 void CollideStreamBGK_Smagorinsky(Continuum<NX,NY,NZ,T>& con, Population<NX,NY,NZ,LT>& pop, bool const save = false, unsigned int const p = 0)
 {
-	/// Smagorinsky constant
-	constexpr T CS = 0.15;
+    /// Smagorinsky constant
+    constexpr T CS = 0.15;
 	
     #pragma omp parallel for default(none) shared(con, pop) firstprivate(save,p) schedule(static,1)
     for(unsigned int block = 0; block < pop.NUM_BLOCKS_; ++block)
