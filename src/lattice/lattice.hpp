@@ -23,7 +23,7 @@ namespace lattice
      * \tparam   T   floating data type used for simulation
     */
     template <typename T = double>
-    class DdQq
+    class DdQq final
     {
         public:
             /// lattice discretisation parameters
