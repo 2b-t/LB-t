@@ -36,7 +36,7 @@ Make sure that the latter plug-in is copied to the `output/` folder and the file
 - Frequent use of `const` and `constexpr`, `static` variables, `templates` and macros/pre-processor directives for compile time optimisations
 - [Curiously Recurring Template Pattern (CRTP)](https://eli.thegreenplace.net/2011/05/17/the-curiously-recurring-template-pattern-in-c/) for compile-time static polymorphism
 - Indexing functions as `inline` functions for reduced overhead
-- Loop unrolling with pre-processor directives
+- Loop unrolling with compiler directives
 - Parallelisation on multiple threads with [OpenMP](https://www.openmp.org/)
 
 ## Current features
@@ -47,6 +47,7 @@ Make sure that the latter plug-in is copied to the `output/` folder and the file
 - [Guo's interpolation](910.1088/1009-1963/11/4/310) pressure and velocity boundaries
 - Periodic boundary conditions (if nothing else specified)
 - Export plug-ins to `.vtk` (slow) and `.bin` (fast)
+- Designed with Resource acquisition is initialization (RAII) programming ideom
 - Beginner-friendly documentation with [Doxygen](http://www.doxygen.nl/)
 
 ## Planned features
@@ -54,3 +55,4 @@ Make sure that the latter plug-in is copied to the `output/` folder and the file
 - Encapsulating collision operators into an appropriate class instead of using functions
 - [Latt's regularised](10.1103/PhysRevE.77.056703) pressure and velocity boundaries
 - [Interpolated bounce-back](10.1063/1.1399290) for higher accuracy
+- nVidia Cuda C++ implementation
