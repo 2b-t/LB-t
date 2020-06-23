@@ -16,25 +16,25 @@ OBJECTS  = $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 PROGRAM	 = main.$(COMPILER)
 
 # Compiler flags
-WARNINGS   = -Wall -pedantic -Wextra -Weffc++ -Woverloaded-virtual  -Wfloat-equal -Wshadow -Wredundant-decls -Winline -fmax-errors=1
-CXXFLAGS  += -std=c++17 -O3 -flto -funroll-all-loops -finline-functions -mavx2 -march=native -DNDEBUG
-LINKFLAGS += -O3 -flto
+WARNINGS  = -Wall -pedantic -Wextra -Weffc++ -Woverloaded-virtual  -Wfloat-equal -Wshadow -Wredundant-decls -Winline -fmax-errors=1
+CXXFLAGS += -std=c++17 -O3 -flto -funroll-all-loops -finline-functions -mavx2 -march=native -DNDEBUG
+LDFLAGS  += -O3 -flto
 
 # Compiler settings for specific compiler
 ifeq ($(COMPILER),ICC)
 	# Intel compiler ICC
-	CXX        = icpc
-	LINKER     = icpc
-	CXXFLAGS  += -fopenmp
-	LINKFLAGS += -qopenmp
-	COMPILER   = ICC
+	CXX       = icpc
+	LD        = icpc
+	CXXFLAGS += -fopenmp
+	LDFLAGS  += -qopenmp
+	COMPILER  = ICC
 else
 	# Gnu compiler GCC
-	CXX        = g++
-	LINKER     = g++
-	CXXFLAGS  += -fopenmp
-	LINKFLAGS += -lgomp
-	COMPILER   = GCC
+	CXX       = g++
+	LD        = g++
+	CXXFLAGS += -fopenmp
+	LDFLAGS  += -lgomp
+	COMPILER  = GCC
 endif
 
 # Make commands
@@ -43,7 +43,7 @@ default: $(BINDIR)/$(PROGRAM)
 $(BINDIR)/$(PROGRAM): $(OBJECTS)
 	@mkdir -p $(REQDIRS)
 	@mkdir -p $(@D)
-	$(LINKER)  $(OBJECTS)  $(LINKFLAGS) -o $@
+	$(LD)  $(OBJECTS)  $(LDFLAGS) -o $@
 	@echo "Linking complete!"
 	
 $(OBJECTS): $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
@@ -64,6 +64,9 @@ doc:
 	$(CXX) -c $(CXXFLAGS) $<
 
 info:
-	@echo "Show optimization flags"
+	@echo "Compiler version: "
 	$(CXX) --version
+	@echo "Compiler flags: "
 	@echo $(CXXFLAGS)
+	@echo "Linker flags: "
+	@echo $(LDFLAGS)

@@ -29,8 +29,8 @@ Make sure that the latter plug-in is copied to the `output/` folder and the file
 
 ## Implemented optimisations
 - [Linear memory layout](https://www.springer.com/gp/book/9783319446479) with propietary vectorisation-friendly lattice numbering scheme
-- Indexing with [A-A pattern](10.1109/ICPP.2009.38) for reduced memory bandwith and better parallel scalability
-- Three dimensional [loop blocking](10.1142/S0129626403001501) for improved cache-reuse and better parallel scalability
+- Indexing with [A-A pattern](https://www.doi.org/10.1109/ICPP.2009.38) for reduced memory bandwith and better parallel scalability
+- Three dimensional [loop blocking](https://www.doi.org/10.1142/S0129626403001501) for improved cache-reuse and better parallel scalability
 - 64-byte cache-line alignment of all relevant arrays for vectorisation
 - `AVX2` and `AVX512` manual [intrinsics](https://www.apress.com/gp/book/9781484200643) collision kernels
 - Frequent use of `const` and `constexpr`, `static` variables, `templates` and macros/pre-processor directives for compile time optimisations
@@ -40,11 +40,11 @@ Make sure that the latter plug-in is copied to the `output/` folder and the file
 - Parallelisation on multiple threads with [OpenMP](https://www.openmp.org/)
 
 ## Current features
-- [D3Q19 and D3Q27 lattices](10.1209/0295-5075/17/6/001)
-- [BGK](10.1103/PhysRev.94.511) and [TRT collision operators](http://global-sci.org/intro/article_detail/cicp/7862.html)
+- [D3Q19 and D3Q27 lattices](https://www.doi.org/10.1209/0295-5075/17/6/001)
+- [BGK](https://www.doi.org/10.1103/PhysRev.94.511) and [TRT collision operators](http://global-sci.org/intro/article_detail/cicp/7862.html)
 - [BGK with Smagorinsky turbulence model](https://arxiv.org/abs/comp-gas/9401004) for turbulent flows
-- [Halfway bounce-back](10.1007/BF02181482) boundaries for solid walls
-- [Guo's interpolation](910.1088/1009-1963/11/4/310) pressure and velocity boundaries
+- [Halfway bounce-back](https://www.doi.org/10.1007/BF02181482) boundaries for solid walls
+- [Guo's interpolation](https://www.doi.org/910.1088/1009-1963/11/4/310) pressure and velocity boundaries
 - Periodic boundary conditions (if nothing else specified)
 - Export plug-ins to `.vtk` (slow) and `.bin` (fast)
 - Designed with Resource acquisition is initialization (RAII) programming ideom
@@ -53,6 +53,6 @@ Make sure that the latter plug-in is copied to the `output/` folder and the file
 ## Planned features
 - Reducing code redundancy by introducing functions for e.g. the calculating the equilibrium distribution
 - Encapsulating collision operators into an appropriate class instead of using functions
-- [Latt's regularised](10.1103/PhysRevE.77.056703) pressure and velocity boundaries
-- [Interpolated bounce-back](10.1063/1.1399290) for higher accuracy
+- [Latt's regularised](https://www.doi.org/10.1103/PhysRevE.77.056703) pressure and velocity boundaries
+- [Interpolated bounce-back](https://www.doi.org/10.1063/1.1399290) for higher accuracy
 - nVidia Cuda C++ implementation
