@@ -57,4 +57,4 @@ Make sure that the latter plug-in is copied to the `output/` folder and the file
 - Entropic single relaxation time collision operator
 - [Interpolated bounce-back](https://www.doi.org/10.1063/1.1399290) for higher accuracy
 - nVidia Cuda C++ implementation
-- Extension to compressible LBM methods
+- Extension to compressible multispeed lattices
