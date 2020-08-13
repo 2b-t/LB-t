@@ -2,7 +2,7 @@
 # Tobit Flatscher - github.com/2b-t (2020)
 
 # Compiler settings: ICC or GCC (alternatively: 'export COMPILER=ICC' in console)
-COMPILER = ICC
+COMPILER = GCC
 
 # Define sub-directories to be included in compilation
 SRCDIR  = src
@@ -22,51 +22,51 @@ LDFLAGS  += -O3 -flto
 
 # Compiler settings for specific compiler
 ifeq ($(COMPILER),ICC)
-    # Intel compiler ICC
-    CXX       = icpc
-    LD        = icpc
-    CXXFLAGS += -fopenmp
-    LDFLAGS  += -qopenmp
-    COMPILER  = ICC
+	# Intel compiler ICC
+	CXX       = icpc
+	LD        = icpc
+	CXXFLAGS += -fopenmp
+	LDFLAGS  += -qopenmp
+	COMPILER  = ICC
 else
-    # Gnu compiler GCC
-    CXX       = g++
-    LD        = g++
-    CXXFLAGS += -fopenmp
-    LDFLAGS  += -lgomp
-    COMPILER  = GCC
+	# Gnu compiler GCC
+	CXX       = g++
+	LD        = g++
+	CXXFLAGS += -fopenmp
+	LDFLAGS  += -lgomp
+	COMPILER  = GCC
 endif
 
 # Make commands
 default: $(BINDIR)/$(PROGRAM)
 
 $(BINDIR)/$(PROGRAM): $(OBJECTS)
-    @mkdir -p $(REQDIRS)
-    @mkdir -p $(@D)
-    $(LD)  $(OBJECTS)  $(LDFLAGS) -o $@
-    @echo "Linking complete!"
-    
+	@mkdir -p $(REQDIRS)
+	@mkdir -p $(@D)
+	$(LD)  $(OBJECTS)  $(LDFLAGS) -o $@
+	@echo "Linking complete!"
+
 $(OBJECTS): $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
-    @mkdir -p $(@D)
-    @$(CXX) $(CXXFLAGS) -c $< -o $@
-    @echo "Compiled "$<" successfully!"
+	@mkdir -p $(@D)
+	@$(CXX) $(CXXFLAGS) -c $< -o $@
+	@echo "Compiled "$<" successfully!"
 
 clean:
-    @rm -f $(BINDIR)/$(PROGRAM) $(OBJECTS)
+	@rm -f $(BINDIR)/$(PROGRAM) $(OBJECTS)
 
 run: clean $(BINDIR)/$(PROGRAM)
-    ./$(BINDIR)/$(PROGRAM)
+	./$(BINDIR)/$(PROGRAM)
 
 doc:
-    doxygen Doxyfile
+	doxygen Doxyfile
 
 .cpp.o:
-    $(CXX) -c $(CXXFLAGS) $<
+	$(CXX) -c $(CXXFLAGS) $<
 
 info:
-    @echo "Compiler version: "
-    $(CXX) --version
-    @echo "Compiler flags: "
-    @echo $(CXXFLAGS)
-    @echo "Linker flags: "
-    @echo $(LDFLAGS)
+	@echo "Compiler version: "
+	$(CXX) --version
+	@echo "Compiler flags: "
+	@echo $(CXXFLAGS)
+	@echo "Linker flags: "
+	@echo $(LDFLAGS)
