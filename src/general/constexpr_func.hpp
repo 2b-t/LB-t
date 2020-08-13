@@ -12,11 +12,23 @@
 
 namespace cef
 {
+    /**\fn        cef::abs
+     * \brief     Constexpr function for absolute value
+     *
+     * \tparam    T      data type of the corresponding number
+     * \param[in] x      the number of interest
+     * \return    The absolute value of \param x
+    */
+    template <typename T = double>
+    constexpr T abs(T const x)
+    {
+        return (x > 0.0) ? x : -x;
+    }
+
     /**\fn        cef::sqrt
      * \brief     Square root implementation with recursive Newton-Raphson method that can
      *            be evaluated as a constant expression at compile time
      *
-     * \tparam    T      data type of the corresponding number
      * \param[in] x      the number of interest
      * \param[in] curr   the result from the current iteration
      * \param[in] prev   the result from the previous iteration
@@ -24,26 +36,18 @@ namespace cef
     */
     constexpr double sqrtNewton(double const x, double const curr, double const prev)
     {
-        return curr == prev
+        return abs<double>(curr - prev) < std::numeric_limits<double>::epsilon()
                ? curr
                : sqrtNewton(x, 0.5 * (curr + x / curr), curr);
     }
 
-    template <typename T = double>
-    constexpr T sqrt(T const x)
+    constexpr double sqrt(double const x)
     {
-        assert(std::numeric_limits<T>::is_specialized);
-        assert(x >= 0);
+        assert(x >= 0.0);
 
-        constexpr T ret_NaN = std::numeric_limits<T>::has_quiet_NaN
-                              ? std::numeric_limits<T>::quiet_NaN()
-                              : std::numeric_limits<T>::min();
-
-        double const x_d = static_cast<double>(x);
-        return ((x_d >= 0.0) &&
-                (x_d < std::numeric_limits<double>::infinity()))
-               ? static_cast<T>(sqrtNewton(x_d, x_d, 0.0))
-               : ret_NaN;
+        return ( (x >= 0.0) && (x < std::numeric_limits<double>::infinity()) )
+               ? sqrtNewton(x, x, 0.0)
+               : std::numeric_limits<double>::quiet_NaN();
     }
 
     /**\fn        cef::ceil
@@ -51,7 +55,7 @@ namespace cef
      *
      * \tparam    T     data type of the corresponding number
      * \param[in] num   the number that should be ceiled
-     * \return    The square root of \param num
+     * \return    The ceiled number \param num
     */
     template <typename T = double>
     constexpr size_t ceil(T num)

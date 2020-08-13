@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <array>
 #include <cassert>
+#include <cstring>
 #include <cmath>
 #include <iostream>
 #include <memory>
@@ -38,9 +39,12 @@ class Continuum
         /// population allocated in heap
         T* const M_ = static_cast<T*>(aligned_alloc(CACHE_LINE, MEM_SIZE_));
 
+        Continuum& operator = (Continuum&) = delete;
+        Continuum(Continuum&&) = delete;
+        Continuum& operator = (Continuum&&) = delete;
 
         /**\brief Class constructor
-		*/
+        */
         Continuum()
         {
             if (M_ == nullptr)
@@ -49,9 +53,17 @@ class Continuum
                 exit(EXIT_FAILURE);
             }
         }
+        
+        /**\brief     Class copy constructor
+         * \param[in] c   The continuum object to be copied
+        */
+        Continuum(Continuum const& c)
+        {
+            std::memcpy(M_, c.M_, MEM_SIZE_);
+        }
 
         /**\brief Class destructor
-		*/
+        */
         ~Continuum()
         {
             free(M_);
@@ -67,12 +79,12 @@ class Continuum
 
         /// export to disk
         void SetZero(std::vector<boundaryElement<T>> const& boundary);
-        void Export(std::string const name, unsigned int const step) const;
-        void ExportScalarVtk(unsigned int const m, std::string const name, unsigned int const step) const;
+        void Export(std::string const& name, unsigned int const step) const;
+        void ExportScalarVtk(unsigned int const m, std::string const& name, unsigned int const step) const;
         void ExportVtk(unsigned int const step) const;
 
         /// import time step from disk
-        void Import(std::string const name, unsigned int const step);
+        void Import(std::string const& name, unsigned int const step);
 };
 
 #include "continuum_indexing.hpp"

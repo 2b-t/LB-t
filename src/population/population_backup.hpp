@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <memory>
 #include <sstream>
 #include <string.h>
 
@@ -22,17 +23,13 @@
  * \param[in]   name   the import file name of the scalar
  */
 template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP>
-void Population<NX,NY,NZ,LT,NPOP>::Import(std::string const name)
+void Population<NX,NY,NZ,LT,NPOP>::Import(std::string const& name)
 {
     std::string const fileName = BACKUP_IMPORT_PATH + std::string("/") + name + std::string(".bin");
-    FILE * const importFile;
 
-    if(fopen(fileName.c_str(), "rb+") != nullptr)
+    if(auto const importFile = std::unique_ptr<FILE, decltype(&fclose)>( fopen(fileName.c_str(), "rb+"), &fclose ) != nullptr)
     {
-        importFile = fopen(fileName.c_str(), "rb+");
         fread(F_, 1, MEM_SIZE_, importFile);
-        fclose(importFile);
-
     }
     else
     {
@@ -47,18 +44,16 @@ void Population<NX,NY,NZ,LT,NPOP>::Import(std::string const name)
  * \param[in]   name   the export file name of the scalar
  */
 template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP>
-void Population<NX,NY,NZ,LT,NPOP>::Export(std::string const name) const
+void Population<NX,NY,NZ,LT,NPOP>::Export(std::string const& name) const
 {
     struct stat info;
 
     if (stat(BACKUP_EXPORT_PATH.c_str(), &info) == 0 && S_ISDIR(info.st_mode))
     {
         std::string const fileName = BACKUP_EXPORT_PATH + std::string("/") + name + std::string(".bin");
-        FILE * const exportFile;
+        auto const exportFile = std::unique_ptr<FILE, decltype(&fclose)>( fopen(fileName.c_str(), "wb+"), &fclose );
 
-        exportFile = fopen(fileName.c_str(), "wb+");
         fwrite(F_, 1, MEM_SIZE_, exportFile);
-        fclose(exportFile);
     }
     else
     {

@@ -8,7 +8,9 @@
 */
 
 #include <algorithm>
+#include <cassert>
 #include <cmath>
+#include <type_traits>
 #if __has_include (<omp.h>)
     #include <omp.h>
 #endif
@@ -61,6 +63,10 @@ static inline double __attribute__((always_inline)) _mm256_reduce_add_pd(__m256d
 template <bool odd, unsigned int NX, unsigned int NY, unsigned int NZ, class LT, typename T>
 void CollideStreamBGK_AVX2(Continuum<NX,NY,NZ,T>& con, Population<NX,NY,NZ,LT>& pop, bool const save = false, unsigned int const p = 0)
 {
+    static_assert(LT::ND % 4 == 0);
+    static_assert(std::is_same<T, double>::value == true);
+    static_assert(std::is_same<typename std::remove_const<decltype(LT::CS)>::type, double>::value == true);
+    
     #pragma omp parallel for default(none) shared(con, pop) firstprivate(save,p) schedule(static,1)
     for(unsigned int block = 0; block < pop.NUM_BLOCKS_; ++block)
     {

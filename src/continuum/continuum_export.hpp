@@ -8,6 +8,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <memory>
 #include <sstream>
 #include <string>
 #include <sys/stat.h>
@@ -44,16 +45,15 @@ void Continuum<NX,NY,NZ,T>::SetZero(std::vector<boundaryElement<T>> const& bound
  * \param[in] step   the current time step that will be used for the name
 */
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T>
-void Continuum<NX,NY,NZ,T>::Export(std::string const name, unsigned int const step) const
+void Continuum<NX,NY,NZ,T>::Export(std::string const& name, unsigned int const step) const
 {
     struct stat info;
 
     if (stat(OUTPUT_BIN_PATH.c_str(), &info) == 0 && S_ISDIR(info.st_mode))
     {
         std::string const fileName = OUTPUT_BIN_PATH + std::string("/") + name + std::string("_") + std::to_string(step) + std::string(".bin");
-        FILE * const exportFile = fopen(fileName.c_str(), "wb+");
-        fwrite(M_, 1, MEM_SIZE_, exportFile);
-        fclose(exportFile);
+        auto const exportFile = std::unique_ptr<FILE, decltype(&fclose)>( fopen(fileName.c_str(), "wb+"), &fclose );
+        fwrite(M_, 1, MEM_SIZE_, exportFile.get());
     }
     else
     {
@@ -73,57 +73,55 @@ void Continuum<NX,NY,NZ,T>::Export(std::string const name, unsigned int const st
  * \param[in] step   the current time step that will be used for the name
 */
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T>
-void Continuum<NX,NY,NZ,T>::ExportScalarVtk(unsigned int const m, std::string const name, unsigned int const step) const
+void Continuum<NX,NY,NZ,T>::ExportScalarVtk(unsigned int const m, std::string const& name, unsigned int const step) const
 {
     struct stat info;
 
     if (stat(OUTPUT_VTK_PATH.c_str(), &info) == 0 && S_ISDIR(info.st_mode))
     {
         std::string const fileName = OUTPUT_VTK_PATH + std::string("/") + name + std::string("_") + std::to_string(step) + std::string(".vtk");
-        FILE * const exportFile = fopen(fileName.c_str(), "w");
+        auto const exportFile = std::unique_ptr<FILE, decltype(&fclose)>( fopen(fileName.c_str(), "w"), &fclose );
 
-        fprintf(exportFile, "# vtk DataFile Version 3.0\n");
-        fprintf(exportFile, "LBM CFD simulation scalar %s\n", name.c_str());
-        fprintf(exportFile, "ASCII\n");
-        fprintf(exportFile, "DATASET RECTILINEAR_GRID\n");
+        fprintf(exportFile.get(), "# vtk DataFile Version 3.0\n");
+        fprintf(exportFile.get(), "LBM CFD simulation scalar %s\n", name.c_str());
+        fprintf(exportFile.get(), "ASCII\n");
+        fprintf(exportFile.get(), "DATASET RECTILINEAR_GRID\n");
 
-        fprintf(exportFile, "DIMENSIONS %u %u %u\n", NX, NY, NZ);
-        fprintf(exportFile, "X_COORDINATES %u float\n", NX);
+        fprintf(exportFile.get(), "DIMENSIONS %u %u %u\n", NX, NY, NZ);
+        fprintf(exportFile.get(), "X_COORDINATES %u float\n", NX);
         for(unsigned int x = 0; x < NX; ++x)
         {
-            fprintf(exportFile,"%u ", x);
+            fprintf(exportFile.get(),"%u ", x);
         }
-        fprintf(exportFile, "\n");
-        fprintf(exportFile, "Y_COORDINATES %u float\n", NY);
+        fprintf(exportFile.get(), "\n");
+        fprintf(exportFile.get(), "Y_COORDINATES %u float\n", NY);
         for(unsigned int y = 0; y < NY; ++y)
         {
-            fprintf(exportFile,"%u ", y);
+            fprintf(exportFile.get(),"%u ", y);
         }
-        fprintf(exportFile, "\n");
-        fprintf(exportFile, "Z_COORDINATES %u float\n", NZ);
+        fprintf(exportFile.get(), "\n");
+        fprintf(exportFile.get(), "Z_COORDINATES %u float\n", NZ);
         for(unsigned int z = 0; z < NZ; ++z)
         {
-            fprintf(exportFile, "%u ", z);
+            fprintf(exportFile.get(), "%u ", z);
         }
-        fprintf(exportFile, "\n");
+        fprintf(exportFile.get(), "\n");
 
         size_t const numberOfCells = static_cast<size_t>(NX)*static_cast<size_t>(NY)*static_cast<size_t>(NZ);
-        fprintf(exportFile, "POINT_DATA %zu\n", numberOfCells);
+        fprintf(exportFile.get(), "POINT_DATA %zu\n", numberOfCells);
 
-        fprintf(exportFile, "SCALARS transport_scalar float 1\n");
-        fprintf(exportFile, "LOOKUP_TABLE default\n");
+        fprintf(exportFile.get(), "SCALARS transport_scalar float 1\n");
+        fprintf(exportFile.get(), "LOOKUP_TABLE default\n");
         for(unsigned int z = 0; z < NZ; ++z)
         {
             for(unsigned int y = 0; y < NY; ++y)
             {
                 for(unsigned int x = 0; x < NX; ++x)
                 {
-                    fprintf(exportFile, "%f\n", M_[SpatialToLinear(x, y, z, m)]);
+                    fprintf(exportFile.get(), "%f\n", M_[SpatialToLinear(x, y, z, m)]);
                 }
             }
         }
-
-        fclose(exportFile);
     }
     else
     {
@@ -148,64 +146,62 @@ void Continuum<NX,NY,NZ,T>::ExportVtk(unsigned int const step) const
     if (stat(OUTPUT_VTK_PATH.c_str(), &info) == 0 && S_ISDIR(info.st_mode))
     {
         std::string const fileName = OUTPUT_VTK_PATH + std::string("/Export_") + std::to_string(step) + std::string(".vtk");
-        FILE * const exportFile = fopen(fileName.c_str(), "w");
+        auto const exportFile = std::unique_ptr<FILE, decltype(&fclose)>( fopen(fileName.c_str(), "w"), &fclose );
 
-        fprintf(exportFile, "# vtk DataFile Version 3.0\n");
-        fprintf(exportFile, "LBM CFD simulation velocity\n");
-        fprintf(exportFile, "ASCII\n");
-        fprintf(exportFile, "DATASET RECTILINEAR_GRID\n");
+        fprintf(exportFile.get(), "# vtk DataFile Version 3.0\n");
+        fprintf(exportFile.get(), "LBM CFD simulation velocity\n");
+        fprintf(exportFile.get(), "ASCII\n");
+        fprintf(exportFile.get(), "DATASET RECTILINEAR_GRID\n");
 
-        fprintf(exportFile, "DIMENSIONS %u %u %u\n", NX, NY, NZ);
-        fprintf(exportFile, "X_COORDINATES %u float\n", NX);
+        fprintf(exportFile.get(), "DIMENSIONS %u %u %u\n", NX, NY, NZ);
+        fprintf(exportFile.get(), "X_COORDINATES %u float\n", NX);
         for(unsigned int x = 0; x < NX; ++x)
         {
-            fprintf(exportFile,"%u ", x);
+            fprintf(exportFile.get(),"%u ", x);
         }
-        fprintf(exportFile, "\n");
-        fprintf(exportFile, "Y_COORDINATES %u float\n", NY);
+        fprintf(exportFile.get(), "\n");
+        fprintf(exportFile.get(), "Y_COORDINATES %u float\n", NY);
         for(unsigned int y = 0; y < NY; ++y)
         {
-            fprintf(exportFile,"%u ", y);
+            fprintf(exportFile.get(),"%u ", y);
         }
-        fprintf(exportFile, "\n");
-        fprintf(exportFile, "Z_COORDINATES %u float\n", NZ);
+        fprintf(exportFile.get(), "\n");
+        fprintf(exportFile.get(), "Z_COORDINATES %u float\n", NZ);
         for(unsigned int z = 0; z < NZ; ++z)
         {
-            fprintf(exportFile, "%u ", z);
+            fprintf(exportFile.get(), "%u ", z);
         }
-        fprintf(exportFile, "\n");
+        fprintf(exportFile.get(), "\n");
 
         size_t const numberOfCells = static_cast<size_t>(NX)*static_cast<size_t>(NY)*static_cast<size_t>(NZ);
-        fprintf(exportFile, "POINT_DATA %zu\n", numberOfCells);
+        fprintf(exportFile.get(), "POINT_DATA %zu\n", numberOfCells);
 
-        fprintf(exportFile, "SCALARS density_variation float 1\n");
-        fprintf(exportFile, "LOOKUP_TABLE default\n");
+        fprintf(exportFile.get(), "SCALARS density_variation float 1\n");
+        fprintf(exportFile.get(), "LOOKUP_TABLE default\n");
         for(unsigned int z = 0; z < NZ; ++z)
         {
             for(unsigned int y = 0; y < NY; ++y)
             {
                 for(unsigned int x = 0; x < NX; ++x)
                 {
-                    fprintf(exportFile, "%f\n", M_[SpatialToLinear(x, y, z, 0)]);
+                    fprintf(exportFile.get(), "%f\n", M_[SpatialToLinear(x, y, z, 0)]);
                 }
             }
         }
 
-        fprintf(exportFile, "VECTORS velocity_vector float\n");
+        fprintf(exportFile.get(), "VECTORS velocity_vector float\n");
         for(unsigned int z = 0; z < NZ; ++z)
         {
             for(unsigned int y = 0; y < NY; ++y)
             {
                 for(unsigned int x = 0; x < NX; ++x)
                 {
-                    fprintf(exportFile, "%f %f %f\n", M_[SpatialToLinear(x, y, z, 1)],
-                                                      M_[SpatialToLinear(x, y, z, 2)],
-                                                      M_[SpatialToLinear(x, y, z, 3)]);
+                    fprintf(exportFile.get(), "%f %f %f\n", M_[SpatialToLinear(x, y, z, 1)],
+                                                            M_[SpatialToLinear(x, y, z, 2)],
+                                                            M_[SpatialToLinear(x, y, z, 3)]);
                 }
             }
         }
-
-        fclose(exportFile);
     }
     else
     {

@@ -62,14 +62,19 @@ class Population
         T const OMEGA_;         // collision frequency (positive populations)
         T const LAMBDA_ = 0.25; // magic parameter of TRT model
         T const OMEGA_M_;       // collision frequency (negative populations)
+        
+        Population() = delete;
+        Population& operator = (Population&) = delete;
+        Population(Population&&) = delete;
+        Population& operator = (Population&&) = delete;
 
 
-        /**\brief Class constructor
-         * \param Re       simulation Reynolds number
-         * \param U        characteristic velocity of the simulation in lattice units
-         * \param L        characteristic length of the simulation in lattice units
-         * \param LAMBDA   magic parameter for TRT collision operator
-		*/
+        /**\brief     Class constructor
+         * \param[in] Re       simulation Reynolds number
+         * \param[in] U        characteristic velocity of the simulation in lattice units
+         * \param[in] L        characteristic length of the simulation in lattice units
+         * \param[in] LAMBDA   magic parameter for TRT collision operator
+        */
         Population(T const Re, T const U, unsigned int const L, T const LAMBDA = 0.25):
             NU_(U*static_cast<T>(L) / Re), TAU_(NU_/(LT::CS*LT::CS) + 1.0/ 2.0), OMEGA_(1.0/TAU_),
             LAMBDA_(LAMBDA), OMEGA_M_((TAU_ - 1.0/2.0) / (LAMBDA_ + 1.0/2.0*( TAU_ - 1.0/2.0)))
@@ -80,9 +85,18 @@ class Population
                 exit(EXIT_FAILURE);
             }
         }
+        
+        /**\brief     Class copy constructor
+         * \param[in] p   The population object to be copied
+        */
+        Population(Population const& p):
+            NU_(p.NU_), TAU_(p.TAU_), OMEGA_(p.OMEGA_), LAMBDA_(p.LAMBDA_), OMEGA_M_(p.OMEGA_M_)
+        {
+            std::memcpy(F_, p.F_, MEM_SIZE_);
+        }
 
         /**\brief Class destructor
-		*/
+        */
         ~Population()
         {
             std::cout << "See you, comrade!" << std::endl;
@@ -118,8 +132,8 @@ class Population
                                     unsigned int const n,       unsigned int const d,       unsigned int const p = 0) const;
 
         /// import and export: population back-up
-        void Import(std::string const name);
-        void Export(std::string const name) const;
+        void Import(std::string const& name);
+        void Export(std::string const& name) const;
 };
 
 /// include related header files
