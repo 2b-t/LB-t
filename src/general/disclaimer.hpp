@@ -13,10 +13,10 @@
 #include <unordered_map>
 
 
-/**\fn    PrintDisclaimer
+/**\fn    printDisclaimer
  * \brief Print small disclaimer and compiler settings to console
 */
-void PrintDisclaimer()
+void printDisclaimer()
 {
     std::cout << "Author: Tobit Flatscher - github.com/2b-t (2019/2020)" << std::endl;
     std::cout << std::endl;

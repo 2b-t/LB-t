@@ -18,11 +18,11 @@ namespace lattice
     /**\fn         Array stream operator
      * \brief      For printing a std::array in an easy way
      *
-     * \tparam     T     data type of array
-     * \tparam     N     number of elements in array
-     * \param[in]  os    input stream
-     * \param[in]  arr   array to print
-     * \return     output stream
+     * \tparam     T     Data type of array
+     * \tparam     N     Number of elements in array
+     * \param[in]  os    Input stream
+     * \param[in]  arr   Array to print
+     * \return     Output stream
     */
     template <typename T, size_t N>
     std::ostream& operator<<(std::ostream& os, std::array<T,N> const& arr)
@@ -31,13 +31,14 @@ namespace lattice
         {
             os << "\t" << *it;
         }
+ 
         return os;
     }
 
     /**\class    UnitTest
      * \brief    Unit test for lattice classes
      *
-     * \tparam   LatticeClass   the corresponding static lattice object
+     * \tparam   LatticeClass   The corresponding static lattice object
     */
     template <class latticeClass>
     class UnitTest
@@ -46,8 +47,8 @@ namespace lattice
             /**\fn        printStdContainer
              * \brief     Print any standard container
              *
-             * \tparam    C               a std:: container class
-             * \param[in] stdConatainer   a std container
+             * \tparam    C               A std:: container class
+             * \param[in] stdConatainer   A std container
             */
             template<class C>
             void printStdContainer(C const& stdContainer)
@@ -57,14 +58,15 @@ namespace lattice
                     std::cout << "\t" << *it;
                 }
                 std::cout << std::endl;
+ 
                 return;
             }
 
             /**\fn        testStdContainerAlignment
              * \brief     Test alignment in memory of any standard container
              *
-             * \tparam    C               a std:: container class
-             * \param[in] stdConatainer   a std container
+             * \tparam    C               A std:: container class
+             * \param[in] stdConatainer   A std container
             */
             template<class C>
             void testStdContainerAlignment(C const& stdContainer)
@@ -72,6 +74,7 @@ namespace lattice
                 std::cout.setf(std::ios::boolalpha);
                 std::cout << " first_element%cache_line: " << (size_t)(stdContainer.data()) % CACHE_LINE  << std::endl;
                 std::cout << " length%cache_line:        " << sizeof(stdContainer) % CACHE_LINE           << std::endl;
+ 
                 return;
             }
 
@@ -99,10 +102,12 @@ namespace lattice
                 std::cout << "Weights (W): " << std::endl;
                 testStdContainerAlignment(latticeClass::W);
                 std::cout << latticeClass::W << std::endl;
+ 
+                return;
             }
 
             /**\fn    testClass
-             * \brief test class for different properties
+             * \brief Test class for different properties
             */
             int testClass()
             {
@@ -118,16 +123,19 @@ namespace lattice
                 assert(alignof(latticeClass::DY) == CACHE_LINE);
                 assert(alignof(latticeClass::DZ) == CACHE_LINE);
                 std::cout << "Test passed" << std::endl;
+ 
                 return EXIT_SUCCESS;
             }
 
             /**\fn    UnitTest
-             * \brief constructor that performs unit test
+             * \brief Constructor that performs unit test
             */
             UnitTest()
             {
                 printInfo();
                 testClass();
+ 
+                return;
             }
     };
 }

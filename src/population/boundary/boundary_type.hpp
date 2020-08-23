@@ -23,6 +23,7 @@ namespace type
 {
     /**\class  Velocity
      * \brief  Class for velocity boundaries: enforce normal and tangential velocities
+     * 
      * \tparam Orientation   orientation of the current boundary given by an orientation class with members x, y, z
     */
     template <class Orientation>
@@ -46,6 +47,7 @@ namespace type
 
     /**\class  Pressure
      * \brief  Class for pressure boundaries: enforce rho and tangential velocities
+     * 
      * \tparam Orientation   orientation of the current boundary given by an orientation class with members x, y, z
     */
     template <class Orientation>

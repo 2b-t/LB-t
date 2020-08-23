@@ -16,23 +16,22 @@
 #include "../population/population.hpp"
 
 
-/**\fn        ExportParameters
+/**\fn        exportParameters
  * \brief     Export parameters to disk
  *
- * \tparam    NX      spatial resolution of the simulation domain in x-direction
- * \tparam    NY      spatial resolution of the simulation domain in y-direction
- * \tparam    NZ      spatial resolution of the simulation domain in z-direction
- * \tparam    LT      static lattice::DdQq class containing discretisation parameters
- * \tparam    T       floating data type used for simulation
- * \param[in] pop     population object holding microscopic variables
- * \param[in] NT      number of simulation time steps
+ * \tparam    NX      Spatial resolution of the simulation domain in x-direction
+ * \tparam    NY      Spatial resolution of the simulation domain in y-direction
+ * \tparam    NZ      Spatial resolution of the simulation domain in z-direction
+ * \tparam    LT      Static lattice::DdQq class containing discretisation parameters
+ * \tparam    T       Floating data type used for simulation
+ * \param[in] NT      Number of simulation time steps
  * \param[in] Re      Reynolds number of the simulation
- * \param[in] RHO_0   simulation density
- * \param[in] L       characteristic length scale of the problem
- * \param[in] U       characteristic velocity (measurement for temporal resolution)
+ * \param[in] RHO_0   Simulation density
+ * \param[in] L       Characteristic length scale of the problem
+ * \param[in] U       Characteristic velocity (measurement for temporal resolution)
 */
 template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, typename T>
-void ExportParameters(Population<NX,NY,NZ,LT> const& pop, unsigned int const NT, T const Re, T const RHO_0, T const U, unsigned int const L)
+void exportParameters(unsigned int const NT, T const Re, T const RHO_0, T const U, unsigned int const L)
 {
     struct stat info;
 
@@ -67,11 +66,6 @@ void ExportParameters(Population<NX,NY,NZ,LT> const& pop, unsigned int const NT,
         fprintf(exportFile, "\n");
         fprintf(exportFile, "~~~~~~~~~~~Lattice~~~~~~~~~~~\n");
         fprintf(exportFile, "lattice          D%uQ%u\n", LT::DIM, LT::SPEEDS);
-        fprintf(exportFile, "nu               %f\n", pop.NU_);
-        fprintf(exportFile, "tau              %f\n", pop.TAU_);
-        fprintf(exportFile, "omega            %f\n", pop.OMEGA_);
-        fprintf(exportFile, "magic parameter  %f\n", pop.LAMBDA_);
-        fprintf(exportFile, "omega_2 (TRT)    %f\n", pop.OMEGA_M_);
 
         fclose(exportFile);
     }
@@ -80,6 +74,8 @@ void ExportParameters(Population<NX,NY,NZ,LT> const& pop, unsigned int const NT,
         std::cerr << "Fatal error: Directory '" << OUTPUT_BIN_PATH << "' not found." << std::endl;
         exit(EXIT_FAILURE);
     }
+
+    return;
 }
 
 #endif // PARAMETERS_EXPORT_HPP_INCLUDED

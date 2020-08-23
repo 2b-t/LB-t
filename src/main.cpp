@@ -6,7 +6,6 @@
 #include <vector>
 
 #include "continuum/continuum.hpp"
-#include "continuum/initialisation.hpp"
 #include "general/disclaimer.hpp"
 #include "general/memory_alignment.hpp"
 #include "general/output.hpp"
@@ -14,25 +13,22 @@
 #include "general/parameters_export.hpp"
 #include "general/timer.hpp"
 #include "geometry/cylinder.hpp"
+#include "geometry/sphere.hpp"
+#include "lattice/D3Q19.hpp"
 #include "lattice/D3Q27.hpp"
-#include "population/boundary/boundary.hpp"
-#include "population/boundary/boundary_bounceback.hpp"
-#include "population/boundary/boundary_guo.hpp"
-#include "population/boundary/boundary_orientation.hpp"
-#include "population/boundary/boundary_type.hpp"
 #include "population/collision/collision_bgk.hpp"
 #include "population/collision/collision_bgk-s.hpp"
 #include "population/collision/collision_bgk_avx2.hpp"
 #include "population/collision/collision_trt.hpp"
-#include "population/initialisation.hpp"
 #include "population/population.hpp"
+
 
 int main(int argc, char** argv)
 {
     /// set up OpenMP ------------------------------------------------------------------------------
     #ifdef _OPENMP
-        Parallelism OpenMP;
-        //OpenMP.SetThreadsNum(1);
+        Parallelism openMP;
+        openMP.setThreadsNum(2);
     #endif
 
     /// print disclaimer ---------------------------------------------------------------------------
@@ -40,7 +36,7 @@ int main(int argc, char** argv)
     {
         if ((strcmp(argv[1], "--version") == 0) || (strcmp(argv[1], "--v") == 0))
         {
-            PrintDisclaimer();
+            printDisclaimer();
             exit(EXIT_SUCCESS);
         }
         else if (strcmp(argv[1], "--convert") == 0)
@@ -82,65 +78,64 @@ int main(int argc, char** argv)
     constexpr F_TYPE   W_0 = 0.0;
 
     // save values to disk after each time step (disable for benchmark)
-    constexpr bool save = true;
+    constexpr bool isSave = true;
 
     /// set up microscopic and macroscopic arrays --------------------------------------------------
-    Continuum<NX,NY,NZ,F_TYPE> Macro;
-    Population<NX,NY,NZ,DdQq>  Micro(Re,U,L);
-    InitialOutput(Micro, NT, Re, RHO_0, U, L);
-    ExportParameters(Micro, NT, Re, RHO_0, U, L);
+    auto macro = std::make_shared<Continuum<NX,NY,NZ,F_TYPE>>();
+    auto micro = std::make_shared<Population<NX,NY,NZ,DdQq>>();
 
-    /// define boundary conditions -----------------------------------------------------------------
-    alignas(CACHE_LINE) std::vector<boundaryElement<F_TYPE>> wall;
-    alignas(CACHE_LINE) std::vector<boundaryElement<F_TYPE>> inlet;
-    alignas(CACHE_LINE) std::vector<boundaryElement<F_TYPE>> outlet;
+    initialOutput<NX,NY,NZ,DdQq,F_TYPE>(NT, Re, RHO_0, U, L);
+    exportParameters<NX,NY,NZ,DdQq,F_TYPE>(NT, Re, RHO_0, U, L);
 
+    /// set up geometry and boundary conditions ----------------------------------------------------
     constexpr unsigned int radius = L/2;
     constexpr std::array<unsigned int,3> position = {NX/4, NY/2, NZ/2};
-    Cylinder3D<NX,NY,NZ>(radius, position, "x", true, wall, inlet, outlet, RHO_0, U_0, V_0, W_0);
+    auto [inlet, outlet, wall] = cylinder3D(micro, radius, position, "x", true, RHO_0, U_0, V_0, W_0);
 
-    /// define initial conditions ------------------------------------------------------------------
-    InitContinuum(Macro, RHO_0, U_0, V_0, W_0);
-    InitLattice<false>(Macro, Micro);
+    /// set collision operator and initialise domain -----------------------------------------------
+    BGK_Smagorinsky collisionOperator {micro, macro, Re, U, L};
+    collisionOperator.initialise<timestep::even>(RHO_0, U_0, V_0, W_0);
 
-    /// main loop ----------------------------------------------------------------------------------
+    /// main simulation loop -----------------------------------------------------------------------
     std::cout << "Simulation started..." << std::endl;
 
-    Timer Stopwatch;
-    Stopwatch.Start();
+    Timer timer;
+    timer.start();
 
     for (size_t i = 0; i < NT; i+=2)
     {
+        // export
+        if ((i % (NT/10) == 0) && (isSave == true))
+        {
+            statusOutput(i, NT, timer.getRuntime());
+            macro->setBoundary(wall);
+            //macro->exportBin("step",i);
+            macro->exportVtk(i);
+        }
+
         // even time step
-        Guo<false,type::Velocity,orientation::Left>(inlet,  Micro, 0);
-        Guo<false,type::Pressure,orientation::Right>(outlet, Micro, 0);
-        CollideStreamBGK_Smagorinsky<false>(Macro, Micro, save, 0);
-        BounceBackHalfway<false>(wall, Micro, 0);
+        inlet.beforeCollisionOperator<timestep::even>();
+        outlet.beforeCollisionOperator<timestep::even>();
+        collisionOperator.collideStream<timestep::even>(isSave);
+        wall.afterCollisionOperator<timestep::even>();
 
         // odd time step
-        Guo<true,type::Velocity,orientation::Left>(inlet, Micro, 0);
-        Guo<true,type::Pressure,orientation::Right>(outlet, Micro, 0);
-        CollideStreamBGK_Smagorinsky<true>(Macro, Micro, save, 0);
-        BounceBackHalfway<true>(wall, Micro, 0);
-
-        if ((save == true) && (i % (NT/10) == 0))
-        {
-            StatusOutput(i, NT);
-            Macro.SetZero(wall);
-            //Macro.Export("step",i);
-            Macro.ExportVtk(i);
-        }
+        inlet.beforeCollisionOperator<timestep::odd>();
+        outlet.beforeCollisionOperator<timestep::odd>();
+        collisionOperator.collideStream<timestep::odd>(isSave);
+        wall.afterCollisionOperator<timestep::odd>();
     }
 
-    Stopwatch.Stop();
+    /// output performance -------------------------------------------------------------------------
+    double const runtime = timer.stop();
+    std::cout << runtime << std::endl;
 
-    PerformanceOutput(Macro, Micro, NT, NT, Stopwatch.GetRuntime());
+    performanceOutput(macro, micro, NT, NT, runtime);
 
     /// final export -------------------------------------------------------------------------------
-    /*Macro.SetZero(wall);
-    Macro.Export("step",NT);
-    Macro.ExportVtk(NT);
-    Macro.ExportScalarVtk(0,"rho",NT);*/
+    macro->setBoundary(wall);
+    //macro->exportBin("step",NT);
+    macro->exportVtk(NT);
 
     return EXIT_SUCCESS;
 }

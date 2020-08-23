@@ -15,15 +15,8 @@
 #include "../general/paths.hpp"
 
 
-/**\fn          Import
- * \brief       Import populations from a *.bin file (initialisation)
- * \warning     Please make sure the correct resolution is selected and run the
- *              initialisation of populations afterwards.
- *
- * \param[in]   name   the import file name of the scalar
- */
 template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP>
-void Population<NX,NY,NZ,LT,NPOP>::Import(std::string const& name)
+void Population<NX,NY,NZ,LT,NPOP>::importBin(std::string const& name)
 {
     std::string const fileName = BACKUP_IMPORT_PATH + std::string("/") + name + std::string(".bin");
 
@@ -36,15 +29,12 @@ void Population<NX,NY,NZ,LT,NPOP>::Import(std::string const& name)
         std::cerr << "Error: Could not import population from disk." << std::endl;
         exit(EXIT_FAILURE);
     }
+
+    return;
 }
 
-/**\fn          Export
- * \brief       Export populations at current time step to *.bin file
- *
- * \param[in]   name   the export file name of the scalar
- */
 template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP>
-void Population<NX,NY,NZ,LT,NPOP>::Export(std::string const& name) const
+void Population<NX,NY,NZ,LT,NPOP>::exportBin(std::string const& name) const
 {
     struct stat info;
 
@@ -60,6 +50,8 @@ void Population<NX,NY,NZ,LT,NPOP>::Export(std::string const& name) const
         std::cerr << "Fatal error: Directory '" << BACKUP_EXPORT_PATH << "' not found." << std::endl;
         exit(EXIT_FAILURE);
     }
+
+    return;
 }
 
 #endif //LATTICE_BACKUP_HPP_INCLUDED

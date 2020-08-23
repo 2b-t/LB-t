@@ -8,11 +8,12 @@
  * \warning  Static classes with more complex members such as std::vector and std::array require C++17
 */
 
-#include <memory>
 #include <array>
+#include <memory>
 
 #include "../general/constexpr_func.hpp"
 #include "../general/memory_alignment.hpp"
+
 
 namespace lattice
 {
@@ -20,7 +21,7 @@ namespace lattice
      * \brief    Prototype class for regular lattices, copy and paste for new lattices
      * \warning  Is not working as ND = 0!
      *
-     * \tparam   T   floating data type used for simulation
+     * \tparam   T   Floating data type used for simulation
     */
     template <typename T = double>
     class DdQq final

@@ -18,34 +18,23 @@
 #include "../general/paths.hpp"
 
 
-/**\fn        SetZero
- * \brief     Set not relevant nodes (e.g. boundary nodes) of a the hydrodynamic
- *            field (velocities and density) to zero
- *
- * \param[in] boundary   the indices of all solid cells
-*/
-template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T>
-void Continuum<NX,NY,NZ,T>::SetZero(std::vector<boundaryElement<T>> const& boundary)
+template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T> template <class LT, typename DerivedClass>
+void Continuum<NX,NY,NZ,T>::setBoundary(BoundaryCondition<NX,NY,NZ,LT,T,DerivedClass> const& boundary)
 {
-    for(size_t i = 0; i < boundary.size(); ++i)
+    for(size_t i = 0; i < boundary.boundaryElements_.size(); ++i)
     {
-        for (size_t m = 0; m < NM_; ++m)
-        {
-            M_[SpatialToLinear(boundary[i].x, boundary[i].y, boundary[i].z, m)] = static_cast<T>(0.0);
-        }
+        auto const& boundaryElement = boundary.boundaryElements_[i];
+        M_[spatialToLinear(boundaryElement.x, boundaryElement.y, boundaryElement.z, 0)] = boundaryElement.rho;
+        M_[spatialToLinear(boundaryElement.x, boundaryElement.y, boundaryElement.z, 1)] = boundaryElement.u;
+        M_[spatialToLinear(boundaryElement.x, boundaryElement.y, boundaryElement.z, 2)] = boundaryElement.v;
+        M_[spatialToLinear(boundaryElement.x, boundaryElement.y, boundaryElement.z, 3)] = boundaryElement.w;
     }
+
+    return;
 }
 
-
-/**\fn        Export
- * \brief     Export any scalar quantity at current time step to *.bin file writing to *.bin-files
- *            is significantly faster than using non-binary *.txt-files
- *
- * \param[in] name   the export file name of the scalar
- * \param[in] step   the current time step that will be used for the name
-*/
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T>
-void Continuum<NX,NY,NZ,T>::Export(std::string const& name, unsigned int const step) const
+void Continuum<NX,NY,NZ,T>::exportBin(std::string const& name, unsigned int const step) const
 {
     struct stat info;
 
@@ -60,20 +49,12 @@ void Continuum<NX,NY,NZ,T>::Export(std::string const& name, unsigned int const s
         std::cerr << "Fatal error: Directory '" << OUTPUT_BIN_PATH << "' not found." << std::endl;
         exit(EXIT_FAILURE);
     }
+
+    return;
 }
 
-
-/**\fn        ExportScalarVtk
- * \brief     Export arbitrary scalar at current time step to a *.vtk-file that can then be read
- *            by visualisation applications like ParaView.
- * \warning   *.vtk export is comparably slow! Better export to .bin-files and then convert them
- *            to *.vtk-files with the external converter app afterwards.
- *
- * \param[in] name   the export file name of the scalar
- * \param[in] step   the current time step that will be used for the name
-*/
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T>
-void Continuum<NX,NY,NZ,T>::ExportScalarVtk(unsigned int const m, std::string const& name, unsigned int const step) const
+void Continuum<NX,NY,NZ,T>::exportScalarVtk(unsigned int const m, std::string const& name, unsigned int const step) const
 {
     struct stat info;
 
@@ -118,7 +99,7 @@ void Continuum<NX,NY,NZ,T>::ExportScalarVtk(unsigned int const m, std::string co
             {
                 for(unsigned int x = 0; x < NX; ++x)
                 {
-                    fprintf(exportFile.get(), "%f\n", M_[SpatialToLinear(x, y, z, m)]);
+                    fprintf(exportFile.get(), "%f\n", M_[spatialToLinear(x, y, z, m)]);
                 }
             }
         }
@@ -128,18 +109,12 @@ void Continuum<NX,NY,NZ,T>::ExportScalarVtk(unsigned int const m, std::string co
         std::cerr << "Fatal error: Directory '" << OUTPUT_VTK_PATH << "' not found." << std::endl;
         exit(EXIT_FAILURE);
     }
+
+    return;
 }
 
-/**\fn        ExportVtk
- * \brief     Export velocity and density at current time step to a *.vtk-file that can then be
- *            read by visualisation applications like ParaView.
- * \warning   *.vtk export is comparably slow! Better export to .bin-files and then convert them
- *            to *.vtk-files with the external converter app afterwards.
- *
- * \param[in] step   the current time step that will be used for the name
-*/
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T>
-void Continuum<NX,NY,NZ,T>::ExportVtk(unsigned int const step) const
+void Continuum<NX,NY,NZ,T>::exportVtk(unsigned int const step) const
 {
     struct stat info;
 
@@ -184,7 +159,7 @@ void Continuum<NX,NY,NZ,T>::ExportVtk(unsigned int const step) const
             {
                 for(unsigned int x = 0; x < NX; ++x)
                 {
-                    fprintf(exportFile.get(), "%f\n", M_[SpatialToLinear(x, y, z, 0)]);
+                    fprintf(exportFile.get(), "%f\n", M_[spatialToLinear(x, y, z, 0)]);
                 }
             }
         }
@@ -196,9 +171,9 @@ void Continuum<NX,NY,NZ,T>::ExportVtk(unsigned int const step) const
             {
                 for(unsigned int x = 0; x < NX; ++x)
                 {
-                    fprintf(exportFile.get(), "%f %f %f\n", M_[SpatialToLinear(x, y, z, 1)],
-                                                            M_[SpatialToLinear(x, y, z, 2)],
-                                                            M_[SpatialToLinear(x, y, z, 3)]);
+                    fprintf(exportFile.get(), "%f %f %f\n", M_[spatialToLinear(x, y, z, 1)],
+                                                            M_[spatialToLinear(x, y, z, 2)],
+                                                            M_[spatialToLinear(x, y, z, 3)]);
                 }
             }
         }
@@ -208,6 +183,8 @@ void Continuum<NX,NY,NZ,T>::ExportVtk(unsigned int const step) const
         std::cerr << "Fatal error: Directory '" << OUTPUT_VTK_PATH << "' not found." << std::endl;
         exit(EXIT_FAILURE);
     }
+
+    return;
 }
 
 #endif // CONTINUUM_EXPORT_HPP_INCLUDED

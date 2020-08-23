@@ -1,9 +1,9 @@
-#ifndef CYLINDER_HPP_INCLUDED
-#define CYLINDER_HPP_INCLUDED
+#ifndef SPHERE_HPP_INCLUDED
+#define SPHERE_HPP_INCLUDED
 
 /**
- * \file     cylinder.hpp
- * \mainpage 3D cylinder sample geometry import
+ * \file     sphere.hpp
+ * \mainpage 3D sphere sample geometry import
 */
 
 #include <memory>
@@ -18,8 +18,8 @@
 #include "../population/boundary/boundary_type.hpp"
 
 
-/**\fn         cylinder3D
- * \brief      Load pre-defined scenario of a three-dimensional flow around cylinder
+/**\fn         Sphere3D
+ * \brief      Load pre-defined scenario of a three-dimensional flow around a sphere
  *
  * \tparam    NX            Simulation domain resolution in x-direction
  * \tparam    NY            Simulation domain resolution in y-direction
@@ -40,8 +40,8 @@
 */
 template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, typename T>
 std::tuple< Guo<type::Velocity,orientation::Left,NX,NY,NZ,LT,T>, Guo<type::Pressure,orientation::Right,NX,NY,NZ,LT,T>, HalfwayBounceBack<NX,NY,NZ,LT,T> >
-cylinder3D(std::shared_ptr<Population<NX,NY,NZ,LT>> population, unsigned int const radius, std::array<unsigned int,3> const& position,
-           std::string const& orientation, bool const isWalls, T const RHO, T const U, T const V, T const W, unsigned int p = 0)
+sphere3D(std::shared_ptr<Population<NX,NY,NZ,LT>> population, unsigned int const radius, std::array<unsigned int,3> const& position,
+         std::string const& orientation, bool const isWalls, T const RHO, T const U, T const V, T const W, unsigned int p = 0)
 {
     alignas(CACHE_LINE) std::vector<BoundaryElement<T>> wall;
     alignas(CACHE_LINE) std::vector<BoundaryElement<T>> inlet;
@@ -58,7 +58,7 @@ cylinder3D(std::shared_ptr<Population<NX,NY,NZ,LT>> population, unsigned int con
                 for(unsigned int x = 0; x < NX; ++x)
                 {
                     /// add to corresponding boundary
-                    if ((x-position[0])*(x-position[0]) + (y-position[1])*(y-position[1]) <= radius*radius)
+                    if ((x-position[0])*(x-position[0]) + (y-position[1])*(y-position[1]) + (z-position[2])*(z-position[2]) <= radius*radius)
                     {
                         wall.push_back(BoundaryElement<T>{x, y, z, RHO, 0, 0, 0});
                     }

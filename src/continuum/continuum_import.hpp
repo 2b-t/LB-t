@@ -15,14 +15,8 @@
 #include "../general/paths.hpp"
 
 
-/**\fn         Import
- * \brief      Import macroscopic values from *.bin-file
- *
- * \param[in]  name   the import file name holding the macroscopic quantities
- * \param[in]  step   the current time step that will be used for the name
-*/
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T>
-void Continuum<NX,NY,NZ,T>::Import(std::string const& name, unsigned int const step)
+void Continuum<NX,NY,NZ,T>::importBin(std::string const& name, unsigned int const step)
 {
     std::string const fileName = OUTPUT_BIN_PATH + std::string("/") + name + std::string("_") + std::to_string(step) + std::string(".bin");
 
@@ -35,6 +29,8 @@ void Continuum<NX,NY,NZ,T>::Import(std::string const& name, unsigned int const s
         std::cerr << "Fatal error: Could not import macroscopic values from disk." << std::endl;
         exit(EXIT_FAILURE);
     }
+
+    return;
 }
 
 #endif // CONTINUUM_IMPORT_HPP_INCLUDED

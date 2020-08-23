@@ -7,16 +7,16 @@
  *           can make use of evaluation and optimisation at compile time.
 */
 
+#include <cassert>
 #include <limits>
-#include <assert.h>
 
 namespace cef
 {
     /**\fn        cef::abs
      * \brief     Constexpr function for absolute value
      *
-     * \tparam    T      data type of the corresponding number
-     * \param[in] x      the number of interest
+     * \tparam    T      Data type of the corresponding number
+     * \param[in] x      The number of interest
      * \return    The absolute value of \param x
     */
     template <typename T = double>
@@ -29,9 +29,9 @@ namespace cef
      * \brief     Square root implementation with recursive Newton-Raphson method that can
      *            be evaluated as a constant expression at compile time
      *
-     * \param[in] x      the number of interest
-     * \param[in] curr   the result from the current iteration
-     * \param[in] prev   the result from the previous iteration
+     * \param[in] x      The number of interest
+     * \param[in] curr   The result from the current iteration
+     * \param[in] prev   The result from the previous iteration
      * \return    The square root of \param x
     */
     constexpr double sqrtNewton(double const x, double const curr, double const prev)
@@ -53,8 +53,8 @@ namespace cef
     /**\fn        cef::ceil
      * \brief     Ceiling function that can be evaluated as a constant expression at compile time
      *
-     * \tparam    T     data type of the corresponding number
-     * \param[in] num   the number that should be ceiled
+     * \tparam    T     Data type of the corresponding number
+     * \param[in] num   The number that should be ceiled
      * \return    The ceiled number \param num
     */
     template <typename T = double>

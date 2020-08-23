@@ -52,7 +52,6 @@ Make sure that the latter plug-in is copied to the `output/` folder and the file
 
 ## Planned features
 - Reducing code redundancy by introducing functions for e.g. the calculating the equilibrium distribution
-- Encapsulating collision operators into an appropriate class instead of using functions
 - [Latt's regularised](https://www.doi.org/10.1103/PhysRevE.77.056703) pressure and velocity boundaries
 - Entropic single relaxation time collision operator
 - [Interpolated bounce-back](https://www.doi.org/10.1063/1.1399290) for higher accuracy

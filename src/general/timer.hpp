@@ -9,6 +9,7 @@
 
 #include <chrono>
 
+
 /**\class Timer
  * \brief Class for stopwatch
 */
@@ -21,36 +22,40 @@ class Timer
         double                                         runtime_    = 0.0;                                       ///< double value of runtime in seconds
 
     public:
-        /**\fn    Start
+        /**\fn    start
          * \brief Start stopwatch
         */
-        void Start()
+        void start()
         {
             start_ = std::chrono::high_resolution_clock::now();
+
+            return;
         }
 
-        /**\fn     Stop
+        /**\fn     stop
          * \brief  Stop stopwatch
          *
          * \return Runtime in seconds
         */
-        double Stop()
+        double stop()
         {
             stop_       = std::chrono::high_resolution_clock::now();
             start_stop_ = std::chrono::duration_cast<std::chrono::duration<double>>(stop_ - start_);
             runtime_    = start_stop_.count();
+
             return runtime_;
         }
 
-        /**\fn     GetRuntime
+        /**\fn     getRuntime
          * \brief  Return runtime in seconds
          *
          * \return Runtime in seconds
         */
-        double GetRuntime()
+        double getRuntime()
         {
             std::chrono::high_resolution_clock::time_point const       current_ = std::chrono::high_resolution_clock::now();
             std::chrono::duration<double>                  const start_current_ = std::chrono::duration_cast<std::chrono::duration<double>>(current_ - start_);
+
             return start_current_.count();
         }
 };

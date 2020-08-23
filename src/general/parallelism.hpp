@@ -30,41 +30,41 @@
             */
             Parallelism();
 
-            /**\fn        SetNestedParallelism
+            /**\fn        setNestedParallelism
              * \brief     Activate nested parallelism (parallel environment within parallel environment)
              *
-             * \param[in] nested  boolean true/false parameter
+             * \param[in] nested   Boolean true/false parameter
             */
-            void SetNestedParallelism(bool const nested);
+            void setNestedParallelism(bool const nested);
 
-            /**\fn        SetThreadsNum
+            /**\fn        setThreadsNum
              * \brief     Change number of used threads.
              *
-             * \param[in] threads_set  number of wished threads (max is given by threads_max)
+             * \param[in] threads_set   Number of wished threads (max is given by threads_max)
              * \return    Return exit success or failure
             */
-            int SetThreadsNum(int const threads_num);
+            int setThreadsNum(int const threads_num);
 
-            /**\fn        GetThreadsMax
+            /**\fn        getThreadsMax
              * \brief     Get number of maximum number of possible threads.
              *
              * \return    Return maximum number of possible threads
             */
-            int GetThreadsMax();
+            int getThreadsMax();
 
-            /**\fn        GetThreadsMax
+            /**\fn        getThreadsMax
              * \brief     Get number of actively set threads.
              *
              * \return    Return number of active threads
             */
-            int GetThreadsNum();
+            int getThreadsNum();
 
-            /**\fn        GetThreadsCurr
+            /**\fn        getThreadsCurr
              * \brief     Get number of threads currently active in a particular parallel region.
              *
              * \return    Return number of threads currently active in parallel region
             */
-            int GetThreadsCurr();
+            int getThreadsCurr();
     };
 #endif
 

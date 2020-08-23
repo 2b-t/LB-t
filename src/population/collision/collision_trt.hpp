@@ -12,51 +12,97 @@
     #include <omp.h>
 #endif
 
-#include "../../general/memory_alignment.hpp"
 #include "../../continuum/continuum.hpp"
+#include "../../general/memory_alignment.hpp"
 #include "../population.hpp"
+#include "collision.hpp"
 
-/**\fn            CollideStreamTRT
- * \brief         TRT collision operator for arbitrary lattice
- * \note          "Two-relaxation-time Lattice Boltzmann scheme: about parametrization, velocity,
- *                pressure and mixed boundary conditions"
- *                I. Ginzburg, F. Verhaeghe, D. Humiéres
- *                Communications in Computational Physics Vol. 3 (2008)
- *                Online: http://global-sci.org/intro/article_detail/cicp/7862.html
- *
- * \tparam        odd    even (0, false) or odd (1, true) time step
- * \tparam        NX     simulation domain resolution in x-direction
- * \tparam        NY     simulation domain resolution in y-direction
- * \tparam        NZ     simulation domain resolution in z-direction
- * \tparam        LT     static lattice::DdQq class containing discretisation parameters
- * \tparam        T      floating data type used for simulation
- * \param[out]    con    continuum object holding macroscopic variables
- * \param[in,out] pop    population object holding microscopic variables
- * \param[in]     save   save current macroscopic values to disk (Boolean true/false)
- * \param[in]     p      relevant population (default = 0)
+
+/**\class  TRT
+ * \brief  TRT collision operator for arbitrary lattice
+ * \note   "A Model for Collision Processes in Gases. I. Small Amplitude Processes in Charged
+ *          and Neutral One-Component Systems"
+ *         P.L. Bhatnagar, E.P. Gross, M. Krook
+ *         Physical Review 94 (1954)
+ *         DOI: 10.1103/PhysRev.94.511
+ * 
+ * \tparam NX   Simulation domain resolution in x-direction
+ * \tparam NY   Simulation domain resolution in y-direction
+ * \tparam NZ   Simulation domain resolution in z-direction
+ * \tparam LT   Static lattice::DdQq class containing discretisation parameters
+ * \tparam T    Floating data type used for simulation
 */
-template <bool odd, unsigned int NX, unsigned int NY, unsigned int NZ, class LT, typename T>
-void CollideStreamTRT(Continuum<NX,NY,NZ,T>& con, Population<NX,NY,NZ,LT>& pop, bool const save = false, unsigned int const p = 0)
+template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, typename T>
+class TRT: public CollisionOperator<NX,NY,NZ,LT,T,TRT<NX,NY,NZ,LT,T>>
 {
-    #pragma omp parallel for default(none) shared(con, pop) firstprivate(save,p) schedule(static,1)
-    for(unsigned int block = 0; block < pop.NUM_BLOCKS_; ++block)
+    using CO = CollisionOperator<NX,NY,NZ,LT,T,TRT<NX,NY,NZ,LT,T>>; 
+
+    public:
+        /**\brief     Constructor
+         * 
+         * \param[in] population   Population object holding microscopic distributions
+         * \param[in] continuum    Continuum object holding macroscopic variables
+         * \param[in] Re           The Reynolds number
+         * \param[in] U            The macroscopic velocity
+         * \param[in] L            The characteristic length
+         * \param[in] p            Index of relevant population
+         * \param[in] lambda       Magic parameter of TRT collision operator
+        */
+        TRT(std::shared_ptr<Population<NX,NY,NZ,LT>> population, std::shared_ptr<Continuum<NX,NY,NZ,T>> continuum, 
+            T const Re, T const U, unsigned int const L, unsigned int const p = 0, T const lambda = 0.25):
+            CO(population, continuum, p), population_(population), continuum_(continuum), p_(p),
+            nu_(U*static_cast<T>(L) / Re), 
+            lambda_(lambda),
+            tau_p_(nu_/(LT::CS*LT::CS) + 1.0/ 2.0), omega_p_(1.0/tau_p_),
+            omega_m_((tau_p_ - 1.0/2.0) / (lambda_ + 1.0/2.0*( tau_p_ - 1.0/2.0)))
+        {
+            return;
+        }
+
+        /**\fn        implementation
+         * \brief     Implementation of the TRT collision operator
+         * 
+         * \tparam    AA       The timestep in the AA-pattern
+         * \param[in] isSave   Boolean parameter whether the macroscopic values should be saved or not
+        */
+        template<timestep AA>
+        void implementation(bool const isSave);
+
+    protected:
+        std::shared_ptr<Population<NX,NY,NZ,LT>> population_;
+        std::shared_ptr<Continuum<NX,NY,NZ,T>>   continuum_;
+        unsigned int const p_;
+
+        T const nu_;
+        T const lambda_;
+        T const tau_p_;
+        T const omega_p_;
+        T const omega_m_;
+};
+
+
+template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, typename T> template<timestep AA>
+void TRT<NX,NY,NZ,LT,T>::implementation(bool const isSave)
+{
+    #pragma omp parallel for default(none) shared(continuum_,population_) firstprivate(isSave,p_) schedule(static,1)
+    for(unsigned int block = 0; block < CO::NUM_BLOCKS_; ++block)
     {
-        unsigned int const z_start = pop.BLOCK_SIZE_ * (block / (pop.NUM_BLOCKS_X_*pop.NUM_BLOCKS_Y_));
-        unsigned int const   z_end = std::min(z_start + pop.BLOCK_SIZE_, NZ);
+        unsigned int const z_start = CO::BLOCK_SIZE_ * (block / (CO::NUM_BLOCKS_X_*CO::NUM_BLOCKS_Y_));
+        unsigned int const   z_end = std::min(z_start + CO::BLOCK_SIZE_, NZ);
 
         for(unsigned int z = z_start; z < z_end; ++z)
         {
             unsigned int const z_n[3] = { (NZ + z - 1) % NZ, z, (z + 1) % NZ };
 
-            unsigned int const y_start = pop.BLOCK_SIZE_*((block % (pop.NUM_BLOCKS_X_*pop.NUM_BLOCKS_Y_)) / pop.NUM_BLOCKS_X_);
-            unsigned int const   y_end = std::min(y_start + pop.BLOCK_SIZE_, NY);
+            unsigned int const y_start = CO::BLOCK_SIZE_*((block % (CO::NUM_BLOCKS_X_*CO::NUM_BLOCKS_Y_)) / CO::NUM_BLOCKS_X_);
+            unsigned int const   y_end = std::min(y_start + CO::BLOCK_SIZE_, NY);
 
             for(unsigned int y = y_start; y < y_end; ++y)
             {
                 unsigned int const y_n[3] = { (NY + y - 1) % NY, y, (y + 1) % NY };
 
-                unsigned int const x_start = pop.BLOCK_SIZE_*(block % pop.NUM_BLOCKS_X_);
-                unsigned int const   x_end = std::min(x_start + pop.BLOCK_SIZE_, NX);
+                unsigned int const x_start = CO::BLOCK_SIZE_*(block % CO::NUM_BLOCKS_X_);
+                unsigned int const   x_end = std::min(x_start + CO::BLOCK_SIZE_, NX);
 
                 for(unsigned int x = x_start; x < x_end; ++x)
                 {
@@ -71,7 +117,7 @@ void CollideStreamTRT(Continuum<NX,NY,NZ,T>& con, Population<NX,NY,NZ,LT>& pop, 
                         #pragma GCC unroll (16)
                         for(unsigned int d = n; d < LT::HSPEED; ++d)
                         {
-                            f[n*LT::OFF + d] = pop.F_[pop. template AA_IndexRead<odd>(x_n,y_n,z_n,n,d,p)];
+                            f[n*LT::OFF + d] = population_->F_[population_-> template AA_IndexRead<AA>(x_n,y_n,z_n,n,d,p_)];
                         }
                     }
 
@@ -97,12 +143,12 @@ void CollideStreamTRT(Continuum<NX,NY,NZ,T>& con, Population<NX,NY,NZ,LT>& pop, 
                     v /= rho;
                     w /= rho;
 
-                    if (save == true)
+                    if (isSave == true)
                     {
-                        con(x, y, z, 0) = rho;
-                        con(x, y, z, 1) = u;
-                        con(x, y, z, 2) = v;
-                        con(x, y, z, 3) = w;
+                        continuum_->operator()(x, y, z, 0) = rho;
+                        continuum_->operator()(x, y, z, 1) = u;
+                        continuum_->operator()(x, y, z, 2) = v;
+                        continuum_->operator()(x, y, z, 3) = w;
                     }
 
                     /// equilibrium distributions
@@ -134,21 +180,23 @@ void CollideStreamTRT(Continuum<NX,NY,NZ,T>& con, Population<NX,NY,NZ,LT>& pop, 
                     }
 
                     /// collision and streaming
-                    pop.F_[pop. template AA_IndexWrite<odd>(x_n,y_n,z_n,0,0,p)] = f[0] + pop.OMEGA_*(feq[0] - f[0]);
+                    population_->F_[population_-> template AA_IndexWrite<AA>(x_n,y_n,z_n,0,0,p_)] = f[0] + omega_p_*(feq[0] - f[0]);
                     #pragma GCC unroll (15)
                     for(unsigned int d = 1; d < LT::HSPEED; ++d)
                     {
-                        pop.F_[pop. template AA_IndexWrite<odd>(x_n,y_n,z_n,0,d,p)] = f[d] - pop.OMEGA_*fp[d] - pop.OMEGA_M_*fm[d];
+                        population_->F_[population_-> template AA_IndexWrite<AA>(x_n,y_n,z_n,0,d,p_)] = f[d] - omega_m_*fp[d] - omega_m_*fm[d];
                     }
                     #pragma GCC unroll (15)
                     for(unsigned int d = 1; d < LT::HSPEED; ++d)
                     {
-                        pop.F_[pop. template AA_IndexWrite<odd>(x_n,y_n,z_n,1,d,p)] = f[LT::OFF + d] - pop.OMEGA_*fp[d] + pop.OMEGA_M_*fm[d];
+                        population_->F_[population_-> template AA_IndexWrite<AA>(x_n,y_n,z_n,1,d,p_)] = f[LT::OFF + d] - omega_p_*fp[d] + omega_m_*fm[d];
                     }
                 }
             }
         }
     }
+
+    return;
 }
 
 #endif //COLLISION_TRT_HPP_INCLUDED

@@ -7,25 +7,26 @@
  * \warning  Static classes with more complex members such as std::vector and std::array require C++17
 */
 
-#include <memory>
 #include <array>
+#include <memory>
 
 #include "../general/constexpr_func.hpp"
 #include "../general/memory_alignment.hpp"
 
+
 namespace lattice
 {
-    /**\class    lattice::D3Q19
-     * \brief    Class for D3Q19 lattice
+    /**\class    lattice::D3Q19P20
+     * \brief    Class for D3Q19P20 lattice with padding to 20
      * \note     "Lattice BGK models for Navier-Stokes equation"
      *           Y.H. Qian, D. D'Humières, P. Lallemand
      *           Europhysics Letters (EPL) Vol. 17 (1992)
      *           DOI: 10.1209/0295-5075/17/6/001
      *
-     * \tparam   T   floating data type used for simulation
+     * \tparam   T   Floating data type used for simulation
     */
     template <typename T = double>
-    class D3Q19 final
+    class D3Q19P20 final
     {
         public:
             /// lattice discretisation parameters
@@ -40,7 +41,7 @@ namespace lattice
 
             /// discrete velocities
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> DX =
-            { 0,  1,  0,  0,  1,  1,  1,  1,  0,  0,       //postive velocities
+            { 0,  1,  0,  0,  1,  1,  1,  1,  0,  0,       //positive velocities
               0, -1,  0,  0, -1, -1, -1, -1,  0,  0 };     //negative velocities
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> DY =
             { 0,  0,  1,  0,  1, -1,  0,  0,  1,  1,
@@ -68,6 +69,9 @@ namespace lattice
             /// lattice speed of sound
             static constexpr T CS = 1.0/cef::sqrt(3.0);
     };
+    
+    /// Alias default lattice
+    template<typename T> using D3Q19 = D3Q19P20<T>;
 }
 
 #endif // D3Q19_HPP_INCLUDED
