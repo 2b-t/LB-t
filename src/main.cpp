@@ -28,7 +28,7 @@ int main(int argc, char** argv)
     /// set up OpenMP ------------------------------------------------------------------------------
     #ifdef _OPENMP
         Parallelism openMP;
-        openMP.setThreadsNum(2);
+        //openMP.setThreadsNum(2);
     #endif
 
     /// print disclaimer ---------------------------------------------------------------------------
