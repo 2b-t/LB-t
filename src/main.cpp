@@ -28,7 +28,7 @@ int main(int argc, char** argv)
     /// set up OpenMP ------------------------------------------------------------------------------
     #ifdef _OPENMP
         Parallelism openMP;
-        //openMP.setThreadsNum(2);
+        openMP.setThreadsNum(2);
     #endif
 
     /// print disclaimer ---------------------------------------------------------------------------
@@ -67,7 +67,7 @@ int main(int argc, char** argv)
     constexpr unsigned int NT = 10000;
 
     // physics
-    constexpr F_TYPE      Re = 1000.0;
+    constexpr F_TYPE      Re = 11000.0;
     constexpr F_TYPE       U = 0.05;
     constexpr unsigned int L = NY/5;
 
@@ -90,7 +90,7 @@ int main(int argc, char** argv)
     /// set up geometry and boundary conditions ----------------------------------------------------
     constexpr unsigned int radius = L/2;
     constexpr std::array<unsigned int,3> position = {NX/4, NY/2, NZ/2};
-    auto [inlet, outlet, wall] = cylinder3D(micro, radius, position, "x", true, RHO_0, U_0, V_0, W_0);
+    auto [inlet, outlet, wall] = geometry::sphere3D(micro, radius, position, "x", true, RHO_0, U_0, V_0, W_0);
 
     /// set collision operator and initialise domain -----------------------------------------------
     BGK_Smagorinsky collisionOperator {micro, macro, Re, U, L};

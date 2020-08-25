@@ -1,4 +1,4 @@
-# LB-t - A parallel lattice-Boltzmann CFD solver
+# LB-t - A parallel 3D lattice-Boltzmann CFD solver
 
 *Author: Tobit Flatscher (December 2019 - August 2020)
 
@@ -25,10 +25,11 @@ Make sure that the latter plug-in is copied to the `output/` folder and the file
 
 ## Implemented optimisations
 - [Linear memory layout](https://www.springer.com/gp/book/9783319446479) with propietary vectorisation-friendly lattice numbering scheme
-- Indexing with [A-A pattern](https://www.doi.org/10.1109/ICPP.2009.38) for reduced memory bandwith and better parallel scalability
+- One grid algorithm with [A-A pattern](https://www.doi.org/10.1109/ICPP.2009.38) indexing for reduced memory bandwith and better parallel scalability
+- Fused collision and streaming step and reversely applied boundary conditions for reduced memory bandwith and better parallel scalability
 - Three dimensional [loop blocking](https://www.doi.org/10.1142/S0129626403001501) for improved cache-reuse and better parallel scalability
 - 64-byte cache-line alignment of all relevant arrays for vectorisation
-- `AVX2` and `AVX512` manual [intrinsics](https://www.apress.com/gp/book/9781484200643) collision kernels
+- Manual `AVX2` and `AVX512` [intrinsics](https://www.apress.com/gp/book/9781484200643) collision kernels
 - Frequent use of `const` and `constexpr`, `static` variables, `templates` and macros/pre-processor directives for compile time optimisations
 - [Curiously Recurring Template Pattern (CRTP)](https://eli.thegreenplace.net/2011/05/17/the-curiously-recurring-template-pattern-in-c/) for compile-time static polymorphism
 - Indexing functions as `inline` functions for reduced overhead

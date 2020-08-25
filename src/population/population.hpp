@@ -31,7 +31,7 @@ enum class timestep: bool { even = false, odd = true };
  */
 constexpr timestep operator ! (timestep const& ts)
 {
-    return ts == timestep::even ? timestep::odd : timestep::even;
+    return (ts == timestep::even) ? timestep::odd : timestep::even;
 }
 
 
