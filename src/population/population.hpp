@@ -13,6 +13,9 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
+#ifdef _WIN32
+#include <malloc.h>
+#endif
 #include <memory>
 #include <string>
 
@@ -83,7 +86,11 @@ class Population
         ~Population()
         {
             std::cout << "See you, comrade!" << std::endl;
+            #ifdef _WIN32
+            _aligned_free(F_);
+            #else
             std::free(F_);
+            #endif
 
             return;
         }
@@ -221,7 +228,11 @@ class Population
         static constexpr size_t  MEM_SIZE_ = sizeof(T)*NZ*NY*NX*NPOP*static_cast<size_t>(ND_);
 
         /// pointer to population
+        #ifdef _WIN32
+        T* const F_ = static_cast<T*>(_aligned_malloc(MEM_SIZE_, CACHE_LINE));
+        #else
         T* const F_ = static_cast<T*>(std::aligned_alloc(CACHE_LINE, MEM_SIZE_));
+        #endif
 };
 
 /// include related header files

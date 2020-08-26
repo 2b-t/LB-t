@@ -7,6 +7,7 @@
 */
 
 #include <iostream>
+#include <filesystem>
 #include <fstream>
 #include <memory>
 #include <sstream>
@@ -18,15 +19,18 @@
 template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP>
 void Population<NX,NY,NZ,LT,NPOP>::importBin(std::string const& name)
 {
+    std::filesystem::create_directory(BACKUP_EXPORT_PATH);
+    
     std::string const fileName = BACKUP_IMPORT_PATH + std::string("/") + name + std::string(".bin");
+    auto const importFile = std::unique_ptr<FILE, decltype(&fclose)>( fopen(fileName.c_str(), "rb+"), &fclose );
 
-    if(auto const importFile = std::unique_ptr<FILE, decltype(&fclose)>( fopen(fileName.c_str(), "rb+"), &fclose ) != nullptr)
+    if(importFile != nullptr)
     {
-        fread(F_, 1, MEM_SIZE_, importFile);
+        fread(F_, 1, MEM_SIZE_, importFile.get());
     }
     else
     {
-        std::cerr << "Fatal error: Could not import population from disk." << std::endl;
+        std::cerr << "Fatal Error: File '" << fileName << "' could not be opened." << std::endl;
         std::exit(EXIT_FAILURE);
     }
 
@@ -36,18 +40,18 @@ void Population<NX,NY,NZ,LT,NPOP>::importBin(std::string const& name)
 template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP>
 void Population<NX,NY,NZ,LT,NPOP>::exportBin(std::string const& name) const
 {
-    struct stat info;
+    std::filesystem::create_directory(BACKUP_EXPORT_PATH);
 
-    if (stat(BACKUP_EXPORT_PATH.c_str(), &info) == 0 && S_ISDIR(info.st_mode))
+    std::string const fileName = BACKUP_EXPORT_PATH + std::string("/") + name + std::string(".bin");
+    auto const exportFile = std::unique_ptr<FILE, decltype(&fclose)>( fopen(fileName.c_str(), "wb+"), &fclose );
+
+    if (exportFile != nullptr)
     {
-        std::string const fileName = BACKUP_EXPORT_PATH + std::string("/") + name + std::string(".bin");
-        auto const exportFile = std::unique_ptr<FILE, decltype(&fclose)>( fopen(fileName.c_str(), "wb+"), &fclose );
-
-        fwrite(F_, 1, MEM_SIZE_, exportFile);
+        fwrite(F_, 1, MEM_SIZE_, exportFile.get());
     }
     else
     {
-        std::cerr << "Fatal error: Directory '" << BACKUP_EXPORT_PATH << "' not found." << std::endl;
+        std::cerr << "Fatal Error: File '" << fileName << "' could not be opened." << std::endl;
         std::exit(EXIT_FAILURE);
     }
 

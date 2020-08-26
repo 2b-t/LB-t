@@ -14,6 +14,9 @@
 #include <cstring>
 #include <iostream>
 #include <memory>
+#ifdef _WIN32
+#include <malloc.h>
+#endif
 #include <string>
 #include <vector>
 
@@ -64,7 +67,11 @@ class Continuum
         */
         ~Continuum()
         {
+            #ifdef _WIN32
+            _aligned_free(M_);
+            #else
             std::free(M_);
+            #endif
 
             return;
         }
@@ -157,7 +164,11 @@ class Continuum
         static constexpr size_t MEM_SIZE_ = sizeof(T)*NZ*NY*NX*static_cast<size_t>(NM_); // size of array in byte
 
         /// population allocated in heap
+        #ifdef _WIN32
+        T* const M_ = static_cast<T*>(_aligned_malloc(MEM_SIZE_, CACHE_LINE));
+        #else
         T* const M_ = static_cast<T*>(std::aligned_alloc(CACHE_LINE, MEM_SIZE_));
+        #endif
 };
 
 #include "continuum_indexing.hpp"
