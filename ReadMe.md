@@ -11,6 +11,8 @@ I started with this project after programming a C-style framework (D2Q9 and D3Q1
 This code is a **work in progress** with the goal to achieve similar or better performance with modern C++ features making it significantly more generic.
 
 ## Installation
+
+### Linux
 Copy this folder or directly **clone this repository** by typing
 ```
 $ git clone https://github.com/2b-t/LB-t.git
@@ -19,7 +21,13 @@ $ git clone https://github.com/2b-t/LB-t.git
 ```
 $ make run
 ```
-in your Linux shell or open the `LB-t.cbp` file in [Code::Blocks](http://www.codeblocks.org/). In the latter case use the Release and not the Debug configuration and make sure that directories `backup/`, `output/bin/` and `output/vtk/` exist. In the case of the Makefile they are created automatically.
+in your Linux shell or open the `LB-t.cbp` file in [Code::Blocks](http://www.codeblocks.org/). In case you have issues make sure Make is installed `sudo apt-get install build-essential`and your GCC version is greater than 8. You can install a newer GCC by typing `sudo apt install gcc-10`. 
+
+### Windows
+Under Windows you have to make sure an appropriate 64-bit compiler that supports C++17 is installed. Here some options
+- [TDM-GCC](https://jmeubank.github.io/tdm-gcc/) inside [Code::Blocks](http://www.codeblocks.org/): Be sure that the version of TDM-GCC is 8 or higher and when selecting components don't forget to select `gcc/openmp`. Then continue to [setup TDM-GCC](http://forums.codeblocks.org/index.php?topic=21570.0) and [OpenMP](https://stackoverflow.com/a/58546530/9938686) inside Code::Blocks. Download this repository and open the Code::Blocks file. Be sure to change the selected compiler in `Project build options` to your newly configured 64-bit compiler and choose the policy `Append target options to project options`.
+- [MSys2](https://www.msys2.org/) and Makefile: Download and install MSys2, open it and [download OpenMp by typing `pacman -S mingw-w64-x86_64-openmp`](https://packages.msys2.org/package/mingw-w64-x86_64-openmp?repo=mingw64) and [Make by typing `pacman -S mingw-w64-x86_64-make`](https://packages.msys2.org/package/mingw-w64-x86_64-make). Finally download the repository, browse it inside the MSys2 shell by typing `cd 'C:\<directory>' and type `$ make run`.
+
 For visualisation there are two options available: Either you can output `.vtk`-files and display them in [Paraview](https://www.paraview.org/) or export the results as `.bin` and use Matlab or Octave with the [simple visualisation file I have written](https://github.com/2b-t/CFD-visualisation.git).
 Make sure that the latter plug-in is copied to the `output/` folder and the files are exported as `*.bin`.
 
