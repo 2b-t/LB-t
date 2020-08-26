@@ -7,7 +7,7 @@
 */
 
 #include <memory>
-#include <string.h>
+#include <string>
 #include <tuple>
 #include <vector>
 
@@ -86,7 +86,7 @@ namespace geometry
         else
         {
             std::cerr << "Warning: Geometry orientation " << orientation << " not found." << std::endl;
-            exit(EXIT_FAILURE);
+            std::exit(EXIT_FAILURE);
         }
         
         return { Guo<type::Velocity,orientation::Left,NX,NY,NZ,LT,T>(population, inlet, p),

@@ -10,7 +10,7 @@
 #include <fstream>
 #include <memory>
 #include <sstream>
-#include <string.h>
+#include <string>
 
 #include "../general/paths.hpp"
 
@@ -26,8 +26,8 @@ void Population<NX,NY,NZ,LT,NPOP>::importBin(std::string const& name)
     }
     else
     {
-        std::cerr << "Error: Could not import population from disk." << std::endl;
-        exit(EXIT_FAILURE);
+        std::cerr << "Fatal error: Could not import population from disk." << std::endl;
+        std::exit(EXIT_FAILURE);
     }
 
     return;
@@ -48,7 +48,7 @@ void Population<NX,NY,NZ,LT,NPOP>::exportBin(std::string const& name) const
     else
     {
         std::cerr << "Fatal error: Directory '" << BACKUP_EXPORT_PATH << "' not found." << std::endl;
-        exit(EXIT_FAILURE);
+        std::exit(EXIT_FAILURE);
     }
 
     return;

@@ -6,12 +6,12 @@
  * \mainpage Class members for exporting macroscopic values
 */
 
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <memory>
 #include <sstream>
 #include <string>
-#include <sys/stat.h>
 #include <vector>
 
 #include "../population/boundary/boundary.hpp"
@@ -36,18 +36,19 @@ void Continuum<NX,NY,NZ,T>::setBoundary(BoundaryCondition<NX,NY,NZ,LT,T,DerivedC
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T>
 void Continuum<NX,NY,NZ,T>::exportBin(std::string const& name, unsigned int const step) const
 {
-    struct stat info;
+    std::filesystem::create_directory(OUTPUT_BIN_PATH);
 
-    if (stat(OUTPUT_BIN_PATH.c_str(), &info) == 0 && S_ISDIR(info.st_mode))
+    std::string const fileName = OUTPUT_BIN_PATH + std::string("/") + name + std::string("_") + std::to_string(step) + std::string(".bin");
+    auto const exportFile = std::unique_ptr<FILE, decltype(&fclose)>( fopen(fileName.c_str(), "wb+"), &fclose );
+
+    if (exportFile != nullptr)
     {
-        std::string const fileName = OUTPUT_BIN_PATH + std::string("/") + name + std::string("_") + std::to_string(step) + std::string(".bin");
-        auto const exportFile = std::unique_ptr<FILE, decltype(&fclose)>( fopen(fileName.c_str(), "wb+"), &fclose );
         fwrite(M_, 1, MEM_SIZE_, exportFile.get());
     }
     else
     {
-        std::cerr << "Fatal error: Directory '" << OUTPUT_BIN_PATH << "' not found." << std::endl;
-        exit(EXIT_FAILURE);
+        std::cerr << "Fatal Error: File '" << fileName << "' could not be opened." << std::endl;
+        std::exit(EXIT_FAILURE);
     }
 
     return;
@@ -56,13 +57,13 @@ void Continuum<NX,NY,NZ,T>::exportBin(std::string const& name, unsigned int cons
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T>
 void Continuum<NX,NY,NZ,T>::exportScalarVtk(unsigned int const m, std::string const& name, unsigned int const step) const
 {
-    struct stat info;
+    std::filesystem::create_directory(OUTPUT_VTK_PATH);
+    
+    std::string const fileName = OUTPUT_VTK_PATH + std::string("/") + name + std::string("_") + std::to_string(step) + std::string(".vtk");
+    auto const exportFile = std::unique_ptr<FILE, decltype(&fclose)>( fopen(fileName.c_str(), "w"), &fclose );
 
-    if (stat(OUTPUT_VTK_PATH.c_str(), &info) == 0 && S_ISDIR(info.st_mode))
+    if (exportFile != nullptr)
     {
-        std::string const fileName = OUTPUT_VTK_PATH + std::string("/") + name + std::string("_") + std::to_string(step) + std::string(".vtk");
-        auto const exportFile = std::unique_ptr<FILE, decltype(&fclose)>( fopen(fileName.c_str(), "w"), &fclose );
-
         fprintf(exportFile.get(), "# vtk DataFile Version 3.0\n");
         fprintf(exportFile.get(), "LBM CFD simulation scalar %s\n", name.c_str());
         fprintf(exportFile.get(), "ASCII\n");
@@ -106,8 +107,8 @@ void Continuum<NX,NY,NZ,T>::exportScalarVtk(unsigned int const m, std::string co
     }
     else
     {
-        std::cerr << "Fatal error: Directory '" << OUTPUT_VTK_PATH << "' not found." << std::endl;
-        exit(EXIT_FAILURE);
+        std::cerr << "Fatal Error: File '" << fileName << "' could not be opened." << std::endl;
+        std::exit(EXIT_FAILURE);
     }
 
     return;
@@ -116,13 +117,13 @@ void Continuum<NX,NY,NZ,T>::exportScalarVtk(unsigned int const m, std::string co
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T>
 void Continuum<NX,NY,NZ,T>::exportVtk(unsigned int const step) const
 {
-    struct stat info;
+    std::filesystem::create_directory(OUTPUT_VTK_PATH);
+    
+    std::string const fileName = OUTPUT_VTK_PATH + std::string("/Export_") + std::to_string(step) + std::string(".vtk");
+    auto const exportFile = std::unique_ptr<FILE, decltype(&fclose)>( fopen(fileName.c_str(), "w"), &fclose );
 
-    if (stat(OUTPUT_VTK_PATH.c_str(), &info) == 0 && S_ISDIR(info.st_mode))
+    if (exportFile != nullptr)
     {
-        std::string const fileName = OUTPUT_VTK_PATH + std::string("/Export_") + std::to_string(step) + std::string(".vtk");
-        auto const exportFile = std::unique_ptr<FILE, decltype(&fclose)>( fopen(fileName.c_str(), "w"), &fclose );
-
         fprintf(exportFile.get(), "# vtk DataFile Version 3.0\n");
         fprintf(exportFile.get(), "LBM CFD simulation velocity\n");
         fprintf(exportFile.get(), "ASCII\n");
@@ -180,8 +181,8 @@ void Continuum<NX,NY,NZ,T>::exportVtk(unsigned int const step) const
     }
     else
     {
-        std::cerr << "Fatal error: Directory '" << OUTPUT_VTK_PATH << "' not found." << std::endl;
-        exit(EXIT_FAILURE);
+        std::cerr << "Fatal Error: File '" << fileName << "' could not be opened." << std::endl;
+        std::exit(EXIT_FAILURE);
     }
 
     return;

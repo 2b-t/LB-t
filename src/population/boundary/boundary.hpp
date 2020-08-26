@@ -35,7 +35,7 @@ struct BoundaryElement
 
 /**\class BoundaryCondition
  * \brief Base class for all boundary conditions
- * 
+ *
  * \tparam NX             Simulation domain resolution in x-direction
  * \tparam NY             Simulation domain resolution in y-direction
  * \tparam NZ             Simulation domain resolution in z-direction
@@ -50,7 +50,7 @@ class BoundaryCondition
         /**\fn     beforeCollisionOperator
          * \brief  Curiously Recurring Template Pattern (CRTP) for static polymorphism of the part of the boundary
          *         condition to be performed before collision
-         * 
+         *
          * \tparam AA   The timestep in the AA-pattern
         */
         template <timestep AA>
@@ -64,7 +64,7 @@ class BoundaryCondition
         /**\fn     afterCollisionOperator
          * \brief  Curiously Recurring Template Pattern (CRTP) for static polymorphism of the part of the boundary
          *         condition to be performed after collision
-         * 
+         *
          * \tparam AA   The timestep in the AA-pattern
         */
         template <timestep AA>
@@ -76,17 +76,17 @@ class BoundaryCondition
         }
 
         std::vector<BoundaryElement<T>> const boundaryElements_; ///< public in order to avoid circular dependency with continuum
-        
+
     protected:
         /**\brief     Constructor
-         * 
+         *
          * \param[in] population         Population object holding microscopic distributions
          * \param[in] boundaryElements   Elements making up the boundary
          * \param[in] p                  Index of relevant population
         */
-        BoundaryCondition(std::shared_ptr<Population<NX,NY,NZ,LT>> population, std::vector<BoundaryElement<T>> boundaryElements, 
+        BoundaryCondition(std::shared_ptr<Population<NX,NY,NZ,LT>> population, std::vector<BoundaryElement<T>> boundaryElements,
                           unsigned int const p = 0):
-            population_(population), boundaryElements_(boundaryElements), p_(p)
+            boundaryElements_(boundaryElements), population_(population), p_(p)
         {
             return;
         }

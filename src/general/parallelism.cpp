@@ -3,7 +3,7 @@
 #if __has_include (<omp.h>)
     #include <omp.h>
 #endif
-#include <stdlib.h>
+#include <cstdlib>
 
 
 #ifdef _OPENMP

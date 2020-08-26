@@ -7,10 +7,10 @@
 */
 
 #include <iostream>
+#include <filesystem>
 #include <fstream>
 #include <sstream>
-#include <string.h>
-#include <sys/stat.h>
+#include <string>
 
 #include "../general/paths.hpp"
 #include "../population/population.hpp"
@@ -33,46 +33,43 @@
 template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, typename T>
 void exportParameters(unsigned int const NT, T const Re, T const RHO_0, T const U, unsigned int const L)
 {
-    struct stat info;
+    std::filesystem::create_directory(OUTPUT_BIN_PATH);
 
-    if (stat(OUTPUT_BIN_PATH.c_str(), &info) == 0 && S_ISDIR(info.st_mode))
-    {
-        std::string const fileName = OUTPUT_BIN_PATH + std::string("/parameters.txt");
-        FILE * const exportFile = fopen(fileName.c_str(), "w");
+    std::string const fileName = OUTPUT_BIN_PATH + std::string("/parameters.txt");
+    auto const exportFile = std::unique_ptr<FILE, decltype(&fclose)>( fopen(fileName.c_str(), "w"), &fclose );
 
-        fprintf(exportFile, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-        fprintf(exportFile, "~                           ~\n");
-        fprintf(exportFile, "~      LB-t                 ~\n");
-        fprintf(exportFile, "~      2019-2020            ~\n");
-        fprintf(exportFile, "~      Tobit Flatscher      ~\n");
-        fprintf(exportFile, "~      github.com/2b-t      ~\n");
-        fprintf(exportFile, "~      Parameter file       ~\n");
-        fprintf(exportFile, "~                           ~\n");
-        fprintf(exportFile, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-        fprintf(exportFile, "\n");
-        fprintf(exportFile, "~~~~~Spatial resolution~~~~~~\n");
-        fprintf(exportFile, "NX               %u\n", NX);
-        fprintf(exportFile, "NY               %u\n", NY);
-        fprintf(exportFile, "NZ               %u\n", NZ);
-        fprintf(exportFile, "\n");
-        fprintf(exportFile, "~~~~~Temporal resolution~~~~~\n");
-        fprintf(exportFile, "NT               %u\n", NT);
-        fprintf(exportFile, "\n");
-        fprintf(exportFile, "~~~~~Physical parameters~~~~~\n");
-        fprintf(exportFile, "RE               %.2f\n", static_cast<double>(Re));
-        fprintf(exportFile, "RHO_0            %.2f\n", static_cast<double>(RHO_0));
-        fprintf(exportFile, "L                %u\n",   L);
-        fprintf(exportFile, "U                %.4f\n", static_cast<double>(U));
-        fprintf(exportFile, "\n");
-        fprintf(exportFile, "~~~~~~~~~~~Lattice~~~~~~~~~~~\n");
-        fprintf(exportFile, "lattice          D%uQ%u\n", LT::DIM, LT::SPEEDS);
-
-        fclose(exportFile);
+    if(exportFile != nullptr) {
+        fprintf(exportFile.get(), "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        fprintf(exportFile.get(), "~                           ~\n");
+        fprintf(exportFile.get(), "~      LB-t                 ~\n");
+        fprintf(exportFile.get(), "~      2019-2020            ~\n");
+        fprintf(exportFile.get(), "~      Tobit Flatscher      ~\n");
+        fprintf(exportFile.get(), "~      github.com/2b-t      ~\n");
+        fprintf(exportFile.get(), "~      Parameter file       ~\n");
+        fprintf(exportFile.get(), "~                           ~\n");
+        fprintf(exportFile.get(), "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        fprintf(exportFile.get(), "\n");
+        fprintf(exportFile.get(), "~~~~~Spatial resolution~~~~~~\n");
+        fprintf(exportFile.get(), "NX               %u\n", NX);
+        fprintf(exportFile.get(), "NY               %u\n", NY);
+        fprintf(exportFile.get(), "NZ               %u\n", NZ);
+        fprintf(exportFile.get(), "\n");
+        fprintf(exportFile.get(), "~~~~~Temporal resolution~~~~~\n");
+        fprintf(exportFile.get(), "NT               %u\n", NT);
+        fprintf(exportFile.get(), "\n");
+        fprintf(exportFile.get(), "~~~~~Physical parameters~~~~~\n");
+        fprintf(exportFile.get(), "RE               %.2f\n", static_cast<double>(Re));
+        fprintf(exportFile.get(), "RHO_0            %.2f\n", static_cast<double>(RHO_0));
+        fprintf(exportFile.get(), "L                %u\n",   L);
+        fprintf(exportFile.get(), "U                %.4f\n", static_cast<double>(U));
+        fprintf(exportFile.get(), "\n");
+        fprintf(exportFile.get(), "~~~~~~~~~~~Lattice~~~~~~~~~~~\n");
+        fprintf(exportFile.get(), "lattice          D%uQ%u\n", LT::DIM, LT::SPEEDS);
     }
     else
     {
-        std::cerr << "Fatal error: Directory '" << OUTPUT_BIN_PATH << "' not found." << std::endl;
-        exit(EXIT_FAILURE);
+        std::cerr << "Fatal Error: File '" << fileName << "' could not be opened." << std::endl;
+        std::exit(EXIT_FAILURE);
     }
 
     return;

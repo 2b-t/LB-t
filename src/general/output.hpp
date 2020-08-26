@@ -12,7 +12,7 @@
 #if __has_include (<omp.h>)
     #include <omp.h>
 #endif
-#include <stdio.h>
+#include <cstdio>
 
 #include "../continuum/continuum.hpp"
 #include "../population/population.hpp"

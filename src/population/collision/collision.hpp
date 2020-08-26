@@ -14,7 +14,7 @@
 
 /**\class  CollisionOperator
  * \brief  Base class for collision operator
- * 
+ *
  * \tparam NX             Simulation domain resolution in x-direction
  * \tparam NY             Simulation domain resolution in y-direction
  * \tparam NZ             Simulation domain resolution in z-direction
@@ -28,7 +28,7 @@ class CollisionOperator
     public:
         /**\fn        collideStream
          * \brief     Curiously Recurring Template Pattern (CRTP) for static polymorphism of the collision operator
-         * 
+         *
          * \tparam    AA       The timestep in the AA-pattern
          * \param[in] isSave   Boolean parameter whether the macroscopic values should be saved or not
         */
@@ -42,7 +42,7 @@ class CollisionOperator
 
         /**\fn        initialise
          * \brief     Initialise the macroscopic continuum and the microscopic populations
-         * 
+         *
          * \tparam    AA      The timestep in the AA-pattern
          * \param[in] RHO_0   The uniform initial density across the flow field
          * \param[in] U_0     The uniform initial velocity in x-direction across the flow field
@@ -54,7 +54,7 @@ class CollisionOperator
 
     protected:
         /**\brief     Constructor
-         * 
+         *
          * \param[in] population   Population object holding microscopic distributions
          * \param[in] continuum    Continuum object holding macroscopic variables
          * \param[in] p            Index of relevant population
@@ -67,7 +67,7 @@ class CollisionOperator
 
         /**\fn        initialiseContinuum_
          * \brief     Initialise the macroscopic continuum
-         * 
+         *
          * \param[in] RHO_0   The uniform initial density across the flow field
          * \param[in] U_0     The uniform initial velocity in x-direction across the flow field
          * \param[in] V_0     The uniform initial velocity in y-direction across the flow field
@@ -77,7 +77,7 @@ class CollisionOperator
 
         /**\fn        initialisePopulationFromContinuum_
          * \brief     Initialise the microscopic distributions for the macroscopic continuum
-         * 
+         *
          * \tparam    AA   The timestep in the AA-pattern
         */
         template<timestep AA>
@@ -118,15 +118,11 @@ void CollisionOperator<NX,NY,NZ,LT,T,DerivedClass>::initialiseContinuum_(T const
 
         for(unsigned int z = z_start; z < z_end; ++z)
         {
-            unsigned int const z_n[3] = { (NZ + z - 1) % NZ, z, (z + 1) % NZ };
-
             unsigned int const y_start = BLOCK_SIZE_*((block % (NUM_BLOCKS_X_*NUM_BLOCKS_Y_)) / NUM_BLOCKS_X_);
             unsigned int const   y_end = std::min(y_start + BLOCK_SIZE_, NY);
 
             for(unsigned int y = y_start; y < y_end; ++y)
             {
-                unsigned int const y_n[3] = { (NY + y - 1) % NY, y, (y + 1) % NY };
-
                 unsigned int const x_start = BLOCK_SIZE_*(block % NUM_BLOCKS_X_);
                 unsigned int const   x_end = std::min(x_start + BLOCK_SIZE_, NX);
 

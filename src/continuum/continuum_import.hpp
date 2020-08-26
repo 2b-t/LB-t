@@ -7,10 +7,11 @@
 */
 
 #include <iostream>
+#include <filesystem>
 #include <fstream>
 #include <memory>
 #include <sstream>
-#include <string.h>
+#include <string>
 
 #include "../general/paths.hpp"
 
@@ -18,16 +19,19 @@
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T>
 void Continuum<NX,NY,NZ,T>::importBin(std::string const& name, unsigned int const step)
 {
-    std::string const fileName = OUTPUT_BIN_PATH + std::string("/") + name + std::string("_") + std::to_string(step) + std::string(".bin");
+    std::filesystem::create_directory(OUTPUT_BIN_PATH);
 
-    if(auto const importFile = std::unique_ptr<FILE, decltype(&fclose)>( fopen(fileName.c_str(), "rb+"), &fclose ) != nullptr)
+    std::string const fileName = OUTPUT_BIN_PATH + std::string("/") + name + std::string("_") + std::to_string(step) + std::string(".bin");
+    auto const importFile = std::unique_ptr<FILE, decltype(&fclose)>( fopen(fileName.c_str(), "rb+"), &fclose );
+
+    if(importFile != nullptr)
     {
-        fread(M_, 1, MEM_SIZE_, importFile);
+        fread(M_, 1, MEM_SIZE_, importFile.get());
     }
     else
     {
-        std::cerr << "Fatal error: Could not import macroscopic values from disk." << std::endl;
-        exit(EXIT_FAILURE);
+        std::cerr << "Fatal Error: File '" << fileName << "' could not be opened." << std::endl;
+        std::exit(EXIT_FAILURE);
     }
 
     return;

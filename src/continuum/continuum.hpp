@@ -9,12 +9,12 @@
 #include <algorithm>
 #include <array>
 #include <cassert>
-#include <cstring>
 #include <cmath>
+#include <cstdlib>
+#include <cstring>
 #include <iostream>
 #include <memory>
-#include <stdlib.h>
-#include <string.h>
+#include <string>
 #include <vector>
 
 #include "../population/boundary/boundary.hpp"
@@ -44,7 +44,7 @@ class Continuum
             if (M_ == nullptr)
             {
                 std::cerr << "Fatal error: Continuum could not be allocated." << std::endl;
-                exit(EXIT_FAILURE);
+                std::exit(EXIT_FAILURE);
             }
 
             return;
@@ -64,7 +64,7 @@ class Continuum
         */
         ~Continuum()
         {
-            free(M_);
+            std::free(M_);
 
             return;
         }
@@ -157,7 +157,7 @@ class Continuum
         static constexpr size_t MEM_SIZE_ = sizeof(T)*NZ*NY*NX*static_cast<size_t>(NM_); // size of array in byte
 
         /// population allocated in heap
-        T* const M_ = static_cast<T*>(aligned_alloc(CACHE_LINE, MEM_SIZE_));
+        T* const M_ = static_cast<T*>(std::aligned_alloc(CACHE_LINE, MEM_SIZE_));
 };
 
 #include "continuum_indexing.hpp"

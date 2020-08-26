@@ -10,10 +10,11 @@
 #include <array>
 #include <cassert>
 #include <cmath>
+#include <cstdlib>
+#include <cstring>
 #include <iostream>
 #include <memory>
-#include <stdlib.h>
-#include <string.h>
+#include <string>
 
 #include "../general/memory_alignment.hpp"
 #include "../general/constexpr_func.hpp"
@@ -61,7 +62,7 @@ class Population
             if (F_ == nullptr)
             {
                 std::cerr << "Fatal error: Population could not be allocated." << std::endl;
-                exit(EXIT_FAILURE);
+                std::exit(EXIT_FAILURE);
             }
 
             return;
@@ -82,7 +83,7 @@ class Population
         ~Population()
         {
             std::cout << "See you, comrade!" << std::endl;
-            free(F_);
+            std::free(F_);
 
             return;
         }
@@ -220,7 +221,7 @@ class Population
         static constexpr size_t  MEM_SIZE_ = sizeof(T)*NZ*NY*NX*NPOP*static_cast<size_t>(ND_);
 
         /// pointer to population
-        T* const F_ = static_cast<T*>(aligned_alloc(CACHE_LINE, MEM_SIZE_));
+        T* const F_ = static_cast<T*>(std::aligned_alloc(CACHE_LINE, MEM_SIZE_));
 };
 
 /// include related header files
