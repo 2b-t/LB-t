@@ -33,7 +33,7 @@
 template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, typename T>
 void exportParameters(unsigned int const NT, T const Re, T const RHO_0, T const U, unsigned int const L)
 {
-    std::filesystem::create_directory(OUTPUT_BIN_PATH);
+    std::filesystem::create_directories(OUTPUT_BIN_PATH);
 
     std::string const fileName = OUTPUT_BIN_PATH + std::string("/parameters.txt");
     auto const exportFile = std::unique_ptr<FILE, decltype(&fclose)>( fopen(fileName.c_str(), "w"), &fclose );

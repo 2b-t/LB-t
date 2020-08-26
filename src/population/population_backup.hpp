@@ -19,8 +19,8 @@
 template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP>
 void Population<NX,NY,NZ,LT,NPOP>::importBin(std::string const& name)
 {
-    std::filesystem::create_directory(BACKUP_EXPORT_PATH);
-    
+    std::filesystem::create_directories(BACKUP_EXPORT_PATH);
+
     std::string const fileName = BACKUP_IMPORT_PATH + std::string("/") + name + std::string(".bin");
     auto const importFile = std::unique_ptr<FILE, decltype(&fclose)>( fopen(fileName.c_str(), "rb+"), &fclose );
 
@@ -40,7 +40,7 @@ void Population<NX,NY,NZ,LT,NPOP>::importBin(std::string const& name)
 template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP>
 void Population<NX,NY,NZ,LT,NPOP>::exportBin(std::string const& name) const
 {
-    std::filesystem::create_directory(BACKUP_EXPORT_PATH);
+    std::filesystem::create_directories(BACKUP_EXPORT_PATH);
 
     std::string const fileName = BACKUP_EXPORT_PATH + std::string("/") + name + std::string(".bin");
     auto const exportFile = std::unique_ptr<FILE, decltype(&fclose)>( fopen(fileName.c_str(), "wb+"), &fclose );

@@ -36,7 +36,7 @@ void Continuum<NX,NY,NZ,T>::setBoundary(BoundaryCondition<NX,NY,NZ,LT,T,DerivedC
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T>
 void Continuum<NX,NY,NZ,T>::exportBin(std::string const& name, unsigned int const step) const
 {
-    std::filesystem::create_directory(OUTPUT_BIN_PATH);
+    std::filesystem::create_directories(OUTPUT_BIN_PATH);
 
     std::string const fileName = OUTPUT_BIN_PATH + std::string("/") + name + std::string("_") + std::to_string(step) + std::string(".bin");
     auto const exportFile = std::unique_ptr<FILE, decltype(&fclose)>( fopen(fileName.c_str(), "wb+"), &fclose );
@@ -57,8 +57,8 @@ void Continuum<NX,NY,NZ,T>::exportBin(std::string const& name, unsigned int cons
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T>
 void Continuum<NX,NY,NZ,T>::exportScalarVtk(unsigned int const m, std::string const& name, unsigned int const step) const
 {
-    std::filesystem::create_directory(OUTPUT_VTK_PATH);
-    
+    std::filesystem::create_directories(OUTPUT_VTK_PATH);
+
     std::string const fileName = OUTPUT_VTK_PATH + std::string("/") + name + std::string("_") + std::to_string(step) + std::string(".vtk");
     auto const exportFile = std::unique_ptr<FILE, decltype(&fclose)>( fopen(fileName.c_str(), "w"), &fclose );
 
@@ -117,8 +117,8 @@ void Continuum<NX,NY,NZ,T>::exportScalarVtk(unsigned int const m, std::string co
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T>
 void Continuum<NX,NY,NZ,T>::exportVtk(unsigned int const step) const
 {
-    std::filesystem::create_directory(OUTPUT_VTK_PATH);
-    
+    std::filesystem::create_directories(OUTPUT_VTK_PATH);
+
     std::string const fileName = OUTPUT_VTK_PATH + std::string("/Export_") + std::to_string(step) + std::string(".vtk");
     auto const exportFile = std::unique_ptr<FILE, decltype(&fclose)>( fopen(fileName.c_str(), "w"), &fclose );
 
