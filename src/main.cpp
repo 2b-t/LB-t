@@ -128,8 +128,6 @@ int main(int argc, char** argv)
 
     /// output performance -------------------------------------------------------------------------
     double const runtime = timer.stop();
-    std::cout << runtime << std::endl;
-
     performanceOutput(macro, micro, NT, NT, runtime);
 
     /// final export -------------------------------------------------------------------------------
