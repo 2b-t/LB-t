@@ -23,11 +23,11 @@ $ make run
 ```
 in your Linux shell or open the `LB-t.cbp` file in [Code::Blocks](http://www.codeblocks.org/). In case you have issues make sure Make is installed `sudo apt-get install build-essential`and your GCC version is greater than 8. You can install a newer GCC by typing `sudo apt install gcc-10`. 
 
-If you want to change the compiler to the Intel compiler, make sure the Intel compiler collection is installed on your system by opening a console and typing
+If you want to change the compiler to the Intel compiler, first make sure the Intel compiler collection is installed on your system by opening a console and typing
 ```
 $ icc -v
 ```
-If it is not available on your system you [install it](https://software.intel.com/en-us/compilers) (it is free of charge for students) and change the corresponding lines of the Make-file `Makefile`
+If it is not available on your system [you might be able to install it free for charge if you are a registered student](https://software.intel.com/en-us/compilers) (or buy an overpriced license). If it is available on your system you might change the corresponding lines of the Make-file `Makefile`
 ```
 1  # Makefile
 2  # Tobit Flatscher - github.com/2b-t (2020)
@@ -36,7 +36,7 @@ If it is not available on your system you [install it](https://software.intel.co
 5  COMPILER = ICC
 6
 ```
-If you can't afford their licenses and you are not a registered student, you can leave it on `GCC` and use the Gnu Compiler Collection only.
+If you can't/don't want to afford their overpriced licenses and you are not a registered student, you can leave it on `GCC` and use the Gnu Compiler Collection only (or set-up a profile for another compiler in the lines below). From my experience the performance benefit of using ICC with this code is only marginal anyways.
 
 ### Windows
 Under Windows you have to make sure an appropriate 64-bit compiler that supports C++17 is installed. Here some options
