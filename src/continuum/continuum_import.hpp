@@ -26,7 +26,7 @@ void Continuum<NX,NY,NZ,T>::importBin(std::string const& name, unsigned int cons
 
     if(importFile != nullptr)
     {
-        fread(M_, 1, MEM_SIZE_, importFile.get());
+        std::fread(M_, 1, MEM_SIZE_, importFile.get());
     }
     else
     {

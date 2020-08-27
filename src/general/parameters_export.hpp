@@ -39,32 +39,32 @@ void exportParameters(unsigned int const NT, T const Re, T const RHO_0, T const 
     auto const exportFile = std::unique_ptr<FILE, decltype(&fclose)>( fopen(fileName.c_str(), "w"), &fclose );
 
     if(exportFile != nullptr) {
-        fprintf(exportFile.get(), "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-        fprintf(exportFile.get(), "~                           ~\n");
-        fprintf(exportFile.get(), "~      LB-t                 ~\n");
-        fprintf(exportFile.get(), "~      2019-2020            ~\n");
-        fprintf(exportFile.get(), "~      Tobit Flatscher      ~\n");
-        fprintf(exportFile.get(), "~      github.com/2b-t      ~\n");
-        fprintf(exportFile.get(), "~      Parameter file       ~\n");
-        fprintf(exportFile.get(), "~                           ~\n");
-        fprintf(exportFile.get(), "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-        fprintf(exportFile.get(), "\n");
-        fprintf(exportFile.get(), "~~~~~Spatial resolution~~~~~~\n");
-        fprintf(exportFile.get(), "NX               %u\n", NX);
-        fprintf(exportFile.get(), "NY               %u\n", NY);
-        fprintf(exportFile.get(), "NZ               %u\n", NZ);
-        fprintf(exportFile.get(), "\n");
-        fprintf(exportFile.get(), "~~~~~Temporal resolution~~~~~\n");
-        fprintf(exportFile.get(), "NT               %u\n", NT);
-        fprintf(exportFile.get(), "\n");
-        fprintf(exportFile.get(), "~~~~~Physical parameters~~~~~\n");
-        fprintf(exportFile.get(), "RE               %.2f\n", static_cast<double>(Re));
-        fprintf(exportFile.get(), "RHO_0            %.2f\n", static_cast<double>(RHO_0));
-        fprintf(exportFile.get(), "L                %u\n",   L);
-        fprintf(exportFile.get(), "U                %.4f\n", static_cast<double>(U));
-        fprintf(exportFile.get(), "\n");
-        fprintf(exportFile.get(), "~~~~~~~~~~~Lattice~~~~~~~~~~~\n");
-        fprintf(exportFile.get(), "lattice          D%uQ%u\n", LT::DIM, LT::SPEEDS);
+        std::fprintf(exportFile.get(), "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        std::fprintf(exportFile.get(), "~                           ~\n");
+        std::fprintf(exportFile.get(), "~      LB-t                 ~\n");
+        std::fprintf(exportFile.get(), "~      2019-2020            ~\n");
+        std::fprintf(exportFile.get(), "~      Tobit Flatscher      ~\n");
+        std::fprintf(exportFile.get(), "~      github.com/2b-t      ~\n");
+        std::fprintf(exportFile.get(), "~      Parameter file       ~\n");
+        std::fprintf(exportFile.get(), "~                           ~\n");
+        std::fprintf(exportFile.get(), "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        std::fprintf(exportFile.get(), "\n");
+        std::fprintf(exportFile.get(), "~~~~~Spatial resolution~~~~~~\n");
+        std::fprintf(exportFile.get(), "NX               %u\n", NX);
+        std::fprintf(exportFile.get(), "NY               %u\n", NY);
+        std::fprintf(exportFile.get(), "NZ               %u\n", NZ);
+        std::fprintf(exportFile.get(), "\n");
+        std::fprintf(exportFile.get(), "~~~~~Temporal resolution~~~~~\n");
+        std::fprintf(exportFile.get(), "NT               %u\n", NT);
+        std::fprintf(exportFile.get(), "\n");
+        std::fprintf(exportFile.get(), "~~~~~Physical parameters~~~~~\n");
+        std::fprintf(exportFile.get(), "RE               %.2f\n", static_cast<double>(Re));
+        std::fprintf(exportFile.get(), "RHO_0            %.2f\n", static_cast<double>(RHO_0));
+        std::fprintf(exportFile.get(), "L                %u\n",   L);
+        std::fprintf(exportFile.get(), "U                %.4f\n", static_cast<double>(U));
+        std::fprintf(exportFile.get(), "\n");
+        std::fprintf(exportFile.get(), "~~~~~~~~~~~Lattice~~~~~~~~~~~\n");
+        std::fprintf(exportFile.get(), "lattice          D%uQ%u\n", LT::DIM, LT::SPEEDS);
     }
     else
     {

@@ -23,6 +23,21 @@ $ make run
 ```
 in your Linux shell or open the `LB-t.cbp` file in [Code::Blocks](http://www.codeblocks.org/). In case you have issues make sure Make is installed `sudo apt-get install build-essential`and your GCC version is greater than 8. You can install a newer GCC by typing `sudo apt install gcc-10`. 
 
+If you want to change the compiler to the Intel compiler, make sure the Intel compiler collection is installed on your system by opening a console and typing
+```
+$ icc -v
+```
+If it is not available on your system you [install it](https://software.intel.com/en-us/compilers) (it is free of charge for students) and change the corresponding lines of the Make-file `Makefile`
+```
+1  # Makefile
+2  # Tobit Flatscher - github.com/2b-t (2020)
+3
+4  # Compiler settings (alternatively: export COMPILER=)
+5  COMPILER = ICC
+6
+```
+If you can't afford their licenses and you are not a registered student, you can leave it on `GCC` and use the Gnu Compiler Collection only.
+
 ### Windows
 Under Windows you have to make sure an appropriate 64-bit compiler that supports C++17 is installed. Here some options
 - [TDM-GCC](https://jmeubank.github.io/tdm-gcc/) inside [Code::Blocks](http://www.codeblocks.org/): Be sure that the version of TDM-GCC is 8 or higher and when selecting components don't forget to select `gcc/openmp`. Then continue to [setup TDM-GCC](http://forums.codeblocks.org/index.php?topic=21570.0) and [OpenMP](https://stackoverflow.com/a/58546530/9938686) inside Code::Blocks. Download this repository and open the Code::Blocks file. Be sure to change the selected compiler in `Project build options` to your newly configured 64-bit compiler and choose the policy `Append target options to project options`.
@@ -38,7 +53,7 @@ Make sure that the latter plug-in is copied to the `output/` folder and the file
 - Three dimensional [loop blocking](https://www.doi.org/10.1142/S0129626403001501) for improved cache-reuse and better parallel scalability
 - 64-byte cache-line alignment of all relevant arrays for vectorisation
 - Manual `AVX2` and `AVX512` [intrinsics](https://www.apress.com/gp/book/9781484200643) collision kernels
-- Frequent use of `const` and `constexpr`, `static` variables, `templates` and macros/pre-processor directives for compile time optimisations
+- Frequent use of `const`, `constexpr` and `static` variables, `templates` as well as macros/pre-processor directives for compile time optimisations
 - [Curiously Recurring Template Pattern (CRTP)](https://eli.thegreenplace.net/2011/05/17/the-curiously-recurring-template-pattern-in-c/) for compile-time static polymorphism
 - Indexing functions as `inline` functions for reduced overhead
 - Loop unrolling with compiler directives

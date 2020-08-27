@@ -35,22 +35,22 @@
 template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, typename T>
 void initialOutput(unsigned int const NT, T const Re, T const RHO, T const U, unsigned int const L)
 {
-    printf("LBM simulation\n\n");
-    printf("     domain size: %ux%ux%u\n", NX, NY, NZ);
-    printf("         lattice: D%uQ%u\n", LT::DIM, LT::SPEEDS);
+    std::printf("LBM simulation\n\n");
+    std::printf("     domain size: %ux%ux%u\n", NX, NY, NZ);
+    std::printf("         lattice: D%uQ%u\n", LT::DIM, LT::SPEEDS);
 
-    printf(" Reynolds number: %.2f\n", Re);
-    printf(" initial density: %.2g\n", RHO);
-    printf("    char. length: %.2u\n", L);
-    printf("  char. velocity: %.2g\n", U);
-    printf("\n");
-    printf("      #timesteps: %u\n", NT);
-    printf("\n");
+    std::printf(" Reynolds number: %.2f\n", Re);
+    std::printf(" initial density: %.2g\n", RHO);
+    std::printf("    char. length: %.2u\n", L);
+    std::printf("  char. velocity: %.2g\n", U);
+    std::printf("\n");
+    std::printf("      #timesteps: %u\n", NT);
+    std::printf("\n");
     #ifdef _OPENMP
-        printf("OpenMP\n");
-        printf("   #max. threads: %i\n", omp_get_num_procs());
-        printf("        #threads: %i\n", omp_get_max_threads());
-        printf("\n");
+        std::printf("OpenMP\n");
+        std::printf("   #max. threads: %i\n", omp_get_num_procs());
+        std::printf("        #threads: %i\n", omp_get_max_threads());
+        std::printf("\n");
     #endif
 
     return;
@@ -65,7 +65,7 @@ void initialOutput(unsigned int const NT, T const Re, T const RHO, T const U, un
 */
 void statusOutput(unsigned int const step, unsigned int const NT, double const runtime)
 {
-    printf("Time step %u (runtime %.2f s, %.2f%%)\n", step, runtime, 100.0*static_cast<double>(step)/static_cast<double>(NT));
+    std::printf("Time step %u (runtime %.2f s, %.2f%%)\n", step, runtime, 100.0*static_cast<double>(step)/static_cast<double>(NT));
 
     return;
 }
@@ -86,7 +86,7 @@ void statusOutput(unsigned int const step, unsigned int const NT, double const r
  * \param[in] runtime   Simulation runtime in seconds
 */
 template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, typename T>
-void performanceOutput(std::shared_ptr<Continuum<NX,NY,NZ,T>> const& continuum, std::shared_ptr<Population<NX,NY,NZ,LT>>& population, 
+void performanceOutput(std::shared_ptr<Continuum<NX,NY,NZ,T>> const& continuum, std::shared_ptr<Population<NX,NY,NZ,LT>>& population,
                        unsigned int const NT, double NT_PLOT, double const runtime)
 {
     constexpr double bytesPerMiB = 1024.0 * 1024.0;
@@ -103,12 +103,12 @@ void performanceOutput(std::shared_ptr<Continuum<NX,NY,NZ,T>> const& continuum, 
     double const        speed = 1e-6*nodesUpdated/runtime;
     double const    bandwidth = (nodesUpdated*(valuesRead + valuesWrite) + nodesSaved*valuesSaved)*sizeof(T) / (runtime*bytesPerGiB);
 
-    printf("\nPerformance\n");
-    printf("   memory allocated: %.1f (MiB)\n", memory/bytesPerMiB);
-    printf("         #timesteps: %u\n", NT);
-    printf(" simulation runtime: %.2f (s)\n", runtime);
-    printf("              speed: %.2f (Mlups)\n", speed);
-    printf("    ideal bandwidth: %.1f (GiB/s)\n", bandwidth);
+    std::printf("\nPerformance\n");
+    std::printf("   memory allocated: %.1f (MiB)\n", memory/bytesPerMiB);
+    std::printf("         #timesteps: %u\n", NT);
+    std::printf(" simulation runtime: %.2f (s)\n", runtime);
+    std::printf("              speed: %.2f (Mlups)\n", speed);
+    std::printf("    ideal bandwidth: %.1f (GiB/s)\n", bandwidth);
 
     return;
 }

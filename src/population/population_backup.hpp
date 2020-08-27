@@ -26,7 +26,7 @@ void Population<NX,NY,NZ,LT,NPOP>::importBin(std::string const& name)
 
     if(importFile != nullptr)
     {
-        fread(F_, 1, MEM_SIZE_, importFile.get());
+        std::fread(F_, 1, MEM_SIZE_, importFile.get());
     }
     else
     {
@@ -47,7 +47,7 @@ void Population<NX,NY,NZ,LT,NPOP>::exportBin(std::string const& name) const
 
     if (exportFile != nullptr)
     {
-        fwrite(F_, 1, MEM_SIZE_, exportFile.get());
+        std::fwrite(F_, 1, MEM_SIZE_, exportFile.get());
     }
     else
     {
