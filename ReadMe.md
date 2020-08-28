@@ -12,7 +12,7 @@ This code is a **work in progress** with the goal to achieve similar or better p
 
 ## Installation
 
-### Linux
+### Linux (recommended)
 Copy this folder or directly **clone this repository** by typing
 ```
 $ git clone https://github.com/2b-t/LB-t.git
@@ -38,7 +38,7 @@ If it is not available on your system [you might be able to install it free of c
 ```
 If you can't/don't want to afford their overpriced licenses and you are not a registered student, you can leave it on `GCC` and use the Gnu Compiler Collection only (or set-up a profile for another compiler in the lines below). From my experience the performance benefit of using ICC with this code is only marginal anyways.
 
-### Windows (not recommended)
+### Windows
 Under Windows you have to make sure an appropriate 64-bit compiler that supports C++17 is installed. Here some options
 - [TDM-GCC](https://jmeubank.github.io/tdm-gcc/) inside [Code::Blocks](http://www.codeblocks.org/): Be sure that the version of TDM-GCC is 8 or higher and when selecting components don't forget to select `gcc/openmp`. Then continue to [setup TDM-GCC](http://forums.codeblocks.org/index.php?topic=21570.0) and [OpenMP](https://stackoverflow.com/a/58546530/9938686) inside Code::Blocks. Download this repository and open the Code::Blocks file. Be sure to change the selected compiler in `Project build options` to your newly configured 64-bit compiler and choose the policy `Append target options to project options`.
 - [MSys2](https://www.msys2.org/) and Makefile: Download and install MSys2, open it and [download OpenMp by typing `pacman -S mingw-w64-x86_64-openmp`](https://packages.msys2.org/package/mingw-w64-x86_64-openmp?repo=mingw64) and [Make by typing `pacman -S mingw-w64-x86_64-make`](https://packages.msys2.org/package/mingw-w64-x86_64-make). Finally download the repository, browse it inside the MSys2 shell by typing `$ cd 'C:\<directory>'` and type `$ make run`.
