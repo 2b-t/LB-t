@@ -1,5 +1,5 @@
-#ifndef COLLISION_TRT_HPP_INCLUDED
-#define COLLISION_TRT_HPP_INCLUDED
+#ifndef LBT_COLLISION_TRT
+#define LBT_COLLISION_TRT
 
 /**
  * \file     collision_trt.hpp
@@ -199,4 +199,4 @@ void TRT<NX,NY,NZ,LT,T>::implementation(bool const isSave)
     return;
 }
 
-#endif //COLLISION_TRT_HPP_INCLUDED
+#endif // LBT_COLLISION_TRT

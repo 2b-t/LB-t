@@ -1,5 +1,5 @@
-#ifndef SPHERE_HPP_INCLUDED
-#define SPHERE_HPP_INCLUDED
+#ifndef LBT_SPHERE
+#define LBT_SPHERE
 
 /**
  * \file     sphere.hpp
@@ -96,4 +96,4 @@ namespace geometry
 
 }
 
-#endif // CYLINDER_HPP_INCLUDED
+#endif // LBT_SPHERE

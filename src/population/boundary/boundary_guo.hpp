@@ -1,5 +1,5 @@
-#ifndef BOUNDARY_GUO_HPP_INCLUDED
-#define BOUNDARY_GUO_HPP_INCLUDED
+#ifndef LBT_BOUNDARY_GUO
+#define LBT_BOUNDARY_GUO
 
 /**
  * \file     boundary_guo.hpp
@@ -202,4 +202,4 @@ void Guo<Type,Orientation,NX,NY,NZ,LT,T>::implementationAfterCollisionOperator()
     return;
 }
 
-#endif // BOUNDARY_GUO_HPP_INCLUDED
+#endif // LBT_BOUNDARY_GUO

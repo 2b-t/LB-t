@@ -17,8 +17,8 @@
 #include "lattice/D3Q19.hpp"
 #include "lattice/D3Q27.hpp"
 #include "population/collision/collision_bgk.hpp"
-#include "population/collision/collision_bgk-s.hpp"
 #include "population/collision/collision_bgk_avx2.hpp"
+#include "population/collision/collision_bgk_smagorinsky.hpp"
 #include "population/collision/collision_trt.hpp"
 #include "population/population.hpp"
 

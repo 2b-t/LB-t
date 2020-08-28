@@ -1,5 +1,5 @@
-#ifndef COLLISION_HPP_INCLUDED
-#define COLLISION_HPP_INCLUDED
+#ifndef LBT_COLLISION
+#define LBT_COLLISION
 
 /**
  * \file     collision.hpp
@@ -8,7 +8,7 @@
 
 #include <memory>
 
-#include "../../general/constexpr_func.hpp"
+#include "../../general/constexpr_math.hpp"
 #include "../population.hpp"
 
 
@@ -193,4 +193,4 @@ void CollisionOperator<NX,NY,NZ,LT,T,DerivedClass>::initialisePopulationFromCont
     return;
 }
 
-#endif //COLLISION_HPP_INCLUDED
+#endif // LBT_COLLISION

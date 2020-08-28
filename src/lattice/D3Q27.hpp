@@ -1,5 +1,5 @@
-#ifndef D3Q27_HPP_INCLUDED
-#define D3Q27_HPP_INCLUDED
+#ifndef LBT_D3Q27
+#define LBT_D3Q27
 
 /**
  * \file     D3Q27.hpp
@@ -10,7 +10,7 @@
 #include <array>
 #include <memory>
 
-#include "../general/constexpr_func.hpp"
+#include "../general/constexpr_math.hpp"
 #include "../general/memory_alignment.hpp"
 
 
@@ -162,4 +162,4 @@ namespace lattice
     };
 }
 
-#endif // D3Q27_HPP_INCLUDED
+#endif // LBT_D3Q27

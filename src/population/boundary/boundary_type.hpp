@@ -1,5 +1,5 @@
-#ifndef BOUNDARY_TYPE_HPP_INCLUDED
-#define BOUNDARY_TYPE_HPP_INCLUDED
+#ifndef LBT_BOUNDARY_TYPE
+#define LBT_BOUNDARY_TYPE
 
 /**
  * \file     boundary_type.hpp
@@ -65,4 +65,4 @@ namespace type
     };
 }
 
-#endif // BOUNDARY_TYPE_HPP_INCLUDED
+#endif // LBT_BOUNDARY_TYPE

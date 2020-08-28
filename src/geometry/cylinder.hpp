@@ -1,5 +1,5 @@
-#ifndef CYLINDER_HPP_INCLUDED
-#define CYLINDER_HPP_INCLUDED
+#ifndef LBT_CYLINDER
+#define LBT_CYLINDER
 
 /**
  * \file     cylinder.hpp
@@ -96,4 +96,4 @@ namespace geometry
 
 }
 
-#endif // CYLINDER_HPP_INCLUDED
+#endif // LBT_CYLINDER

@@ -1,5 +1,5 @@
-#ifndef POPULATION_INDEXING_HPP_INCLUDED
-#define POPULATION_INDEXING_HPP_INCLUDED
+#ifndef LBT_POPULATION_INDEXING
+#define LBT_POPULATION_INDEXING
 
 /**
  * \file     population_indexing.hpp
@@ -121,4 +121,4 @@ inline auto const& __attribute__((always_inline)) Population<NX,NY,NZ,LT,NPOP>::
     return F_[AA_IndexWrite<AA>(x,y,z,n,d,p)];
 }
 
-#endif // POPULATION_INDEXING_HPP_INCLUDED
+#endif // LBT_POPULATION_INDEXING

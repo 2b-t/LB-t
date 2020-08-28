@@ -1,5 +1,5 @@
-#ifndef PARALLELISM_HPP_INCLUDED
-#define PARALLELISM_HPP_INCLUDED
+#ifndef LBT_PARALLELISM
+#define LBT_PARALLELISM
 
 /**
  * \file     parallelism.hpp
@@ -69,4 +69,4 @@
     };
 #endif
 
-#endif // PARALLELISM_HPP_INCLUDED
+#endif // LBT_PARALLELISM

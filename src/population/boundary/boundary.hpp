@@ -1,5 +1,5 @@
-#ifndef BOUNDARY_HPP_INCLUDED
-#define BOUNDARY_HPP_INCLUDED
+#ifndef LBT_BOUNDARY
+#define LBT_BOUNDARY
 
 /**
  * \file     boundary.hpp
@@ -95,4 +95,4 @@ class BoundaryCondition
         unsigned int const p_;
 };
 
-#endif // BOUNDARY_HPP_INCLUDED
+#endif // LBT_BOUNDARY

@@ -1,5 +1,5 @@
-#ifndef CONTINUUM_EXPORT_HPP_INCLUDED
-#define CONTINUUM_EXPORT_HPP_INCLUDED
+#ifndef LBT_CONTINUUM_EXPORT
+#define LBT_CONTINUUM_EXPORT
 
 /**
  * \file     continuum_export.hpp
@@ -188,4 +188,4 @@ void Continuum<NX,NY,NZ,T>::exportVtk(unsigned int const step) const
     return;
 }
 
-#endif // CONTINUUM_EXPORT_HPP_INCLUDED
+#endif // LBM_CONTINUUM_EXPORT

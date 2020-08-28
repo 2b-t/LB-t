@@ -1,5 +1,5 @@
-#ifndef BOUNDARY_BOUNCEBACK_HPP_INCLUDED
-#define BOUNDARY_BOUNCEBACK_HPP_INCLUDED
+#ifndef LBT_BOUNDARY_BOUNCEBACK
+#define LBT_BOUNDARY_BOUNCEBACK
 
 /**
  * \file     boundary_bounceback.hpp
@@ -102,4 +102,4 @@ void HalfwayBounceBack<NX,NY,NZ,LT,T>::implementationAfterCollisionOperator()
     return;
 }
 
-#endif // BOUNDARY_BOUNCEBACK_HPP_INCLUDED
+#endif // LBT_BOUNDARY_BOUNCEBACK

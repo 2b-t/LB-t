@@ -1,5 +1,5 @@
-#ifndef POPULATION_HPP_INCLUDED
-#define POPULATION_HPP_INCLUDED
+#ifndef LBT_POPULATION
+#define LBT_POPULATION
 
 /**
  * \file     population.hpp
@@ -20,7 +20,7 @@
 #include <string>
 
 #include "../general/memory_alignment.hpp"
-#include "../general/constexpr_func.hpp"
+#include "../general/constexpr_math.hpp"
 
 
 /**\enum  timestep
@@ -241,4 +241,4 @@ class Population
 #include "population_indexing.hpp"
 #include "population_backup.hpp"
 
-#endif // POPULATION_HPP_INCLUDED
+#endif // LBT_POPULATION

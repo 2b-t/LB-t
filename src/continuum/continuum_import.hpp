@@ -1,5 +1,5 @@
-#ifndef CONTINUUM_IMPORT_HPP_INCLUDED
-#define CONTINUUM_IMPORT_HPP_INCLUDED
+#ifndef LBT_CONTINUUM_IMPORT
+#define LBT_CONTINUUM_IMPORT
 
 /**
  * \file     continuum_import.hpp
@@ -37,4 +37,4 @@ void Continuum<NX,NY,NZ,T>::importBin(std::string const& name, unsigned int cons
     return;
 }
 
-#endif // CONTINUUM_IMPORT_HPP_INCLUDED
+#endif // LBT_CONTINUUM_IMPORT

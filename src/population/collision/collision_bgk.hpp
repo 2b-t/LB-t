@@ -1,5 +1,5 @@
-#ifndef COLLISION_BGK_HPP_INCLUDED
-#define COLLISION_BGK_HPP_INCLUDED
+#ifndef LBT_COLLISION_BGK
+#define LBT_COLLISION_BGK
 
 /**
  * \file     collision_bgk.hpp
@@ -181,4 +181,4 @@ void BGK<NX,NY,NZ,LT,T>::implementation(bool const isSave)
     return;
 }
 
-#endif //COLLISION_BGK_HPP_INCLUDED
+#endif // LBT_COLLISION_BGK

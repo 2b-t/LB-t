@@ -1,5 +1,5 @@
-#ifndef OUTPUT_HPP_INCLUDED
-#define OUTPUT_HPP_INCLUDED
+#ifndef LBT_OUTPUT
+#define LBT_OUTPUT
 
 /**
  * \file     output.hpp
@@ -113,4 +113,4 @@ void performanceOutput(std::shared_ptr<Continuum<NX,NY,NZ,T>> const& continuum, 
     return;
 }
 
-#endif // OUTPUT_HPP_INCLUDED
+#endif // LBT_OUTPUT

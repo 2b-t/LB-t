@@ -1,10 +1,11 @@
-#ifndef BOUNDARY_ORIENTATION_HPP_INCLUDED
-#define BOUNDARY_ORIENTATION_HPP_INCLUDED
+#ifndef LBT_BOUNDARY_ORIENTATION
+#define LBT_BOUNDARY_ORIENTATION
 
 /**
  * \file     boundary_orientation.hpp
  * \mainpage Holds orientation parameters for boundary conditions
 */
+
 
 namespace orientation
 {
@@ -58,4 +59,4 @@ namespace orientation
     };
 }
 
-#endif // BOUNDARY_ORIENTATION_HPP_INCLUDED
+#endif // LBT_BOUNDARY_ORIENTATION

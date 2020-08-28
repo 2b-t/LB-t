@@ -1,8 +1,8 @@
-#ifndef CONSTEXPR_FUNC_H_INCLUDED
-#define CONSTEXPR_FUNC_H_INCLUDED
+#ifndef LBT_CONSTEXPR_MATH
+#define LBT_CONSTEXPR_MATH
 
 /**
- * \file     constexpr_func.hpp
+ * \file     constexpr_math.hpp
  * \mainpage A series of functions that can evaluate to a constant expression and thus
  *           can make use of evaluation and optimisation at compile time.
 */
@@ -66,4 +66,4 @@ namespace cef
     }
 }
 
-#endif // CONSTEXPR_FUNC_H_INCLUDED
+#endif // LBT_CONSTEXPR_MATH

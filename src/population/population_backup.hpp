@@ -1,5 +1,5 @@
-#ifndef POPULATION_BACKUP_HPP_INCLUDED
-#define POPULATION_BACKUP_HPP_INCLUDED
+#ifndef LBT_POPULATION_BACKUP
+#define LBT_POPULATION_BACKUP
 
 /**
  * \file     population_backup.hpp
@@ -58,4 +58,4 @@ void Population<NX,NY,NZ,LT,NPOP>::exportBin(std::string const& name) const
     return;
 }
 
-#endif //LATTICE_BACKUP_HPP_INCLUDED
+#endif // LBT_POPULATION_BACKUP

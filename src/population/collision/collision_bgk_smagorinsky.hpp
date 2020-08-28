@@ -1,8 +1,8 @@
-#ifndef COLLISION_BGK_S_HPP_INCLUDED
-#define COLLISION_BGK_S_HPP_INCLUDED
+#ifndef LBT_COLLISION_BGK_SMAGORINSKY
+#define LBT_COLLISION_BGK_SMAGORINSKY
 
 /**
- * \file     collision_bgk-s.hpp
+ * \file     collision_bgk_smagorinsky.hpp
  * \mainpage BGK collision operator with Smagorinsky turbulence model
 */
 
@@ -216,4 +216,4 @@ void BGK_Smagorinsky<NX,NY,NZ,LT,T>::implementation(bool const isSave)
     return;
 }
 
-#endif //COLLISION_BGK_S_HPP_INCLUDED
+#endif // LBT_COLLISION_BGK_SMAGORINSKY

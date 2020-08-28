@@ -1,5 +1,5 @@
-#ifndef COLLISION_BGK_AVX512_HPP_INCLUDED
-#define COLLISION_BGK_AVX512_HPP_INCLUDED
+#ifndef LBT_COLLISION_BGK_AVX512
+#define LBT_COLLISION_BGK_AVX512
 
 /**
  * \file     collision_bgk_avx512.hpp
@@ -234,4 +234,4 @@ void BGK_AVX512<NX,NY,NZ,LT,T>::implementation(bool const isSave)
 
 #endif // __AVX512__
 
-#endif // COLLISION_BGK_AVX512_HPP_INCLUDED
+#endif // LBT_COLLISION_BGK_AVX512

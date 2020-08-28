@@ -1,5 +1,5 @@
-#ifndef PARAMETERS_EXPORT_HPP_INCLUDED
-#define PARAMETERS_EXPORT_HPP_INCLUDED
+#ifndef LBT_PARAMETERS_EXPORT
+#define LBT_PARAMETERS_EXPORT
 
 /**
  * \file     parameters_export.hpp
@@ -75,4 +75,4 @@ void exportParameters(unsigned int const NT, T const Re, T const RHO_0, T const 
     return;
 }
 
-#endif // PARAMETERS_EXPORT_HPP_INCLUDED
+#endif // LBT_PARAMETERS_EXPORT

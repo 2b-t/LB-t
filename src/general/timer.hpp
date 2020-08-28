@@ -1,11 +1,10 @@
-#ifndef TIMER_HPP_INCLUDED
-#define TIMER_HPP_INCLUDED
+#ifndef LBT_TIMER
+#define LBT_TIMER
 
 /**
  * \file     timer.hpp
  * \mainpage An artificial class that allows for a convenient usage of a stopwatch.
 */
-
 
 #include <chrono>
 
@@ -60,4 +59,4 @@ class Timer
         }
 };
 
-#endif // TIMER_HPP_INCLUDED
+#endif // LBT_TIMER

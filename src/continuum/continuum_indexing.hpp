@@ -1,5 +1,5 @@
-#ifndef CONTINUUM_INDEXING_HPP_INCLUDED
-#define CONTINUUM_INDEXING_HPP_INCLUDED
+#ifndef LBT_CONTINUUM_INDEXING
+#define LBT_CONTINUUM_INDEXING
 
 /**
  * \file     continuum_indexing.hpp
@@ -48,4 +48,4 @@ inline T const& __attribute__((always_inline)) Continuum<NX,NY,NZ,T>::operator()
     return M_[spatialToLinear(x,y,z,m)];
 }
 
-#endif //CONTINUUM_INDEXING_HPP_INCLUDED
+#endif // LBT_CONTINUUM_INDEXING

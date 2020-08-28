@@ -1,5 +1,5 @@
-#ifndef LATTICE_HPP_INCLUDED
-#define LATTICE_HPP_INCLUDED
+#ifndef LBT_LATTICE
+#define LBT_LATTICE
 
 /**
  * \file     lattice.hpp
@@ -11,7 +11,7 @@
 #include <array>
 #include <memory>
 
-#include "../general/constexpr_func.hpp"
+#include "../general/constexpr_math.hpp"
 #include "../general/memory_alignment.hpp"
 
 
@@ -53,4 +53,4 @@ namespace lattice
     };
 }
 
-#endif //LATTICE_HPP_INCLUDED
+#endif // LBT_LATTICE

@@ -1,5 +1,5 @@
-#ifndef DISCLAIMER_HPP_INCLUDED
-#define DISCLAIMER_HPP_INCLUDED
+#ifndef LBT_DISCLAIMER
+#define LBT_DISCLAIMER
 
 /**
  * \file     disclaimer.hpp
@@ -89,4 +89,4 @@ void printDisclaimer()
     return;
 }
 
-#endif // DISCLAIMER_HPP_INCLUDED
+#endif // LBT_DISCLAIMER

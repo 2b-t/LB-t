@@ -1,5 +1,5 @@
-#ifndef LATTICE_UNIT_TEST_HPP_INCLUDED
-#define LATTICE_UNIT_TEST_HPP_INCLUDED
+#ifndef LBT_LATTICE_UNIT_TEST
+#define LBT_LATTICE_UNIT_TEST
 
 /**
  * \file     lattice_unit_test.hpp
@@ -140,4 +140,4 @@ namespace lattice
     };
 }
 
-#endif //LATTICE_UNIT_TEST_HPP_INCLUDED
+#endif // LBT_LATTICE_UNIT_TEST

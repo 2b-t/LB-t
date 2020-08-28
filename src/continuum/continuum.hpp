@@ -1,5 +1,5 @@
-#ifndef CONTINUUM_HPP_INCLUDED
-#define CONTINUUM_HPP_INCLUDED
+#ifndef LBT_CONTINUUM
+#define LBT_CONTINUUM
 
 /**
  * \file     continuum.hpp
@@ -175,4 +175,4 @@ class Continuum
 #include "continuum_import.hpp"
 #include "continuum_export.hpp"
 
-#endif // CONTINUUM_HPP_INCLUDED
+#endif // LBT_CONTINUUM
