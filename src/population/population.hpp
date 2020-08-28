@@ -30,6 +30,7 @@ enum class timestep: bool { even = false, odd = true };
 
 /**\fn        Negation timestep operator
  * \brief     Negation operator for the timestep
+ * 
  * \param[in] ts   Timestep to be negated
  * \return    Negated timestep
  */
@@ -41,6 +42,7 @@ constexpr timestep operator ! (timestep const& ts)
 
 /**\class  Population
  * \brief  Class that holds macroscopic values
+ * 
  * \tparam NX     Simulation domain resolution in x-direction
  * \tparam NY     Simulation domain resolution in y-direction
  * \tparam NZ     Simulation domain resolution in z-direction

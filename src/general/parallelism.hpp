@@ -13,6 +13,7 @@
     #include <omp.h>
 #endif
 
+
 #ifdef _OPENMP
     /**\class    Parallelism
      * \brief    Class for all variables regarding parallelism
