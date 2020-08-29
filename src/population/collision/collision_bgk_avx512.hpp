@@ -52,24 +52,25 @@ static inline double _mm512_reduce_add_pd(__m512d const _a)
 #endif
 
 
-/**\class       BGK_AVX512
- * \brief       BGK collision operator for arbitrary cache-aligned lattices with AVX512 intrinsics
- * \note        "A Model for Collision Processes in Gases. I. Small Amplitude Processes in Charged
- *              and Neutral One-Component Systems"
- *              P.L. Bhatnagar, E.P. Gross, M. Krook
- *              Physical Review 94 (1954)
- *              DOI: 10.1103/PhysRev.94.511
+/**\class  BGK_AVX512
+ * \brief  BGK collision operator for arbitrary cache-aligned lattices with AVX512 intrinsics
+ * \note   "A Model for Collision Processes in Gases. I. Small Amplitude Processes in Charged
+ *         and Neutral One-Component Systems"
+ *         P.L. Bhatnagar, E.P. Gross, M. Krook
+ *         Physical Review 94 (1954)
+ *         DOI: 10.1103/PhysRev.94.511
  *
- * \tparam NX   Simulation domain resolution in x-direction
- * \tparam NY   Simulation domain resolution in y-direction
- * \tparam NZ   Simulation domain resolution in z-direction
- * \tparam LT   Static lattice::DdQq class containing discretisation parameters
- * \tparam T    Floating data type used for simulation
+ * \tparam NX     Simulation domain resolution in x-direction
+ * \tparam NY     Simulation domain resolution in y-direction
+ * \tparam NZ     Simulation domain resolution in z-direction
+ * \tparam LT     Static lattice::DdQq class containing discretisation parameters
+ * \tparam NPOP   Number of populations stored side by side in a single merged grid
+ * \tparam T      Floating data type used for simulation
 */
-template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, typename T>
-class BGK_AVX512: public CollisionOperator<NX,NY,NZ,LT,T,BGK_AVX512<NX,NY,NZ,LT,T>>
+template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP, typename T>
+class BGK_AVX512: public CollisionOperator<NX,NY,NZ,LT,NPOP,T,BGK_AVX512<NX,NY,NZ,LT,NPOP,T>>
 {
-    using CO = CollisionOperator<NX,NY,NZ,LT,T,BGK_AVX512<NX,NY,NZ,LT,T>>; 
+    using CO = CollisionOperator<NX,NY,NZ,LT,NPOP,T,BGK_AVX512<NX,NY,NZ,LT,NPOP,T>>; 
 
     public:
         /**\brief     Constructor
@@ -81,7 +82,7 @@ class BGK_AVX512: public CollisionOperator<NX,NY,NZ,LT,T,BGK_AVX512<NX,NY,NZ,LT,
          * \param[in] L            The characteristic length
          * \param[in] p            Index of relevant population
         */
-        BGK_AVX512(std::shared_ptr<Population<NX,NY,NZ,LT>> population, std::shared_ptr<Continuum<NX,NY,NZ,T>> continuum, 
+        BGK_AVX512(std::shared_ptr<Population<NX,NY,NZ,LT,NPOP>> population, std::shared_ptr<Continuum<NX,NY,NZ,T>> continuum, 
             T const Re, T const U, unsigned int const L, unsigned int const p = 0):
             CO(population, continuum, p), population_(population), continuum_(continuum), p_(p),
             nu_(U*static_cast<T>(L) / Re), 
@@ -104,7 +105,7 @@ class BGK_AVX512: public CollisionOperator<NX,NY,NZ,LT,T,BGK_AVX512<NX,NY,NZ,LT,
         void implementation(bool const isSave);
 
     protected:
-        std::shared_ptr<Population<NX,NY,NZ,LT>> population_;
+        std::shared_ptr<Population<NX,NY,NZ,LT,NPOP>> population_;
         std::shared_ptr<Continuum<NX,NY,NZ,T>>   continuum_;
         unsigned int const p_;
 
@@ -114,8 +115,8 @@ class BGK_AVX512: public CollisionOperator<NX,NY,NZ,LT,T,BGK_AVX512<NX,NY,NZ,LT,
 };
 
 
-template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, typename T> template<timestep AA>
-void BGK_AVX512<NX,NY,NZ,LT,T>::implementation(bool const isSave)
+template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP, typename T> template<timestep AA>
+void BGK_AVX512<NX,NY,NZ,LT,NPOP,T>::implementation(bool const isSave)
 {
     #pragma omp parallel for default(none) shared(continuum_,population_) firstprivate(isSave,p_) schedule(static,1)
     for(unsigned int block = 0; block < CO::NUM_BLOCKS_; ++block)

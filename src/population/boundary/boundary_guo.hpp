@@ -33,12 +33,13 @@
  * \tparam NY            Simulation domain resolution in y-direction
  * \tparam NZ            Simulation domain resolution in z-direction
  * \tparam LT            Static lattice::DdQq class containing discretisation parameters
+ * \tparam NPOP          Number of populations stored side by side in a single merged grid
  * \tparam T             Floating data type used for simulation
 */
-template <template <class Orientation> class Type, class Orientation, unsigned int NX, unsigned int NY, unsigned int NZ, class LT, typename T>
-class Guo: public BoundaryCondition<NX,NY,NZ,LT,T,Guo<Type,Orientation,NX,NY,NZ,LT,T>>
+template <template <class Orientation> class Type, class Orientation, unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP, typename T>
+class Guo: public BoundaryCondition<NX,NY,NZ,LT,NPOP,T,Guo<Type,Orientation,NX,NY,NZ,LT,NPOP,T>>
 {
-    using BC = BoundaryCondition<NX,NY,NZ,LT,T,Guo<Type,Orientation,NX,NY,NZ,LT,T>>;
+    using BC = BoundaryCondition<NX,NY,NZ,LT,NPOP,T,Guo<Type,Orientation,NX,NY,NZ,LT,NPOP,T>>;
 
     public:
         /**\brief     Constructor
@@ -47,7 +48,7 @@ class Guo: public BoundaryCondition<NX,NY,NZ,LT,T,Guo<Type,Orientation,NX,NY,NZ,
          * \param[in] boundaryElements   Elements making up the boundary
          * \param[in] p                  Index of relevant population
         */
-        Guo(std::shared_ptr<Population<NX,NY,NZ,LT>> population, std::vector<BoundaryElement<T>> const& boundaryElements, 
+        Guo(std::shared_ptr<Population<NX,NY,NZ,LT,NPOP>> population, std::vector<BoundaryElement<T>> const& boundaryElements, 
             unsigned int const p = 0):
             BC(population, boundaryElements, p), population_(population), boundaryElements_(boundaryElements), p_(p)
         {
@@ -71,13 +72,13 @@ class Guo: public BoundaryCondition<NX,NY,NZ,LT,T,Guo<Type,Orientation,NX,NY,NZ,
         void implementationAfterCollisionOperator();
 
     private:
-        std::shared_ptr<Population<NX,NY,NZ,LT>> population_;
+        std::shared_ptr<Population<NX,NY,NZ,LT,NPOP>> population_;
         std::vector<BoundaryElement<T>> const boundaryElements_;
         unsigned int const p_;
 };
 
-template <template <class Orientation> class Type, class Orientation, unsigned int NX, unsigned int NY, unsigned int NZ, class LT, typename T> template<timestep AA>
-void Guo<Type,Orientation,NX,NY,NZ,LT,T>::implementationBeforeCollisionOperator()
+template <template <class Orientation> class Type, class Orientation, unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP, typename T> template<timestep AA>
+void Guo<Type,Orientation,NX,NY,NZ,LT,NPOP,T>::implementationBeforeCollisionOperator()
 {
     #pragma omp parallel for default(none) shared(boundaryElements_,population_,p_) schedule(static,32)
     for(size_t i = 0; i < boundaryElements_.size(); ++i)
@@ -196,8 +197,8 @@ void Guo<Type,Orientation,NX,NY,NZ,LT,T>::implementationBeforeCollisionOperator(
     return;
 }
 
-template <template <class Orientation> class Type, class Orientation, unsigned int NX, unsigned int NY, unsigned int NZ, class LT, typename T> template<timestep AA>
-void Guo<Type,Orientation,NX,NY,NZ,LT,T>::implementationAfterCollisionOperator()
+template <template <class Orientation> class Type, class Orientation, unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP, typename T> template<timestep AA>
+void Guo<Type,Orientation,NX,NY,NZ,LT,NPOP,T>::implementationAfterCollisionOperator()
 {
     return;
 }

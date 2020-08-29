@@ -118,8 +118,8 @@ class Continuum
          *
          * \param[in] boundary   The boundary condition
         */
-        template <class LT, typename DerivedClass>
-        void setBoundary(BoundaryCondition<NX,NY,NZ,LT,T,DerivedClass> const& boundary);
+        template <class LT, unsigned int NPOP, typename DerivedClass>
+        void setBoundary(BoundaryCondition<NX,NY,NZ,LT,NPOP,T,DerivedClass> const& boundary);
         
         /**\fn        exportBin
          * \brief     Export any scalar quantity at current time step to *.bin file writing to *.bin-files

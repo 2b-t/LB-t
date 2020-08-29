@@ -18,8 +18,8 @@
 #include "../general/paths.hpp"
 
 
-template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T> template <class LT, typename DerivedClass>
-void Continuum<NX,NY,NZ,T>::setBoundary(BoundaryCondition<NX,NY,NZ,LT,T,DerivedClass> const& boundary)
+template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T> template <class LT, unsigned int NPOP, typename DerivedClass>
+void Continuum<NX,NY,NZ,T>::setBoundary(BoundaryCondition<NX,NY,NZ,LT,NPOP,T,DerivedClass> const& boundary)
 {
     for(size_t i = 0; i < boundary.boundaryElements_.size(); ++i)
     {

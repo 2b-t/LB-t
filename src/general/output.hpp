@@ -78,6 +78,7 @@ void statusOutput(unsigned int const step, unsigned int const NT, double const r
  * \tparam    NY        Spatial resolution of the simulation domain in y-direction
  * \tparam    NZ        Spatial resolution of the simulation domain in z-direction
  * \tparam    LT        Static lattice::DdQq class containing discretisation parameters
+ * \tparam    NPOP      Number of populations stored side by side in a single merged grid
  * \tparam    T         Floating data type used for simulation
  * \param[in] con       Continuum object holding macroscopic variables
  * \param[in] pop       Population object holding microscopic variables
@@ -85,8 +86,8 @@ void statusOutput(unsigned int const step, unsigned int const NT, double const r
  * \param[in] NT_PLOT   Time between two plot time steps
  * \param[in] runtime   Simulation runtime in seconds
 */
-template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, typename T>
-void performanceOutput(std::shared_ptr<Continuum<NX,NY,NZ,T>> const& continuum, std::shared_ptr<Population<NX,NY,NZ,LT>>& population,
+template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP, typename T>
+void performanceOutput(std::shared_ptr<Continuum<NX,NY,NZ,T>> const& continuum, std::shared_ptr<Population<NX,NY,NZ,LT,NPOP>>& population,
                        unsigned int const NT, double NT_PLOT, double const runtime)
 {
     constexpr double bytesPerMiB = 1024.0 * 1024.0;

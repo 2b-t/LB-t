@@ -26,7 +26,6 @@ namespace geometry
      * \tparam    NX            Simulation domain resolution in x-direction
      * \tparam    NY            Simulation domain resolution in y-direction
      * \tparam    NZ            Simulation domain resolution in z-direction
-     * \tparam    LT            Static lattice::DdQq class containing discretisation parameters
      * \tparam    T             Floating data type used for simulation
      * \param[in] radius        Unsigned integer that holds the radius of the cylinder
      * \param[in] position      Array of unsigned integers that holds the position of the center of the
@@ -40,16 +39,14 @@ namespace geometry
      * \param[in] p             The index of the relevant population
      * \return    A tuple containing pointers to all boundary conditions
     */
-    template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, typename T>
-    std::tuple< Guo<type::Velocity,orientation::Left,NX,NY,NZ,LT,T>, Guo<type::Pressure,orientation::Right,NX,NY,NZ,LT,T>, HalfwayBounceBack<NX,NY,NZ,LT,T> >
-    cylinder3D(std::shared_ptr<Population<NX,NY,NZ,LT>> population, unsigned int const radius, std::array<unsigned int,3> const& position,
+    template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP, typename T>
+    std::tuple< Guo<type::Velocity,orientation::Left,NX,NY,NZ,LT,NPOP,T>, Guo<type::Pressure,orientation::Right,NX,NY,NZ,LT,NPOP,T>, HalfwayBounceBack<NX,NY,NZ,LT,NPOP,T> >
+    cylinder3D(std::shared_ptr<Population<NX,NY,NZ,LT,NPOP>> population, unsigned int const radius, std::array<unsigned int,3> const& position,
                std::string const& orientation, bool const isWalls, T const RHO, T const U, T const V, T const W, unsigned int p = 0)
     {
         alignas(CACHE_LINE) std::vector<BoundaryElement<T>> wall;
         alignas(CACHE_LINE) std::vector<BoundaryElement<T>> inlet;
         alignas(CACHE_LINE) std::vector<BoundaryElement<T>> outlet;
-        
-        std::vector<std::shared_ptr<HalfwayBounceBack<NX,NY,NZ,LT,T>>> boundaryConditions;
         
         if (orientation == "x")
         {
@@ -89,9 +86,9 @@ namespace geometry
             std::exit(EXIT_FAILURE);
         }
         
-        return { Guo<type::Velocity,orientation::Left,NX,NY,NZ,LT,T>(population, inlet, p),
-                 Guo<type::Pressure,orientation::Right,NX,NY,NZ,LT,T>(population, outlet, p),
-                 HalfwayBounceBack<NX,NY,NZ,LT,T>(population, wall, p) };
+        return { Guo<type::Velocity,orientation::Left,NX,NY,NZ,LT,NPOP,T>(population, inlet, p),
+                 Guo<type::Pressure,orientation::Right,NX,NY,NZ,LT,NPOP,T>(population, outlet, p),
+                 HalfwayBounceBack<NX,NY,NZ,LT,NPOP,T>(population, wall, p) };
     }
 
 }

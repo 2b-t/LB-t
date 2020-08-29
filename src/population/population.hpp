@@ -47,7 +47,7 @@ constexpr timestep operator ! (timestep const& ts)
  * \tparam NY     Simulation domain resolution in y-direction
  * \tparam NZ     Simulation domain resolution in z-direction
  * \tparam LT     Static lattice::DdQq class containing discretisation parameters
- * \tparam NPOP   Number of populations stored side by side in the lattice (default = 1)
+ * \tparam NPOP   Number of populations stored side by side in a single merged grid (default = 1)
 */
 template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP = 1>
 class Population

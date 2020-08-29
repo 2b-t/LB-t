@@ -25,16 +25,17 @@
  *         (1994)
  *         arXiv: arXiv:comp-gas/9401004
  * 
- * \tparam NX   Simulation domain resolution in x-direction
- * \tparam NY   Simulation domain resolution in y-direction
- * \tparam NZ   Simulation domain resolution in z-direction
- * \tparam LT   Static lattice::DdQq class containing discretisation parameters
- * \tparam T    Floating data type used for simulation
+ * \tparam NX     Simulation domain resolution in x-direction
+ * \tparam NY     Simulation domain resolution in y-direction
+ * \tparam NZ     Simulation domain resolution in z-direction
+ * \tparam LT     Static lattice::DdQq class containing discretisation parameters
+ * \tparam NPOP   Number of populations stored side by side in a single merged grid
+ * \tparam T      Floating data type used for simulation
 */
-template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, typename T>
-class BGK_Smagorinsky: public CollisionOperator<NX,NY,NZ,LT,T,BGK_Smagorinsky<NX,NY,NZ,LT,T>>
+template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP, typename T>
+class BGK_Smagorinsky: public CollisionOperator<NX,NY,NZ,LT,NPOP,T,BGK_Smagorinsky<NX,NY,NZ,LT,NPOP,T>>
 {
-    using CO = CollisionOperator<NX,NY,NZ,LT,T,BGK_Smagorinsky<NX,NY,NZ,LT,T>>; 
+    using CO = CollisionOperator<NX,NY,NZ,LT,NPOP,T,BGK_Smagorinsky<NX,NY,NZ,LT,NPOP,T>>; 
 
     public:
         /**\brief     Constructor
@@ -46,7 +47,7 @@ class BGK_Smagorinsky: public CollisionOperator<NX,NY,NZ,LT,T,BGK_Smagorinsky<NX
          * \param[in] L            The characteristic length
          * \param[in] p            Index of relevant population
         */
-        BGK_Smagorinsky(std::shared_ptr<Population<NX,NY,NZ,LT>> population, std::shared_ptr<Continuum<NX,NY,NZ,T>> continuum, 
+        BGK_Smagorinsky(std::shared_ptr<Population<NX,NY,NZ,LT,NPOP>> population, std::shared_ptr<Continuum<NX,NY,NZ,T>> continuum, 
                         T const Re, T const U, unsigned int const L, unsigned int const p = 0):
             CO(population, continuum, p), population_(population), continuum_(continuum), p_(p),
             nu_(U*static_cast<T>(L) / Re), 
@@ -65,8 +66,8 @@ class BGK_Smagorinsky: public CollisionOperator<NX,NY,NZ,LT,T,BGK_Smagorinsky<NX
         void implementation(bool const isSave);
 
     protected:
-        std::shared_ptr<Population<NX,NY,NZ,LT>> population_;
-        std::shared_ptr<Continuum<NX,NY,NZ,T>>   continuum_;
+        std::shared_ptr<Population<NX,NY,NZ,LT,NPOP>> population_;
+        std::shared_ptr<Continuum<NX,NY,NZ,T>>        continuum_;
         unsigned int const p_;
 
         T const nu_;
@@ -77,8 +78,8 @@ class BGK_Smagorinsky: public CollisionOperator<NX,NY,NZ,LT,T,BGK_Smagorinsky<NX
 };
 
 
-template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, typename T> template<timestep AA>
-void BGK_Smagorinsky<NX,NY,NZ,LT,T>::implementation(bool const isSave)
+template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP, typename T> template<timestep AA>
+void BGK_Smagorinsky<NX,NY,NZ,LT,NPOP,T>::implementation(bool const isSave)
 {
     #pragma omp parallel for default(none) shared(continuum_,population_) firstprivate(isSave,p_) schedule(static,1)
     for(unsigned int block = 0; block < CO::NUM_BLOCKS_; ++block)

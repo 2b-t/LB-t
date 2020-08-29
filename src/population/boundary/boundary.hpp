@@ -40,10 +40,11 @@ struct BoundaryElement
  * \tparam NY             Simulation domain resolution in y-direction
  * \tparam NZ             Simulation domain resolution in z-direction
  * \tparam LT             Static lattice::DdQq class containing discretisation parameters
+ * \tparam NPOP           Number of populations stored side by side in a single merged grid
  * \tparam T              Floating data type used for simulation
  * \tparam DerivedClass   The derived boundary condition that inherits from this base class
 */
-template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, typename T, typename DerivedClass>
+template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP, typename T, typename DerivedClass>
 class BoundaryCondition
 {
     public:
@@ -84,14 +85,14 @@ class BoundaryCondition
          * \param[in] boundaryElements   Elements making up the boundary
          * \param[in] p                  Index of relevant population
         */
-        BoundaryCondition(std::shared_ptr<Population<NX,NY,NZ,LT>> population, std::vector<BoundaryElement<T>> boundaryElements,
+        BoundaryCondition(std::shared_ptr<Population<NX,NY,NZ,LT,NPOP>> population, std::vector<BoundaryElement<T>> boundaryElements,
                           unsigned int const p = 0):
             boundaryElements_(boundaryElements), population_(population), p_(p)
         {
             return;
         }
 
-        std::shared_ptr<Population<NX,NY,NZ,LT>> population_;
+        std::shared_ptr<Population<NX,NY,NZ,LT,NPOP>> population_;
         unsigned int const p_;
 };
 
