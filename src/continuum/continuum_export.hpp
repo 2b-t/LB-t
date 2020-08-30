@@ -4,6 +4,7 @@
 /**
  * \file     continuum_export.hpp
  * \mainpage Class members for exporting macroscopic values
+ * \author   Tobit Flatscher (github.com/2b-t)
 */
 
 #include <filesystem>
@@ -18,8 +19,8 @@
 #include "../general/paths.hpp"
 
 
-template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T> template <class LT, unsigned int NPOP, typename DerivedClass>
-void Continuum<NX,NY,NZ,T>::setBoundary(BoundaryCondition<NX,NY,NZ,LT,NPOP,T,DerivedClass> const& boundary)
+template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T> template <template <typename U> class LT, typename U, unsigned int NPOP, typename DerivedClass>
+void Continuum<NX,NY,NZ,T>::setBoundary(BoundaryCondition<NX,NY,NZ,LT,U,NPOP,DerivedClass> const& boundary)
 {
     for(size_t i = 0; i < boundary.boundaryElements_.size(); ++i)
     {
@@ -89,7 +90,7 @@ void Continuum<NX,NY,NZ,T>::exportScalarVtk(unsigned int const m, std::string co
         }
         std::fprintf(exportFile.get(), "\n");
 
-        size_t const numberOfCells = static_cast<size_t>(NX)*static_cast<size_t>(NY)*static_cast<size_t>(NZ);
+        constexpr size_t numberOfCells = static_cast<size_t>(NX)*static_cast<size_t>(NY)*static_cast<size_t>(NZ);
         std::fprintf(exportFile.get(), "POINT_DATA %zu\n", numberOfCells);
 
         std::fprintf(exportFile.get(), "SCALARS transport_scalar float 1\n");
@@ -149,7 +150,7 @@ void Continuum<NX,NY,NZ,T>::exportVtk(unsigned int const step) const
         }
         std::fprintf(exportFile.get(), "\n");
 
-        size_t const numberOfCells = static_cast<size_t>(NX)*static_cast<size_t>(NY)*static_cast<size_t>(NZ);
+        constexpr size_t numberOfCells = static_cast<size_t>(NX)*static_cast<size_t>(NY)*static_cast<size_t>(NZ);
         std::fprintf(exportFile.get(), "POINT_DATA %zu\n", numberOfCells);
 
         std::fprintf(exportFile.get(), "SCALARS density_variation float 1\n");

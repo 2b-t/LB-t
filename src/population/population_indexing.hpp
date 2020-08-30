@@ -4,6 +4,7 @@
 /**
  * \file     population_indexing.hpp
  * \brief    Class members for indexing of populations with A-A access pattern
+ * \author   Tobit Flatscher (github.com/2b-t)
  *
  * \mainpage The A-A access pattern avoids the usage of two distinct populations before and
  *           after streaming by treating even and odd time steps differently: Even time steps
@@ -32,90 +33,90 @@ inline unsigned int __attribute__((always_inline)) O_E(timestep const ts, unsign
     return ts == timestep::odd ? oddIndex : evenIndex;
 }
 
-template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP>
-inline size_t __attribute__((always_inline)) Population<NX,NY,NZ,LT,NPOP>::spatialToLinear(unsigned int const x, unsigned int const y, unsigned int const z,
+template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP>
+inline size_t __attribute__((always_inline)) Population<NX,NY,NZ,LT,T,NPOP>::spatialToLinear(unsigned int const x, unsigned int const y, unsigned int const z,
                                                                                            unsigned int const n, unsigned int const d, unsigned int const p) const
 {
-    return (((z*NY + y)*NX + x)*NPOP + p)*LT::ND + n*LT::OFF + d;
+    return (((z*NY + y)*NX + x)*NPOP + p)*LT<T>::ND + n*LT<T>::OFF + d;
 }
 
-template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP>
-void Population<NX,NY,NZ,LT,NPOP>::linearToSpatial(unsigned int& x, unsigned int& y, unsigned int& z,
+template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP>
+void Population<NX,NY,NZ,LT,T,NPOP>::linearToSpatial(unsigned int& x, unsigned int& y, unsigned int& z,
                                                    unsigned int& p, unsigned int& n, unsigned int& d,
                                                    size_t const index) const
 {
-    size_t factor = LT::ND*NPOP*NX*NY;
+    size_t factor = LT<T>::ND*NPOP*NX*NY;
     size_t rest   = index%factor;
 
     z      = index/factor;
 
-    factor = LT::ND*NPOP*NX;
+    factor = LT<T>::ND*NPOP*NX;
     y      = rest/factor;
     rest   = rest%factor;
 
-    factor = LT::ND*NPOP;
+    factor = LT<T>::ND*NPOP;
     x      = rest/factor;
     rest   = rest%factor;
 
-    factor = LT::ND;
+    factor = LT<T>::ND;
     p      = rest/factor;
     rest   = rest%factor;
 
-    factor = LT::OFF;
+    factor = LT<T>::OFF;
     n      = rest/factor;
     rest   = rest%factor;
 
-    factor = LT::SPEEDS;
+    factor = LT<T>::SPEEDS;
     d      = rest%factor;
 
     return;
 }
 
-template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP> template <timestep AA>
-inline size_t __attribute__((always_inline)) Population<NX,NY,NZ,LT,NPOP>::AA_IndexRead(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
+template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP> template <timestep AA>
+inline size_t __attribute__((always_inline)) Population<NX,NY,NZ,LT,T,NPOP>::AA_IndexRead(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
                                                                                         unsigned int const n,       unsigned int const d,       unsigned int const p) const
 {
-    return spatialToLinear(x[1 + O_E(AA, static_cast<int>(LT::DX[!n*OFF_+d]), 0)],
-                           y[1 + O_E(AA, static_cast<int>(LT::DY[!n*OFF_+d]), 0)],
-                           z[1 + O_E(AA, static_cast<int>(LT::DZ[!n*OFF_+d]), 0)],
+    return spatialToLinear(x[1 + O_E(AA, static_cast<int>(LT<T>::DX[!n*OFF_+d]), 0)],
+                           y[1 + O_E(AA, static_cast<int>(LT<T>::DY[!n*OFF_+d]), 0)],
+                           z[1 + O_E(AA, static_cast<int>(LT<T>::DZ[!n*OFF_+d]), 0)],
                            O_E(AA, n, !n),
                            d, p);
 }
 
-template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP> template <timestep AA>
-inline size_t __attribute__((always_inline)) Population<NX,NY,NZ,LT,NPOP>::AA_IndexWrite(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
+template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP> template <timestep AA>
+inline size_t __attribute__((always_inline)) Population<NX,NY,NZ,LT,T,NPOP>::AA_IndexWrite(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
                                                                                          unsigned int const n,       unsigned int const d,       unsigned int const p) const
 {
-    return spatialToLinear(x[1 + O_E(AA, static_cast<int>(LT::DX[n*OFF_+d]), 0)],
-                           y[1 + O_E(AA, static_cast<int>(LT::DY[n*OFF_+d]), 0)],
-                           z[1 + O_E(AA, static_cast<int>(LT::DZ[n*OFF_+d]), 0)],
+    return spatialToLinear(x[1 + O_E(AA, static_cast<int>(LT<T>::DX[n*OFF_+d]), 0)],
+                           y[1 + O_E(AA, static_cast<int>(LT<T>::DY[n*OFF_+d]), 0)],
+                           z[1 + O_E(AA, static_cast<int>(LT<T>::DZ[n*OFF_+d]), 0)],
                            O_E(AA, !n, n),
                            d, p);
 }
 
-template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP> template <timestep AA>
-inline auto& __attribute__((always_inline)) Population<NX,NY,NZ,LT,NPOP>::AA_Read(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
+template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP> template <timestep AA>
+inline auto& __attribute__((always_inline)) Population<NX,NY,NZ,LT,T,NPOP>::AA_Read(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
                                                                                   unsigned int const n,       unsigned int const d,       unsigned int const p)
 {
     return F_[AA_IndexRead<AA>(x,y,z,n,d,p)];
 }
 
-template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP> template <timestep AA>
-inline auto const& __attribute__((always_inline)) Population<NX,NY,NZ,LT,NPOP>::AA_Read(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
+template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP> template <timestep AA>
+inline auto const& __attribute__((always_inline)) Population<NX,NY,NZ,LT,T,NPOP>::AA_Read(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
                                                                                         unsigned int const n,       unsigned int const d,       unsigned int const p) const
 {
     return F_[AA_IndexRead<AA>(x,y,z,n,d,p)];
 }
 
-template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP> template <timestep AA>
-inline auto& __attribute__((always_inline)) Population<NX,NY,NZ,LT,NPOP>::AA_Write(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
+template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP> template <timestep AA>
+inline auto& __attribute__((always_inline)) Population<NX,NY,NZ,LT,T,NPOP>::AA_Write(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
                                                                                    unsigned int const n,       unsigned int const d,       unsigned int const p)
 {
     return F_[AA_IndexWrite<AA>(x,y,z,n,d,p)];
 }
 
-template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP> template <timestep AA>
-inline auto const& __attribute__((always_inline)) Population<NX,NY,NZ,LT,NPOP>::AA_Write(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
+template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP> template <timestep AA>
+inline auto const& __attribute__((always_inline)) Population<NX,NY,NZ,LT,T,NPOP>::AA_Write(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
                                                                                          unsigned int const n,       unsigned int const d,       unsigned int const p) const
 {
     return F_[AA_IndexWrite<AA>(x,y,z,n,d,p)];

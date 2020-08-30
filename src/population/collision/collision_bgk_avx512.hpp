@@ -4,6 +4,8 @@
 /**
  * \file     collision_bgk_avx512.hpp
  * \mainpage BGK collision operator with AVX512 intrinsics
+ * \author   Tobit Flatscher (github.com/2b-t)
+ * 
  * \warning  Requires AVX512 and cache-aligned arrays
 */
 
@@ -64,17 +66,17 @@ static inline double _mm512_reduce_add_pd(__m512d const _a)
  * \tparam NY     Simulation domain resolution in y-direction
  * \tparam NZ     Simulation domain resolution in z-direction
  * \tparam LT     Static lattice::DdQq class containing discretisation parameters
- * \tparam NPOP   Number of populations stored side by side in a single merged grid
  * \tparam T      Floating data type used for simulation
+ * \tparam NPOP   Number of populations stored side by side in a single merged grid
 */
-template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP, typename T>
-class BGK_AVX512: public CollisionOperator<NX,NY,NZ,LT,NPOP,T,BGK_AVX512<NX,NY,NZ,LT,NPOP,T>>
+template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP>
+class BGK_AVX512: public CollisionOperator<NX,NY,NZ,LT,T,NPOP,BGK_AVX512<NX,NY,NZ,LT,T,NPOP>>
 {
-    using CO = CollisionOperator<NX,NY,NZ,LT,NPOP,T,BGK_AVX512<NX,NY,NZ,LT,NPOP,T>>; 
+    using CO = CollisionOperator<NX,NY,NZ,LT,T,NPOP,BGK_AVX512<NX,NY,NZ,LT,T,NPOP>>;
 
     public:
         /**\brief     Constructor
-         * 
+         *
          * \param[in] population   Population object holding microscopic distributions
          * \param[in] continuum    Continuum object holding macroscopic variables
          * \param[in] Re           The Reynolds number
@@ -82,22 +84,22 @@ class BGK_AVX512: public CollisionOperator<NX,NY,NZ,LT,NPOP,T,BGK_AVX512<NX,NY,N
          * \param[in] L            The characteristic length
          * \param[in] p            Index of relevant population
         */
-        BGK_AVX512(std::shared_ptr<Population<NX,NY,NZ,LT,NPOP>> population, std::shared_ptr<Continuum<NX,NY,NZ,T>> continuum, 
+        BGK_AVX512(std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population, std::shared_ptr<Continuum<NX,NY,NZ,T>> continuum,
             T const Re, T const U, unsigned int const L, unsigned int const p = 0):
             CO(population, continuum, p), population_(population), continuum_(continuum), p_(p),
-            nu_(U*static_cast<T>(L) / Re), 
-            tau_(nu_/(LT::CS*LT::CS) + 1.0/ 2.0), omega_(1.0/tau_)
+            nu_(U*static_cast<T>(L) / Re),
+            tau_(nu_/(LT<T>::CS*LT<T>::CS) + 1.0/ 2.0), omega_(1.0/tau_)
         {
-            static_assert(LT::ND % 8 == 0);
+            static_assert(LT<T>::ND % 8 == 0);
             static_assert(std::is_same<T, double>::value == true);
-            static_assert(std::is_same<typename std::remove_const<decltype(LT::CS)>::type, double>::value == true);
+            static_assert(std::is_same<typename std::remove_const<decltype(LT<T>::CS)>::type, double>::value == true);
 
             return;
         }
 
         /**\fn        implementation
          * \brief     Implementation of the BGK collision operator
-         * 
+         *
          * \tparam    AA       The timestep in the AA-pattern
          * \param[in] isSave   Boolean parameter whether the macroscopic values should be saved or not
         */
@@ -105,8 +107,8 @@ class BGK_AVX512: public CollisionOperator<NX,NY,NZ,LT,NPOP,T,BGK_AVX512<NX,NY,N
         void implementation(bool const isSave);
 
     protected:
-        std::shared_ptr<Population<NX,NY,NZ,LT,NPOP>> population_;
-        std::shared_ptr<Continuum<NX,NY,NZ,T>>   continuum_;
+        std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population_;
+        std::shared_ptr<Continuum<NX,NY,NZ,T>>          continuum_;
         unsigned int const p_;
 
         T const nu_;
@@ -115,8 +117,8 @@ class BGK_AVX512: public CollisionOperator<NX,NY,NZ,LT,NPOP,T,BGK_AVX512<NX,NY,N
 };
 
 
-template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP, typename T> template<timestep AA>
-void BGK_AVX512<NX,NY,NZ,LT,NPOP,T>::implementation(bool const isSave)
+template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP> template<timestep AA>
+void BGK_AVX512<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
 {
     #pragma omp parallel for default(none) shared(continuum_,population_) firstprivate(isSave,p_) schedule(static,1)
     for(unsigned int block = 0; block < CO::NUM_BLOCKS_; ++block)
@@ -143,15 +145,15 @@ void BGK_AVX512<NX,NY,NZ,LT,NPOP,T>::implementation(bool const isSave)
                     unsigned int const x_n[3] = { (NX + x - 1) % NX, x, (x + 1) % NX };
 
                     /// load distributions
-                    alignas(CACHE_LINE) double f[LT::ND] = {0.0};
+                    alignas(CACHE_LINE) double f[LT<T>::ND] = {0.0};
 
                     #pragma GCC unroll (2)
                     for(unsigned int n = 0; n <= 1; ++n)
                     {
                         #pragma GCC unroll (16)
-                        for(unsigned int d = 0; d < LT::OFF; ++d)
+                        for(unsigned int d = 0; d < LT<T>::OFF; ++d)
                         {
-                            f[n*LT::OFF + d] = population_->F_[population_-> template AA_IndexRead<AA>(x_n,y_n,z_n,n,d,p_)];
+                            f[n*LT<T>::OFF + d] = population_->F_[population_-> template AA_IndexRead<AA>(x_n,y_n,z_n,n,d,p_)];
                         }
                     }
 
@@ -161,12 +163,12 @@ void BGK_AVX512<NX,NY,NZ,LT,NPOP,T>::implementation(bool const isSave)
                     __m512d _v   = _mm512_setzero_pd();
                     __m512d _w   = _mm512_setzero_pd();
 
-                    for (size_t i = 0; i < LT::ND; i += AVX512_REG_SIZE)
+                    for (size_t i = 0; i < LT<T>::ND; i += AVX512_REG_SIZE)
                     {
                         _rho = _mm512_add_pd(_mm512_load_pd(&f[i]), _rho);
-                        _u   = _mm512_fmadd_pd(_mm512_load_pd(&LT::DX[i]), _mm512_load_pd(&f[i]), _u);
-                        _v   = _mm512_fmadd_pd(_mm512_load_pd(&LT::DY[i]), _mm512_load_pd(&f[i]), _v);
-                        _w   = _mm512_fmadd_pd(_mm512_load_pd(&LT::DZ[i]), _mm512_load_pd(&f[i]), _w);
+                        _u   = _mm512_fmadd_pd(_mm512_load_pd(&LT<T>::DX[i]), _mm512_load_pd(&f[i]), _u);
+                        _v   = _mm512_fmadd_pd(_mm512_load_pd(&LT<T>::DY[i]), _mm512_load_pd(&f[i]), _v);
+                        _w   = _mm512_fmadd_pd(_mm512_load_pd(&LT<T>::DZ[i]), _mm512_load_pd(&f[i]), _w);
                     }
 
                     double const rho = _mm512_reduce_add_pd(_rho);
@@ -183,35 +185,35 @@ void BGK_AVX512<NX,NY,NZ,LT,NPOP,T>::implementation(bool const isSave)
                     }
 
                     /// equilibrium distributions
-                    alignas(CACHE_LINE) double feq[LT::ND] = {0.0};
+                    alignas(CACHE_LINE) double feq[LT<T>::ND] = {0.0};
 
-                    __m512d const _uu = _mm512_set1_pd(-1.0/(2.0*LT::CS*LT::CS)*(u*u + v*v + w*w));
+                    __m512d const _uu = _mm512_set1_pd(-1.0/(2.0*LT<T>::CS*LT<T>::CS)*(u*u + v*v + w*w));
                     _rho = _mm512_set1_pd(rho);
                     _u   = _mm512_set1_pd(u);
                     _v   = _mm512_set1_pd(v);
                     _w   = _mm512_set1_pd(w);
 
-                    for (size_t i = 0; i < LT::ND; i += AVX512_REG_SIZE)
+                    for (size_t i = 0; i < LT<T>::ND; i += AVX512_REG_SIZE)
                     {
-                        __m512d _cu = _mm512_mul_pd(_mm512_load_pd(&LT::DX[i]), _u);
-                        _cu = _mm512_fmadd_pd(_mm512_load_pd(&LT::DY[i]), _v, _cu);
-                        _cu = _mm512_fmadd_pd(_mm512_load_pd(&LT::DZ[i]), _w, _cu);
-                        _cu = _mm512_mul_pd(_cu, _mm512_set1_pd(1.0/(LT::CS*LT::CS)));
+                        __m512d _cu = _mm512_mul_pd(_mm512_load_pd(&LT<T>::DX[i]), _u);
+                        _cu = _mm512_fmadd_pd(_mm512_load_pd(&LT<T>::DY[i]), _v, _cu);
+                        _cu = _mm512_fmadd_pd(_mm512_load_pd(&LT<T>::DZ[i]), _w, _cu);
+                        _cu = _mm512_mul_pd(_cu, _mm512_set1_pd(1.0/(LT<T>::CS*LT<T>::CS)));
 
                         __m512d _res = _mm512_fmadd_pd(_mm512_set1_pd(0.5), _cu, _mm512_set1_pd(1.0));
                         _res = _mm512_fmadd_pd(_cu, _res, _uu);
 
                         _res = _mm512_fmadd_pd(_res, _rho, _rho);
-                        _res = _mm512_mul_pd(_mm512_load_pd(&LT::W[i]), _res);
+                        _res = _mm512_mul_pd(_mm512_load_pd(&LT<T>::W[i]), _res);
                         _mm512_store_pd(&feq[i], _res);
                     }
 
                     /// collision
-                    for (size_t i = 0; i < LT::ND; i += AVX512_REG_SIZE)
+                    for (size_t i = 0; i < LT<T>::ND; i += AVX512_REG_SIZE)
                     {
                         __m512d _res = _mm512_sub_pd(_mm512_load_pd(&feq[i]), _mm512_load_pd(&f[i]));
                         _res = _mm512_fmadd_pd(_mm512_set1_pd(omega_), _res, _mm512_load_pd(&f[i]));
-                        _mm512_store_pd(&f[i], _mm512_mul_pd(_mm512_load_pd(&LT::MASK[i]), _res));
+                        _mm512_store_pd(&f[i], _mm512_mul_pd(_mm512_load_pd(&LT<T>::MASK[i]), _res));
                     }
 
                     /// streaming
@@ -219,9 +221,9 @@ void BGK_AVX512<NX,NY,NZ,LT,NPOP,T>::implementation(bool const isSave)
                     for(unsigned int n = 0; n <= 1; ++n)
                     {
                         #pragma GCC unroll (16)
-                        for(unsigned int d = 0; d < LT::OFF; ++d)
+                        for(unsigned int d = 0; d < LT<T>::OFF; ++d)
                         {
-                            size_t const curr = n*LT::OFF + d;
+                            size_t const curr = n*LT<T>::OFF + d;
                             population_->F_[population_-> template AA_IndexWrite<AA>(x_n,y_n,z_n,n,d,p_)] = f[curr];
                         }
                     }

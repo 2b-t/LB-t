@@ -4,6 +4,7 @@
 /**
  * \file     boundary_orientation.hpp
  * \mainpage Holds orientation parameters for boundary conditions
+ * \author   Tobit Flatscher (github.com/2b-t)
 */
 
 

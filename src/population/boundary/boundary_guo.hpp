@@ -4,6 +4,7 @@
 /**
  * \file     boundary_guo.hpp
  * \mainpage Very robust Guo interpolation boundary condition for pressure and velocity
+ * \author   Tobit Flatscher (github.com/2b-t)
 */
 
 #include <array>
@@ -26,7 +27,7 @@
  *         Z.L. Guo, C.G. Zheng, B.C. Shi
  *         Chinese Physics, Volume 11, Number 4 (2002)
  *         DOI: 10.1088/1009-1963/11/4/310
- * 
+ *
  * \tparam Type          type of the boundary condition (type::Pressure or type::Velocity)
  * \tparam Orientation   boundary orientation (orientation::Left, orientation::Right)
  * \tparam NX            Simulation domain resolution in x-direction
@@ -36,19 +37,19 @@
  * \tparam NPOP          Number of populations stored side by side in a single merged grid
  * \tparam T             Floating data type used for simulation
 */
-template <template <class Orientation> class Type, class Orientation, unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP, typename T>
-class Guo: public BoundaryCondition<NX,NY,NZ,LT,NPOP,T,Guo<Type,Orientation,NX,NY,NZ,LT,NPOP,T>>
+template <template <class Orientation> class Type, class Orientation, unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP>
+class Guo: public BoundaryCondition<NX,NY,NZ,LT,T,NPOP,Guo<Type,Orientation,NX,NY,NZ,LT,T,NPOP>>
 {
-    using BC = BoundaryCondition<NX,NY,NZ,LT,NPOP,T,Guo<Type,Orientation,NX,NY,NZ,LT,NPOP,T>>;
+    using BC = BoundaryCondition<NX,NY,NZ,LT,T,NPOP,Guo<Type,Orientation,NX,NY,NZ,LT,T,NPOP>>;
 
     public:
         /**\brief     Constructor
-         * 
+         *
          * \param[in] population         Population object holding microscopic distributions
          * \param[in] boundaryElements   Elements making up the boundary
          * \param[in] p                  Index of relevant population
         */
-        Guo(std::shared_ptr<Population<NX,NY,NZ,LT,NPOP>> population, std::vector<BoundaryElement<T>> const& boundaryElements, 
+        Guo(std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population, std::vector<BoundaryElement<T>> const& boundaryElements,
             unsigned int const p = 0):
             BC(population, boundaryElements, p), population_(population), boundaryElements_(boundaryElements), p_(p)
         {
@@ -57,7 +58,7 @@ class Guo: public BoundaryCondition<NX,NY,NZ,LT,NPOP,T,Guo<Type,Orientation,NX,N
 
         /**\fn     implementationBeforeCollisionOperator
          * \brief  Implementation of the boundary condition to be performed after the collision operator
-         * 
+         *
          * \tparam AA   The timestep in the AA-pattern
         */
         template<timestep AA>
@@ -65,20 +66,20 @@ class Guo: public BoundaryCondition<NX,NY,NZ,LT,NPOP,T,Guo<Type,Orientation,NX,N
 
         /**\fn     implementationAfterCollisionOperator
          * \brief  Implementation of the boundary condition to be performed before the collision operator
-         * 
+         *
          * \tparam AA   The timestep in the AA-pattern
         */
         template<timestep AA>
         void implementationAfterCollisionOperator();
 
     private:
-        std::shared_ptr<Population<NX,NY,NZ,LT,NPOP>> population_;
+        std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population_;
         std::vector<BoundaryElement<T>> const boundaryElements_;
         unsigned int const p_;
 };
 
-template <template <class Orientation> class Type, class Orientation, unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP, typename T> template<timestep AA>
-void Guo<Type,Orientation,NX,NY,NZ,LT,NPOP,T>::implementationBeforeCollisionOperator()
+template <template <class Orientation> class Type, class Orientation, unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP> template<timestep AA>
+void Guo<Type,Orientation,NX,NY,NZ,LT,T,NPOP>::implementationBeforeCollisionOperator()
 {
     #pragma omp parallel for default(none) shared(boundaryElements_,population_,p_) schedule(static,32)
     for(size_t i = 0; i < boundaryElements_.size(); ++i)
@@ -96,15 +97,15 @@ void Guo<Type,Orientation,NX,NY,NZ,LT,NPOP,T>::implementationBeforeCollisionOper
                                            (boundaryElement.z + Orientation::z + 1) % NZ };
 
         // load distributions
-        alignas(CACHE_LINE) T f[LT::ND] = {0.0};
+        alignas(CACHE_LINE) T f[LT<T>::ND] = {0.0};
 
         #pragma GCC unroll (2)
         for(unsigned int n = 0; n <= 1; ++n)
         {
             #pragma GCC unroll (16)
-            for(unsigned int d = n; d < LT::HSPEED; ++d)
+            for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
             {
-                f[n*LT::OFF + d] = population_->F_[population_-> template AA_IndexRead<AA>(x_n,y_n,z_n,n,d,p_)];
+                f[n*LT<T>::OFF + d] = population_->F_[population_-> template AA_IndexRead<AA>(x_n,y_n,z_n,n,d,p_)];
             }
         }
 
@@ -117,13 +118,13 @@ void Guo<Type,Orientation,NX,NY,NZ,LT,NPOP,T>::implementationBeforeCollisionOper
         for(unsigned int n = 0; n <= 1; ++n)
         {
             #pragma GCC unroll (16)
-            for(unsigned int d = n; d < LT::HSPEED; ++d)
+            for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
             {
-                unsigned int const curr = n*LT::OFF + d;
+                unsigned int const curr = n*LT<T>::OFF + d;
                 rho += f[curr];
-                u   += f[curr]*LT::DX[curr];
-                v   += f[curr]*LT::DY[curr];
-                w   += f[curr]*LT::DZ[curr];
+                u   += f[curr]*LT<T>::DX[curr];
+                v   += f[curr]*LT<T>::DY[curr];
+                w   += f[curr]*LT<T>::DZ[curr];
             }
         }
         u /= rho;
@@ -131,19 +132,19 @@ void Guo<Type,Orientation,NX,NY,NZ,LT,NPOP,T>::implementationBeforeCollisionOper
         w /= rho;
 
         // non-equilibrium part of distributions
-        alignas(CACHE_LINE) T fneq[LT::ND] = {0.0};
+        alignas(CACHE_LINE) T fneq[LT<T>::ND] = {0.0};
 
-        T uu = - 1.0/(2.0*LT::CS*LT::CS)*(u*u + v*v + w*w);
+        T uu = - 1.0/(2.0*LT<T>::CS*LT<T>::CS)*(u*u + v*v + w*w);
 
         #pragma GCC unroll (2)
         for(unsigned int n = 0; n <= 1; ++n)
         {
             #pragma GCC unroll (16)
-            for(unsigned int d = n; d < LT::HSPEED; ++d)
+            for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
             {
-                unsigned int const curr = n*LT::OFF + d;
-                T const cu = 1.0/(LT::CS*LT::CS)*(u*LT::DX[curr] + v*LT::DY[curr] + w*LT::DZ[curr]);
-                fneq[curr] = f[curr] - LT::W[curr]*(rho + rho*(cu*(1.0 + 0.5*cu) + uu));
+                unsigned int const curr = n*LT<T>::OFF + d;
+                T const cu = 1.0/(LT<T>::CS*LT<T>::CS)*(u*LT<T>::DX[curr] + v*LT<T>::DY[curr] + w*LT<T>::DZ[curr]);
+                fneq[curr] = f[curr] - LT<T>::W[curr]*(rho + rho*(cu*(1.0 + 0.5*cu) + uu));
             }
         }
 
@@ -161,19 +162,19 @@ void Guo<Type,Orientation,NX,NY,NZ,LT,NPOP,T>::implementationBeforeCollisionOper
         w   = res[3];
 
         // equilibrium distributions
-        alignas(CACHE_LINE) T feq[LT::ND] = {0.0};
+        alignas(CACHE_LINE) T feq[LT<T>::ND] = {0.0};
 
-        uu = - 1.0/(2.0*LT::CS*LT::CS)*(u*u + v*v + w*w);
+        uu = - 1.0/(2.0*LT<T>::CS*LT<T>::CS)*(u*u + v*v + w*w);
 
         #pragma GCC unroll (2)
         for(unsigned int n = 0; n <= 1; ++n)
         {
             #pragma GCC unroll (16)
-            for(unsigned int d = n; d < LT::HSPEED; ++d)
+            for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
             {
-                unsigned int const curr = n*LT::OFF + d;
-                T const cu = 1.0/(LT::CS*LT::CS)*(u*LT::DX[curr] + v*LT::DY[curr] + w*LT::DZ[curr]);
-                feq[curr] = LT::W[curr]*(rho + rho*(cu*(1.0 + 0.5*cu) + uu));
+                unsigned int const curr = n*LT<T>::OFF + d;
+                T const cu = 1.0/(LT<T>::CS*LT<T>::CS)*(u*LT<T>::DX[curr] + v*LT<T>::DY[curr] + w*LT<T>::DZ[curr]);
+                feq[curr] = LT<T>::W[curr]*(rho + rho*(cu*(1.0 + 0.5*cu) + uu));
             }
         }
 
@@ -186,9 +187,9 @@ void Guo<Type,Orientation,NX,NY,NZ,LT,NPOP,T>::implementationBeforeCollisionOper
         for(unsigned int n = 0; n <= 1; ++n)
         {
             #pragma GCC unroll (16)
-            for(unsigned int d = n; d < LT::HSPEED; ++d)
+            for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
             {
-                unsigned int const curr = n*LT::OFF + d;
+                unsigned int const curr = n*LT<T>::OFF + d;
                 population_->F_[population_-> template AA_IndexRead<AA>(x_c,y_c,z_c,n,d,p_)] = feq[curr] + fneq[curr];
             }
         }
@@ -197,8 +198,8 @@ void Guo<Type,Orientation,NX,NY,NZ,LT,NPOP,T>::implementationBeforeCollisionOper
     return;
 }
 
-template <template <class Orientation> class Type, class Orientation, unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP, typename T> template<timestep AA>
-void Guo<Type,Orientation,NX,NY,NZ,LT,NPOP,T>::implementationAfterCollisionOperator()
+template <template <class Orientation> class Type, class Orientation, unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP> template<timestep AA>
+void Guo<Type,Orientation,NX,NY,NZ,LT,T,NPOP>::implementationAfterCollisionOperator()
 {
     return;
 }

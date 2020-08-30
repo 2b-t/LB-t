@@ -4,6 +4,7 @@
 /**
  * \file     boundary_bounceback.hpp
  * \mainpage Solid walls with simple bounce-back boundaries
+ * \author   Tobit Flatscher (github.com/2b-t)
 */
 
 #include <memory>
@@ -22,7 +23,7 @@
  *         X. He, Q. Zou, L.S. Luo, M. Dembo
  *         Journal of Statistical Physics 87 (1997)
  *         DOI: 10.1007/BF02181482
- * 
+ *
  * \tparam NX     Simulation domain resolution in x-direction
  * \tparam NY     Simulation domain resolution in y-direction
  * \tparam NZ     Simulation domain resolution in z-direction
@@ -30,19 +31,19 @@
  * \tparam NPOP   Number of populations stored side by side in a single merged grid
  * \tparam T      Floating data type used for simulation
 */
-template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP, typename T>
-class HalfwayBounceBack: public BoundaryCondition<NX,NY,NZ,LT,NPOP,T,HalfwayBounceBack<NX,NY,NZ,LT,NPOP,T>>
+template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP>
+class HalfwayBounceBack: public BoundaryCondition<NX,NY,NZ,LT,T,NPOP,HalfwayBounceBack<NX,NY,NZ,LT,T,NPOP>>
 {
-    using BC = BoundaryCondition<NX,NY,NZ,LT,NPOP,T,HalfwayBounceBack<NX,NY,NZ,LT,NPOP,T>>;
+    using BC = BoundaryCondition<NX,NY,NZ,LT,T,NPOP,HalfwayBounceBack<NX,NY,NZ,LT,T,NPOP>>;
 
     public:
         /**\brief     Constructor
-         * 
+         *
          * \param[in] population         Population object holding microscopic distributions
          * \param[in] boundaryElements   Elements making up the boundary
          * \param[in] p                  Index of relevant population
         */
-        HalfwayBounceBack(std::shared_ptr<Population<NX,NY,NZ,LT,NPOP>> population, std::vector<BoundaryElement<T>> const& boundaryElements, 
+        HalfwayBounceBack(std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population, std::vector<BoundaryElement<T>> const& boundaryElements,
                           unsigned int const p = 0):
             BC(population, boundaryElements, p), population_(population), boundaryElements_(boundaryElements), p_(p)
         {
@@ -51,7 +52,7 @@ class HalfwayBounceBack: public BoundaryCondition<NX,NY,NZ,LT,NPOP,T,HalfwayBoun
 
         /**\fn     implementationBeforeCollisionOperator
          * \brief  Implementation of the boundary condition to be performed after the collision operator
-         * 
+         *
          * \tparam AA   the timestep in the AA-pattern
         */
         template<timestep AA>
@@ -59,26 +60,26 @@ class HalfwayBounceBack: public BoundaryCondition<NX,NY,NZ,LT,NPOP,T,HalfwayBoun
 
         /**\fn     implementationAfterCollisionOperator
          * \brief  Implementation of the boundary condition to be performed before the collision operator
-         * 
+         *
          * \tparam AA   the timestep in the AA-pattern
         */
         template<timestep AA>
         void implementationAfterCollisionOperator();
-        
+
     protected:
-        std::shared_ptr<Population<NX,NY,NZ,LT,NPOP>> population_;
+        std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population_;
         std::vector<BoundaryElement<T>> const boundaryElements_;
         unsigned int const p_;
 };
 
-template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP, typename T> template<timestep AA>
-void HalfwayBounceBack<NX,NY,NZ,LT,NPOP,T>::implementationBeforeCollisionOperator()
+template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP> template<timestep AA>
+void HalfwayBounceBack<NX,NY,NZ,LT,T,NPOP>::implementationBeforeCollisionOperator()
 {
     return;
 }
 
-template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP, typename T> template<timestep AA>
-void HalfwayBounceBack<NX,NY,NZ,LT,NPOP,T>::implementationAfterCollisionOperator()
+template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP> template<timestep AA>
+void HalfwayBounceBack<NX,NY,NZ,LT,T,NPOP>::implementationAfterCollisionOperator()
 {
     #pragma omp parallel for default(none) shared(boundaryElements_,population_,p_) schedule(static,32)
     for(size_t i = 0; i < BC::boundaryElements_.size(); ++i)
@@ -92,9 +93,9 @@ void HalfwayBounceBack<NX,NY,NZ,LT,NPOP,T>::implementationAfterCollisionOperator
         for(unsigned int n = 0; n <= 1; ++n)
         {
             #pragma GCC unroll (15)
-            for(unsigned int d = 1; d < LT::HSPEED; ++d)
+            for(unsigned int d = 1; d < LT<T>::HSPEED; ++d)
             {
-                population_->F_[population_-> template AA_IndexWrite<AA>(x_n, y_n, z_n, !n, d, p_)] = 
+                population_->F_[population_-> template AA_IndexWrite<AA>(x_n, y_n, z_n, !n, d, p_)] =
                 population_->F_[population_-> template AA_IndexRead<!AA>(x_n, y_n, z_n, n, d, p_)];
             }
         }

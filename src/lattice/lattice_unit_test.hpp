@@ -4,6 +4,7 @@
 /**
  * \file     lattice_unit_test.hpp
  * \mainpage Output of static lattice parameters and unit test for lattices
+ * \author   Tobit Flatscher (github.com/2b-t)
 */
 
 #include <array>

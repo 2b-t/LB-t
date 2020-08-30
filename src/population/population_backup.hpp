@@ -4,6 +4,7 @@
 /**
  * \file     population_backup.hpp
  * \mainpage Class members for backing-up (export and import) microscopic populations
+ * \author   Tobit Flatscher (github.com/2b-t)
 */
 
 #include <iostream>
@@ -16,8 +17,8 @@
 #include "../general/paths.hpp"
 
 
-template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP>
-void Population<NX,NY,NZ,LT,NPOP>::importBin(std::string const& name)
+template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP>
+void Population<NX,NY,NZ,LT,T,NPOP>::importBin(std::string const& name)
 {
     std::filesystem::create_directories(BACKUP_EXPORT_PATH);
 
@@ -37,8 +38,8 @@ void Population<NX,NY,NZ,LT,NPOP>::importBin(std::string const& name)
     return;
 }
 
-template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP>
-void Population<NX,NY,NZ,LT,NPOP>::exportBin(std::string const& name) const
+template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP>
+void Population<NX,NY,NZ,LT,T,NPOP>::exportBin(std::string const& name) const
 {
     std::filesystem::create_directories(BACKUP_EXPORT_PATH);
 

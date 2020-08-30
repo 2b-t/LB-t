@@ -4,6 +4,7 @@
 /**
  * \file     collision.hpp
  * \mainpage Base class for all collision operators
+ * \author   Tobit Flatscher (github.com/2b-t)
 */
 
 #include <memory>
@@ -19,11 +20,11 @@
  * \tparam NY             Simulation domain resolution in y-direction
  * \tparam NZ             Simulation domain resolution in z-direction
  * \tparam LT             Static lattice::DdQq class containing discretisation parameters
- * \tparam NPOP           Number of populations stored side by side in a single merged grid
  * \tparam T              Floating data type used for simulation
+ * \tparam NPOP           Number of populations stored side by side in a single merged grid
  * \tparam DerivedClass   The derived collision operator that inherits from this base class
 */
-template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP, typename T, typename DerivedClass>
+template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP, typename DerivedClass>
 class CollisionOperator
 {
     public:
@@ -60,7 +61,7 @@ class CollisionOperator
          * \param[in] continuum    Continuum object holding macroscopic variables
          * \param[in] p            Index of relevant population
         */
-        CollisionOperator(std::shared_ptr<Population<NX,NY,NZ,LT,NPOP>> population, std::shared_ptr<Continuum<NX,NY,NZ,T>> continuum, unsigned int const p = 0):
+        CollisionOperator(std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population, std::shared_ptr<Continuum<NX,NY,NZ,T>> continuum, unsigned int const p = 0):
             population_(population), continuum_(continuum), p_(p)
         {
             return;
@@ -85,8 +86,8 @@ class CollisionOperator
         void initialisePopulationFromContinuum_();
 
         /// macro and microscopic values
-        std::shared_ptr<Population<NX,NY,NZ,LT,NPOP>> population_;
-        std::shared_ptr<Continuum<NX,NY,NZ,T>>        continuum_;
+        std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population_;
+        std::shared_ptr<Continuum<NX,NY,NZ,T>>          continuum_;
         unsigned int const p_;
 
         /// parallelism: 3D blocks
@@ -99,8 +100,8 @@ class CollisionOperator
 };
 
 
-template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP, typename T, typename DerivedClass> template<timestep AA>
-void CollisionOperator<NX,NY,NZ,LT,NPOP,T,DerivedClass>::initialise(T const RHO_0, T const U_0, T const V_0, T const W_0)
+template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP, typename DerivedClass> template<timestep AA>
+void CollisionOperator<NX,NY,NZ,LT,T,NPOP,DerivedClass>::initialise(T const RHO_0, T const U_0, T const V_0, T const W_0)
 {
     initialiseContinuum_(RHO_0, U_0, V_0, W_0);
     initialisePopulationFromContinuum_<AA>();
@@ -108,8 +109,8 @@ void CollisionOperator<NX,NY,NZ,LT,NPOP,T,DerivedClass>::initialise(T const RHO_
     return;
 }
 
-template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP, typename T, typename DerivedClass>
-void CollisionOperator<NX,NY,NZ,LT,NPOP,T,DerivedClass>::initialiseContinuum_(T const RHO_0, T const U_0, T const V_0, T const W_0)
+template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP, typename DerivedClass>
+void CollisionOperator<NX,NY,NZ,LT,T,NPOP,DerivedClass>::initialiseContinuum_(T const RHO_0, T const U_0, T const V_0, T const W_0)
 {
     #pragma omp parallel for default(none) shared(continuum_) firstprivate(RHO_0,U_0,V_0,W_0) schedule(static,1)
     for(unsigned int block = 0; block < NUM_BLOCKS_; ++block)
@@ -141,8 +142,8 @@ void CollisionOperator<NX,NY,NZ,LT,NPOP,T,DerivedClass>::initialiseContinuum_(T 
     return;
 }
 
-template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP, typename T, typename DerivedClass> template<timestep AA>
-void CollisionOperator<NX,NY,NZ,LT,NPOP,T,DerivedClass>::initialisePopulationFromContinuum_()
+template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP, typename DerivedClass> template<timestep AA>
+void CollisionOperator<NX,NY,NZ,LT,T,NPOP,DerivedClass>::initialisePopulationFromContinuum_()
 {
     #pragma omp parallel for default(none) shared(continuum_, population_) firstprivate(p_) schedule(static,1)
     for(unsigned int block = 0; block < NUM_BLOCKS_; ++block)
@@ -173,17 +174,17 @@ void CollisionOperator<NX,NY,NZ,LT,NPOP,T,DerivedClass>::initialisePopulationFro
                     T const v   = continuum_->operator()(x, y, z, 2);
                     T const w   = continuum_->operator()(x, y, z, 3);
 
-                    T const uu = - 1.0/(2.0*LT::CS*LT::CS)*(u*u + v*v + w*w);
+                    T const uu = - 1.0/(2.0*LT<T>::CS*LT<T>::CS)*(u*u + v*v + w*w);
 
                     #pragma GCC unroll (2)
                     for(unsigned int n = 0; n <= 1; ++n)
                     {
                         #pragma GCC unroll (16)
-                        for(unsigned int d = n; d < LT::OFF; ++d)
+                        for(unsigned int d = n; d < LT<T>::OFF; ++d)
                         {
-                            unsigned int const curr = n*LT::OFF + d;
-                            T const cu = 1.0/(LT::CS*LT::CS)*(u*LT::DX[curr] + v*LT::DY[curr] + w*LT::DZ[curr]);
-                            population_->F_[population_-> template AA_IndexRead<AA>(x_n,y_n,z_n,n,d,p_)] = LT::W[curr]*(rho + rho*(cu*(1.0 + 0.5*cu) + uu));
+                            unsigned int const curr = n*LT<T>::OFF + d;
+                            T const cu = 1.0/(LT<T>::CS*LT<T>::CS)*(u*LT<T>::DX[curr] + v*LT<T>::DY[curr] + w*LT<T>::DZ[curr]);
+                            population_->F_[population_-> template AA_IndexRead<AA>(x_n,y_n,z_n,n,d,p_)] = LT<T>::W[curr]*(rho + rho*(cu*(1.0 + 0.5*cu) + uu));
                         }
                     }
                 }

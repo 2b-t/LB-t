@@ -7,6 +7,7 @@
  *
  * \mainpage An artificial class that allows for convenient changes of parameters that control
  *           the parallel environment OpenMP
+ * \author   Tobit Flatscher (github.com/2b-t)
 */
 
 #if __has_include (<omp.h>)

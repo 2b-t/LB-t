@@ -4,6 +4,7 @@
 /**
  * \file     continuum_indexing.hpp
  * \mainpage Class members for indexing macroscopic values
+ * \author   Tobit Flatscher (github.com/2b-t)
 */
 
 

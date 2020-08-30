@@ -4,6 +4,7 @@
 /**
  * \file     disclaimer.hpp
  * \mainpage Print disclaimer and compiler settings to console
+ * \author   Tobit Flatscher (github.com/2b-t)
 */
 
 #include <iostream>

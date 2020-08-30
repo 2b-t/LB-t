@@ -5,6 +5,8 @@
  * \file     lattice.hpp
  * \mainpage Prototype lattice class holding lattice discretisation parameters.
  *           Copy and modify for new models
+ * \author   Tobit Flatscher (github.com/2b-t)
+ * 
  * \warning  Static classes with more complex members such as std::vector and std::array require C++17
 */
 

@@ -5,6 +5,7 @@
  * \file     constexpr_math.hpp
  * \mainpage A series of functions that can evaluate to a constant expression and thus
  *           can make use of evaluation and optimisation at compile time.
+ * \author   Tobit Flatscher (github.com/2b-t)
 */
 
 #include <cassert>

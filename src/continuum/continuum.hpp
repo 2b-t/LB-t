@@ -4,6 +4,7 @@
 /**
  * \file     continuum.hpp
  * \mainpage Class for continuum properties
+ * \author   Tobit Flatscher (github.com/2b-t)
 */
 
 #include <algorithm>
@@ -52,7 +53,7 @@ class Continuum
 
             return;
         }
-        
+
         /**\brief     Class copy constructor
          * \param[in] c   The continuum object to be copied
         */
@@ -118,9 +119,9 @@ class Continuum
          *
          * \param[in] boundary   The boundary condition
         */
-        template <class LT, unsigned int NPOP, typename DerivedClass>
-        void setBoundary(BoundaryCondition<NX,NY,NZ,LT,NPOP,T,DerivedClass> const& boundary);
-        
+        template <template <typename U> class LT, typename U, unsigned int NPOP, typename DerivedClass>
+        void setBoundary(BoundaryCondition<NX,NY,NZ,LT,U,NPOP,DerivedClass> const& boundary);
+
         /**\fn        exportBin
          * \brief     Export any scalar quantity at current time step to *.bin file writing to *.bin-files
          *            is significantly faster than using non-binary *.txt-files
@@ -129,7 +130,7 @@ class Continuum
          * \param[in] step   The current time step that will be used for the name
         */
         void exportBin(std::string const& name, unsigned int const step) const;
-        
+
         /**\fn        exportScalarVtk
          * \brief     Export arbitrary scalar at current time step to a *.vtk-file that can then be read
          *            by visualisation applications like ParaView.
@@ -140,7 +141,7 @@ class Continuum
          * \param[in] step   The current time step that will be used for the name
         */
         void exportScalarVtk(unsigned int const m, std::string const& name, unsigned int const step) const;
-        
+
         /**\fn        exportVtk
          * \brief     Export velocity and density at current time step to a *.vtk-file that can then be
          *            read by visualisation applications like ParaView.
@@ -158,8 +159,8 @@ class Continuum
          * \param[in]  step   The current time step that will be used for the name
         */
         void importBin(std::string const& name, unsigned int const step);
-        
-        
+
+
         static constexpr unsigned int NM_ = 4; // number of macroscopic values: rho, ux, uy, uz
         static constexpr size_t MEM_SIZE_ = sizeof(T)*NZ*NY*NX*static_cast<size_t>(NM_); // size of array in byte
 

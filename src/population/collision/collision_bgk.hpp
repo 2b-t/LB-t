@@ -4,6 +4,7 @@
 /**
  * \file     collision_bgk.hpp
  * \mainpage BGK collision operator
+ * \author   Tobit Flatscher (github.com/2b-t)
 */
 
 #include <algorithm>
@@ -25,22 +26,22 @@
  *         P.L. Bhatnagar, E.P. Gross, M. Krook
  *         Physical Review 94 (1954)
  *         DOI: 10.1103/PhysRev.94.511
- * 
+ *
  * \tparam NX     Simulation domain resolution in x-direction
  * \tparam NY     Simulation domain resolution in y-direction
  * \tparam NZ     Simulation domain resolution in z-direction
  * \tparam LT     Static lattice::DdQq class containing discretisation parameters
- * \tparam NPOP   Number of populations stored side by side in a single merged grid
  * \tparam T      Floating data type used for simulation
+ * \tparam NPOP   Number of populations stored side by side in a single merged grid
 */
-template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP, typename T>
-class BGK: public CollisionOperator<NX,NY,NZ,LT,NPOP,T,BGK<NX,NY,NZ,LT,NPOP,T>>
+template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP>
+class BGK: public CollisionOperator<NX,NY,NZ,LT,T,NPOP,BGK<NX,NY,NZ,LT,T,NPOP>>
 {
-    using CO = CollisionOperator<NX,NY,NZ,LT,NPOP,T,BGK<NX,NY,NZ,LT,NPOP,T>>; 
+    using CO = CollisionOperator<NX,NY,NZ,LT,T,NPOP,BGK<NX,NY,NZ,LT,T,NPOP>>;
 
     public:
         /**\brief     Constructor
-         * 
+         *
          * \param[in] population   Population object holding microscopic distributions
          * \param[in] continuum    Continuum object holding macroscopic variables
          * \param[in] Re           The Reynolds number
@@ -48,18 +49,18 @@ class BGK: public CollisionOperator<NX,NY,NZ,LT,NPOP,T,BGK<NX,NY,NZ,LT,NPOP,T>>
          * \param[in] L            The characteristic length
          * \param[in] p            Index of relevant population
         */
-        BGK(std::shared_ptr<Population<NX,NY,NZ,LT,NPOP>> population, std::shared_ptr<Continuum<NX,NY,NZ,T>> continuum, 
+        BGK(std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population, std::shared_ptr<Continuum<NX,NY,NZ,T>> continuum,
             T const Re, T const U, unsigned int const L, unsigned int const p = 0):
             CO(population, continuum, p), population_(population), continuum_(continuum), p_(p),
-            nu_(U*static_cast<T>(L) / Re), 
-            tau_(nu_/(LT::CS*LT::CS) + 1.0/ 2.0), omega_(1.0/tau_)
+            nu_(U*static_cast<T>(L) / Re),
+            tau_(nu_/(LT<T>::CS*LT<T>::CS) + 1.0/ 2.0), omega_(1.0/tau_)
         {
             return;
         }
 
         /**\fn        implementation
          * \brief     Implementation of the BGK collision operator
-         * 
+         *
          * \tparam    AA       The timestep in the AA-pattern
          * \param[in] isSave   Boolean parameter whether the macroscopic values should be saved or not
         */
@@ -67,8 +68,8 @@ class BGK: public CollisionOperator<NX,NY,NZ,LT,NPOP,T,BGK<NX,NY,NZ,LT,NPOP,T>>
         void implementation(bool const isSave);
 
     protected:
-        std::shared_ptr<Population<NX,NY,NZ,LT,NPOP>> population_;
-        std::shared_ptr<Continuum<NX,NY,NZ,T>>        continuum_;
+        std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population_;
+        std::shared_ptr<Continuum<NX,NY,NZ,T>>          continuum_;
         unsigned int const p_;
 
         T const nu_;
@@ -76,8 +77,8 @@ class BGK: public CollisionOperator<NX,NY,NZ,LT,NPOP,T,BGK<NX,NY,NZ,LT,NPOP,T>>
         T const omega_;
 };
 
-template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP, typename T> template<timestep AA>
-void BGK<NX,NY,NZ,LT,NPOP,T>::implementation(bool const isSave)
+template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP> template<timestep AA>
+void BGK<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
 {
     #pragma omp parallel for default(none) shared(continuum_,population_) firstprivate(isSave,p_) schedule(static,1)
     for(unsigned int block = 0; block < CO::NUM_BLOCKS_; ++block)
@@ -104,15 +105,15 @@ void BGK<NX,NY,NZ,LT,NPOP,T>::implementation(bool const isSave)
                     unsigned int const x_n[3] = { (NX + x - 1) % NX, x, (x + 1) % NX };
 
                     /// load distributions
-                    alignas(CACHE_LINE) T f[LT::ND] = {0.0};
+                    alignas(CACHE_LINE) T f[LT<T>::ND] = {0.0};
 
                     #pragma GCC unroll (2)
                     for(unsigned int n = 0; n <= 1; ++n)
                     {
                         #pragma GCC unroll (16)
-                        for(unsigned int d = n; d < LT::HSPEED; ++d)
+                        for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
                         {
-                            f[n*LT::OFF + d] = population_->F_[population_-> template AA_IndexRead<AA>(x_n,y_n,z_n,n,d,p_)];
+                            f[n*LT<T>::OFF + d] = population_->F_[population_-> template AA_IndexRead<AA>(x_n,y_n,z_n,n,d,p_)];
                         }
                     }
 
@@ -125,13 +126,13 @@ void BGK<NX,NY,NZ,LT,NPOP,T>::implementation(bool const isSave)
                     for(unsigned int n = 0; n <= 1; ++n)
                     {
                         #pragma GCC unroll (16)
-                        for(unsigned int d = n; d < LT::HSPEED; ++d)
+                        for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
                         {
-                            unsigned int const curr = n*LT::OFF + d;
+                            unsigned int const curr = n*LT<T>::OFF + d;
                             rho += f[curr];
-                            u   += f[curr]*LT::DX[curr];
-                            v   += f[curr]*LT::DY[curr];
-                            w   += f[curr]*LT::DZ[curr];
+                            u   += f[curr]*LT<T>::DX[curr];
+                            v   += f[curr]*LT<T>::DY[curr];
+                            w   += f[curr]*LT<T>::DZ[curr];
                         }
                     }
                     u /= rho;
@@ -147,19 +148,19 @@ void BGK<NX,NY,NZ,LT,NPOP,T>::implementation(bool const isSave)
                     }
 
                     /// equilibrium distributions
-                    alignas(CACHE_LINE) T feq[LT::ND] = {0.0};
+                    alignas(CACHE_LINE) T feq[LT<T>::ND] = {0.0};
 
-                    T const uu = - 1.0/(2.0*LT::CS*LT::CS)*(u*u + v*v + w*w);
+                    T const uu = - 1.0/(2.0*LT<T>::CS*LT<T>::CS)*(u*u + v*v + w*w);
 
                     #pragma GCC unroll (2)
                     for(unsigned int n = 0; n <= 1; ++n)
                     {
                         #pragma GCC unroll (16)
-                        for(unsigned int d = n; d < LT::HSPEED; ++d)
+                        for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
                         {
-                            unsigned int const curr = n*LT::OFF + d;
-                            T const cu = 1.0/(LT::CS*LT::CS)*(u*LT::DX[curr] + v*LT::DY[curr] + w*LT::DZ[curr]);
-                            feq[curr] = LT::W[curr]*(rho + rho*(cu*(1.0 + 0.5*cu) + uu));
+                            unsigned int const curr = n*LT<T>::OFF + d;
+                            T const cu = 1.0/(LT<T>::CS*LT<T>::CS)*(u*LT<T>::DX[curr] + v*LT<T>::DY[curr] + w*LT<T>::DZ[curr]);
+                            feq[curr] = LT<T>::W[curr]*(rho + rho*(cu*(1.0 + 0.5*cu) + uu));
                         }
                     }
 
@@ -168,9 +169,9 @@ void BGK<NX,NY,NZ,LT,NPOP,T>::implementation(bool const isSave)
                     for(unsigned int n = 0; n <= 1; ++n)
                     {
                         #pragma GCC unroll (16)
-                        for(unsigned int d = n; d < LT::HSPEED; ++d)
+                        for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
                         {
-                            unsigned int const curr = n*LT::OFF + d;
+                            unsigned int const curr = n*LT<T>::OFF + d;
                             population_->F_[population_-> template AA_IndexWrite<AA>(x_n,y_n,z_n,n,d,p_)] = f[curr] + omega_*(feq[curr] - f[curr]);
                         }
                     }

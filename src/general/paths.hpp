@@ -4,7 +4,7 @@
 /**
  * \file    Paths.hpp
  * \brief   The locations for all folders relevant for export
- * \warning Paths must already exist!
+ * \author  Tobit Flatscher (github.com/2b-t)
 */
 
 #include <string>

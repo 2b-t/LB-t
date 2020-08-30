@@ -4,6 +4,7 @@
 /**
  * \file     population.hpp
  * \mainpage Class for microscopic populations
+ * \author   Tobit Flatscher (github.com/2b-t)
 */
 
 #include <algorithm>
@@ -30,7 +31,7 @@ enum class timestep: bool { even = false, odd = true };
 
 /**\fn        Negation timestep operator
  * \brief     Negation operator for the timestep
- * 
+ *
  * \param[in] ts   Timestep to be negated
  * \return    Negated timestep
  */
@@ -42,19 +43,17 @@ constexpr timestep operator ! (timestep const& ts)
 
 /**\class  Population
  * \brief  Class that holds macroscopic values
- * 
+ *
  * \tparam NX     Simulation domain resolution in x-direction
  * \tparam NY     Simulation domain resolution in y-direction
  * \tparam NZ     Simulation domain resolution in z-direction
  * \tparam LT     Static lattice::DdQq class containing discretisation parameters
+ * \tparam T      Floating data type used for simulation
  * \tparam NPOP   Number of populations stored side by side in a single merged grid (default = 1)
 */
-template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP = 1>
+template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP = 1>
 class Population
 {
-    /// import current lattice floating data type
-    typedef typename std::remove_const<decltype(LT::CS)>::type T;
-
     public:
         Population& operator = (Population&) = delete;
         Population(Population&&) = delete;
@@ -64,6 +63,8 @@ class Population
         */
         Population()
         {
+            static_assert( (LT<T>::DIM == 2) ? (NZ == 1) : true, "Two-dimensional lattice with NZ != 1." );
+
             if (F_ == nullptr)
             {
                 std::cerr << "Fatal error: Population could not be allocated." << std::endl;
@@ -72,7 +73,7 @@ class Population
 
             return;
         }
-        
+
         /**\brief     Class copy constructor
          * \param[in] p   The population object to be copied
         */
@@ -219,14 +220,14 @@ class Population
 
 
         /// lattice characteristics
-        static constexpr unsigned int    DIM_ = LT::DIM;
-        static constexpr unsigned int SPEEDS_ = LT::SPEEDS;
-        static constexpr unsigned int HSPEED_ = LT::HSPEED;
+        static constexpr unsigned int    DIM_ = LT<T>::DIM;
+        static constexpr unsigned int SPEEDS_ = LT<T>::SPEEDS;
+        static constexpr unsigned int HSPEED_ = LT<T>::HSPEED;
 
         /// linear memory layout
-        static constexpr unsigned int PAD_ = LT::PAD;
-        static constexpr unsigned int  ND_ = LT::ND;
-        static constexpr unsigned int OFF_ = LT::OFF;
+        static constexpr unsigned int PAD_ = LT<T>::PAD;
+        static constexpr unsigned int  ND_ = LT<T>::ND;
+        static constexpr unsigned int OFF_ = LT<T>::OFF;
         static constexpr size_t  MEM_SIZE_ = sizeof(T)*NZ*NY*NX*NPOP*static_cast<size_t>(ND_);
 
         /// pointer to population

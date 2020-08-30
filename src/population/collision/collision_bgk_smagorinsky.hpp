@@ -4,6 +4,7 @@
 /**
  * \file     collision_bgk_smagorinsky.hpp
  * \mainpage BGK collision operator with Smagorinsky turbulence model
+ * \author   Tobit Flatscher (github.com/2b-t)
 */
 
 #include <algorithm>
@@ -24,22 +25,22 @@
  *         S. Hou, J. Sterling, S. Chen, G.D. Doolen
  *         (1994)
  *         arXiv: arXiv:comp-gas/9401004
- * 
+ *
  * \tparam NX     Simulation domain resolution in x-direction
  * \tparam NY     Simulation domain resolution in y-direction
  * \tparam NZ     Simulation domain resolution in z-direction
  * \tparam LT     Static lattice::DdQq class containing discretisation parameters
- * \tparam NPOP   Number of populations stored side by side in a single merged grid
  * \tparam T      Floating data type used for simulation
+ * \tparam NPOP   Number of populations stored side by side in a single merged grid
 */
-template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP, typename T>
-class BGK_Smagorinsky: public CollisionOperator<NX,NY,NZ,LT,NPOP,T,BGK_Smagorinsky<NX,NY,NZ,LT,NPOP,T>>
+template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP>
+class BGK_Smagorinsky: public CollisionOperator<NX,NY,NZ,LT,T,NPOP,BGK_Smagorinsky<NX,NY,NZ,LT,T,NPOP>>
 {
-    using CO = CollisionOperator<NX,NY,NZ,LT,NPOP,T,BGK_Smagorinsky<NX,NY,NZ,LT,NPOP,T>>; 
+    using CO = CollisionOperator<NX,NY,NZ,LT,T,NPOP,BGK_Smagorinsky<NX,NY,NZ,LT,T,NPOP>>;
 
     public:
         /**\brief     Constructor
-         * 
+         *
          * \param[in] population   Population object holding microscopic distributions
          * \param[in] continuum    Continuum object holding macroscopic variables
          * \param[in] Re           The Reynolds number
@@ -47,18 +48,18 @@ class BGK_Smagorinsky: public CollisionOperator<NX,NY,NZ,LT,NPOP,T,BGK_Smagorins
          * \param[in] L            The characteristic length
          * \param[in] p            Index of relevant population
         */
-        BGK_Smagorinsky(std::shared_ptr<Population<NX,NY,NZ,LT,NPOP>> population, std::shared_ptr<Continuum<NX,NY,NZ,T>> continuum, 
+        BGK_Smagorinsky(std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population, std::shared_ptr<Continuum<NX,NY,NZ,T>> continuum,
                         T const Re, T const U, unsigned int const L, unsigned int const p = 0):
             CO(population, continuum, p), population_(population), continuum_(continuum), p_(p),
-            nu_(U*static_cast<T>(L) / Re), 
-            tau_(nu_/(LT::CS*LT::CS) + 1.0/ 2.0), omega_(1.0/tau_)
+            nu_(U*static_cast<T>(L) / Re),
+            tau_(nu_/(LT<T>::CS*LT<T>::CS) + 1.0/ 2.0), omega_(1.0/tau_)
         {
             return;
         }
 
         /**\fn        implementation
          * \brief     Implementation of the BGK collision operator with Smagorinsky turbulence model
-         * 
+         *
          * \tparam    AA       The timestep in the AA-pattern
          * \param[in] isSave   Boolean parameter whether the macroscopic values should be saved or not
         */
@@ -66,8 +67,8 @@ class BGK_Smagorinsky: public CollisionOperator<NX,NY,NZ,LT,NPOP,T,BGK_Smagorins
         void implementation(bool const isSave);
 
     protected:
-        std::shared_ptr<Population<NX,NY,NZ,LT,NPOP>> population_;
-        std::shared_ptr<Continuum<NX,NY,NZ,T>>        continuum_;
+        std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population_;
+        std::shared_ptr<Continuum<NX,NY,NZ,T>>          continuum_;
         unsigned int const p_;
 
         T const nu_;
@@ -78,8 +79,8 @@ class BGK_Smagorinsky: public CollisionOperator<NX,NY,NZ,LT,NPOP,T,BGK_Smagorins
 };
 
 
-template <unsigned int NX, unsigned int NY, unsigned int NZ, class LT, unsigned int NPOP, typename T> template<timestep AA>
-void BGK_Smagorinsky<NX,NY,NZ,LT,NPOP,T>::implementation(bool const isSave)
+template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP> template<timestep AA>
+void BGK_Smagorinsky<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
 {
     #pragma omp parallel for default(none) shared(continuum_,population_) firstprivate(isSave,p_) schedule(static,1)
     for(unsigned int block = 0; block < CO::NUM_BLOCKS_; ++block)
@@ -106,15 +107,15 @@ void BGK_Smagorinsky<NX,NY,NZ,LT,NPOP,T>::implementation(bool const isSave)
                     unsigned int const x_n[3] = { (NX + x - 1) % NX, x, (x + 1) % NX };
 
                     /// load distributions
-                    alignas(CACHE_LINE) T f[LT::ND] = {0.0};
+                    alignas(CACHE_LINE) T f[LT<T>::ND] = {0.0};
 
                     #pragma GCC unroll (2)
                     for(unsigned int n = 0; n <= 1; ++n)
                     {
                         #pragma GCC unroll (16)
-                        for(unsigned int d = n; d < LT::HSPEED; ++d)
+                        for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
                         {
-                            f[n*LT::OFF + d] = population_->F_[population_-> template AA_IndexRead<AA>(x_n,y_n,z_n,n,d,p_)];
+                            f[n*LT<T>::OFF + d] = population_->F_[population_-> template AA_IndexRead<AA>(x_n,y_n,z_n,n,d,p_)];
                         }
                     }
 
@@ -127,13 +128,13 @@ void BGK_Smagorinsky<NX,NY,NZ,LT,NPOP,T>::implementation(bool const isSave)
                     for(unsigned int n = 0; n <= 1; ++n)
                     {
                         #pragma GCC unroll (16)
-                        for(unsigned int d = n; d < LT::HSPEED; ++d)
+                        for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
                         {
-                            unsigned int const curr = n*LT::OFF + d;
+                            unsigned int const curr = n*LT<T>::OFF + d;
                             rho += f[curr];
-                            u   += f[curr]*LT::DX[curr];
-                            v   += f[curr]*LT::DY[curr];
-                            w   += f[curr]*LT::DZ[curr];
+                            u   += f[curr]*LT<T>::DX[curr];
+                            v   += f[curr]*LT<T>::DY[curr];
+                            w   += f[curr]*LT<T>::DZ[curr];
                         }
                     }
                     u /= rho;
@@ -149,20 +150,20 @@ void BGK_Smagorinsky<NX,NY,NZ,LT,NPOP,T>::implementation(bool const isSave)
                     }
 
                     /// equilibrium distributions and non-equilibrium part
-                    alignas(CACHE_LINE) T feq[LT::ND]  = {0.0};
-                    alignas(CACHE_LINE) T fneq[LT::ND] = {0.0};
+                    alignas(CACHE_LINE) T feq[LT<T>::ND]  = {0.0};
+                    alignas(CACHE_LINE) T fneq[LT<T>::ND] = {0.0};
 
-                    T const uu = - 1.0/(2.0*LT::CS*LT::CS)*(u*u + v*v + w*w);
+                    T const uu = - 1.0/(2.0*LT<T>::CS*LT<T>::CS)*(u*u + v*v + w*w);
 
                     #pragma GCC unroll (2)
                     for(unsigned int n = 0; n <= 1; ++n)
                     {
                         #pragma GCC unroll (16)
-                        for(unsigned int d = n; d < LT::HSPEED; ++d)
+                        for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
                         {
-                            unsigned int const curr = n*LT::OFF + d;
-                            T const cu = 1.0/(LT::CS*LT::CS)*(u*LT::DX[curr] + v*LT::DY[curr] + w*LT::DZ[curr]);
-                            feq[curr]  = LT::W[curr]*(rho + rho*(cu*(1.0 + 0.5*cu) + uu));
+                            unsigned int const curr = n*LT<T>::OFF + d;
+                            T const cu = 1.0/(LT<T>::CS*LT<T>::CS)*(u*LT<T>::DX[curr] + v*LT<T>::DY[curr] + w*LT<T>::DZ[curr]);
+                            feq[curr]  = LT<T>::W[curr]*(rho + rho*(cu*(1.0 + 0.5*cu) + uu));
                             fneq[curr] = f[curr] - feq[curr];
                         }
                     }
@@ -178,16 +179,16 @@ void BGK_Smagorinsky<NX,NY,NZ,LT,NPOP,T>::implementation(bool const isSave)
                     for(unsigned int n = 0; n <= 1; ++n)
                     {
                         #pragma GCC unroll (16)
-                        for(unsigned int d = n; d < LT::HSPEED; ++d)
+                        for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
                         {
-                            unsigned int const curr = n*LT::OFF + d;
-                            p_xx += LT::DX[curr]*LT::DX[curr]*fneq[curr];
-                            p_yy += LT::DY[curr]*LT::DY[curr]*fneq[curr];
-                            p_zz += LT::DZ[curr]*LT::DZ[curr]*fneq[curr];
+                            unsigned int const curr = n*LT<T>::OFF + d;
+                            p_xx += LT<T>::DX[curr]*LT<T>::DX[curr]*fneq[curr];
+                            p_yy += LT<T>::DY[curr]*LT<T>::DY[curr]*fneq[curr];
+                            p_zz += LT<T>::DZ[curr]*LT<T>::DZ[curr]*fneq[curr];
 
-                            p_xy += LT::DX[curr]*LT::DY[curr]*fneq[curr];
-                            p_xz += LT::DX[curr]*LT::DZ[curr]*fneq[curr];
-                            p_yz += LT::DY[curr]*LT::DZ[curr]*fneq[curr];
+                            p_xy += LT<T>::DX[curr]*LT<T>::DY[curr]*fneq[curr];
+                            p_xz += LT<T>::DX[curr]*LT<T>::DZ[curr]*fneq[curr];
+                            p_yz += LT<T>::DY[curr]*LT<T>::DZ[curr]*fneq[curr];
                         }
                     }
 
@@ -195,7 +196,7 @@ void BGK_Smagorinsky<NX,NY,NZ,LT,NPOP,T>::implementation(bool const isSave)
                     T const p_ij = std::sqrt(p_xx*p_xx + p_yy*p_yy + p_zz*p_zz + 2*p_xy*p_xy + 2*p_xz*p_xz + 2*p_yz*p_yz);
 
                     // calculate turbulent relaxation
-                    T const tau_t = 0.5*(std::sqrt(tau_*tau_ + 2*sqrt(2)*CS*CS*p_ij/(rho*LT::CS*LT::CS*LT::CS*LT::CS)) - tau_);
+                    T const tau_t = 0.5*(std::sqrt(tau_*tau_ + 2*sqrt(2)*CS*CS*p_ij/(rho*LT<T>::CS*LT<T>::CS*LT<T>::CS*LT<T>::CS)) - tau_);
                     T const omega = 1.0/(tau_ + tau_t);
 
                     /// collision and streaming
@@ -203,9 +204,9 @@ void BGK_Smagorinsky<NX,NY,NZ,LT,NPOP,T>::implementation(bool const isSave)
                     for(unsigned int n = 0; n <= 1; ++n)
                     {
                         #pragma GCC unroll (16)
-                        for(unsigned int d = n; d < LT::HSPEED; ++d)
+                        for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
                         {
-                            unsigned int const curr = n*LT::OFF + d;
+                            unsigned int const curr = n*LT<T>::OFF + d;
                             population_->F_[population_-> template AA_IndexWrite<AA>(x_n,y_n,z_n,n,d,p_)] = f[curr] + omega*(feq[curr] - f[curr]);
                         }
                     }

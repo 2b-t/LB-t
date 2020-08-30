@@ -4,6 +4,7 @@
 /**
  * \file     timer.hpp
  * \mainpage An artificial class that allows for a convenient usage of a stopwatch.
+ * \author   Tobit Flatscher (github.com/2b-t)
 */
 
 #include <chrono>

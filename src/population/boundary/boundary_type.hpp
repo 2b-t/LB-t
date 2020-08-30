@@ -4,6 +4,7 @@
 /**
  * \file     boundary_type.hpp
  * \mainpage Holds classes for different types boundary conditions
+ * \author   Tobit Flatscher (github.com/2b-t)
 */
 
 #include <array>

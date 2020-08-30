@@ -4,6 +4,7 @@
 /**
  * \file     memory_alignment.hpp
  * \mainpage File for cache-related settings and macros
+ * \author   Tobit Flatscher (github.com/2b-t)
 */
 
 

@@ -4,6 +4,7 @@
 /**
  * \file     continuum_import.hpp
  * \mainpage Class members for importing macroscopic values
+ * \author   Tobit Flatscher (github.com/2b-t)
 */
 
 #include <iostream>
