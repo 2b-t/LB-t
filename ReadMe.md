@@ -45,7 +45,8 @@ Make sure that the latter plug-in is copied to the `output/` folder and the file
 
 ## Implemented optimisations
 - [Linear memory layout](https://www.springer.com/gp/book/9783319446479) with propietary vectorisation-friendly lattice numbering scheme
-- One grid algorithm with linear indexing, [A-A pattern](https://www.doi.org/10.1109/ICPP.2009.38) or [Esoteric-Twist](https://www.doi.org/10.3390/computation5020019) for reduced memory bandwith and better parallel scalability
+- Grid merging for storing several distinct populations next to each other for e.g. coupled turbulent scalar transport
+- One grid algorithm with [A-A pattern](https://www.doi.org/10.1109/ICPP.2009.38) or [Esoteric-Twist](https://www.doi.org/10.3390/computation5020019) for reduced memory bandwith and better parallel scalability as well as two grid A-B with two distinct populations
 - Fused collision and streaming step and reversely applied boundary conditions for reduced memory bandwith and better parallel scalability
 - Three dimensional [loop blocking](https://www.doi.org/10.1142/S0129626403001501) for improved cache-reuse and better parallel scalability
 - 64-byte cache-line alignment of all relevant arrays for vectorisation
@@ -85,6 +86,7 @@ Make sure that the latter plug-in is copied to the `output/` folder and the file
 ## History
 I started with this project after programming a C-style framework (D2Q9 and D3Q19) with many more features for the [Institute of Thermal Engineering (IWT) - Graz University of Technology (Austria)](https://www.tugraz.at/en/institutes/iwt/home/) in terms of my Master's thesis and project work (2018-2019). While it had excellent performance (around 17 Mlups double precision BGK on a single core of a Intel i9-7920X, Intel Turbo Boost enabled) and scalability (around 145 Mlups on all twelve cores, Intel Turbo Boost enabled, with Turbo Boost disabled the parallel scalability is over 90%), I had hardcoded everything (e.g. manual loop unrolling) making the code very unflexible and difficult to maintain.
 This code is a **work in progress** with the goal to achieve similar or better performance with modern C++ features making it significantly more generic. It is a personal project of mine with the main interest of pushing the performance of such methods while keeping the code generic. Thus, I have *not thoroughly tested* and verified the implementation. The main goal of this project is to aid people starting with their own LBM code by giving them idea how one could implement certain features in a generic way with compile time features without any overhead.
+Currently the regular non-vectorised collision operators are around 15% slower than the C-style framework without the manual intrinsics collision operators and around 10% faster with them.
 
 ## Resources
 For people interested in applying LBM to their problems there exist significantly more sophisticated and flexible implementations such as [OpenLB](https://www.openlb.net/) by Karlsruhe Institute of Technology (Germany) and [Palabos](https://palabos.unige.ch/) maintained by the University of Geneva (Switzerland), but at a cost of performance.

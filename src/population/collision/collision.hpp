@@ -92,7 +92,7 @@ class CollisionOperator
 
         /// parallelism: 3D blocks
         //  each cell gets a block of cells instead of a single cell
-        static constexpr unsigned int   BLOCK_SIZE_ = 32;                                               ///< loop block size
+        static constexpr unsigned int   BLOCK_SIZE_ = (LT<T>::DIM == 3) ? 32 : 96;                      ///< loop block size
         static constexpr unsigned int NUM_BLOCKS_Z_ = cef::ceil(static_cast<double>(NZ) / BLOCK_SIZE_); ///< number of blocks in each dimension
         static constexpr unsigned int NUM_BLOCKS_Y_ = cef::ceil(static_cast<double>(NY) / BLOCK_SIZE_);
         static constexpr unsigned int NUM_BLOCKS_X_ = cef::ceil(static_cast<double>(NX) / BLOCK_SIZE_);

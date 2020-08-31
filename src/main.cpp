@@ -71,8 +71,8 @@ int main(int argc, char** argv)
     constexpr unsigned int NT_PLOT = 1000;
 
     // physics
-    constexpr FType      Re = 1000.0;
-    constexpr FType       U = 0.05;
+    constexpr FType      Re = 3900.0;
+    constexpr FType       U = 0.025;
     constexpr unsigned int L = NY/5;
 
     // initial conditions
