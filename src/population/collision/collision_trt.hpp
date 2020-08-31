@@ -64,10 +64,10 @@ class TRT: public CollisionOperator<NX,NY,NZ,LT,T,NPOP,TRT<NX,NY,NZ,LT,T,NPOP>>
         /**\fn        implementation
          * \brief     Implementation of the TRT collision operator
          *
-         * \tparam    AA       The timestep in the AA-pattern
+         * \tparam    TS       Even or odd timestep
          * \param[in] isSave   Boolean parameter whether the macroscopic values should be saved or not
         */
-        template<timestep AA>
+        template<timestep TS>
         void implementation(bool const isSave);
 
     protected:
@@ -83,7 +83,7 @@ class TRT: public CollisionOperator<NX,NY,NZ,LT,T,NPOP,TRT<NX,NY,NZ,LT,T,NPOP>>
 };
 
 
-template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP> template<timestep AA>
+template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP> template<timestep TS>
 void TRT<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
 {
     #pragma omp parallel for default(none) shared(continuum_,population_) firstprivate(isSave,p_) schedule(static,1)
@@ -119,7 +119,7 @@ void TRT<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
                         #pragma GCC unroll (16)
                         for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
                         {
-                            f[n*LT<T>::OFF + d] = population_->F_[population_-> template AA_IndexRead<AA>(x_n,y_n,z_n,n,d,p_)];
+                            f[n*LT<T>::OFF + d] = population_->F_[population_-> template indexRead<TS>(x_n,y_n,z_n,n,d,p_)];
                         }
                     }
 
@@ -182,16 +182,16 @@ void TRT<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
                     }
 
                     /// collision and streaming
-                    population_->F_[population_-> template AA_IndexWrite<AA>(x_n,y_n,z_n,0,0,p_)] = f[0] + omega_p_*(feq[0] - f[0]);
+                    population_->F_[population_-> template indexWrite<TS>(x_n,y_n,z_n,0,0,p_)] = f[0] + omega_p_*(feq[0] - f[0]);
                     #pragma GCC unroll (15)
                     for(unsigned int d = 1; d < LT<T>::HSPEED; ++d)
                     {
-                        population_->F_[population_-> template AA_IndexWrite<AA>(x_n,y_n,z_n,0,d,p_)] = f[d] - omega_m_*fp[d] - omega_m_*fm[d];
+                        population_->F_[population_-> template indexWrite<TS>(x_n,y_n,z_n,0,d,p_)] = f[d] - omega_m_*fp[d] - omega_m_*fm[d];
                     }
                     #pragma GCC unroll (15)
                     for(unsigned int d = 1; d < LT<T>::HSPEED; ++d)
                     {
-                        population_->F_[population_-> template AA_IndexWrite<AA>(x_n,y_n,z_n,1,d,p_)] = f[LT<T>::OFF + d] - omega_p_*fp[d] + omega_m_*fm[d];
+                        population_->F_[population_-> template indexWrite<TS>(x_n,y_n,z_n,1,d,p_)] = f[LT<T>::OFF + d] - omega_p_*fp[d] + omega_m_*fm[d];
                     }
                 }
             }

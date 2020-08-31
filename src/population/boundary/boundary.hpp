@@ -56,12 +56,12 @@ class BoundaryCondition
          * \brief  Curiously Recurring Template Pattern (CRTP) for static polymorphism of the part of the boundary
          *         condition to be performed before collision
          *
-         * \tparam AA   The timestep in the AA-pattern
+         * \tparam TS   Even or odd timestep
         */
-        template <timestep AA>
+        template <timestep TS>
         void beforeCollisionOperator()
         {
-            static_cast<DerivedClass*>(this)->template implementationBeforeCollisionOperator<AA>();
+            static_cast<DerivedClass*>(this)->template implementationBeforeCollisionOperator<TS>();
 
             return;
         }
@@ -70,12 +70,12 @@ class BoundaryCondition
          * \brief  Curiously Recurring Template Pattern (CRTP) for static polymorphism of the part of the boundary
          *         condition to be performed after collision
          *
-         * \tparam AA   The timestep in the AA-pattern
+         * \tparam TS   Even or odd timestep
         */
-        template <timestep AA>
+        template <timestep TS>
         void afterCollisionOperator()
         {
-            static_cast<DerivedClass*>(this)->template implementationAfterCollisionOperator<AA>();
+            static_cast<DerivedClass*>(this)->template implementationAfterCollisionOperator<TS>();
 
             return;
         }

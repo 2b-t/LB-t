@@ -59,17 +59,17 @@ class Guo: public BoundaryCondition<NX,NY,NZ,LT,T,NPOP,Guo<Type,Orientation,NX,N
         /**\fn     implementationBeforeCollisionOperator
          * \brief  Implementation of the boundary condition to be performed after the collision operator
          *
-         * \tparam AA   The timestep in the AA-pattern
+         * \tparam TS   Even or odd timestep
         */
-        template<timestep AA>
+        template <timestep TS>
         void implementationBeforeCollisionOperator();
 
         /**\fn     implementationAfterCollisionOperator
          * \brief  Implementation of the boundary condition to be performed before the collision operator
          *
-         * \tparam AA   The timestep in the AA-pattern
+         * \tparam TS   Even or odd timestep
         */
-        template<timestep AA>
+        template <timestep TS>
         void implementationAfterCollisionOperator();
 
     private:
@@ -78,7 +78,7 @@ class Guo: public BoundaryCondition<NX,NY,NZ,LT,T,NPOP,Guo<Type,Orientation,NX,N
         unsigned int const p_;
 };
 
-template <template <class Orientation> class Type, class Orientation, unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP> template<timestep AA>
+template <template <class Orientation> class Type, class Orientation, unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP> template <timestep TS>
 void Guo<Type,Orientation,NX,NY,NZ,LT,T,NPOP>::implementationBeforeCollisionOperator()
 {
     #pragma omp parallel for default(none) shared(boundaryElements_,population_,p_) schedule(static,32)
@@ -105,7 +105,7 @@ void Guo<Type,Orientation,NX,NY,NZ,LT,T,NPOP>::implementationBeforeCollisionOper
             #pragma GCC unroll (16)
             for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
             {
-                f[n*LT<T>::OFF + d] = population_->F_[population_-> template AA_IndexRead<AA>(x_n,y_n,z_n,n,d,p_)];
+                f[n*LT<T>::OFF + d] = population_->F_[population_-> template indexRead<TS>(x_n,y_n,z_n,n,d,p_)];
             }
         }
 
@@ -190,7 +190,7 @@ void Guo<Type,Orientation,NX,NY,NZ,LT,T,NPOP>::implementationBeforeCollisionOper
             for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
             {
                 unsigned int const curr = n*LT<T>::OFF + d;
-                population_->F_[population_-> template AA_IndexRead<AA>(x_c,y_c,z_c,n,d,p_)] = feq[curr] + fneq[curr];
+                population_->F_[population_-> template indexRead<TS>(x_c,y_c,z_c,n,d,p_)] = feq[curr] + fneq[curr];
             }
         }
     }
@@ -198,7 +198,7 @@ void Guo<Type,Orientation,NX,NY,NZ,LT,T,NPOP>::implementationBeforeCollisionOper
     return;
 }
 
-template <template <class Orientation> class Type, class Orientation, unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP> template<timestep AA>
+template <template <class Orientation> class Type, class Orientation, unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP> template <timestep TS>
 void Guo<Type,Orientation,NX,NY,NZ,LT,T,NPOP>::implementationAfterCollisionOperator()
 {
     return;

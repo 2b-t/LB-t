@@ -53,17 +53,17 @@ class HalfwayBounceBack: public BoundaryCondition<NX,NY,NZ,LT,T,NPOP,HalfwayBoun
         /**\fn     implementationBeforeCollisionOperator
          * \brief  Implementation of the boundary condition to be performed after the collision operator
          *
-         * \tparam AA   the timestep in the AA-pattern
+         * \tparam TS   Even or odd timestep
         */
-        template<timestep AA>
+        template <timestep TS>
         void implementationBeforeCollisionOperator();
 
         /**\fn     implementationAfterCollisionOperator
          * \brief  Implementation of the boundary condition to be performed before the collision operator
          *
-         * \tparam AA   the timestep in the AA-pattern
+         * \tparam TS   Even or odd timestep
         */
-        template<timestep AA>
+        template <timestep TS>
         void implementationAfterCollisionOperator();
 
     protected:
@@ -72,13 +72,13 @@ class HalfwayBounceBack: public BoundaryCondition<NX,NY,NZ,LT,T,NPOP,HalfwayBoun
         unsigned int const p_;
 };
 
-template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP> template<timestep AA>
+template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP> template <timestep TS>
 void HalfwayBounceBack<NX,NY,NZ,LT,T,NPOP>::implementationBeforeCollisionOperator()
 {
     return;
 }
 
-template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP> template<timestep AA>
+template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP> template <timestep TS>
 void HalfwayBounceBack<NX,NY,NZ,LT,T,NPOP>::implementationAfterCollisionOperator()
 {
     #pragma omp parallel for default(none) shared(boundaryElements_,population_,p_) schedule(static,32)
@@ -95,8 +95,8 @@ void HalfwayBounceBack<NX,NY,NZ,LT,T,NPOP>::implementationAfterCollisionOperator
             #pragma GCC unroll (15)
             for(unsigned int d = 1; d < LT<T>::HSPEED; ++d)
             {
-                population_->F_[population_-> template AA_IndexWrite<AA>(x_n, y_n, z_n, !n, d, p_)] =
-                population_->F_[population_-> template AA_IndexRead<!AA>(x_n, y_n, z_n, n, d, p_)];
+                population_->F_[population_-> template indexWrite<TS>(x_n, y_n, z_n, !n, d, p_)] =
+                population_->F_[population_-> template indexRead<!TS>(x_n, y_n, z_n, n, d, p_)];
             }
         }
     }

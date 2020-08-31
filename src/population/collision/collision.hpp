@@ -31,13 +31,13 @@ class CollisionOperator
         /**\fn        collideStream
          * \brief     Curiously Recurring Template Pattern (CRTP) for static polymorphism of the collision operator
          *
-         * \tparam    AA       The timestep in the AA-pattern
+         * \tparam    TS       Even or odd time step
          * \param[in] isSave   Boolean parameter whether the macroscopic values should be saved or not
         */
-        template<timestep AA>
+        template<timestep TS>
         void collideStream(bool const isSave = false)
         {
-            static_cast<DerivedClass*>(this)->template implementation<AA>(isSave);
+            static_cast<DerivedClass*>(this)->template implementation<TS>(isSave);
 
             return;
         }
@@ -45,13 +45,13 @@ class CollisionOperator
         /**\fn        initialise
          * \brief     Initialise the macroscopic continuum and the microscopic populations
          *
-         * \tparam    AA      The timestep in the AA-pattern
+         * \tparam    TS      Even or odd time step
          * \param[in] RHO_0   The uniform initial density across the flow field
          * \param[in] U_0     The uniform initial velocity in x-direction across the flow field
          * \param[in] V_0     The uniform initial velocity in y-direction across the flow field
          * \param[in] V_0     The uniform initial velocity in z-direction across the flow field
         */
-        template<timestep AA>
+        template<timestep TS>
         void initialise(T const RHO_0, T const U_0, T const V_0, T const W_0);
 
     protected:
@@ -77,12 +77,12 @@ class CollisionOperator
         */
         void initialiseContinuum_(T const RHO_0, T const U_0, T const V_0, T const W_0);
 
-        /**\fn        initialisePopulationFromContinuum_
-         * \brief     Initialise the microscopic distributions for the macroscopic continuum
+        /**\fn       initialisePopulationFromContinuum_
+         * \brief    Initialise the microscopic distributions for the macroscopic continuum
          *
-         * \tparam    AA   The timestep in the AA-pattern
+         * \tparam   TS   Even or odd timestep
         */
-        template<timestep AA>
+        template<timestep TS>
         void initialisePopulationFromContinuum_();
 
         /// macro and microscopic values
@@ -100,11 +100,11 @@ class CollisionOperator
 };
 
 
-template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP, typename DerivedClass> template<timestep AA>
+template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP, typename DerivedClass> template<timestep TS>
 void CollisionOperator<NX,NY,NZ,LT,T,NPOP,DerivedClass>::initialise(T const RHO_0, T const U_0, T const V_0, T const W_0)
 {
     initialiseContinuum_(RHO_0, U_0, V_0, W_0);
-    initialisePopulationFromContinuum_<AA>();
+    initialisePopulationFromContinuum_<TS>();
 
     return;
 }
@@ -142,7 +142,7 @@ void CollisionOperator<NX,NY,NZ,LT,T,NPOP,DerivedClass>::initialiseContinuum_(T 
     return;
 }
 
-template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP, typename DerivedClass> template<timestep AA>
+template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP, typename DerivedClass> template<timestep TS>
 void CollisionOperator<NX,NY,NZ,LT,T,NPOP,DerivedClass>::initialisePopulationFromContinuum_()
 {
     #pragma omp parallel for default(none) shared(continuum_, population_) firstprivate(p_) schedule(static,1)
@@ -184,7 +184,7 @@ void CollisionOperator<NX,NY,NZ,LT,T,NPOP,DerivedClass>::initialisePopulationFro
                         {
                             unsigned int const curr = n*LT<T>::OFF + d;
                             T const cu = 1.0/(LT<T>::CS*LT<T>::CS)*(u*LT<T>::DX[curr] + v*LT<T>::DY[curr] + w*LT<T>::DZ[curr]);
-                            population_->F_[population_-> template AA_IndexRead<AA>(x_n,y_n,z_n,n,d,p_)] = LT<T>::W[curr]*(rho + rho*(cu*(1.0 + 0.5*cu) + uu));
+                            population_->F_[population_-> template indexRead<TS>(x_n,y_n,z_n,n,d,p_)] = LT<T>::W[curr]*(rho + rho*(cu*(1.0 + 0.5*cu) + uu));
                         }
                     }
                 }

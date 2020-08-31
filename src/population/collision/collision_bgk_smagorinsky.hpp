@@ -60,10 +60,10 @@ class BGK_Smagorinsky: public CollisionOperator<NX,NY,NZ,LT,T,NPOP,BGK_Smagorins
         /**\fn        implementation
          * \brief     Implementation of the BGK collision operator with Smagorinsky turbulence model
          *
-         * \tparam    AA       The timestep in the AA-pattern
+         * \tparam    TS       Even or odd timestep
          * \param[in] isSave   Boolean parameter whether the macroscopic values should be saved or not
         */
-        template<timestep AA>
+        template<timestep TS>
         void implementation(bool const isSave);
 
     protected:
@@ -79,7 +79,7 @@ class BGK_Smagorinsky: public CollisionOperator<NX,NY,NZ,LT,T,NPOP,BGK_Smagorins
 };
 
 
-template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP> template<timestep AA>
+template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP> template<timestep TS>
 void BGK_Smagorinsky<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
 {
     #pragma omp parallel for default(none) shared(continuum_,population_) firstprivate(isSave,p_) schedule(static,1)
@@ -115,7 +115,7 @@ void BGK_Smagorinsky<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
                         #pragma GCC unroll (16)
                         for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
                         {
-                            f[n*LT<T>::OFF + d] = population_->F_[population_-> template AA_IndexRead<AA>(x_n,y_n,z_n,n,d,p_)];
+                            f[n*LT<T>::OFF + d] = population_->F_[population_-> template indexRead<TS>(x_n,y_n,z_n,n,d,p_)];
                         }
                     }
 
@@ -207,7 +207,7 @@ void BGK_Smagorinsky<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
                         for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
                         {
                             unsigned int const curr = n*LT<T>::OFF + d;
-                            population_->F_[population_-> template AA_IndexWrite<AA>(x_n,y_n,z_n,n,d,p_)] = f[curr] + omega*(feq[curr] - f[curr]);
+                            population_->F_[population_-> template indexWrite<TS>(x_n,y_n,z_n,n,d,p_)] = f[curr] + omega*(feq[curr] - f[curr]);
                         }
                     }
                 }
