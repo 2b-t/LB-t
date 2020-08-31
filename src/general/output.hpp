@@ -134,8 +134,8 @@ void Output<NX,NY,NZ,LT,T,NPOP>::outputPerformance(double const runtime) const
 
     size_t const memory = continuum_->MEM_SIZE_ + population_->MEM_SIZE_;
 
-    unsigned int const  valuesRead = population_->SPEEDS_;
-    unsigned int const valuesWrite = population_->SPEEDS_;
+    unsigned int const  valuesRead = LT<T>::SPEEDS;
+    unsigned int const valuesWrite = LT<T>::SPEEDS;
     unsigned int const valuesSaved = continuum_->NM_;
 
     size_t const nodesUpdated = static_cast<size_t>(NT_)*NX*NY*static_cast<size_t>(NZ);

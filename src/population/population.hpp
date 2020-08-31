@@ -170,15 +170,7 @@ class Population
 
 
         /// lattice characteristics
-        static constexpr unsigned int    DIM_ = LT<T>::DIM;
-        static constexpr unsigned int SPEEDS_ = LT<T>::SPEEDS;
-        static constexpr unsigned int HSPEED_ = LT<T>::HSPEED;
-
-        /// linear memory layout
-        static constexpr unsigned int PAD_ = LT<T>::PAD;
-        static constexpr unsigned int  ND_ = LT<T>::ND;
-        static constexpr unsigned int OFF_ = LT<T>::OFF;
-        static constexpr size_t  MEM_SIZE_ = sizeof(T)*NZ*NY*NX*NPOP*static_cast<size_t>(ND_);
+        static constexpr size_t  MEM_SIZE_ = sizeof(T)*NZ*NY*NX*NPOP*static_cast<size_t>(LT<T>::ND);
 
         /// pointer to population
         #ifdef _WIN32
