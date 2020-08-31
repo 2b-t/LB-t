@@ -16,7 +16,7 @@
 #include <iostream>
 #include <memory>
 #ifdef _WIN32
-#include <malloc.h>
+    #include <malloc.h>
 #endif
 #include <string>
 #include <vector>
@@ -69,9 +69,9 @@ class Continuum
         ~Continuum()
         {
             #ifdef _WIN32
-            _aligned_free(M_);
+                _aligned_free(M_);
             #else
-            std::free(M_);
+                std::free(M_);
             #endif
 
             return;
@@ -166,9 +166,9 @@ class Continuum
 
         /// population allocated in heap
         #ifdef _WIN32
-        T* const M_ = static_cast<T*>(_aligned_malloc(MEM_SIZE_, CACHE_LINE));
+            T* const M_ = static_cast<T*>(_aligned_malloc(MEM_SIZE_, CACHE_LINE));
         #else
-        T* const M_ = static_cast<T*>(std::aligned_alloc(CACHE_LINE, MEM_SIZE_));
+            T* const M_ = static_cast<T*>(std::aligned_alloc(CACHE_LINE, MEM_SIZE_));
         #endif
 };
 

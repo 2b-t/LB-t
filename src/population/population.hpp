@@ -15,7 +15,7 @@
 #include <cstring>
 #include <iostream>
 #ifdef _WIN32
-#include <malloc.h>
+    #include <malloc.h>
 #endif
 #include <memory>
 #include <string>
@@ -75,14 +75,27 @@ class Population
         {
             std::cout << "See you, comrade!" << std::endl;
             #ifdef _WIN32
-            _aligned_free(F_);
+                _aligned_free(F_);
             #else
-            std::free(F_);
+                std::free(F_);
             #endif
 
             return;
         }
 
+        /**\fn         indexRead
+         * \brief      Function for determining linear index when reading/writing values before collision depending on even and odd time step.
+         * \warning    Inline function! Has to be declared in header!
+         *
+         * \tparam     TS    Even (0, false) or odd (1, true) time step
+         * \param[in]  x     x coordinates of current cell and its neighbours [x-1,x,x+1]
+         * \param[in]  y     y coordinates of current cell and its neighbours [y-1,y,y+1]
+         * \param[in]  z     z coordinates of current cell and its neighbours [z-1,z,z+1]
+         * \param[in]  n     Positive (0) or negative (1) index/lattice velocity
+         * \param[in]  d     Relevant population index
+         * \param[in]  p     Relevant population (default = 0)
+         * \return     Requested linear population index before collision
+        */
         template <timestep TS>
         static inline size_t __attribute__((always_inline)) indexRead(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
                                                                       unsigned int const n,       unsigned int const d,       unsigned int const p)
@@ -90,13 +103,25 @@ class Population
             return AaPattern<NX,NY,NZ,LT,T,NPOP>::template indexRead<TS>(x,y,z,n,d,p);
         }
 
+        /**\fn         indexWrite
+         * \brief      Function for determining linear index when reading/writing values after collision depending on even and odd time step.
+         * \warning    Inline function! Has to be declared in header!
+         *
+         * \tparam     TS    Even (0, false) or odd (1, true) time step
+         * \param[in]  x     x coordinates of current cell and its neighbours [x-1,x,x+1]
+         * \param[in]  y     y coordinates of current cell and its neighbours [y-1,y,y+1]
+         * \param[in]  z     z coordinates of current cell and its neighbours [z-1,z,z+1]
+         * \param[in]  n     Positive (0) or negative (1) index/lattice velocity
+         * \param[in]  d     Relevant population index
+         * \param[in]  p     Relevant population (default = 0)
+         * \return     Requested linear population index after collision
+        */
         template <timestep TS>
         static inline size_t __attribute__((always_inline)) indexWrite(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
-                                                                      unsigned int const n,       unsigned int const d,       unsigned int const p)
+                                                                       unsigned int const n,       unsigned int const d,       unsigned int const p)
         {
             return AaPattern<NX,NY,NZ,LT,T,NPOP>::template indexWrite<TS>(x,y,z,n,d,p);
         }
-
 
         /**\fn         read
          * \brief      Function for accessing values before collision depending on even and odd time step.
@@ -174,9 +199,9 @@ class Population
 
         /// pointer to population
         #ifdef _WIN32
-        T* const F_ = static_cast<T*>(_aligned_malloc(MEM_SIZE_, CACHE_LINE));
+            T* const F_ = static_cast<T*>(_aligned_malloc(MEM_SIZE_, CACHE_LINE));
         #else
-        T* const F_ = static_cast<T*>(std::aligned_alloc(CACHE_LINE, MEM_SIZE_));
+            T* const F_ = static_cast<T*>(std::aligned_alloc(CACHE_LINE, MEM_SIZE_));
         #endif
 };
 
