@@ -36,53 +36,55 @@
 template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP>
 class AaPattern: public Indexing<NX,NY,NZ,LT,T,NPOP>
 {
+    using IDX = Indexing<NX,NY,NZ,LT,T,NPOP>;
+
     public:
-        /**\fn         indexRead
-         * \brief      Function for determining linear index when reading/writing values before collision depending on even and odd time step.
-         * \warning    Inline function! Has to be declared in header!
+        /**\fn        indexRead
+         * \brief     Function for determining linear index when reading/writing values before collision depending on even and odd time step.
+         * \warning   Inline function! Has to be declared in header!
          *
-         * \tparam     TS    Even (0, false) or odd (1, true) time step
-         * \param[in]  x     x coordinates of current cell and its neighbours [x-1,x,x+1]
-         * \param[in]  y     y coordinates of current cell and its neighbours [y-1,y,y+1]
-         * \param[in]  z     z coordinates of current cell and its neighbours [z-1,z,z+1]
-         * \param[in]  n     Positive (0) or negative (1) index/lattice velocity
-         * \param[in]  d     Relevant population index
-         * \param[in]  p     Relevant population (default = 0)
-         * \return     Requested linear population index before collision
+         * \tparam    TS    Even (0, false) or odd (1, true) time step
+         * \param[in] x     x coordinates of current cell and its neighbours [x-1,x,x+1]
+         * \param[in] y     y coordinates of current cell and its neighbours [y-1,y,y+1]
+         * \param[in] z     z coordinates of current cell and its neighbours [z-1,z,z+1]
+         * \param[in] n     Positive (0) or negative (1) index/lattice velocity
+         * \param[in] d     Relevant population index
+         * \param[in] p     Relevant population (default = 0)
+         * \return    Requested linear population index before collision
         */
         template <timestep TS>
         static inline size_t __attribute__((always_inline)) indexRead(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
-                                                               unsigned int const n,       unsigned int const d,       unsigned int const p)
+                                                                      unsigned int const n,       unsigned int const d,       unsigned int const p)
         {
-            return Indexing<NX,NY,NZ,LT,T,NPOP>::spatialToLinear(x[1 + Indexing<NX,NY,NZ,LT,T,NPOP>::template oddEven<TS>(static_cast<int>(LT<T>::DX[(!n)*LT<T>::OFF+d]), 0)],
-                                                                 y[1 + Indexing<NX,NY,NZ,LT,T,NPOP>::template oddEven<TS>(static_cast<int>(LT<T>::DY[(!n)*LT<T>::OFF+d]), 0)],
-                                                                 z[1 + Indexing<NX,NY,NZ,LT,T,NPOP>::template oddEven<TS>(static_cast<int>(LT<T>::DZ[(!n)*LT<T>::OFF+d]), 0)],
-                                                                 Indexing<NX,NY,NZ,LT,T,NPOP>::template oddEven<TS>(n, !n),
-                                                                 d, p);
+            return IDX::spatialToLinear(x[1 + IDX::template oddEven<TS>(static_cast<int>(LT<T>::DX[(!n)*LT<T>::OFF+d]), 0)],
+                                        y[1 + IDX::template oddEven<TS>(static_cast<int>(LT<T>::DY[(!n)*LT<T>::OFF+d]), 0)],
+                                        z[1 + IDX::template oddEven<TS>(static_cast<int>(LT<T>::DZ[(!n)*LT<T>::OFF+d]), 0)],
+                                        IDX::template oddEven<TS>(n, !n),
+                                        d, p);
         }
 
-        /**\fn         indexWrite
-         * \brief      Function for determining linear index when reading/writing values after collision depending on even and odd time step.
-         * \warning    Inline function! Has to be declared in header!
+        /**\fn        indexWrite
+         * \brief     Function for determining linear index when reading/writing values after collision depending on even and odd time step.
+         * \warning   Inline function! Has to be declared in header!
          *
-         * \tparam     TS    Even (0, false) or odd (1, true) time step
-         * \param[in]  x     x coordinates of current cell and its neighbours [x-1,x,x+1]
-         * \param[in]  y     y coordinates of current cell and its neighbours [y-1,y,y+1]
-         * \param[in]  z     z coordinates of current cell and its neighbours [z-1,z,z+1]
-         * \param[in]  n     Positive (0) or negative (1) index/lattice velocity
-         * \param[in]  d     Relevant population index
-         * \param[in]  p     Relevant population (default = 0)
-         * \return     Requested linear population index after collision
+         * \tparam    TS    Even (0, false) or odd (1, true) time step
+         * \param[in] x     x coordinates of current cell and its neighbours [x-1,x,x+1]
+         * \param[in] y     y coordinates of current cell and its neighbours [y-1,y,y+1]
+         * \param[in] z     z coordinates of current cell and its neighbours [z-1,z,z+1]
+         * \param[in] n     Positive (0) or negative (1) index/lattice velocity
+         * \param[in] d     Relevant population index
+         * \param[in] p     Relevant population (default = 0)
+         * \return    Requested linear population index after collision
         */
         template <timestep TS>
         static inline size_t __attribute__((always_inline)) indexWrite(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
                                                                        unsigned int const n,       unsigned int const d,       unsigned int const p)
         {
-            return Indexing<NX,NY,NZ,LT,T,NPOP>::spatialToLinear(x[1 + Indexing<NX,NY,NZ,LT,T,NPOP>::template oddEven<TS>(static_cast<int>(LT<T>::DX[n*LT<T>::OFF+d]), 0)],
-                                                                 y[1 + Indexing<NX,NY,NZ,LT,T,NPOP>::template oddEven<TS>(static_cast<int>(LT<T>::DY[n*LT<T>::OFF+d]), 0)],
-                                                                 z[1 + Indexing<NX,NY,NZ,LT,T,NPOP>::template oddEven<TS>(static_cast<int>(LT<T>::DZ[n*LT<T>::OFF+d]), 0)],
-                                                                 Indexing<NX,NY,NZ,LT,T,NPOP>::template oddEven<TS>(!n, n),
-                                                                 d, p);
+            return IDX::spatialToLinear(x[1 + IDX::template oddEven<TS>(static_cast<int>(LT<T>::DX[n*LT<T>::OFF+d]), 0)],
+                                        y[1 + IDX::template oddEven<TS>(static_cast<int>(LT<T>::DY[n*LT<T>::OFF+d]), 0)],
+                                        z[1 + IDX::template oddEven<TS>(static_cast<int>(LT<T>::DZ[n*LT<T>::OFF+d]), 0)],
+                                        IDX::template oddEven<TS>(!n, n),
+                                        d, p);
         }
 };
 

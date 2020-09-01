@@ -83,18 +83,18 @@ class Population
             return;
         }
 
-        /**\fn         indexRead
-         * \brief      Function for determining linear index when reading/writing values before collision depending on even and odd time step.
-         * \warning    Inline function! Has to be declared in header!
+        /**\fn        indexRead
+         * \brief     Function for determining linear index when reading/writing values before collision depending on even and odd time step.
+         * \warning   Inline function! Has to be declared in header!
          *
-         * \tparam     TS    Even (0, false) or odd (1, true) time step
-         * \param[in]  x     x coordinates of current cell and its neighbours [x-1,x,x+1]
-         * \param[in]  y     y coordinates of current cell and its neighbours [y-1,y,y+1]
-         * \param[in]  z     z coordinates of current cell and its neighbours [z-1,z,z+1]
-         * \param[in]  n     Positive (0) or negative (1) index/lattice velocity
-         * \param[in]  d     Relevant population index
-         * \param[in]  p     Relevant population (default = 0)
-         * \return     Requested linear population index before collision
+         * \tparam    TS    Even (0, false) or odd (1, true) time step
+         * \param[in] x     x coordinates of current cell and its neighbours [x-1,x,x+1]
+         * \param[in] y     y coordinates of current cell and its neighbours [y-1,y,y+1]
+         * \param[in] z     z coordinates of current cell and its neighbours [z-1,z,z+1]
+         * \param[in] n     Positive (0) or negative (1) index/lattice velocity
+         * \param[in] d     Relevant population index
+         * \param[in] p     Relevant population (default = 0)
+         * \return    Requested linear population index before collision
         */
         template <timestep TS>
         static inline size_t __attribute__((always_inline)) indexRead(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
@@ -103,18 +103,18 @@ class Population
             return AaPattern<NX,NY,NZ,LT,T,NPOP>::template indexRead<TS>(x,y,z,n,d,p);
         }
 
-        /**\fn         indexWrite
-         * \brief      Function for determining linear index when reading/writing values after collision depending on even and odd time step.
-         * \warning    Inline function! Has to be declared in header!
+        /**\fn        indexWrite
+         * \brief     Function for determining linear index when reading/writing values after collision depending on even and odd time step.
+         * \warning   Inline function! Has to be declared in header!
          *
-         * \tparam     TS    Even (0, false) or odd (1, true) time step
-         * \param[in]  x     x coordinates of current cell and its neighbours [x-1,x,x+1]
-         * \param[in]  y     y coordinates of current cell and its neighbours [y-1,y,y+1]
-         * \param[in]  z     z coordinates of current cell and its neighbours [z-1,z,z+1]
-         * \param[in]  n     Positive (0) or negative (1) index/lattice velocity
-         * \param[in]  d     Relevant population index
-         * \param[in]  p     Relevant population (default = 0)
-         * \return     Requested linear population index after collision
+         * \tparam    TS    Even (0, false) or odd (1, true) time step
+         * \param[in] x     x coordinates of current cell and its neighbours [x-1,x,x+1]
+         * \param[in] y     y coordinates of current cell and its neighbours [y-1,y,y+1]
+         * \param[in] z     z coordinates of current cell and its neighbours [z-1,z,z+1]
+         * \param[in] n     Positive (0) or negative (1) index/lattice velocity
+         * \param[in] d     Relevant population index
+         * \param[in] p     Relevant population (default = 0)
+         * \return    Requested linear population index after collision
         */
         template <timestep TS>
         static inline size_t __attribute__((always_inline)) indexWrite(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
@@ -123,18 +123,18 @@ class Population
             return AaPattern<NX,NY,NZ,LT,T,NPOP>::template indexWrite<TS>(x,y,z,n,d,p);
         }
 
-        /**\fn         read
-         * \brief      Function for accessing values before collision depending on even and odd time step.
-         * \warning    Sloppy syntax: avoid usage, use the full expression below for indexing
+        /**\fn        read
+         * \brief     Function for accessing values before collision depending on even and odd time step.
+         * \warning   Sloppy syntax: avoid usage, use the full expression below for indexing
          *
-         * \tparam     TS    Even (0, false) or odd (1, true) time step
-         * \param[in]  x     x coordinates of current cell and its neighbours [x-1,x,x+1]
-         * \param[in]  y     y coordinates of current cell and its neighbours [y-1,y,y+1]
-         * \param[in]  z     z coordinates of current cell and its neighbours [z-1,z,z+1]
-         * \param[in]  n     Positive (0) or negative (1) index/lattice velocity
-         * \param[in]  d     Relevant population index
-         * \param[in]  p     Relevant population (default = 0)
-         * \return     Requested linear population index before collision (reading)
+         * \tparam    TS    Even (0, false) or odd (1, true) time step
+         * \param[in] x     x coordinates of current cell and its neighbours [x-1,x,x+1]
+         * \param[in] y     y coordinates of current cell and its neighbours [y-1,y,y+1]
+         * \param[in] z     z coordinates of current cell and its neighbours [z-1,z,z+1]
+         * \param[in] n     Positive (0) or negative (1) index/lattice velocity
+         * \param[in] d     Relevant population index
+         * \param[in] p     Relevant population (default = 0)
+         * \return    Requested linear population index before collision (reading)
         */
         template <timestep TS>
         inline auto&       __attribute__((always_inline)) read(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
@@ -150,18 +150,18 @@ class Population
             return F_[indexRead<TS>(x,y,z,n,d,p)];
         }
 
-        /**\fn         write
-         * \brief      Function for accessing values after collision depending on even and odd time step.
-         * \warning    Sloppy syntax: avoid usage, use the full expression below for indexing
+        /**\fn        write
+         * \brief     Function for accessing values after collision depending on even and odd time step.
+         * \warning   Sloppy syntax: avoid usage, use the full expression below for indexing
          *
-         * \tparam     TS    Even (0, false) or odd (1, true) time step
-         * \param[in]  x     x coordinates of current cell and its neighbours [x-1,x,x+1]
-         * \param[in]  y     y coordinates of current cell and its neighbours [y-1,y,y+1]
-         * \param[in]  z     z coordinates of current cell and its neighbours [z-1,z,z+1]
-         * \param[in]  n     Positive (0) or negative (1) index/lattice velocity
-         * \param[in]  d     Relevant population index
-         * \param[in]  p     Relevant population (default = 0)
-         * \return     Requested linear population index after collision (writing)
+         * \tparam    TS    Even (0, false) or odd (1, true) time step
+         * \param[in] x     x coordinates of current cell and its neighbours [x-1,x,x+1]
+         * \param[in] y     y coordinates of current cell and its neighbours [y-1,y,y+1]
+         * \param[in] z     z coordinates of current cell and its neighbours [z-1,z,z+1]
+         * \param[in] n     Positive (0) or negative (1) index/lattice velocity
+         * \param[in] d     Relevant population index
+         * \param[in] p     Relevant population (default = 0)
+         * \return    Requested linear population index after collision (writing)
         */
         template <timestep TS>
         inline auto&       __attribute__((always_inline))  write(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
