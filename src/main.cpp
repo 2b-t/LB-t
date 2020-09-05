@@ -28,6 +28,7 @@
 #include "population/collision/collision_bgk_smagorinsky.hpp"
 #include "population/collision/collision_trt.hpp"
 #include "population/population.hpp"
+#include "benchmark.hpp"
 
 
 int main(int argc, char** argv)
@@ -48,8 +49,8 @@ int main(int argc, char** argv)
         }
         else if ((std::strcmp(argv[1], "--benchmark") == 0) || (std::strcmp(argv[1], "--b") == 0))
         {
-            std::cerr << "Fatal error: Feature not implemented yet." << std::endl;
-            std::exit(EXIT_FAILURE);
+            ::benchmarkAllLatticesAllCollisionOperators();
+            std::exit(EXIT_SUCCESS);
         }
         else if ((std::strcmp(argv[1], "--convert") == 0) || (std::strcmp(argv[1], "--c") == 0))
         {

@@ -43,6 +43,7 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="src/benchmark.hpp" />
 		<Unit filename="src/continuum/continuum.hpp" />
 		<Unit filename="src/continuum/continuum_export.hpp" />
 		<Unit filename="src/continuum/continuum_import.hpp" />
