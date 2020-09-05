@@ -3,7 +3,7 @@
 
 /**
  * \file     cylinder.hpp
- * \mainpage 3D cylinder sample geometry import
+ * \mainpage 2D and 3D cylinder sample geometry import
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 

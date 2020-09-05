@@ -11,9 +11,9 @@
 #include <cassert>
 #include <limits>
 
-namespace cef
+namespace cem
 {
-    /**\fn        cef::abs
+    /**\fn        cem::abs
      * \brief     Constexpr function for absolute value
      *
      * \tparam    T      Data type of the corresponding number
@@ -26,7 +26,7 @@ namespace cef
         return (x > 0.0) ? x : -x;
     }
 
-    /**\fn        cef::sqrt
+    /**\fn        cem::sqrt
      * \brief     Square root implementation with recursive Newton-Raphson method that can
      *            be evaluated as a constant expression at compile time
      *
@@ -51,7 +51,7 @@ namespace cef
                : std::numeric_limits<double>::quiet_NaN();
     }
 
-    /**\fn        cef::ceil
+    /**\fn        cem::ceil
      * \brief     Ceiling function that can be evaluated as a constant expression at compile time
      *
      * \tparam    T     Data type of the corresponding number

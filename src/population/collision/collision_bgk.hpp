@@ -21,6 +21,7 @@
 
 /**\class  BGK
  * \brief  BGK collision operator for arbitrary lattice
+ *
  * \note   "A Model for Collision Processes in Gases. I. Small Amplitude Processes in Charged
  *          and Neutral One-Component Systems"
  *         P.L. Bhatnagar, E.P. Gross, M. Krook
@@ -40,6 +41,12 @@ class BGK: public CollisionOperator<NX,NY,NZ,LT,T,NPOP,BGK<NX,NY,NZ,LT,T,NPOP>>
     using CO = CollisionOperator<NX,NY,NZ,LT,T,NPOP,BGK<NX,NY,NZ,LT,T,NPOP>>;
 
     public:
+        BGK() = delete;
+        BGK& operator = (BGK&) = delete;
+        BGK(BGK&&) = delete;
+        BGK& operator = (BGK&&) = delete;
+        BGK(BGK const&) = delete;
+
         /**\brief     Constructor
          *
          * \param[in] population   Population object holding microscopic distributions
@@ -113,7 +120,7 @@ void BGK<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
                         #pragma GCC unroll (16)
                         for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
                         {
-                            f[n*LT<T>::OFF + d] = population_->F_[population_-> template indexRead<TS>(x_n,y_n,z_n,n,d,p_)];
+                            f[n*LT<T>::OFF + d] = population_->A[population_-> template indexRead<TS>(x_n,y_n,z_n,n,d,p_)];
                         }
                     }
 
@@ -172,7 +179,7 @@ void BGK<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
                         for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
                         {
                             unsigned int const curr = n*LT<T>::OFF + d;
-                            population_->F_[population_-> template indexWrite<TS>(x_n,y_n,z_n,n,d,p_)] = f[curr] + omega_*(feq[curr] - f[curr]);
+                            population_->A[population_-> template indexWrite<TS>(x_n,y_n,z_n,n,d,p_)] = f[curr] + omega_*(feq[curr] - f[curr]);
                         }
                     }
                 }

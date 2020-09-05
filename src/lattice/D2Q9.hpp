@@ -5,7 +5,7 @@
  * \file     D2Q9.hpp
  * \mainpage Discretisation parameters for D2Q9-lattice
  * \author   Tobit Flatscher (github.com/2b-t)
- * 
+ *
  * \warning  Static classes with more complex members such as std::vector and std::array require C++17
 */
 
@@ -18,14 +18,15 @@
 
 namespace lattice
 {
-    /**\class    lattice::D2Q9P10
-     * \brief    Class for D2Q9 lattice with padding to 10
-     * \note     "Lattice BGK models for Navier-Stokes equation"
-     *           Y.H. Qian, D. D'Humières, P. Lallemand
-     *           Europhysics Letters (EPL) Vol. 17 (1992)
-     *           DOI: 10.1209/0295-5075/17/6/001
+    /**\class  lattice::D2Q9P10
+     * \brief  Class for D2Q9 lattice with padding to 10
      *
-     * \tparam   T   Floating data type used for simulation
+     * \note   "Lattice BGK models for Navier-Stokes equation"
+     *         Y.H. Qian, D. D'Humières, P. Lallemand
+     *         Europhysics Letters (EPL) Vol. 17 (1992)
+     *         DOI: 10.1209/0295-5075/17/6/001
+     *
+     * \tparam T   Floating data type used for simulation
     */
     template <typename T = double>
     class D2Q9P10 final
@@ -49,7 +50,7 @@ namespace lattice
             { 0,  0,  1,  1,  1,        //positive velocities
               0,  0, -1, -1, -1 };      //negative velocities
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> DZ =
-            { 0,  0,  0,  0,  0, 
+            { 0,  0,  0,  0,  0,
               0,  0,  0,  0,  0 };
 
             /// corresponding weights
@@ -63,21 +64,22 @@ namespace lattice
               0, 1, 1, 1, 1 };
 
             /// lattice speed of sound
-            static constexpr T CS = 1.0/cef::sqrt(3.0);
+            static constexpr T CS = 1.0/cem::sqrt(3.0);
     };
-    
+
     /// Alias default lattice
     template<typename T> using D2Q9 = D2Q9P10<T>;
-    
-    
-    /**\class    lattice::D2Q9P12
-     * \brief    Class for D2Q9 lattice with padding to 12
-     * \note     "Lattice BGK models for Navier-Stokes equation"
-     *           Y.H. Qian, D. D'Humières, P. Lallemand
-     *           Europhysics Letters (EPL) Vol. 17 (1992)
-     *           DOI: 10.1209/0295-5075/17/6/001
+
+
+    /**\class  lattice::D2Q9P12
+     * \brief  Class for D2Q9 lattice with padding to 12
      *
-     * \tparam   T   Floating data type used for simulation
+     * \note   "Lattice BGK models for Navier-Stokes equation"
+     *         Y.H. Qian, D. D'Humières, P. Lallemand
+     *         Europhysics Letters (EPL) Vol. 17 (1992)
+     *         DOI: 10.1209/0295-5075/17/6/001
+     *
+     * \tparam T   Floating data type used for simulation
     */
     template <typename T = double>
     class D2Q9P12 final
@@ -115,7 +117,7 @@ namespace lattice
               0, 1, 1, 1, 1, 0 };
 
             /// lattice speed of sound
-            static constexpr T CS = 1.0/cef::sqrt(3.0);
+            static constexpr T CS = 1.0/cem::sqrt(3.0);
     };
 }
 

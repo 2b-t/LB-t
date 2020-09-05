@@ -50,7 +50,7 @@ class Population
         {
             static_assert( (LT<T>::DIM == 2) ? (NZ == 1) : true, "Two-dimensional lattice with NZ != 1." );
 
-            if (F_ == nullptr)
+            if (A == nullptr)
             {
                 std::cerr << "Fatal error: Population could not be allocated." << std::endl;
                 std::exit(EXIT_FAILURE);
@@ -64,7 +64,7 @@ class Population
         */
         Population(Population const& p)
         {
-            std::memcpy(F_, p.F_, MEM_SIZE_);
+            std::memcpy(A, p.A, memorySize);
 
             return;
         }
@@ -75,9 +75,9 @@ class Population
         {
             std::cout << "See you, comrade!" << std::endl;
             #ifdef _WIN32
-                _aligned_free(F_);
+                _aligned_free(A);
             #else
-                std::free(F_);
+                std::free(A);
             #endif
 
             return;
@@ -140,14 +140,14 @@ class Population
         inline auto&       __attribute__((always_inline)) read(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
                                                                unsigned int const n,       unsigned int const d,       unsigned int const p = 0)
         {
-            return F_[indexRead<TS>(x,y,z,n,d,p)];
+            return A[indexRead<TS>(x,y,z,n,d,p)];
         }
-        
+
         template <timestep TS>
         inline auto const& __attribute__((always_inline)) read(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
                                                                unsigned int const n,       unsigned int const d,       unsigned int const p = 0) const
         {
-            return F_[indexRead<TS>(x,y,z,n,d,p)];
+            return A[indexRead<TS>(x,y,z,n,d,p)];
         }
 
         /**\fn        write
@@ -167,14 +167,14 @@ class Population
         inline auto&       __attribute__((always_inline))  write(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
                                                                  unsigned int const n,       unsigned int const d,       unsigned int const p = 0)
         {
-            return F_[indexWrite<TS>(x,y,z,n,d,p)];
+            return A[indexWrite<TS>(x,y,z,n,d,p)];
         }
-        
+
         template <timestep TS>
         inline auto const& __attribute__((always_inline)) write(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
                                                                 unsigned int const n,       unsigned int const d,       unsigned int const p = 0) const
         {
-            return F_[indexWrite<TS>(x,y,z,n,d,p)];
+            return A[indexWrite<TS>(x,y,z,n,d,p)];
         }
 
         /**\fn        importBin
@@ -195,13 +195,13 @@ class Population
 
 
         /// lattice characteristics
-        static constexpr size_t  MEM_SIZE_ = sizeof(T)*NZ*NY*NX*NPOP*static_cast<size_t>(LT<T>::ND);
+        static constexpr size_t  memorySize = sizeof(T)*NZ*NY*NX*NPOP*static_cast<size_t>(LT<T>::ND);
 
         /// pointer to population
         #ifdef _WIN32
-            T* const F_ = static_cast<T*>(_aligned_malloc(MEM_SIZE_, CACHE_LINE));
+            T* const A = static_cast<T*>(_aligned_malloc(memorySize, CACHE_LINE));
         #else
-            T* const F_ = static_cast<T*>(std::aligned_alloc(CACHE_LINE, MEM_SIZE_));
+            T* const A = static_cast<T*>(std::aligned_alloc(CACHE_LINE, memorySize));
         #endif
 };
 

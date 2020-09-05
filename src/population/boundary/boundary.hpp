@@ -52,6 +52,8 @@ template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename 
 class BoundaryCondition
 {
     public:
+        BoundaryCondition() = delete;
+
         /**\fn     beforeCollisionOperator
          * \brief  Curiously Recurring Template Pattern (CRTP) for static polymorphism of the part of the boundary
          *         condition to be performed before collision
@@ -79,7 +81,7 @@ class BoundaryCondition
 
             return;
         }
-        
+
         /**\fn        exportDomainVtk
          * \brief     Export the domain to a *.vtk-file that can then be read by visualisation applications like ParaView.
          * \warning   Assumes the boundary cells are ordered by x->y->z
@@ -111,11 +113,11 @@ class BoundaryCondition
 template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP, typename DerivedClass>
 void BoundaryCondition<NX,NY,NZ,LT,T,NPOP,DerivedClass>::exportDomainVtk(std::string const& name) const
 {
-    std::filesystem::create_directories(OUTPUT_VTK_PATH);
+    std::filesystem::create_directories(path::outputVtk);
 
-    std::string const fileName = OUTPUT_VTK_PATH + std::string("/") + name + std::string(".vtk");
+    std::string const fileName = path::outputVtk + std::string("/") + name + std::string(".vtk");
     auto const exportFile = std::unique_ptr<FILE, decltype(&fclose)>( fopen(fileName.c_str(), "w"), &fclose );
-    
+
     if (exportFile != nullptr)
     {
         std::fprintf(exportFile.get(), "# vtk DataFile Version 3.0\n");
@@ -169,7 +171,7 @@ void BoundaryCondition<NX,NY,NZ,LT,T,NPOP,DerivedClass>::exportDomainVtk(std::st
             std::fprintf(exportFile.get(), "0\n");
         }
     }
-    
+
     return;
 }
 

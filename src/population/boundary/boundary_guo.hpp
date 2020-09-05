@@ -22,6 +22,7 @@
 /**\class  Guo
  * \brief  Interpolation velocity and pressure boundary conditions as proposed by Guo.
  *         Most stable boundary conditions in this implementation so far.
+ *
  * \note   "Non-equilibrium extrapolation method for velocity and pressure boundary conditions in the
  *         lattice Boltzmann method"
  *         Z.L. Guo, C.G. Zheng, B.C. Shi
@@ -43,6 +44,8 @@ class Guo: public BoundaryCondition<NX,NY,NZ,LT,T,NPOP,Guo<Type,Orientation,NX,N
     using BC = BoundaryCondition<NX,NY,NZ,LT,T,NPOP,Guo<Type,Orientation,NX,NY,NZ,LT,T,NPOP>>;
 
     public:
+        Guo() = delete;
+
         /**\brief     Constructor
          *
          * \param[in] population         Population object holding microscopic distributions
@@ -105,7 +108,7 @@ void Guo<Type,Orientation,NX,NY,NZ,LT,T,NPOP>::implementationBeforeCollisionOper
             #pragma GCC unroll (16)
             for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
             {
-                f[n*LT<T>::OFF + d] = population_->F_[population_-> template indexRead<TS>(x_n,y_n,z_n,n,d,p_)];
+                f[n*LT<T>::OFF + d] = population_->A[population_-> template indexRead<TS>(x_n,y_n,z_n,n,d,p_)];
             }
         }
 
@@ -190,7 +193,7 @@ void Guo<Type,Orientation,NX,NY,NZ,LT,T,NPOP>::implementationBeforeCollisionOper
             for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
             {
                 unsigned int const curr = n*LT<T>::OFF + d;
-                population_->F_[population_-> template indexRead<TS>(x_c,y_c,z_c,n,d,p_)] = feq[curr] + fneq[curr];
+                population_->A[population_-> template indexRead<TS>(x_c,y_c,z_c,n,d,p_)] = feq[curr] + fneq[curr];
             }
         }
     }

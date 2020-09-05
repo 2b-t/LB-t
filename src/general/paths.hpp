@@ -2,20 +2,22 @@
 #define LBT_PATHS
 
 /**
- * \file    Paths.hpp
- * \brief   The locations for all folders relevant for export
- * \author  Tobit Flatscher (github.com/2b-t)
+ * \file   Paths.hpp
+ * \brief  The locations for all folders relevant for export
+ * \author Tobit Flatscher (github.com/2b-t)
 */
 
 #include <string>
 
+namespace path
+{
+    /// Population back-up
+    std::string const backupImport = "backup";
+    std::string const backupExport = "backup";
 
-/// Population back-up
-std::string const BACKUP_IMPORT_PATH = "backup";
-std::string const BACKUP_EXPORT_PATH = "backup";
-
-/// Export for visualisation
-std::string const OUTPUT_BIN_PATH = "output/bin";
-std::string const OUTPUT_VTK_PATH = "output/vtk";
+    /// Export for visualisation
+    std::string const outputBin = "output/bin";
+    std::string const outputVtk = "output/vtk";
+}
 
 #endif // LBT_PATHS

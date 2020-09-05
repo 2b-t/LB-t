@@ -21,6 +21,7 @@
 
 /**\class  TRT
  * \brief  TRT collision operator for arbitrary lattice
+ *
  * \note   "A Model for Collision Processes in Gases. I. Small Amplitude Processes in Charged
  *          and Neutral One-Component Systems"
  *         P.L. Bhatnagar, E.P. Gross, M. Krook
@@ -40,6 +41,12 @@ class TRT: public CollisionOperator<NX,NY,NZ,LT,T,NPOP,TRT<NX,NY,NZ,LT,T,NPOP>>
     using CO = CollisionOperator<NX,NY,NZ,LT,T,NPOP,TRT<NX,NY,NZ,LT,T,NPOP>>;
 
     public:
+        TRT() = delete;
+        TRT& operator = (TRT&) = delete;
+        TRT(TRT&&) = delete;
+        TRT& operator = (TRT&&) = delete;
+        TRT(TRT const&) = delete;
+
         /**\brief     Constructor
          *
          * \param[in] population   Population object holding microscopic distributions
@@ -119,7 +126,7 @@ void TRT<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
                         #pragma GCC unroll (16)
                         for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
                         {
-                            f[n*LT<T>::OFF + d] = population_->F_[population_-> template indexRead<TS>(x_n,y_n,z_n,n,d,p_)];
+                            f[n*LT<T>::OFF + d] = population_->A[population_-> template indexRead<TS>(x_n,y_n,z_n,n,d,p_)];
                         }
                     }
 
@@ -182,16 +189,16 @@ void TRT<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
                     }
 
                     /// collision and streaming
-                    population_->F_[population_-> template indexWrite<TS>(x_n,y_n,z_n,0,0,p_)] = f[0] + omega_p_*(feq[0] - f[0]);
+                    population_->A[population_-> template indexWrite<TS>(x_n,y_n,z_n,0,0,p_)] = f[0] + omega_p_*(feq[0] - f[0]);
                     #pragma GCC unroll (15)
                     for(unsigned int d = 1; d < LT<T>::HSPEED; ++d)
                     {
-                        population_->F_[population_-> template indexWrite<TS>(x_n,y_n,z_n,0,d,p_)] = f[d] - omega_m_*fp[d] - omega_m_*fm[d];
+                        population_->A[population_-> template indexWrite<TS>(x_n,y_n,z_n,0,d,p_)] = f[d] - omega_m_*fp[d] - omega_m_*fm[d];
                     }
                     #pragma GCC unroll (15)
                     for(unsigned int d = 1; d < LT<T>::HSPEED; ++d)
                     {
-                        population_->F_[population_-> template indexWrite<TS>(x_n,y_n,z_n,1,d,p_)] = f[LT<T>::OFF + d] - omega_p_*fp[d] + omega_m_*fm[d];
+                        population_->A[population_-> template indexWrite<TS>(x_n,y_n,z_n,1,d,p_)] = f[LT<T>::OFF + d] - omega_p_*fp[d] + omega_m_*fm[d];
                     }
                 }
             }

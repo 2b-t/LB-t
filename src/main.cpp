@@ -14,8 +14,8 @@
 #include "continuum/continuum.hpp"
 #include "general/disclaimer.hpp"
 #include "general/memory_alignment.hpp"
+#include "general/openmp_manager.hpp"
 #include "general/output.hpp"
-#include "general/parallelism.hpp"
 #include "general/timer.hpp"
 #include "geometry/cylinder.hpp"
 #include "geometry/sphere.hpp"
@@ -24,6 +24,7 @@
 #include "lattice/D3Q27.hpp"
 #include "population/collision/collision_bgk.hpp"
 #include "population/collision/collision_bgk_avx2.hpp"
+#include "population/collision/collision_bgk_avx512.hpp"
 #include "population/collision/collision_bgk_smagorinsky.hpp"
 #include "population/collision/collision_trt.hpp"
 #include "population/population.hpp"
@@ -33,29 +34,36 @@ int main(int argc, char** argv)
 {
     /// set up OpenMP ------------------------------------------------------------------------------
     #ifdef _OPENMP
-        Parallelism openMP;
-        //openMP.setThreadsNum(2);
+        OpenMpManager& openMpManager = OpenMpManager::getInstance();
+        //openMpManager.setThreadsNum(2);
     #endif
 
     /// print disclaimer ---------------------------------------------------------------------------
     if (argc > 1)
     {
-        if ((strcmp(argv[1], "--version") == 0) || (strcmp(argv[1], "--v") == 0))
+        if ((std::strcmp(argv[1], "--version") == 0) || (std::strcmp(argv[1], "--v") == 0))
         {
-            printDisclaimer();
-            exit(EXIT_SUCCESS);
+            ::printDisclaimer();
+            std::exit(EXIT_SUCCESS);
         }
-        else if (strcmp(argv[1], "--convert") == 0)
+        else if ((std::strcmp(argv[1], "--benchmark") == 0) || (std::strcmp(argv[1], "--b") == 0))
         {
             std::cerr << "Fatal error: Feature not implemented yet." << std::endl;
-            exit(EXIT_FAILURE);
+            std::exit(EXIT_FAILURE);
         }
-        else if ((strcmp(argv[1], "--info") == 0) || (strcmp(argv[1], "--help") == 0))
+        else if ((std::strcmp(argv[1], "--convert") == 0) || (std::strcmp(argv[1], "--c") == 0))
         {
-            std::cerr << "Usage: '--convert'             Convert *.bin files to *.vtk" << std::endl;
-            std::cerr << "       '--help'    or '--info' Show help"                    << std::endl;
-            std::cerr << "       '--version' or '--v'    Show build version"           << std::endl;
-            exit(EXIT_SUCCESS);
+            std::cerr << "Fatal error: Feature not implemented yet." << std::endl;
+            std::exit(EXIT_FAILURE);
+        }
+        else if ((std::strcmp(argv[1], "--help") == 0) || (std::strcmp(argv[1], "--info") == 0))
+        {
+            std::cout << "Usage:" << std::endl;
+            std::cout << "'--benchmark' or '--b'    Benchmark all collision operators" << std::endl;
+            std::cout << "'--convert'   or '--c'    Convert *.bin files to *.vtk"      << std::endl;
+            std::cout << "'--help'      or '--info' Show help"                         << std::endl;
+            std::cout << "'--version'   or '--v'    Show build version"                << std::endl;
+            std::exit(EXIT_SUCCESS);
         }
     }
 
@@ -71,8 +79,8 @@ int main(int argc, char** argv)
     constexpr unsigned int NT_PLOT = 1000;
 
     // physics
-    constexpr FType      Re = 3900.0;
-    constexpr FType       U = 0.025;
+    constexpr FType       Re = 3900.0;
+    constexpr FType        U = 0.025;
     constexpr unsigned int L = NY/5;
 
     // initial conditions
@@ -129,7 +137,7 @@ int main(int argc, char** argv)
         outlet.beforeCollisionOperator<timestep::odd>();
         collisionOperator.collideStream<timestep::odd>(isSaveNow);
         wall.afterCollisionOperator<timestep::odd>();
-        
+
         // export
         if (isSaveNow == true)
         {

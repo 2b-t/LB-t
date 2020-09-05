@@ -20,14 +20,14 @@
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T>
 void Continuum<NX,NY,NZ,T>::importBin(std::string const& name, unsigned int const step)
 {
-    std::filesystem::create_directories(OUTPUT_BIN_PATH);
+    std::filesystem::create_directories(path::outputBin);
 
-    std::string const fileName = OUTPUT_BIN_PATH + std::string("/") + name + std::string("_") + std::to_string(step) + std::string(".bin");
+    std::string const fileName = path::outputBin + std::string("/") + name + std::string("_") + std::to_string(step) + std::string(".bin");
     auto const importFile = std::unique_ptr<FILE, decltype(&fclose)>( fopen(fileName.c_str(), "rb+"), &fclose );
 
     if(importFile != nullptr)
     {
-        std::fread(M_, 1, MEM_SIZE_, importFile.get());
+        std::fread(M, 1, memorySize, importFile.get());
     }
     else
     {

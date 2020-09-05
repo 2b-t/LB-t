@@ -21,6 +21,7 @@
 
 /**\class  BGK_Smagorinsky
  * \brief  BGK collision operator for arbitrary lattice
+ *
  * \note   "A Lattice Boltzmann Subgrid Model for High Reynolds Number Flows"
  *         S. Hou, J. Sterling, S. Chen, G.D. Doolen
  *         (1994)
@@ -39,6 +40,12 @@ class BGK_Smagorinsky: public CollisionOperator<NX,NY,NZ,LT,T,NPOP,BGK_Smagorins
     using CO = CollisionOperator<NX,NY,NZ,LT,T,NPOP,BGK_Smagorinsky<NX,NY,NZ,LT,T,NPOP>>;
 
     public:
+        BGK_Smagorinsky() = delete;
+        BGK_Smagorinsky& operator = (BGK_Smagorinsky&) = delete;
+        BGK_Smagorinsky(BGK_Smagorinsky&&) = delete;
+        BGK_Smagorinsky& operator = (BGK_Smagorinsky&&) = delete;
+        BGK_Smagorinsky(BGK_Smagorinsky const&) = delete;
+
         /**\brief     Constructor
          *
          * \param[in] population   Population object holding microscopic distributions
@@ -115,7 +122,7 @@ void BGK_Smagorinsky<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
                         #pragma GCC unroll (16)
                         for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
                         {
-                            f[n*LT<T>::OFF + d] = population_->F_[population_-> template indexRead<TS>(x_n,y_n,z_n,n,d,p_)];
+                            f[n*LT<T>::OFF + d] = population_->A[population_-> template indexRead<TS>(x_n,y_n,z_n,n,d,p_)];
                         }
                     }
 
@@ -207,7 +214,7 @@ void BGK_Smagorinsky<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
                         for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
                         {
                             unsigned int const curr = n*LT<T>::OFF + d;
-                            population_->F_[population_-> template indexWrite<TS>(x_n,y_n,z_n,n,d,p_)] = f[curr] + omega*(feq[curr] - f[curr]);
+                            population_->A[population_-> template indexWrite<TS>(x_n,y_n,z_n,n,d,p_)] = f[curr] + omega*(feq[curr] - f[curr]);
                         }
                     }
                 }

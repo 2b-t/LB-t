@@ -45,7 +45,7 @@ class Continuum
         */
         Continuum()
         {
-            if (M_ == nullptr)
+            if (M == nullptr)
             {
                 std::cerr << "Fatal error: Continuum could not be allocated." << std::endl;
                 std::exit(EXIT_FAILURE);
@@ -59,7 +59,7 @@ class Continuum
         */
         Continuum(Continuum const& c)
         {
-            std::memcpy(M_, c.M_, MEM_SIZE_);
+            std::memcpy(M, c.M, memorySize);
 
             return;
         }
@@ -69,9 +69,9 @@ class Continuum
         ~Continuum()
         {
             #ifdef _WIN32
-                _aligned_free(M_);
+                _aligned_free(M);
             #else
-                std::free(M_);
+                std::free(M);
             #endif
 
             return;
@@ -161,14 +161,14 @@ class Continuum
         void importBin(std::string const& name, unsigned int const step);
 
 
-        static constexpr unsigned int NM_ = 4; // number of macroscopic values: rho, ux, uy, uz
-        static constexpr size_t MEM_SIZE_ = sizeof(T)*NZ*NY*NX*static_cast<size_t>(NM_); // size of array in byte
+        static constexpr unsigned int numberOfMacroscopicValues = 4; // number of macroscopic values: rho, ux, uy, uz
+        static constexpr size_t memorySize = sizeof(T)*NZ*NY*NX*static_cast<size_t>(numberOfMacroscopicValues); // size of array in byte
 
         /// population allocated in heap
         #ifdef _WIN32
-            T* const M_ = static_cast<T*>(_aligned_malloc(MEM_SIZE_, CACHE_LINE));
+            T* const M = static_cast<T*>(_aligned_malloc(memorySize, CACHE_LINE));
         #else
-            T* const M_ = static_cast<T*>(std::aligned_alloc(CACHE_LINE, MEM_SIZE_));
+            T* const M = static_cast<T*>(std::aligned_alloc(CACHE_LINE, memorySize));
         #endif
 };
 

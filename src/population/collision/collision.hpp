@@ -28,6 +28,12 @@ template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename 
 class CollisionOperator
 {
     public:
+        CollisionOperator() = delete;
+        CollisionOperator& operator = (CollisionOperator&) = delete;
+        CollisionOperator(CollisionOperator&&) = delete;
+        CollisionOperator& operator = (CollisionOperator&&) = delete;
+        CollisionOperator(CollisionOperator const&) = delete;
+
         /**\fn        collideStream
          * \brief     Curiously Recurring Template Pattern (CRTP) for static polymorphism of the collision operator
          *
@@ -93,9 +99,9 @@ class CollisionOperator
         /// parallelism: 3D blocks
         //  each cell gets a block of cells instead of a single cell
         static constexpr unsigned int   BLOCK_SIZE_ = (LT<T>::DIM == 3) ? 32 : 96;                      ///< loop block size
-        static constexpr unsigned int NUM_BLOCKS_Z_ = cef::ceil(static_cast<double>(NZ) / BLOCK_SIZE_); ///< number of blocks in each dimension
-        static constexpr unsigned int NUM_BLOCKS_Y_ = cef::ceil(static_cast<double>(NY) / BLOCK_SIZE_);
-        static constexpr unsigned int NUM_BLOCKS_X_ = cef::ceil(static_cast<double>(NX) / BLOCK_SIZE_);
+        static constexpr unsigned int NUM_BLOCKS_Z_ = cem::ceil(static_cast<double>(NZ) / BLOCK_SIZE_); ///< number of blocks in each dimension
+        static constexpr unsigned int NUM_BLOCKS_Y_ = cem::ceil(static_cast<double>(NY) / BLOCK_SIZE_);
+        static constexpr unsigned int NUM_BLOCKS_X_ = cem::ceil(static_cast<double>(NX) / BLOCK_SIZE_);
         static constexpr unsigned int   NUM_BLOCKS_ = NUM_BLOCKS_X_*NUM_BLOCKS_Y_*NUM_BLOCKS_Z_;        ///< total number of blocks
 };
 
@@ -184,7 +190,7 @@ void CollisionOperator<NX,NY,NZ,LT,T,NPOP,DerivedClass>::initialisePopulationFro
                         {
                             unsigned int const curr = n*LT<T>::OFF + d;
                             T const cu = 1.0/(LT<T>::CS*LT<T>::CS)*(u*LT<T>::DX[curr] + v*LT<T>::DY[curr] + w*LT<T>::DZ[curr]);
-                            population_->F_[population_-> template indexRead<TS>(x_n,y_n,z_n,n,d,p_)] = LT<T>::W[curr]*(rho + rho*(cu*(1.0 + 0.5*cu) + uu));
+                            population_->A[population_-> template indexRead<TS>(x_n,y_n,z_n,n,d,p_)] = LT<T>::W[curr]*(rho + rho*(cu*(1.0 + 0.5*cu) + uu));
                         }
                     }
                 }

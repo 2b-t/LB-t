@@ -13,11 +13,6 @@
  *           step with a regular read and a reverse write.
  *           This is implemented by different macros that determine the population indices for
  *           even and odd time steps.
- *
- * \note     "Accelerating Lattice Boltzmann Fluid Flow Simulations Using Graphics Processors"
- *           P. Bailey, J. Myre, S.D.C. Walsh, D.J. Lilja, M.O. Saar
- *           38th International Conference on Parallel Processing (ICPP), Vienna, Austria (2009)
- *           DOI: 10.1109/ICPP.2009.38
 */
 
 #include "indexing.hpp"
@@ -25,6 +20,11 @@
 
 /**\class  AaPattern
  * \brief  Class that is responsible for indexing according to Bailey's A-A pattern
+ *
+ * \note   "Accelerating Lattice Boltzmann Fluid Flow Simulations Using Graphics Processors"
+ *         P. Bailey, J. Myre, S.D.C. Walsh, D.J. Lilja, M.O. Saar
+ *         38th International Conference on Parallel Processing (ICPP), Vienna, Austria (2009)
+ *         DOI: 10.1109/ICPP.2009.38
  *
  * \tparam NX     Simulation domain resolution in x-direction
  * \tparam NY     Simulation domain resolution in y-direction

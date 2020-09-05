@@ -54,8 +54,14 @@ template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename 
 class Output
 {
     public:
+        Output() = delete;
+        Output& operator = (Output&) = delete;
+        Output(Output&&) = delete;
+        Output& operator = (Output&&) = delete;
+        Output(Output const&) = delete;
+
         /**\brief     Class constructor
-         * 
+         *
          * \param[in] population   Population object holding microscopic distributions
          * \param[in] continuum    Continuum object holding macroscopic variables
          * \param[in] Re           Reynolds number of the simulation
@@ -69,7 +75,7 @@ class Output
                T const Re, T const RHO, T const U, unsigned int const L, unsigned int const NT, unsigned int const NT_PLOT):
           population_(population), continuum_(continuum), Re_(Re), RHO_(RHO), U_(U), L_(L), NT_(NT), NT_PLOT_(NT_PLOT)
         {
-           return; 
+           return;
         }
 
         /**\fn        initialOutput
@@ -84,7 +90,7 @@ class Output
          * \param[in] runtime   Simulation runtime in seconds
         */
         void outputPerformance(double const runtime) const;
-        
+
         /**\fn        exportSettings
          * \brief     Export parameters to disk
         */
@@ -97,7 +103,7 @@ class Output
         T RHO_;
         T U_;
         unsigned int L_;
-        unsigned int NT_; 
+        unsigned int NT_;
         unsigned int NT_PLOT_;
 };
 
@@ -132,11 +138,11 @@ void Output<NX,NY,NZ,LT,T,NPOP>::outputPerformance(double const runtime) const
     constexpr double bytesPerMiB = 1024.0 * 1024.0;
     constexpr double bytesPerGiB = bytesPerMiB * 1024.0;
 
-    size_t const memory = continuum_->MEM_SIZE_ + population_->MEM_SIZE_;
+    size_t const memorySize = continuum_->memorySize + population_->memorySize;
 
     unsigned int const  valuesRead = LT<T>::SPEEDS;
     unsigned int const valuesWrite = LT<T>::SPEEDS;
-    unsigned int const valuesSaved = continuum_->NM_;
+    unsigned int const valuesSaved = continuum_->numberOfMacroscopicValues;
 
     size_t const nodesUpdated = static_cast<size_t>(NT_)*NX*NY*static_cast<size_t>(NZ);
     size_t const   nodesSaved = nodesUpdated/NT_PLOT_;
@@ -144,7 +150,7 @@ void Output<NX,NY,NZ,LT,T,NPOP>::outputPerformance(double const runtime) const
     double const    bandwidth = (nodesUpdated*(valuesRead + valuesWrite) + nodesSaved*valuesSaved)*sizeof(T) / (runtime*bytesPerGiB);
 
     std::printf("\nPerformance\n");
-    std::printf("   memory allocated: %.1f (MiB)\n", memory/bytesPerMiB);
+    std::printf("   memory allocated: %.1f (MiB)\n", memorySize/bytesPerMiB);
     std::printf("         #timesteps: %u\n", NT_);
     std::printf(" simulation runtime: %.2f (s)\n", runtime);
     std::printf("              speed: %.2f (Mlups)\n", speed);
@@ -156,9 +162,9 @@ void Output<NX,NY,NZ,LT,T,NPOP>::outputPerformance(double const runtime) const
 template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP>
 void Output<NX,NY,NZ,LT,T,NPOP>::exportSettings() const
 {
-    std::filesystem::create_directories(OUTPUT_BIN_PATH);
+    std::filesystem::create_directories(path::outputBin);
 
-    std::string const fileName = OUTPUT_BIN_PATH + std::string("/parameters.txt");
+    std::string const fileName = path::outputBin + std::string("/parameters.txt");
     auto const exportFile = std::unique_ptr<FILE, decltype(&fclose)>( fopen(fileName.c_str(), "w"), &fclose );
 
     if(exportFile != nullptr)

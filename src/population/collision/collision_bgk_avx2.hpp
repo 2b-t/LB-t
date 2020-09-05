@@ -5,7 +5,7 @@
  * \file     collision_bgk_avx2.hpp
  * \mainpage BGK collision operator with AVX2 intrinsics
  * \author   Tobit Flatscher (github.com/2b-t)
- * 
+ *
  * \warning  Requires AVX2 and cache-aligned arrays
 */
 
@@ -48,6 +48,7 @@ static inline double __attribute__((always_inline)) _mm256_reduce_add_pd(__m256d
 
 /**\class  BGK_AVX2
  * \brief  BGK collision operator for arbitrary cache-aligned lattices with AVX2 intrinsics
+ *
  * \note   "A Model for Collision Processes in Gases. I. Small Amplitude Processes in Charged
  *         and Neutral One-Component Systems"
  *         P.L. Bhatnagar, E.P. Gross, M. Krook
@@ -67,6 +68,12 @@ class BGK_AVX2: public CollisionOperator<NX,NY,NZ,LT,T,NPOP,BGK_AVX2<NX,NY,NZ,LT
     using CO = CollisionOperator<NX,NY,NZ,LT,T,NPOP,BGK_AVX2<NX,NY,NZ,LT,T,NPOP>>;
 
     public:
+        BGK_AVX2() = delete;
+        BGK_AVX2& operator = (BGK_AVX2&) = delete;
+        BGK_AVX2(BGK_AVX2&&) = delete;
+        BGK_AVX2& operator = (BGK_AVX2&&) = delete;
+        BGK_AVX2(BGK_AVX2 const&) = delete;
+
         /**\brief     Constructor
          *
          * \param[in] population   Population object holding microscopic distributions
@@ -145,7 +152,7 @@ void BGK_AVX2<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
                         #pragma GCC unroll (16)
                         for(unsigned int d = 0; d < LT<T>::OFF; ++d)
                         {
-                            f[n*LT<T>::OFF + d] = population_->F_[population_-> template indexRead<TS>(x_n,y_n,z_n,n,d,p_)];
+                            f[n*LT<T>::OFF + d] = population_->A[population_-> template indexRead<TS>(x_n,y_n,z_n,n,d,p_)];
                         }
                     }
 
@@ -216,7 +223,7 @@ void BGK_AVX2<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
                         for(unsigned int d = 0; d < LT<T>::OFF; ++d)
                         {
                             size_t const curr = n*LT<T>::OFF + d;
-                            population_->F_[population_-> template indexWrite<TS>(x_n,y_n,z_n,n,d,p_)] = f[curr];
+                            population_->A[population_-> template indexWrite<TS>(x_n,y_n,z_n,n,d,p_)] = f[curr];
                         }
                     }
                 }

@@ -5,7 +5,7 @@
  * \file     D3Q19.hpp
  * \mainpage Discretisation parameters for D3Q19-lattice
  * \author   Tobit Flatscher (github.com/2b-t)
- * 
+ *
  * \warning  Static classes with more complex members such as std::vector and std::array require C++17
 */
 
@@ -18,14 +18,15 @@
 
 namespace lattice
 {
-    /**\class    lattice::D3Q19P20
-     * \brief    Class for D3Q19P20 lattice with padding to 20
-     * \note     "Lattice BGK models for Navier-Stokes equation"
-     *           Y.H. Qian, D. D'Humières, P. Lallemand
-     *           Europhysics Letters (EPL) Vol. 17 (1992)
-     *           DOI: 10.1209/0295-5075/17/6/001
+    /**\class  lattice::D3Q19P20
+     * \brief  Class for D3Q19P20 lattice with padding to 20
      *
-     * \tparam   T   Floating data type used for simulation
+     * \note   "Lattice BGK models for Navier-Stokes equation"
+     *         Y.H. Qian, D. D'Humières, P. Lallemand
+     *         Europhysics Letters (EPL) Vol. 17 (1992)
+     *         DOI: 10.1209/0295-5075/17/6/001
+     *
+     * \tparam T   Floating data type used for simulation
     */
     template <typename T = double>
     class D3Q19P20 final
@@ -69,9 +70,9 @@ namespace lattice
               0, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 
             /// lattice speed of sound
-            static constexpr T CS = 1.0/cef::sqrt(3.0);
+            static constexpr T CS = 1.0/cem::sqrt(3.0);
     };
-    
+
     /// Alias default lattice
     template<typename T> using D3Q19 = D3Q19P20<T>;
 }

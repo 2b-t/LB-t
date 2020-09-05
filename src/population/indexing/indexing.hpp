@@ -7,6 +7,8 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#include <iostream>
+
 
 /**\enum  timestep
  * \brief Strongly typed for even and odd time steps required for AA access pattern
@@ -22,6 +24,19 @@ enum class timestep: bool { even = false, odd = true };
 constexpr timestep operator ! (timestep const& ts)
 {
     return (ts == timestep::even) ? timestep::odd : timestep::even;
+}
+
+/**\fn            Timestep output stream operator
+ * \brief         Output stream operator for the timestep
+ *
+ * \param[in,out] os   Output stream
+ * \param[in]     ts   Timestep to be printed to output stream
+ * \return        Output stream including the type of timestep
+ */
+std::ostream& operator << (std::ostream& os, timestep const& ts)
+{
+    os << ((ts == timestep::even) ? "even time step" : "odd time step");
+    return os;
 }
 
 

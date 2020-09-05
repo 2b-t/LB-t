@@ -6,7 +6,7 @@
  * \mainpage Prototype lattice class holding lattice discretisation parameters.
  *           Copy and modify for new models
  * \author   Tobit Flatscher (github.com/2b-t)
- * 
+ *
  * \warning  Static classes with more complex members such as std::vector and std::array require C++17
 */
 
@@ -19,11 +19,11 @@
 
 namespace lattice
 {
-    /**\class    lattice::DdQq<T>
-     * \brief    Prototype class for regular lattices, copy and paste for new lattices
-     * \warning  Is not working as ND = 0!
+    /**\class   lattice::DdQq<T>
+     * \brief   Prototype class for regular lattices, copy and paste for new lattices
+     * \warning Is not working as ND = 0!
      *
-     * \tparam   T   Floating data type used for simulation
+     * \tparam  T   Floating data type used for simulation
     */
     template <typename T = double>
     class DdQq final
@@ -46,7 +46,7 @@ namespace lattice
 
             /// corresponding weights
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> W = {0.0};
-            
+
             /// logical mask for relevant populations
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> MASK = {0.0}
 

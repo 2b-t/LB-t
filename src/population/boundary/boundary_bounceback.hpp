@@ -37,6 +37,8 @@ class HalfwayBounceBack: public BoundaryCondition<NX,NY,NZ,LT,T,NPOP,HalfwayBoun
     using BC = BoundaryCondition<NX,NY,NZ,LT,T,NPOP,HalfwayBounceBack<NX,NY,NZ,LT,T,NPOP>>;
 
     public:
+        HalfwayBounceBack() = delete;
+
         /**\brief     Constructor
          *
          * \param[in] population         Population object holding microscopic distributions
@@ -95,8 +97,8 @@ void HalfwayBounceBack<NX,NY,NZ,LT,T,NPOP>::implementationAfterCollisionOperator
             #pragma GCC unroll (15)
             for(unsigned int d = 1; d < LT<T>::HSPEED; ++d)
             {
-                population_->F_[population_-> template indexWrite<TS>(x_n, y_n, z_n, !n, d, p_)] =
-                population_->F_[population_-> template indexRead<!TS>(x_n, y_n, z_n, n, d, p_)];
+                population_->A[population_-> template indexWrite<TS>(x_n, y_n, z_n, !n, d, p_)] =
+                population_->A[population_-> template indexRead<!TS>(x_n, y_n, z_n, n, d, p_)];
             }
         }
     }
