@@ -78,8 +78,8 @@ class Output
            return;
         }
 
-        /**\fn        initialOutput
-         * \brief     Simulation parameters and OpenMP settings output to console.
+        /**\fn    initialOutput
+         * \brief Simulation parameters and OpenMP settings output to console.
         */
         void initialOutput() const;
 
@@ -91,8 +91,8 @@ class Output
         */
         void outputPerformance(double const runtime) const;
 
-        /**\fn        exportSettings
-         * \brief     Export parameters to disk
+        /**\fn    exportSettings
+         * \brief Export parameters to disk
         */
         void exportSettings() const;
 

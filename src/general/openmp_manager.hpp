@@ -16,9 +16,9 @@
 
 
 #ifdef _OPENMP
-    /**\class    OpenMpManager
-     * \brief    Singleton class for all variables regarding parallelism
-     *           Variables as int instead of size_t because that way in OpenMP
+    /**\class OpenMpManager
+     * \brief Singleton class for all variables regarding parallelism
+     *        Variables as int instead of size_t because that way in OpenMP
     */
     class OpenMpManager
     {
@@ -68,30 +68,30 @@
                 return isSuccess;
             }
 
-            /**\fn        getThreadsMax
-             * \brief     Get number of maximum number of possible threads.
+            /**\fn     getThreadsMax
+             * \brief  Get number of maximum number of possible threads.
              *
-             * \return    Return maximum number of possible threads
+             * \return Return maximum number of possible threads
             */
             int getThreadsMax() const
             {
                 return threadsMax_;
             }
 
-            /**\fn        getThreadsMax
-             * \brief     Get number of actively set threads.
+            /**\fn     getThreadsMax
+             * \brief  Get number of actively set threads.
              *
-             * \return    Return number of active threads
+             * \return Return number of active threads
             */
             int getThreadsNum() const
             {
                 return omp_get_max_threads();
             }
 
-            /**\fn        getThreadsCurrent
-             * \brief     Get number of threads currently active in a particular parallel region.
+            /**\fn     getThreadsCurrent
+             * \brief  Get number of threads currently active in a particular parallel region.
              *
-             * \return    Return number of threads currently active in parallel region
+             * \return Return number of threads currently active in parallel region
             */
             int getThreadsCurrent() const
             {

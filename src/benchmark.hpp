@@ -24,9 +24,9 @@
 #include "population/population.hpp"
 
 
-/**\fn      benchmarkSingleLatticeSingleCollisionOperator
- * \brief   Benchmark a single lattice with a single collision operator
- * \warning New collision operators have to be added to this function manually!
+/**\fn            benchmarkSingleLatticeSingleCollisionOperator
+ * \brief         Benchmark a single lattice with a single collision operator
+ * \warning       New collision operators have to be added to this function manually!
  * 
  * \tparam        NX                  Simulation domain resolution in x-direction
  * \tparam        NY                  Simulation domain resolution in y-direction
@@ -58,9 +58,9 @@ void benchmarkSingleLatticeSingleCollisionOperator(CollisionOperator<NX,NY,NZ,LT
     return;
 }
 
-/**\fn      benchmarkSingleLatticeAllCollisionOperators
- * \brief   Benchmark a single lattice with all possible collision operators
- * \warning New collision operators have to be added to this function manually!
+/**\fn        benchmarkSingleLatticeAllCollisionOperators
+ * \brief     Benchmark a single lattice with all possible collision operators
+ * \warning   New collision operators have to be added to this function manually!
  * 
  * \tparam    NX   Simulation domain resolution in x-direction
  * \tparam    NY   Simulation domain resolution in y-direction

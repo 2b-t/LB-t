@@ -84,10 +84,10 @@ class CollisionOperator
         */
         void initialiseContinuum_(T const RHO_0, T const U_0, T const V_0, T const W_0);
 
-        /**\fn       initialisePopulationFromContinuum_
-         * \brief    Initialise the microscopic distributions for the macroscopic continuum
+        /**\fn     initialisePopulationFromContinuum_
+         * \brief  Initialise the microscopic distributions for the macroscopic continuum
          *
-         * \tparam   TS   Even or odd timestep
+         * \tparam TS   Even or odd timestep
         */
         template<timestep TS>
         void initialisePopulationFromContinuum_();

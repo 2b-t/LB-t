@@ -77,15 +77,15 @@ class Continuum
             return;
         }
 
-        /**\fn         spatialToLinear
-         * \brief      Inline function for converting 3D population coordinates to scalar index
-         * \warning    Inline function! Has to be declared in header!
+        /**\fn        spatialToLinear
+         * \brief     Inline function for converting 3D population coordinates to scalar index
+         * \warning   Inline function! Has to be declared in header!
          *
-         * \param[in]  x   x coordinate of cell
-         * \param[in]  y   y coordinate of cell
-         * \param[in]  z   z coordinate of cell
-         * \param[in]  m   macroscopic value (0: density, 1-3: ux, uy,uz)
-         * \return     requested linear scalar index
+         * \param[in] x   x coordinate of cell
+         * \param[in] y   y coordinate of cell
+         * \param[in] z   z coordinate of cell
+         * \param[in] m   Macroscopic value (0: density, 1-3: ux, uy,uz)
+         * \return    Requested linear scalar index
         */
         inline size_t spatialToLinear(unsigned int const x, unsigned int const y, unsigned int const z,
                                       unsigned int const m) const;
@@ -93,22 +93,22 @@ class Continuum
         /**\fn         linearToSpatial
          * \brief      Generate 3D population coordinates from scalar index
          *
-         * \param[out] x       return value x coordinate of cell
-         * \param[out] y       return value y coordinate of cell
-         * \param[out] z       return value z coordinate of cell
-         * \param[in]  index   current linear scalar index
+         * \param[out] x       Return value x coordinate of cell
+         * \param[out] y       Return value y coordinate of cell
+         * \param[out] z       Return value z coordinate of cell
+         * \param[in]  index   Current linear scalar index
         */
         void          linearToSpatial(unsigned int& x, unsigned int& y, unsigned int& z,
                                       unsigned int& m, size_t const index) const;
 
-        /**\fn         operator()
-         * \brief      Access scalar values at given coordinates
+        /**\fn        operator()
+         * \brief     Access scalar values at given coordinates
          *
-         * \param[in]  x   x coordinate of cell
-         * \param[in]  y   y coordinate of cell
-         * \param[in]  z   z coordinate of cell
-         * \param[in]  m   macroscopic value (0: density, 1-3: ux, uy,uz)
-         * \return     the requested scalar value
+         * \param[in] x   x coordinate of cell
+         * \param[in] y   y coordinate of cell
+         * \param[in] z   z coordinate of cell
+         * \param[in] m   Macroscopic value (0: density, 1-3: ux, uy,uz)
+         * \return    The requested scalar value
         */
         inline T&       operator() (unsigned int const x, unsigned int const y, unsigned int const z, unsigned int const m);
         inline T const& operator() (unsigned int const x, unsigned int const y, unsigned int const z, unsigned int const m) const;
@@ -152,11 +152,11 @@ class Continuum
         */
         void exportVtk(unsigned int const step) const;
 
-        /**\fn         importBin
-         * \brief      Import macroscopic values from *.bin-file
+        /**\fn        importBin
+         * \brief     Import macroscopic values from *.bin-file
          *
-         * \param[in]  name   The import file name holding the macroscopic quantities
-         * \param[in]  step   The current time step that will be used for the name
+         * \param[in] name   The import file name holding the macroscopic quantities
+         * \param[in] step   The current time step that will be used for the name
         */
         void importBin(std::string const& name, unsigned int const step);
 

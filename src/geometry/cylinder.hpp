@@ -21,8 +21,8 @@
 
 namespace geometry
 {
-    /**\fn         cylinder
-     * \brief      Load pre-defined scenario of a three-dimensional flow around cylinder
+    /**\fn        cylinder
+     * \brief     Load pre-defined scenario of a three-dimensional flow around cylinder
      *
      * \tparam    NX            Simulation domain resolution in x-direction
      * \tparam    NY            Simulation domain resolution in y-direction

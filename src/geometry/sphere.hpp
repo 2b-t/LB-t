@@ -22,8 +22,8 @@
 
 namespace geometry
 {
-    /**\fn         sphere
-     * \brief      Load pre-defined scenario of a three-dimensional flow around a sphere
+    /**\fn        sphere
+     * \brief     Load pre-defined scenario of a three-dimensional flow around a sphere
      *
      * \tparam    NX            Simulation domain resolution in x-direction
      * \tparam    NY            Simulation domain resolution in y-direction
