@@ -94,7 +94,11 @@ void HalfwayBounceBack<NX,NY,NZ,LT,T,NPOP>::implementationAfterCollisionOperator
         #pragma GCC unroll (2)
         for(unsigned int n = 0; n <= 1; ++n)
         {
+            #if defined(__ICC) || defined(__ICL)
+            #pragma unroll (LT<T>::HSPEED-1)
+            #else
             #pragma GCC unroll (15)
+            #endif
             for(unsigned int d = 1; d < LT<T>::HSPEED; ++d)
             {
                 population_->A[population_-> template indexWrite<TS>(x_n, y_n, z_n, !n, d, p_)] =

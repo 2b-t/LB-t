@@ -123,10 +123,15 @@ void TRT<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
                     #pragma GCC unroll (2)
                     for(unsigned int n = 0; n <= 1; ++n)
                     {
+                        #if defined(__ICC) || defined(__ICL)
+                        #pragma unroll (LT<T>::HSPEED)
+                        #else
                         #pragma GCC unroll (16)
-                        for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
+                        #endif
+                        for(unsigned int d = 0; d < LT<T>::HSPEED; ++d)
                         {
-                            f[n*LT<T>::OFF + d] = population_->A[population_-> template indexRead<TS>(x_n,y_n,z_n,n,d,p_)];
+                            unsigned int const curr = n*LT<T>::OFF + d;
+                            f[curr] = LT<T>::MASK[curr]*population_->A[population_->template indexRead<TS>(x_n,y_n,z_n,n,d,p_)];
                         }
                     }
 
@@ -138,8 +143,12 @@ void TRT<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
                     #pragma GCC unroll (2)
                     for(unsigned int n = 0; n <= 1; ++n)
                     {
+                        #if defined(__ICC) || defined(__ICL)
+                        #pragma unroll (LT<T>::HSPEED)
+                        #else
                         #pragma GCC unroll (16)
-                        for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
+                        #endif
+                        for(unsigned int d = 0; d < LT<T>::HSPEED; ++d)
                         {
                             unsigned int const curr = n*LT<T>::OFF + d;
                             rho += f[curr];
@@ -168,8 +177,12 @@ void TRT<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
                     #pragma GCC unroll (2)
                     for(unsigned int n = 0; n <= 1; ++n)
                     {
-                        #pragma GCC unroll (16)
-                        for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
+                        #if defined(__ICC) || defined(__ICL)
+                        #pragma unroll (LT<T>::HSPEED-1)
+                        #else
+                        #pragma GCC unroll (15)
+                        #endif
+                        for(unsigned int d = 0; d < LT<T>::HSPEED; ++d)
                         {
                             unsigned int const curr = n*LT<T>::OFF + d;
                             T const cu = 1.0/(LT<T>::CS*LT<T>::CS)*(u*LT<T>::DX[curr] + v*LT<T>::DY[curr] + w*LT<T>::DZ[curr]);
@@ -181,7 +194,11 @@ void TRT<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
                     alignas(CACHE_LINE) T fp[LT<T>::OFF] = {0.0};
                     alignas(CACHE_LINE) T fm[LT<T>::OFF] = {0.0};
 
+                    #if defined(__ICC) || defined(__ICL)
+                    #pragma unroll (LT<T>::HSPEED-1)
+                    #else
                     #pragma GCC unroll (15)
+                    #endif
                     for(unsigned int d = 1; d < LT<T>::HSPEED; ++d)
                     {
                         fp[d] = 0.5*(f[d] + f[LT<T>::OFF + d] - (feq[d] + feq[LT<T>::OFF + d]));
@@ -189,16 +206,24 @@ void TRT<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
                     }
 
                     /// collision and streaming
-                    population_->A[population_-> template indexWrite<TS>(x_n,y_n,z_n,0,0,p_)] = f[0] + omega_p_*(feq[0] - f[0]);
+                    population_->A[population_->template indexWrite<TS>(x_n,y_n,z_n,0,0,p_)] = f[0] + omega_p_*(feq[0] - f[0]);
+                    #if defined(__ICC) || defined(__ICL)
+                    #pragma unroll (LT<T>::HSPEED-1)
+                    #else
                     #pragma GCC unroll (15)
+                    #endif
                     for(unsigned int d = 1; d < LT<T>::HSPEED; ++d)
                     {
-                        population_->A[population_-> template indexWrite<TS>(x_n,y_n,z_n,0,d,p_)] = f[d] - omega_m_*fp[d] - omega_m_*fm[d];
+                        population_->A[population_->template indexWrite<TS>(x_n,y_n,z_n,0,d,p_)] = f[d] - omega_p_*fp[d] - omega_m_*fm[d];
                     }
+                    #if defined(__ICC) || defined(__ICL)
+                    #pragma unroll (LT<T>::HSPEED-1)
+                    #else
                     #pragma GCC unroll (15)
+                    #endif
                     for(unsigned int d = 1; d < LT<T>::HSPEED; ++d)
                     {
-                        population_->A[population_-> template indexWrite<TS>(x_n,y_n,z_n,1,d,p_)] = f[LT<T>::OFF + d] - omega_p_*fp[d] + omega_m_*fm[d];
+                        population_->A[population_->template indexWrite<TS>(x_n,y_n,z_n,1,d,p_)] = f[LT<T>::OFF + d] - omega_p_*fp[d] + omega_m_*fm[d];
                     }
                 }
             }

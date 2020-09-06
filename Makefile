@@ -17,8 +17,8 @@ PROGRAM	 = main.$(COMPILER)
 
 # Compiler flags
 WARNINGS  = -Wall -pedantic -Wextra -Weffc++ -Woverloaded-virtual  -Wfloat-equal -Wshadow -Wredundant-decls -Winline -fmax-errors=1
-CXXFLAGS += -std=c++17 -O3 -flto -funroll-all-loops -finline-functions -mavx2 -march=native -DNDEBUG
-#CXXFLAGS += -fearly-inlining -funsafe-math-optimizations -fassociative-math -freciprocal-math -obey-inline -fstrict-aliasing -fwhole-program -fno-exceptions
+CXXFLAGS += -std=c++17 -O3 -flto -fwhole-program -funroll-all-loops -finline-functions -mavx2 -march=native -fno-exceptions -DNDEBUG
+#CXXFLAGS += -funsafe-math-optimizations -fassociative-math -freciprocal-math -obey-inline -fstrict-aliasing -fearly-inlining
 LDFLAGS  += -O3 -flto
 
 # Compiler settings for specific compiler

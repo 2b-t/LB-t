@@ -119,10 +119,15 @@ void BGK_Smagorinsky<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
                     #pragma GCC unroll (2)
                     for(unsigned int n = 0; n <= 1; ++n)
                     {
+                        #if defined(__ICC) || defined(__ICL)
+                        #pragma unroll (LT<T>::OFF)
+                        #else
                         #pragma GCC unroll (16)
-                        for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
+                        #endif
+                        for(unsigned int d = 0; d < LT<T>::OFF; ++d)
                         {
-                            f[n*LT<T>::OFF + d] = population_->A[population_-> template indexRead<TS>(x_n,y_n,z_n,n,d,p_)];
+                            unsigned int const curr = n*LT<T>::OFF + d;
+                            f[curr] = LT<T>::MASK[curr]*population_->A[population_-> template indexRead<TS>(x_n,y_n,z_n,n,d,p_)];
                         }
                     }
 
@@ -134,8 +139,12 @@ void BGK_Smagorinsky<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
                     #pragma GCC unroll (2)
                     for(unsigned int n = 0; n <= 1; ++n)
                     {
+                        #if defined(__ICC) || defined(__ICL)
+                        #pragma unroll (LT<T>::OFF)
+                        #else
                         #pragma GCC unroll (16)
-                        for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
+                        #endif
+                        for(unsigned int d = 0; d < LT<T>::OFF; ++d)
                         {
                             unsigned int const curr = n*LT<T>::OFF + d;
                             rho += f[curr];
@@ -165,8 +174,12 @@ void BGK_Smagorinsky<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
                     #pragma GCC unroll (2)
                     for(unsigned int n = 0; n <= 1; ++n)
                     {
+                        #if defined(__ICC) || defined(__ICL)
+                        #pragma unroll (LT<T>::OFF)
+                        #else
                         #pragma GCC unroll (16)
-                        for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
+                        #endif
+                        for(unsigned int d = 0; d < LT<T>::OFF; ++d)
                         {
                             unsigned int const curr = n*LT<T>::OFF + d;
                             T const cu = 1.0/(LT<T>::CS*LT<T>::CS)*(u*LT<T>::DX[curr] + v*LT<T>::DY[curr] + w*LT<T>::DZ[curr]);
@@ -185,8 +198,12 @@ void BGK_Smagorinsky<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
                     #pragma GCC unroll (2)
                     for(unsigned int n = 0; n <= 1; ++n)
                     {
+                        #if defined(__ICC) || defined(__ICL)
+                        #pragma unroll (LT<T>::OFF)
+                        #else
                         #pragma GCC unroll (16)
-                        for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
+                        #endif
+                        for(unsigned int d = 0; d < LT<T>::OFF; ++d)
                         {
                             unsigned int const curr = n*LT<T>::OFF + d;
                             p_xx += LT<T>::DX[curr]*LT<T>::DX[curr]*fneq[curr];
@@ -210,11 +227,16 @@ void BGK_Smagorinsky<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
                     #pragma GCC unroll (2)
                     for(unsigned int n = 0; n <= 1; ++n)
                     {
+                        #if defined(__ICC) || defined(__ICL)
+                        #pragma unroll (LT<T>::OFF)
+                        #else
                         #pragma GCC unroll (16)
-                        for(unsigned int d = n; d < LT<T>::HSPEED; ++d)
+                        #endif
+                        for(unsigned int d = 0; d < LT<T>::OFF; ++d)
                         {
                             unsigned int const curr = n*LT<T>::OFF + d;
-                            population_->A[population_-> template indexWrite<TS>(x_n,y_n,z_n,n,d,p_)] = f[curr] + omega*(feq[curr] - f[curr]);
+                            population_->A[population_->template indexWrite<TS>(x_n,y_n,z_n,n,d,p_)] = LT<T>::MASK[curr]*
+                                                                                                       (f[curr] + omega*(feq[curr] - f[curr]));
                         }
                     }
                 }
