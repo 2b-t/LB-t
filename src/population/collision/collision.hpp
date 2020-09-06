@@ -67,7 +67,8 @@ class CollisionOperator
          * \param[in] continuum    Continuum object holding macroscopic variables
          * \param[in] p            Index of relevant population
         */
-        CollisionOperator(std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population, std::shared_ptr<Continuum<NX,NY,NZ,T>> continuum, unsigned int const p = 0):
+        CollisionOperator(std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population, std::shared_ptr<Continuum<NX,NY,NZ,T>> continuum,
+                          unsigned int const p = 0):
             population_(population), continuum_(continuum), p_(p)
         {
             return;
@@ -106,7 +107,8 @@ class CollisionOperator
 };
 
 
-template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP, typename DerivedClass> template<timestep TS>
+template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP, typename DerivedClass>
+template<timestep TS>
 void CollisionOperator<NX,NY,NZ,LT,T,NPOP,DerivedClass>::initialise(T const RHO_0, T const U_0, T const V_0, T const W_0)
 {
     initialiseContinuum_(RHO_0, U_0, V_0, W_0);
@@ -148,7 +150,8 @@ void CollisionOperator<NX,NY,NZ,LT,T,NPOP,DerivedClass>::initialiseContinuum_(T 
     return;
 }
 
-template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP, typename DerivedClass> template<timestep TS>
+template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP, typename DerivedClass>
+template<timestep TS>
 void CollisionOperator<NX,NY,NZ,LT,T,NPOP,DerivedClass>::initialisePopulationFromContinuum_()
 {
     #pragma omp parallel for default(none) shared(continuum_, population_) firstprivate(p_) schedule(static,1)

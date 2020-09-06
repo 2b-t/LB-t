@@ -42,12 +42,13 @@ namespace geometry
      * \return    A tuple containing pointers to all boundary conditions
     */
     template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP>
-    std::tuple< Guo<type::Velocity,orientation::Left,NX,NY,NZ,LT,T,NPOP>, Guo<type::Pressure,orientation::Right,NX,NY,NZ,LT,T,NPOP>, HalfwayBounceBack<NX,NY,NZ,LT,T,NPOP> >
+    std::tuple< Guo<type::Velocity,orientation::Left,NX,NY,NZ,LT,T,NPOP>, Guo<type::Pressure,orientation::Right,NX,NY,NZ,LT,T,NPOP>,
+                HalfwayBounceBack<NX,NY,NZ,LT,T,NPOP> >
     sphere(std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population, unsigned int const radius, std::array<unsigned int,3> const& position,
            std::string const& orientation, bool const isWalls, T const RHO, T const U, T const V, T const W, unsigned int p = 0)
     {
         static_assert(LT<T>::DIM == 3, "Please use geometry::cylinder(...) for 2D simulations");
-        
+
         alignas(CACHE_LINE) std::vector<BoundaryElement<T>> wall;
         alignas(CACHE_LINE) std::vector<BoundaryElement<T>> inlet;
         alignas(CACHE_LINE) std::vector<BoundaryElement<T>> outlet;

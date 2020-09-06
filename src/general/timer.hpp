@@ -15,12 +15,6 @@
 */
 class Timer
 {
-    private:
-        std::chrono::high_resolution_clock::time_point start_      = std::chrono::high_resolution_clock::now(); ///< chrono library objects for start and end
-        std::chrono::high_resolution_clock::time_point stop_       = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double>                  start_stop_ = std::chrono::duration<double>::zero();     ///< chrono library objects for duration
-        double                                         runtime_    = 0.0;                                       ///< double value of runtime in seconds
-
     public:
         /**\fn    start
          * \brief Start stopwatch
@@ -58,6 +52,13 @@ class Timer
 
             return start_current_.count();
         }
+
+    private:
+        std::chrono::high_resolution_clock::time_point start_      = std::chrono::high_resolution_clock::now(); ///< chrono library objects for start and end
+        std::chrono::high_resolution_clock::time_point stop_       = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double>                  start_stop_ = std::chrono::duration<double>::zero();     ///< chrono library objects for duration
+        double                                         runtime_    = 0.0;                                       ///< double value of runtime in seconds
+
 };
 
 #endif // LBT_TIMER

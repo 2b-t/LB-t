@@ -19,7 +19,8 @@
 #include "../general/paths.hpp"
 
 
-template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T> template <template <typename U> class LT, typename U, unsigned int NPOP, typename DerivedClass>
+template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T> template <template <typename U> class LT, typename U, unsigned int NPOP,
+          typename DerivedClass>
 void Continuum<NX,NY,NZ,T>::setBoundary(BoundaryCondition<NX,NY,NZ,LT,U,NPOP,DerivedClass> const& boundary)
 {
     for(size_t i = 0; i < boundary.boundaryElements_.size(); ++i)

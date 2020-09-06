@@ -38,7 +38,8 @@
  * \tparam NPOP          Number of populations stored side by side in a single merged grid
  * \tparam T             Floating data type used for simulation
 */
-template <template <class Orientation> class Type, class Orientation, unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP>
+template <template <class Orientation> class Type, class Orientation, unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT,
+          typename T, unsigned int NPOP>
 class Guo: public BoundaryCondition<NX,NY,NZ,LT,T,NPOP,Guo<Type,Orientation,NX,NY,NZ,LT,T,NPOP>>
 {
     using BC = BoundaryCondition<NX,NY,NZ,LT,T,NPOP,Guo<Type,Orientation,NX,NY,NZ,LT,T,NPOP>>;
@@ -81,7 +82,8 @@ class Guo: public BoundaryCondition<NX,NY,NZ,LT,T,NPOP,Guo<Type,Orientation,NX,N
         unsigned int const p_;
 };
 
-template <template <class Orientation> class Type, class Orientation, unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP> template <timestep TS>
+template <template <class Orientation> class Type, class Orientation, unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT,
+          typename T, unsigned int NPOP> template <timestep TS>
 void Guo<Type,Orientation,NX,NY,NZ,LT,T,NPOP>::implementationBeforeCollisionOperator()
 {
     #pragma omp parallel for default(none) shared(boundaryElements_,population_,p_) schedule(static,32)
@@ -201,7 +203,8 @@ void Guo<Type,Orientation,NX,NY,NZ,LT,T,NPOP>::implementationBeforeCollisionOper
     return;
 }
 
-template <template <class Orientation> class Type, class Orientation, unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP> template <timestep TS>
+template <template <class Orientation> class Type, class Orientation, unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT,
+          typename T, unsigned int NPOP> template <timestep TS>
 void Guo<Type,Orientation,NX,NY,NZ,LT,T,NPOP>::implementationAfterCollisionOperator()
 {
     return;
