@@ -97,7 +97,7 @@ int main(int argc, char** argv)
     auto macro = std::make_shared<Continuum<NX,NY,NZ,FType>>();
     auto micro = std::make_shared<Population<NX,NY,NZ,lattice::D3Q27,FType>>();
 
-    Output const output(micro, macro, Re, RHO_0, U, L, NT, NT_PLOT);
+    Output<NX,NY,NZ,lattice::D3Q27,FType> const output(micro, macro, Re, RHO_0, U, L, NT, NT_PLOT);
     output.initialOutput();
     output.exportSettings();
 

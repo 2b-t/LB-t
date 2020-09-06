@@ -50,7 +50,7 @@ void statusOutput(unsigned int const step, unsigned int const NT, double const r
  * \tparam T              Floating data type used for simulation
  * \tparam NPOP           Number of populations stored side by side in a single merged grid
 */
-template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP>
+template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP = 1>
 class Output
 {
     public:

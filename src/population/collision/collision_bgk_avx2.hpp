@@ -91,7 +91,6 @@ class BGK_AVX2: public CollisionOperator<NX,NY,NZ,LT,T,NPOP,BGK_AVX2<NX,NY,NZ,LT
         {
             static_assert(LT<T>::ND % 4 == 0);
             static_assert(std::is_same<T, double>::value == true);
-            static_assert(std::is_same<typename std::remove_const<decltype(LT<T>::CS)>::type, double>::value == true);
 
             return;
         }
@@ -149,7 +148,11 @@ void BGK_AVX2<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
                     #pragma GCC unroll (2)
                     for(unsigned int n = 0; n <= 1; ++n)
                     {
+                        #if defined(__ICC) || defined(__ICL)
+                        #pragma unroll (LT<T>::OFF)
+                        #else
                         #pragma GCC unroll (16)
+                        #endif
                         for(unsigned int d = 0; d < LT<T>::OFF; ++d)
                         {
                             f[n*LT<T>::OFF + d] = population_->A[population_-> template indexRead<TS>(x_n,y_n,z_n,n,d,p_)];
@@ -219,7 +222,11 @@ void BGK_AVX2<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
                     #pragma GCC unroll (2)
                     for(unsigned int n = 0; n <= 1; ++n)
                     {
+                        #if defined(__ICC) || defined(__ICL)
+                        #pragma unroll (LT<T>::OFF)
+                        #else
                         #pragma GCC unroll (16)
+                        #endif
                         for(unsigned int d = 0; d < LT<T>::OFF; ++d)
                         {
                             size_t const curr = n*LT<T>::OFF + d;

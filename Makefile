@@ -18,6 +18,7 @@ PROGRAM	 = main.$(COMPILER)
 # Compiler flags
 WARNINGS  = -Wall -pedantic -Wextra -Weffc++ -Woverloaded-virtual  -Wfloat-equal -Wshadow -Wredundant-decls -Winline -fmax-errors=1
 CXXFLAGS += -std=c++17 -O3 -flto -funroll-all-loops -finline-functions -mavx2 -march=native -DNDEBUG
+#CXXFLAGS += -fearly-inlining -funsafe-math-optimizations -fassociative-math -freciprocal-math -obey-inline -fstrict-aliasing -fwhole-program -fno-exceptions
 LDFLAGS  += -O3 -flto
 
 # Compiler settings for specific compiler
@@ -56,6 +57,9 @@ clean:
 
 run: clean $(BINDIR)/$(PROGRAM)
 	./$(BINDIR)/$(PROGRAM)
+
+benchmark: clean $(BINDIR)/$(PROGRAM)
+	./$(BINDIR)/$(PROGRAM) --b
 
 doc:
 	doxygen Doxyfile
