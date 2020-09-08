@@ -84,7 +84,7 @@ class Continuum
          * \param[in] x   x coordinate of cell
          * \param[in] y   y coordinate of cell
          * \param[in] z   z coordinate of cell
-         * \param[in] m   Macroscopic value (0: density, 1-3: ux, uy,uz)
+         * \param[in] m   Macroscopic value (0: density, 1-3: ux, uy, uz)
          * \return    Requested linear scalar index
         */
         inline size_t spatialToLinear(unsigned int const x, unsigned int const y, unsigned int const z,
