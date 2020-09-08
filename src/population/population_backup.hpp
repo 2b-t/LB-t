@@ -20,8 +20,6 @@
 template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP>
 void Population<NX,NY,NZ,LT,T,NPOP>::importBin(std::string const& name)
 {
-    std::filesystem::create_directories(path::backupExport);
-
     std::string const fileName = path::backupImport + std::string("/") + name + std::string(".bin");
     auto const importFile = std::unique_ptr<FILE, decltype(&fclose)>( fopen(fileName.c_str(), "rb+"), &fclose );
 
