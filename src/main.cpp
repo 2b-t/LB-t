@@ -122,7 +122,7 @@ int main(int argc, char** argv)
         // status output
         if (i % (NT/10) == 0)
         {
-            statusOutput(i, NT, timer.getRuntime());
+            ::statusOutput(i, NT, timer.getRuntime());
         }
 
         // even time step
