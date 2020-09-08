@@ -104,7 +104,7 @@
             */
             OpenMpManager()
             {
-                omp_set_num_threads(threadsMax_);
+                omp_set_num_threads(omp_get_num_procs());
 
                 return;
             }
