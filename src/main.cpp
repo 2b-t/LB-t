@@ -117,7 +117,7 @@ int main(int argc, char** argv)
     Timer timer;
     timer.start();
 
-    for (size_t i = 0; i < NT; i+=2)
+    for (unsigned int i = 0; i < NT; i+=2)
     {
         // status output
         if (i % (NT/10) == 0)
