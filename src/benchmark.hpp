@@ -44,7 +44,7 @@ void benchmarkSingleLatticeSingleCollisionOperator(CollisionOperator<NX,NY,NZ,LT
     Timer timer;
     timer.start();
 
-    for (size_t i = 0; i < NT; i+=2)
+    for (unsigned int i = 0; i < NT; i+=2)
     {
         collisionOperator.template collideStream<timestep::even>();
         collisionOperator.template collideStream<timestep::odd>();
