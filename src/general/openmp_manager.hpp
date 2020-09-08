@@ -109,8 +109,8 @@
                 return;
             }
 
-            static int threadsMax_ = omp_get_num_procs(); ///< variable for maximum number of threads
-            int        threadsNum_ = omp_get_num_procs(); ///< number of currently used threads (default all)
+            int const threadsMax_ = omp_get_num_procs(); ///< variable for maximum number of threads
+            int       threadsNum_ = omp_get_num_procs(); ///< number of currently used threads (default all)
     };
 #endif
 
