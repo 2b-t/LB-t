@@ -42,7 +42,7 @@
             */
             void setNestedParallelism(bool const isNested) const
             {
-                omp_set_nested(isNested);
+                ::omp_set_nested(isNested);
 
                 return;
             }
@@ -60,7 +60,7 @@
                 if(threadsNum <= threadsMax_)
                 {
                     threadsNum_ = threadsNum;
-                    omp_set_num_threads(threadsNum_);
+                    ::omp_set_num_threads(threadsNum_);
 
                     isSuccess = EXIT_SUCCESS;
                 }
@@ -85,7 +85,7 @@
             */
             int getThreadsNum() const
             {
-                return omp_get_max_threads();
+                return ::omp_get_max_threads();
             }
 
             /**\fn     getThreadsCurrent
@@ -95,7 +95,7 @@
             */
             int getThreadsCurrent() const
             {
-                return omp_get_num_threads();
+                return ::omp_get_num_threads();
             }
 
 
@@ -104,13 +104,13 @@
             */
             OpenMpManager()
             {
-                omp_set_num_threads(omp_get_num_procs());
+                ::omp_set_num_threads(::omp_get_num_procs());
 
                 return;
             }
 
-            int threadsMax_ = omp_get_num_procs(); ///< variable for maximum number of threads
-            int threadsNum_ = omp_get_num_procs(); ///< number of currently used threads (default all)
+            int threadsMax_ = ::omp_get_num_procs(); ///< variable for maximum number of threads
+            int threadsNum_ = ::omp_get_num_procs(); ///< number of currently used threads (default all)
     };
 #endif
 
