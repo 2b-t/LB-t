@@ -10,7 +10,7 @@
 
 namespace orientation
 {
-    class Left
+    class Left final
     {
         public:
             static constexpr int x =  1; ///< normal direction pointing into the fluid volume
@@ -18,7 +18,7 @@ namespace orientation
             static constexpr int z =  0;
     };
 
-    class Right
+    class Right final
     {
         public:
             static constexpr int x = -1;
@@ -26,7 +26,7 @@ namespace orientation
             static constexpr int z =  0;
     };
 
-    class Front
+    class Front final
     {
         public:
             static constexpr int x =  0;
@@ -34,7 +34,7 @@ namespace orientation
             static constexpr int z =  0;
     };
 
-    class Back
+    class Back final
     {
         public:
             static constexpr int x =  0;
@@ -43,7 +43,7 @@ namespace orientation
     };
 
 
-    class Bottom
+    class Bottom final
     {
         public:
             static constexpr int x =  0;
@@ -51,7 +51,7 @@ namespace orientation
             static constexpr int z =  1;
     };
 
-    class Top
+    class Top final
     {
         public:
             static constexpr int x =  0;

@@ -32,7 +32,7 @@ namespace type
      * \tparam Orientation   Orientation of the current boundary given by an orientation class with members x, y, z
     */
     template <class Orientation>
-    class Velocity
+    class Velocity final
     {
         public:
             /**\fn        getMacroscopicValues
@@ -56,7 +56,7 @@ namespace type
      * \tparam Orientation   orientation of the current boundary given by an orientation class with members x, y, z
     */
     template <class Orientation>
-    class Pressure
+    class Pressure final
     {
         public:
             template <typename T>
