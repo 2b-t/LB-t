@@ -18,7 +18,7 @@
 namespace type
 {
     /**\concept Type
-     * \brief   Concept of a boundary condition orientation
+     * \brief   Concept of a boundary condition type
      *
      * \tparam  T             The boundary type
      * \tparam  Orientation   Orientation of the current boundary given by an orientation class with members x, y, z
