@@ -37,7 +37,7 @@ namespace cem
      * \param[in] prev   The result from the previous iteration
      * \return    The square root of \param x
     */
-    #if __cplusplus > 201703L
+    #if __cplusplus >= 201709L
     consteval
     #else
     constexpr
@@ -49,7 +49,7 @@ namespace cem
                : sqrtNewton(x, 0.5 * (curr + x / curr), curr);
     }
 
-    #if __cplusplus > 201703L
+    #if __cplusplus >= 201709L
     consteval
     #else
     constexpr
