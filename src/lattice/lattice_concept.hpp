@@ -36,6 +36,7 @@ namespace lattice
         { LT<T>::DZ.at(0) }   -> std::convertible_to<T>;
         { LT<T>::W.at(0) }    -> std::convertible_to<T>;
         { LT<T>::MASK.at(0) } -> std::convertible_to<T>;
+        { LT<T>::CS }         -> std::convertible_to<T>;
     };
 }
 
