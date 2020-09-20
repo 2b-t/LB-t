@@ -1,8 +1,8 @@
-#ifndef LBT_LATTICE
-#define LBT_LATTICE
+#ifndef LBT_TEMPLATE_DDQQ
+#define LBT_TEMPLATE_DDQQ
 
 /**
- * \file     lattice.hpp
+ * \file     template_DdQq.hpp
  * \mainpage Prototype lattice class holding lattice discretisation parameters.
  *           Copy and modify for new models
  * \author   Tobit Flatscher (github.com/2b-t)
@@ -55,4 +55,4 @@ namespace lattice
     };
 }
 
-#endif // LBT_LATTICE
+#endif // LBT_TEMPLATE_DDQQ

@@ -6,6 +6,8 @@
  * \mainpage A series of functions that can evaluate to a constant expression and thus
  *           can make use of evaluation and optimisation at compile time.
  * \author   Tobit Flatscher (github.com/2b-t)
+ * 
+ * \warning  Makes optional use of C++20 consteval
 */
 
 #include <cassert>
@@ -35,14 +37,24 @@ namespace cem
      * \param[in] prev   The result from the previous iteration
      * \return    The square root of \param x
     */
-    constexpr double sqrtNewton(double const x, double const curr, double const prev)
+    #if __cplusplus > 201703L
+    consteval
+    #else
+    constexpr
+    #endif
+    double sqrtNewton(double const x, double const curr, double const prev)
     {
         return abs<double>(curr - prev) < std::numeric_limits<double>::epsilon()
                ? curr
                : sqrtNewton(x, 0.5 * (curr + x / curr), curr);
     }
 
-    constexpr double sqrt(double const x)
+    #if __cplusplus > 201703L
+    consteval
+    #else
+    constexpr
+    #endif
+    double sqrt(double const x)
     {
         assert(x >= 0.0);
 
@@ -59,7 +71,7 @@ namespace cem
      * \return    The ceiled number \param num
     */
     template <typename T = double>
-    constexpr size_t ceil(T num)
+    constexpr size_t ceil(T const num)
     {
         return (static_cast<T>(static_cast<size_t>(num)) == num)
                ? static_cast<size_t>(num)
