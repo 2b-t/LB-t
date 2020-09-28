@@ -7,9 +7,10 @@
  *           can make use of evaluation and optimisation at compile time.
  * \author   Tobit Flatscher (github.com/2b-t)
  * 
- * \warning  Makes optional use of C++20 consteval
+ * \warning  Requires C++17 and makes optional use of C++20 consteval
 */
 
+#include <array>
 #include <cassert>
 #include <limits>
 
@@ -76,6 +77,49 @@ namespace cem
         return (static_cast<T>(static_cast<size_t>(num)) == num)
                ? static_cast<size_t>(num)
                : static_cast<size_t>(num) + ((num > 0) ? 1 : 0);
+    }
+
+    /**\fn        cem::sum
+     * \brief     Constexpr sum with variadic templates and fold expressions
+     *
+     * \tparam    Args   Data type of the corresponding arguments to be summed
+     * \param[in] args   Arguments to be summed up
+     * \return    The summed up arguments
+    */
+    template <typename... Args>
+    constexpr auto sum(Args const&... args)
+    {
+        return (args + ...);
+    }
+
+    /**\fn        cem::mergeArrays
+     * \brief     Merge arrays constexpr with variadic templates
+     *
+     * \tparam    T     Data-type of the arrays to be merged
+     * \tparam    SZ    Size of the arrays to be merged
+     * \param[in] arr   The arrays to be merged
+     * \return    The arrays merged into a single array
+    */
+    template <typename T, size_t... SZ>
+    constexpr auto mergeArrays(std::array<T, SZ> const... arr)
+    {
+        constexpr size_t numberOfArrays = sizeof...(SZ);
+        std::array<T const*,numberOfArrays> const arrayDatas = {&arr[0]...};
+        constexpr std::array<size_t,numberOfArrays> arraySizes = {arr.size()...};
+        constexpr size_t cumulativeLength = sum(SZ...);
+        std::array<T,cumulativeLength> mergedArray = {0};
+
+        size_t index = 0;
+        for(size_t i = 0; i < numberOfArrays; ++i)
+        {
+            for(size_t j = 0; j < arraySizes[i]; ++j)
+            {
+                mergedArray[index] = arrayDatas[i][j];
+                ++index;
+            }
+        }
+
+        return mergedArray;
     }
 }
 
