@@ -104,7 +104,7 @@ int main(int argc, char** argv)
     /// set up geometry and boundary conditions ----------------------------------------------------
     constexpr unsigned int radius = L/2;
     constexpr std::array<unsigned int,3> position = {NX/4, NY/2, NZ/2};
-    auto [inlet, outlet, wall] = geometry::cylinder(micro, radius, position, "x", true, RHO_0, U_0, V_0, W_0);
+    auto [inlet, outlet, wall] = geometry::cylinder(micro, radius, position, boundary::Orientation::Left, true, RHO_0, U_0, V_0, W_0);
     wall.exportDomainVtk();
 
     /// set collision operator and initialise domain -----------------------------------------------

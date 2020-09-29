@@ -16,25 +16,29 @@
 #include "../population.hpp"
 
 
-/**\struct BoundaryElement
- * \brief  Struct holding properties of boundary element
- *
- * \tparam T   Floating data type used for simulation
-*/
-template <typename T>
-struct BoundaryElement
+namespace boundary
 {
-    /// spatial position of element
-    unsigned int const x;
-    unsigned int const y;
-    unsigned int const z;
+    /**\struct boundary::Element
+     * \brief  Struct holding properties of boundary element
+     *
+     * \tparam T   Floating data type used for simulation
+    */
+    template <typename T>
+    struct Element
+    {
+        /// spatial position of element
+        unsigned int const x;
+        unsigned int const y;
+        unsigned int const z;
 
-    /// macroscopic properties
-    T const rho; ///< density
-    T const u;   ///< velocity in x-direction
-    T const v;   ///< velocity in y-direction
-    T const w;   ///< velocity in z-direction
-};
+        /// macroscopic properties
+        T const rho; ///< density
+        T const u;   ///< velocity in x-direction
+        T const v;   ///< velocity in y-direction
+        T const w;   ///< velocity in z-direction
+    };
+
+}
 
 
 /**\class BoundaryCondition
@@ -90,7 +94,7 @@ class BoundaryCondition
         */
         void exportDomainVtk(std::string const& name = "domain") const;
 
-        std::vector<BoundaryElement<T>> const boundaryElements_; ///< public in order to avoid circular dependency with continuum
+        std::vector<boundary::Element<T>> const boundaryElements_; ///< public in order to avoid circular dependency with continuum
 
     protected:
         /**\brief     Constructor
@@ -99,7 +103,7 @@ class BoundaryCondition
          * \param[in] boundaryElements   Elements making up the boundary
          * \param[in] p                  Index of relevant population
         */
-        BoundaryCondition(std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population, std::vector<BoundaryElement<T>> boundaryElements,
+        BoundaryCondition(std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population, std::vector<boundary::Element<T>> boundaryElements,
                           unsigned int const p = 0):
             boundaryElements_(boundaryElements), population_(population), p_(p)
         {

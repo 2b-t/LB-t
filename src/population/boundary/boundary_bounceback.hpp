@@ -45,7 +45,7 @@ class HalfwayBounceBack: public BoundaryCondition<NX,NY,NZ,LT,T,NPOP,HalfwayBoun
          * \param[in] boundaryElements   Elements making up the boundary
          * \param[in] p                  Index of relevant population
         */
-        HalfwayBounceBack(std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population, std::vector<BoundaryElement<T>> const& boundaryElements,
+        HalfwayBounceBack(std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population, std::vector<boundary::Element<T>> const& boundaryElements,
                           unsigned int const p = 0):
             BC(population, boundaryElements, p), population_(population), boundaryElements_(boundaryElements), p_(p)
         {
@@ -70,7 +70,7 @@ class HalfwayBounceBack: public BoundaryCondition<NX,NY,NZ,LT,T,NPOP,HalfwayBoun
 
     protected:
         std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population_;
-        std::vector<BoundaryElement<T>> const boundaryElements_;
+        std::vector<boundary::Element<T>> const boundaryElements_;
         unsigned int const p_;
 };
 

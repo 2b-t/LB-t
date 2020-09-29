@@ -19,6 +19,7 @@
     #include <malloc.h>
 #endif
 #include <string>
+#include <tuple>
 #include <vector>
 
 #include "../population/boundary/boundary.hpp"
@@ -93,13 +94,10 @@ class Continuum
         /**\fn         linearToSpatial
          * \brief      Generate 3D population coordinates from scalar index
          *
-         * \param[out] x       Return value x coordinate of cell
-         * \param[out] y       Return value y coordinate of cell
-         * \param[out] z       Return value z coordinate of cell
          * \param[in]  index   Current linear scalar index
+         * \return     Return value containing the x, y and z coordinates as well as the number of macroscopic values belonging to the scalar index
         */
-        void          linearToSpatial(unsigned int& x, unsigned int& y, unsigned int& z,
-                                      unsigned int& m, size_t const index) const;
+        std::tuple<unsigned int, unsigned int, unsigned int, unsigned int> linearToSpatial(size_t const index) const;
 
         /**\fn        operator()
          * \brief     Access scalar values at given coordinates

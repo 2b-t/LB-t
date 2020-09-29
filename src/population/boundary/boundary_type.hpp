@@ -9,10 +9,12 @@
 
 #include <array>
 
+#include "boundary_orientation.hpp"
 
-namespace type
+
+namespace boundary
 {
-    /**\def       velocityComponent
+    /**\fn        velocityComponent
      * \brief     Function for determining if the velocity is tangential of normal
      *
      * \tparam    T                     Floating data type used for the simulation
@@ -26,46 +28,58 @@ namespace type
         return (tangentialOrNormal == 0) ? tangentialComponent : normalComponent;
     }
 
-    /**\class  Velocity
-     * \brief  Class for velocity boundaries: enforce normal and tangential velocities
-     *
-     * \tparam Orientation   Orientation of the current boundary given by an orientation class with members x, y, z
+    /**\enum  boundary::Type
+     * \brief Strongly typed for different boundary condition types
     */
-    template <class Orientation>
-    class Velocity final
+    enum class Type { Velocity, Pressure };
+
+    /**\class  MacroscopicValues
+     * \brief  Class for the macroscopic values for each individual type and orientation of the boundary condition
+     *
+     * \tparam T    Floating data type used for simulation
+     * \tparam O    Orientation of the normal
+     * \tparam TP   Type of the boundary condition
+    */
+    template <typename T, Orientation O, Type TP>
+    class MacroscopicValues final
     {
         public:
-            /**\fn        getMacroscopicValues
+            /**\fn        get
              * \brief     Determine if the values of the boundary or the interpolated values from the simulation should be used
              *
-             * \tparam    T          Floating data type used for simulation
-             * \param[in] boundary   Values at the boundary
-             * \param[in] interp     Interpolated values
+             * \param[in] boundaryValues       Values at the boundary
+             * \param[in] interpolatedValues   Interpolated values
              * \return    An array that contains a mixture of enforced or interpolated values depending on the precise boundary
             */
-            template <typename T>
-            static inline std::array<T,4> getMacroscopicValues(std::array<T,4> const& boundary, std::array<T,4> const& interp)
+            static inline std::array<T,4> get(std::array<T,4> const& boundaryValues, std::array<T,4> const& interpolatedValues);
+    };
+
+    /**\class Velocity: Partial template specialisation
+     * \brief Class for velocity boundaries: enforce normal and tangential velocities
+    */
+    template <typename T, Orientation O>
+    class MacroscopicValues<T,O,Type::Velocity> final
+    {
+        public:
+            static inline std::array<T,4> get(std::array<T,4> const& boundaryValues, std::array<T,4> const& interpolatedValues)
             {
-                return { interp[0], boundary[1], boundary[2], boundary[3] };
+                return { interpolatedValues[0], boundaryValues[1], boundaryValues[2], boundaryValues[3] };
             }
     };
 
-    /**\class  Pressure
-     * \brief  Class for pressure boundaries: enforce rho and tangential velocities
-     *
-     * \tparam Orientation   orientation of the current boundary given by an orientation class with members x, y, z
+    /**\class Pressure: Partial template specialisation
+     * \brief Class for pressure boundaries: enforce rho and tangential velocities
     */
-    template <class Orientation>
-    class Pressure final
+    template <typename T, Orientation O>
+    class MacroscopicValues<T,O,Type::Pressure> final
     {
         public:
-            template <typename T>
-            static inline std::array<T,4> getMacroscopicValues(std::array<T,4> const& boundary, std::array<T,4> const& interp)
+            static inline std::array<T,4> get(std::array<T,4> const& boundaryValues, std::array<T,4> const& interpolatedValues)
             {
-                return { boundary[0],
-                         velocityComponent(Orientation::x, boundary[1], interp[1]),
-                         velocityComponent(Orientation::y, boundary[2], interp[2]),
-                         velocityComponent(Orientation::z, boundary[3], interp[3]) };
+                return { boundaryValues[0],
+                         velocityComponent(Normal<O>::x, boundaryValues[1], interpolatedValues[1]),
+                         velocityComponent(Normal<O>::y, boundaryValues[2], interpolatedValues[2]),
+                         velocityComponent(Normal<O>::z, boundaryValues[3], interpolatedValues[3]) };
             }
     };
 }

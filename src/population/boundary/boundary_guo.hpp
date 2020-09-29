@@ -29,20 +29,20 @@
  *         Chinese Physics, Volume 11, Number 4 (2002)
  *         DOI: 10.1088/1009-1963/11/4/310
  *
- * \tparam Type          type of the boundary condition (type::Pressure or type::Velocity)
- * \tparam Orientation   boundary orientation (orientation::Left, orientation::Right)
- * \tparam NX            Simulation domain resolution in x-direction
- * \tparam NY            Simulation domain resolution in y-direction
- * \tparam NZ            Simulation domain resolution in z-direction
- * \tparam LT            Static lattice::DdQq class containing discretisation parameters
- * \tparam NPOP          Number of populations stored side by side in a single merged grid
- * \tparam T             Floating data type used for simulation
+ * \tparam TP     Type of the boundary condition (type::Pressure or type::Velocity)
+ * \tparam O      Boundary orientation (orientation::Left, orientation::Right)
+ * \tparam NX     Simulation domain resolution in x-direction
+ * \tparam NY     Simulation domain resolution in y-direction
+ * \tparam NZ     Simulation domain resolution in z-direction
+ * \tparam LT     Static lattice::DdQq class containing discretisation parameters
+ * \tparam NPOP   Number of populations stored side by side in a single merged grid
+ * \tparam T      Floating data type used for simulation
 */
-template <template <class Orientation> class Type, class Orientation, unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT,
+template <boundary::Type TP, boundary::Orientation O, unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT,
           typename T, unsigned int NPOP>
-class Guo: public BoundaryCondition<NX,NY,NZ,LT,T,NPOP,Guo<Type,Orientation,NX,NY,NZ,LT,T,NPOP>>
+class Guo: public BoundaryCondition<NX,NY,NZ,LT,T,NPOP,Guo<TP,O,NX,NY,NZ,LT,T,NPOP>>
 {
-    using BC = BoundaryCondition<NX,NY,NZ,LT,T,NPOP,Guo<Type,Orientation,NX,NY,NZ,LT,T,NPOP>>;
+    using BC = BoundaryCondition<NX,NY,NZ,LT,T,NPOP,Guo<TP,O,NX,NY,NZ,LT,T,NPOP>>;
 
     public:
         Guo() = delete;
@@ -53,7 +53,7 @@ class Guo: public BoundaryCondition<NX,NY,NZ,LT,T,NPOP,Guo<Type,Orientation,NX,N
          * \param[in] boundaryElements   Elements making up the boundary
          * \param[in] p                  Index of relevant population
         */
-        Guo(std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population, std::vector<BoundaryElement<T>> const& boundaryElements,
+        Guo(std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population, std::vector<boundary::Element<T>> const& boundaryElements,
             unsigned int const p = 0):
             BC(population, boundaryElements, p), population_(population), boundaryElements_(boundaryElements), p_(p)
         {
@@ -78,28 +78,28 @@ class Guo: public BoundaryCondition<NX,NY,NZ,LT,T,NPOP,Guo<Type,Orientation,NX,N
 
     private:
         std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population_;
-        std::vector<BoundaryElement<T>> const boundaryElements_;
+        std::vector<boundary::Element<T>> const boundaryElements_;
         unsigned int const p_;
 };
 
-template <template <class Orientation> class Type, class Orientation, unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT,
+template <boundary::Type TP, boundary::Orientation O, unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT,
           typename T, unsigned int NPOP> template <timestep TS>
-void Guo<Type,Orientation,NX,NY,NZ,LT,T,NPOP>::implementationBeforeCollisionOperator()
+void Guo<TP,O,NX,NY,NZ,LT,T,NPOP>::implementationBeforeCollisionOperator()
 {
     #pragma omp parallel for default(none) shared(boundaryElements_,population_,p_) schedule(static,32)
     for(size_t i = 0; i < boundaryElements_.size(); ++i)
     {
         /// for neighbouring cell
         auto const& boundaryElement = boundaryElements_[i];
-        unsigned int const x_n[3] = { (NX + boundaryElement.x + Orientation::x - 1) % NX,
-                                            boundaryElement.x + Orientation::x,
-                                           (boundaryElement.x + Orientation::x + 1) % NX };
-        unsigned int const y_n[3] = { (NY + boundaryElement.y + Orientation::y - 1) % NY,
-                                            boundaryElement.y + Orientation::y,
-                                           (boundaryElement.y + Orientation::y + 1) % NY };
-        unsigned int const z_n[3] = { (NZ + boundaryElement.z + Orientation::z - 1) % NZ,
-                                            boundaryElement.z + Orientation::z,
-                                           (boundaryElement.z + Orientation::z + 1) % NZ };
+        unsigned int const x_n[3] = { (NX + boundaryElement.x + boundary::Normal<O>::x - 1) % NX,
+                                            boundaryElement.x + boundary::Normal<O>::x,
+                                           (boundaryElement.x + boundary::Normal<O>::x + 1) % NX };
+        unsigned int const y_n[3] = { (NY + boundaryElement.y + boundary::Normal<O>::y - 1) % NY,
+                                            boundaryElement.y + boundary::Normal<O>::y,
+                                           (boundaryElement.y + boundary::Normal<O>::y + 1) % NY };
+        unsigned int const z_n[3] = { (NZ + boundaryElement.z + boundary::Normal<O>::z - 1) % NZ,
+                                            boundaryElement.z + boundary::Normal<O>::z,
+                                           (boundaryElement.z + boundary::Normal<O>::z + 1) % NZ };
 
         // load distributions
         alignas(CACHE_LINE) T f[LT<T>::ND] = {0.0};
@@ -173,7 +173,7 @@ void Guo<Type,Orientation,NX,NY,NZ,LT,T,NPOP>::implementationBeforeCollisionOper
                                              boundaryElement.v,
                                              boundaryElement.w};
         std::array<double,4> const interp = {rho, u, v, w};
-        std::array<double,4> res = Type<Orientation>::getMacroscopicValues(bound, interp);
+        std::array<double,4> res = boundary::MacroscopicValues<T,O,TP>::get(bound, interp);
         rho = res[0];
         u   = res[1];
         v   = res[2];
@@ -224,9 +224,9 @@ void Guo<Type,Orientation,NX,NY,NZ,LT,T,NPOP>::implementationBeforeCollisionOper
     return;
 }
 
-template <template <class Orientation> class Type, class Orientation, unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT,
+template <boundary::Type TP, boundary::Orientation O, unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT,
           typename T, unsigned int NPOP> template <timestep TS>
-void Guo<Type,Orientation,NX,NY,NZ,LT,T,NPOP>::implementationAfterCollisionOperator()
+void Guo<TP,O,NX,NY,NZ,LT,T,NPOP>::implementationAfterCollisionOperator()
 {
     return;
 }

@@ -8,6 +8,7 @@
 */
 
 #include <iostream>
+#include <tuple>
 
 
 /**\enum  timestep
@@ -89,47 +90,42 @@ class Indexing
         /**\fn        linearToSpatial
         * \brief      Generate 3D population coordinates from scalar index
         *
-        * \param[out] x       Return value x coordinate of cell
-        * \param[out] y       Return value y coordinate of cell
-        * \param[out] z       Return value z coordinate of cell
-        * \param[out] p       Return value number of population
-        * \param[out] n       Return positive (0) or negative (1) index
-        * \param[out] d       Return value number of relevant population index
         * \param[in]  index   Current linear population index
+        * \return     Return the x, y, z coordinates as well as the number of population p, positive (0) or negative (1) index n and the number of relevant 
+        *             population index d belonging to the scalar index
         */
-        void linearToSpatial(unsigned int& x, unsigned int& y, unsigned int& z, unsigned int& p, unsigned int& n, unsigned int& d, size_t const index) const;
+        std::tuple<unsigned int,unsigned int,unsigned int,unsigned int,unsigned int,unsigned int> linearToSpatial(size_t const index) const;
 };
 
 
 template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP>
-void Indexing<NX,NY,NZ,LT,T,NPOP>::linearToSpatial(unsigned int& x, unsigned int& y, unsigned int& z, unsigned int& p, unsigned int& n, unsigned int& d,
-                                                   size_t const index) const
+std::tuple<unsigned int,unsigned int,unsigned int,unsigned int,unsigned int,unsigned int> Indexing<NX,NY,NZ,LT,T,NPOP>::linearToSpatial(size_t const index) const
 {
     size_t factor = LT<T>::ND*NPOP*NX*NY;
     size_t rest   = index%factor;
 
-    z      = index/factor;
+    unsigned int const z = index/factor;
 
     factor = LT<T>::ND*NPOP*NX;
-    y      = rest/factor;
+    unsigned int const y = rest/factor;
     rest   = rest%factor;
 
     factor = LT<T>::ND*NPOP;
-    x      = rest/factor;
+    unsigned int const x = rest/factor;
     rest   = rest%factor;
 
     factor = LT<T>::ND;
-    p      = rest/factor;
+    unsigned int const p = rest/factor;
     rest   = rest%factor;
 
     factor = LT<T>::OFF;
-    n      = rest/factor;
+    unsigned int const n = rest/factor;
     rest   = rest%factor;
 
     factor = LT<T>::SPEEDS;
-    d      = rest%factor;
+    unsigned int const d = rest%factor;
 
-    return;
+    return std::make_tuple(x,y,z,p,n,d);
 }
 
 #endif // LBT_INDEXING

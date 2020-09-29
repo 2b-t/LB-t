@@ -58,7 +58,6 @@ class Timer
         std::chrono::high_resolution_clock::time_point stop_       = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double>                  start_stop_ = std::chrono::duration<double>::zero();     ///< chrono library objects for duration
         double                                         runtime_    = 0.0;                                       ///< double value of runtime in seconds
-
 };
 
 #endif // LBT_TIMER

@@ -16,23 +16,22 @@ inline size_t __attribute__((always_inline)) Continuum<NX,NY,NZ,T>::spatialToLin
 }
 
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T>
-void Continuum<NX,NY,NZ,T>::linearToSpatial(unsigned int& x, unsigned int& y, unsigned int& z,
-                                            unsigned int& m, size_t const index) const
+std::tuple<unsigned int, unsigned int, unsigned int, unsigned int> Continuum<NX,NY,NZ,T>::linearToSpatial(size_t const index) const
 {
     size_t factor = numberOfMacroscopicValues*NX*NY;
     size_t rest   = index%factor;
 
-    z      = index/factor;
+    unsigned int const z = index/factor;
 
     factor = numberOfMacroscopicValues*NX;
-    y      = rest/factor;
+    unsigned int const y = rest/factor;
     rest   = rest%factor;
 
     factor = numberOfMacroscopicValues;
-    x      = rest/factor;
-    m      = rest%factor;
+    unsigned int const x = rest/factor;
+    unsigned int const m = rest%factor;
 
-    return;
+    return std::make_tuple(x,y,z,m);
 }
 
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T>
