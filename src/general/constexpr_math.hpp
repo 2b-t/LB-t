@@ -101,11 +101,11 @@ namespace cem
      * \return    The arrays merged into a single array
     */
     template <typename T, size_t... SZ>
-    constexpr auto mergeArrays(std::array<T, SZ> const... arr)
+    constexpr auto mergeArrays(std::array<T, SZ> const&... arr)
     {
         constexpr size_t numberOfArrays = sizeof...(SZ);
-        std::array<T const*,numberOfArrays> const arrayDatas = {&arr[0]...};
-        constexpr std::array<size_t,numberOfArrays> arraySizes = {arr.size()...};
+        std::array<T const*,numberOfArrays> const arrayDatas = {arr.data()...};
+        constexpr std::array<size_t,numberOfArrays> arraySizes = {SZ...};
         constexpr size_t cumulativeLength = sum(SZ...);
         std::array<T,cumulativeLength> mergedArray = {0};
 
