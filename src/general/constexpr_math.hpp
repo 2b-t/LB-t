@@ -107,7 +107,7 @@ namespace cem
         std::array<T const*,numberOfArrays> const arrayDatas = {arr.data()...};
         constexpr std::array<size_t,numberOfArrays> arraySizes = {SZ...};
         constexpr size_t cumulativeLength = sum(SZ...);
-        std::array<T,cumulativeLength> mergedArray = {0};
+        std::array<T,cumulativeLength> mergedArray = {};
 
         size_t index = 0;
         for(size_t i = 0; i < numberOfArrays; ++i)
