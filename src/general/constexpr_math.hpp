@@ -13,6 +13,7 @@
 #include <array>
 #include <cassert>
 #include <limits>
+#include <type_traits>
 
 namespace cem
 {
@@ -26,42 +27,45 @@ namespace cem
     template <typename T = double>
     constexpr T abs(T const x)
     {
-        return (x > 0.0) ? x : -x;
+        return (x > static_cast<T>(0.0)) ? x : -x;
     }
 
     /**\fn        cem::sqrt
      * \brief     Square root implementation with recursive Newton-Raphson method that can
      *            be evaluated as a constant expression at compile time
      *
+     * \tparam    T      Floating point data type of the corresponding number
      * \param[in] x      The number of interest
      * \param[in] curr   The result from the current iteration
      * \param[in] prev   The result from the previous iteration
      * \return    The square root of \param x
     */
+    template <typename T, typename std::enable_if<std::is_floating_point<T>::value>::type* = nullptr>
     #if __cplusplus >= 201709L
     consteval
     #else
     constexpr
     #endif
-    double sqrtNewton(double const x, double const curr, double const prev)
+    T sqrtNewton(T const x, T const curr, T const prev)
     {
-        return abs<double>(curr - prev) < std::numeric_limits<double>::epsilon()
+        return abs<T>(curr - prev) < std::numeric_limits<T>::epsilon()
                ? curr
-               : sqrtNewton(x, 0.5 * (curr + x / curr), curr);
+               : sqrtNewton(x, static_cast<T>(0.5) * (curr + x / curr), curr);
     }
 
+    template <typename T, typename std::enable_if<std::is_floating_point<T>::value>::type* = nullptr>
     #if __cplusplus >= 201709L
     consteval
     #else
     constexpr
     #endif
-    double sqrt(double const x)
+    double sqrt(T const x)
     {
-        assert(x >= 0.0);
+        assert(x >= static_cast<T>(0.0));
 
-        return ( (x >= 0.0) && (x < std::numeric_limits<double>::infinity()) )
-               ? sqrtNewton(x, x, 0.0)
-               : std::numeric_limits<double>::quiet_NaN();
+        return ( (x >= static_cast<T>(0.0)) && (x < std::numeric_limits<T>::infinity()) )
+               ? sqrtNewton(x, x, static_cast<T>(0.0))
+               : std::numeric_limits<T>::quiet_NaN();
     }
 
     /**\fn        cem::ceil
