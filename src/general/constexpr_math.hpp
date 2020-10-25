@@ -59,7 +59,7 @@ namespace cem
     #else
     constexpr
     #endif
-    double sqrt(T const x)
+    T sqrt(T const x)
     {
         assert(x >= static_cast<T>(0.0));
 
