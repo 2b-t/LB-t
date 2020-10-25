@@ -80,7 +80,7 @@ namespace cem
     {
         return (static_cast<T>(static_cast<size_t>(num)) == num)
                ? static_cast<size_t>(num)
-               : static_cast<size_t>(num) + ((num > static_cast<T>(0)) ? 1 : 0);
+               : static_cast<size_t>(num) + ((num > static_cast<T>(0.0)) ? 1 : 0);
     }
 
     /**\fn        cem::sum
