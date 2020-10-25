@@ -24,7 +24,7 @@ namespace cem
      * \param[in] x      The number of interest
      * \return    The absolute value of \param x
     */
-    template <typename T = double>
+    template <typename T, typename std::enable_if<std::is_arithmetic<T>::value>::type* = nullptr>
     constexpr T abs(T const x)
     {
         return (x > static_cast<T>(0.0)) ? x : -x;
@@ -75,12 +75,12 @@ namespace cem
      * \param[in] num   The number that should be ceiled
      * \return    The ceiled number \param num
     */
-    template <typename T = double>
+    template <typename T, typename std::enable_if<std::is_arithmetic<T>::value>::type* = nullptr>
     constexpr size_t ceil(T const num)
     {
         return (static_cast<T>(static_cast<size_t>(num)) == num)
                ? static_cast<size_t>(num)
-               : static_cast<size_t>(num) + ((num > 0) ? 1 : 0);
+               : static_cast<size_t>(num) + ((num > static_cast<T>(0)) ? 1 : 0);
     }
 
     /**\fn        cem::sum
