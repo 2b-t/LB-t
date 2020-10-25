@@ -48,7 +48,7 @@ namespace cem
     #endif
     T sqrtNewton(T const x, T const curr, T const prev)
     {
-        return abs<T>(curr - prev) < std::numeric_limits<T>::epsilon()
+        return abs(curr - prev) <= std::numeric_limits<T>::epsilon()
                ? curr
                : sqrtNewton(x, static_cast<T>(0.5) * (curr + x / curr), curr);
     }
@@ -78,7 +78,7 @@ namespace cem
     template <typename T, typename std::enable_if<std::is_arithmetic<T>::value>::type* = nullptr>
     constexpr size_t ceil(T const num)
     {
-        return (static_cast<T>(static_cast<size_t>(num)) == num)
+        return (abs(static_cast<T>(static_cast<size_t>(num)) - num) <= std::numeric_limits<T>::epsilon())
                ? static_cast<size_t>(num)
                : static_cast<size_t>(num) + ((num > static_cast<T>(0.0)) ? 1 : 0);
     }
