@@ -15,5 +15,5 @@ script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
     export CC=gcc-9 ;
     export CXX=g++-9 ;
-  fimake
+  fi
   - make
