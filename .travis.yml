@@ -8,5 +8,9 @@ addons:
       - gcc-9
       - g++-9
 
-script: make
-
+script:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+    export CC=gcc-9 ;
+    export CXX=g++-9 ;
+  fimake
+  - make
