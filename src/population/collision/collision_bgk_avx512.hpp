@@ -43,14 +43,14 @@
  * \param[in] _a   A 512bit AVX512 intrinsic with 8 double numbers
  * \return    The horizontally added intrinsic as a double number
 */
-static inline double _mm512_reduce_add_pd(__m512d const _a)
+/*static inline double _mm512_reduce_add_pd(__m512d const _a)
 {
     __m256d const _b = _mm256_add_pd(_mm512_castpd512_pd256(_a), _mm512_extractf64x4_pd(_a, 1));
     __m128d const _c = _mm_add_pd(_mm256_castpd256_pd128(_b), _mm256_extractf128_pd(_b, 1));
     double const *f = (double*)(&_c);
 
     return _mm_cvtsd_f64(_c) + f[1];
-}
+}*/
 #endif
 
 
