@@ -11,21 +11,21 @@ This is a **object-oriented parallel lattice-Boltzmann computational fluid dynam
 
 ### Linux (recommended)
 Copy this folder or directly **clone this repository** by typing
-```
+```shell
 $ git clone https://github.com/2b-t/LB-t.git
 ```
 **Compile** the file with Make by typing 
-```
+```shell
 $ make run
 ```
 in your Linux shell or open the `LB-t.cbp` file in [Code::Blocks](http://www.codeblocks.org/). In case you have issues make sure Make is installed `sudo apt-get install build-essential`and your GCC version is greater than 8. You can install a newer GCC by typing `sudo apt install gcc-10`. 
 
 If you want to change the compiler to the Intel compiler, first make sure the Intel compiler collection is installed on your system by opening a console and typing
-```
+```shell
 $ icc -v
 ```
 If it is not available on your system [you might be able to install it free of charge if you are a registered student](https://software.intel.com/en-us/compilers) (or buy an overpriced license). If it is available on your system you might change the corresponding lines of the Make-file `Makefile`
-```
+```make
 1  # Makefile
 2  # Tobit Flatscher - github.com/2b-t (2020)
 3
