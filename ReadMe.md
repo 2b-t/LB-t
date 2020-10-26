@@ -1,6 +1,6 @@
 # LB-t - A parallel 3D lattice-Boltzmann CFD solver
 
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/18af2a859b2340a6bdfbd04cd8ed0626)](https://www.codacy.com/gh/2b-t/LB-t/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=2b-t/LB-t&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://travis-ci.com/2b-t/LB-t.svg?branch=master)](https://travis-ci.com/2b-t/LB-t) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/18af2a859b2340a6bdfbd04cd8ed0626)](https://www.codacy.com/gh/2b-t/LB-t/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=2b-t/LB-t&amp;utm_campaign=Badge_Grade)
 
 *Author: [Tobit Flatscher](https://github.com/2b-t) (December 2019 - October 2020)
 
