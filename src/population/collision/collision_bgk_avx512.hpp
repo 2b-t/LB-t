@@ -186,7 +186,7 @@ void BGK_AVX512<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
                     double const v   = _mm512_reduce_add_pd(_v)/rho;
                     double const w   = _mm512_reduce_add_pd(_w)/rho;
 
-                    if (save == true)
+                    if (isSave == true)
                     {
                         continuum_->operator()(x, y, z, 0) = rho;
                         continuum_->operator()(x, y, z, 1) = u;
