@@ -6,7 +6,7 @@ before_install:
 - sudo apt-get update -qq
 
 install:
-- sudo apt-get install -qq g++-10.0
+- sudo apt-get install -qq g++-10
 
 script: make
 
