@@ -37,50 +37,50 @@ If you can't/don't want to afford their overpriced licenses and you are not a re
 
 ### Windows
 Under Windows you have to make sure an appropriate 64-bit compiler that supports C++17 is installed. Here some options
-* [TDM-GCC](https://jmeubank.github.io/tdm-gcc/) inside [Code::Blocks](http://www.codeblocks.org/): Be sure that the version of TDM-GCC is 8 or higher and when selecting components don't forget to select `gcc/openmp`. Then continue to [setup TDM-GCC](http://forums.codeblocks.org/index.php?topic=21570.0) and [OpenMP](https://stackoverflow.com/a/58546530/9938686) inside Code::Blocks. Download this repository and open the Code::Blocks file. Be sure to change the selected compiler in `Project build options` to your newly configured 64-bit compiler and choose the policy `Append target options to project options`.
-* [MSys2](https://www.msys2.org/) and Makefile: Download and install MSys2, open it and [download OpenMp by typing `pacman -S mingw-w64-x86_64-openmp`](https://packages.msys2.org/package/mingw-w64-x86_64-openmp?repo=mingw64) and [Make by typing `pacman -S mingw-w64-x86_64-make`](https://packages.msys2.org/package/mingw-w64-x86_64-make). Finally download the repository, browse it inside the MSys2 shell by typing `$ cd 'C:\<directory>'` and type `$ make run`.
+-   [TDM-GCC](https://jmeubank.github.io/tdm-gcc/) inside [Code::Blocks](http://www.codeblocks.org/): Be sure that the version of TDM-GCC is 8 or higher and when selecting components don't forget to select `gcc/openmp`. Then continue to [setup TDM-GCC](http://forums.codeblocks.org/index.php?topic=21570.0) and [OpenMP](https://stackoverflow.com/a/58546530/9938686) inside Code::Blocks. Download this repository and open the Code::Blocks file. Be sure to change the selected compiler in `Project build options` to your newly configured 64-bit compiler and choose the policy `Append target options to project options`.
+-   [MSys2](https://www.msys2.org/) and Makefile: Download and install MSys2, open it and [download OpenMp by typing `pacman -S mingw-w64-x86_64-openmp`](https://packages.msys2.org/package/mingw-w64-x86_64-openmp?repo=mingw64) and [Make by typing `pacman -S mingw-w64-x86_64-make`](https://packages.msys2.org/package/mingw-w64-x86_64-make). Finally download the repository, browse it inside the MSys2 shell by typing `$ cd 'C:\<directory>'` and type `$ make run`.
 
 For visualisation there are two options available: Either you can output `.vtk`-files and display them in [Paraview](https://www.paraview.org/) or export the results as `.bin` and use Matlab or Octave with the [simple visualisation file I have written](https://github.com/2b-t/CFD-visualisation.git).
 Make sure that the latter plug-in is copied to the `output/` folder and the files are exported as `*.bin`.
 
 ## Implemented optimisations
-* [Linear memory layout](https://www.springer.com/gp/book/9783319446479) with propietary vectorisation-friendly lattice numbering scheme
-* Grid merging for storing several distinct populations next to each other for e.g. coupled turbulent scalar transport
-* One-grid algorithm with [A-A pattern](https://www.doi.org/10.1109/ICPP.2009.38) for reduced memory bandwith and better parallel scalability
-* Fused collision and streaming step and reversely applied boundary conditions for reduced memory bandwith and better parallel scalability
-* Three dimensional [loop blocking](https://www.doi.org/10.1142/S0129626403001501) for improved cache-reuse and better parallel scalability
-* 64-byte cache-line alignment of all relevant arrays for vectorisation
-* Manual `AVX2` and `AVX512` [intrinsics](https://www.apress.com/gp/book/9781484200643) collision kernels
-* Frequent use of `const`, `constexpr`/`consteval` and `static` variables, `templates` as well as macros/pre-processor directives for compile time optimisations
-* [Curiously Recurring Template Pattern (CRTP)](https://eli.thegreenplace.net/2011/05/17/the-curiously-recurring-template-pattern-in-c/) for compile-time static polymorphism
-* Indexing functions as `inline` functions for reduced overhead
-* Loop unrolling with compiler directives
-* Parallelisation on multiple threads with [OpenMP](https://www.openmp.org/)
+-   [Linear memory layout](https://www.springer.com/gp/book/9783319446479) with propietary vectorisation-friendly lattice numbering scheme
+-   Grid merging for storing several distinct populations next to each other for e.g. coupled turbulent scalar transport
+-   One-grid algorithm with [A-A pattern](https://www.doi.org/10.1109/ICPP.2009.38) for reduced memory bandwith and better parallel scalability
+-   Fused collision and streaming step and reversely applied boundary conditions for reduced memory bandwith and better parallel scalability
+-   Three dimensional [loop blocking](https://www.doi.org/10.1142/S0129626403001501) for improved cache-reuse and better parallel scalability
+-   64-byte cache-line alignment of all relevant arrays for vectorisation
+-   Manual `AVX2` and `AVX512` [intrinsics](https://www.apress.com/gp/book/9781484200643) collision kernels
+-   Frequent use of `const`, `constexpr`/`consteval` and `static` variables, `templates` as well as macros/pre-processor directives for compile time optimisations
+-   [Curiously Recurring Template Pattern (CRTP)](https://eli.thegreenplace.net/2011/05/17/the-curiously-recurring-template-pattern-in-c/) for compile-time static polymorphism
+-   Indexing functions as `inline` functions for reduced overhead
+-   Loop unrolling with compiler directives
+-   Parallelisation on multiple threads with [OpenMP](https://www.openmp.org/)
 
 ## Current features
-* [D2Q9, D3Q19 and D3Q27 lattices](https://www.doi.org/10.1209/0295-5075/17/6/001)
-* [BGK](https://www.doi.org/10.1103/PhysRev.94.511) and [TRT collision operators](http://global-sci.org/intro/article_detail/cicp/7862.html)
-* [BGK with Smagorinsky turbulence model](https://arxiv.org/abs/comp-gas/9401004) for turbulent flows
-* [Halfway bounce-back](https://www.doi.org/10.1007/BF02181482) boundaries for solid walls
-* [Guo's interpolation](https://www.doi.org/910.1088/1009-1963/11/4/310) pressure and velocity boundaries
-* Periodic boundary conditions (if nothing else specified)
-* Export plug-ins to `.vtk` (slow) and `.bin` (fast)
-* Designed with Resource acquisition is initialization (RAII) programming ideom
-* Beginner-friendly documentation with [Doxygen](http://www.doxygen.nl/)
+-   [D2Q9, D3Q19 and D3Q27 lattices](https://www.doi.org/10.1209/0295-5075/17/6/001)
+-   [BGK](https://www.doi.org/10.1103/PhysRev.94.511) and [TRT collision operators](http://global-sci.org/intro/article_detail/cicp/7862.html)
+-   [BGK with Smagorinsky turbulence model](https://arxiv.org/abs/comp-gas/9401004) for turbulent flows
+-   [Halfway bounce-back](https://www.doi.org/10.1007/BF02181482) boundaries for solid walls
+-   [Guo's interpolation](https://www.doi.org/910.1088/1009-1963/11/4/310) pressure and velocity boundaries
+-   Periodic boundary conditions (if nothing else specified)
+-   Export plug-ins to `.vtk` (slow) and `.bin` (fast)
+-   Designed with Resource acquisition is initialization (RAII) programming ideom
+-   Beginner-friendly documentation with [Doxygen](http://www.doxygen.nl/)
 
 ## Planned features
-* Initialisation from a given velocity field including interpolation to finer grid
-* Initialisation with non-equilibrium distribution estimate
-* Output converter `.bin` <-> `.vtk`
-* nVidia CUDA C++ implementation
-* [Latt's regularised](https://www.doi.org/10.1103/PhysRevE.77.056703) pressure and velocity boundaries
-* Entropic single relaxation time collision operator
-* Cumulant collision operator
-* [Interpolated bounce-back](https://www.doi.org/10.1063/1.1399290) for higher accuracy
-* Additional advection-diffusion equation and corresponding boundary conditions
-* Turbulent advection-diffusion
-* Documentation and theory guide
-* Extension to compressible multi-speed lattices
+-   Initialisation from a given velocity field including interpolation to finer grid
+-   Initialisation with non-equilibrium distribution estimate
+-   Output converter `.bin` <-> `.vtk`
+-   nVidia CUDA C++ implementation
+-   [Latt's regularised](https://www.doi.org/10.1103/PhysRevE.77.056703) pressure and velocity boundaries
+-   Entropic single relaxation time collision operator
+-   Cumulant collision operator
+-   [Interpolated bounce-back](https://www.doi.org/10.1063/1.1399290) for higher accuracy
+-   Additional advection-diffusion equation and corresponding boundary conditions
+-   Turbulent advection-diffusion
+-   Documentation and theory guide
+-   Extension to compressible multi-speed lattices
 
 ## History
 I started with this project after programming a C-style framework (D2Q9 and D3Q19) with many more features for the [Institute of Thermal Engineering (IWT) - Graz University of Technology (Austria)](https://www.tugraz.at/en/institutes/iwt/home/) in terms of my Master's thesis and project work (2018-2019). While it had excellent performance (around 17 Mlups double precision BGK on a single core of a Intel i9-7920X, Intel Turbo Boost enabled) and scalability (around 145 Mlups on all twelve cores, Intel Turbo Boost enabled, with Turbo Boost disabled the parallel scalability is over 90%), I had hardcoded everything (e.g. manual loop unrolling) making the code very unflexible and difficult to maintain.
