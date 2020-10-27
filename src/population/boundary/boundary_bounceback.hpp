@@ -48,7 +48,7 @@ class HalfwayBounceBack: public BoundaryCondition<NX,NY,NZ,LT,T,NPOP,HalfwayBoun
         */
         HalfwayBounceBack(std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population, std::vector<boundary::Element<T>> const& boundaryElements,
                           unsigned int const p = 0):
-            BC(population, boundaryElements, p), population_(population), boundaryElements_(boundaryElements), p_(p)
+            BC(population, boundaryElements, p)
         {
             return;
         }
@@ -68,11 +68,6 @@ class HalfwayBounceBack: public BoundaryCondition<NX,NY,NZ,LT,T,NPOP,HalfwayBoun
         */
         template <timestep TS>
         void implementationAfterCollisionOperator();
-
-    protected:
-        std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population_;
-        std::vector<boundary::Element<T>> const boundaryElements_;
-        unsigned int const p_;
 };
 
 template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP> template <timestep TS>
@@ -84,10 +79,10 @@ void HalfwayBounceBack<NX,NY,NZ,LT,T,NPOP>::implementationBeforeCollisionOperato
 template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP> template <timestep TS>
 void HalfwayBounceBack<NX,NY,NZ,LT,T,NPOP>::implementationAfterCollisionOperator()
 {
-    #pragma omp parallel for default(none) shared(boundaryElements_,population_,p_) schedule(static,32)
+    #pragma omp parallel for default(none) shared(BC::boundaryElements_,BC::population_,BC::p_) schedule(static,32)
     for(size_t i = 0; i < BC::boundaryElements_.size(); ++i)
     {
-        auto const& boundaryElement = boundaryElements_[i];
+        auto const& boundaryElement = BC::boundaryElements_[i];
         std::array<unsigned int,3> const x_n = { (NX + boundaryElement.x - 1) % NX, boundaryElement.x, (boundaryElement.x + 1) % NX };
         std::array<unsigned int,3> const y_n = { (NY + boundaryElement.y - 1) % NY, boundaryElement.y, (boundaryElement.y + 1) % NY };
         std::array<unsigned int,3> const z_n = { (NZ + boundaryElement.z - 1) % NZ, boundaryElement.z, (boundaryElement.z + 1) % NZ };
@@ -102,8 +97,8 @@ void HalfwayBounceBack<NX,NY,NZ,LT,T,NPOP>::implementationAfterCollisionOperator
             #endif
             for(unsigned int d = 1; d < LT<T>::HSPEED; ++d)
             {
-                population_->A[population_-> template indexWrite<TS>(x_n, y_n, z_n, !n, d, p_)] =
-                population_->A[population_-> template indexRead<!TS>(x_n, y_n, z_n, n, d, p_)];
+                BC::population_->A[BC::population_-> template indexWrite<TS>(x_n, y_n, z_n, !n, d, BC::p_)] =
+                BC::population_->A[BC::population_-> template indexRead<!TS>(x_n, y_n, z_n, n, d, BC::p_)];
             }
         }
     }

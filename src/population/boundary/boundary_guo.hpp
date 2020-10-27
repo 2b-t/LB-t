@@ -55,7 +55,7 @@ class Guo: public BoundaryCondition<NX,NY,NZ,LT,T,NPOP,Guo<TP,O,NX,NY,NZ,LT,T,NP
         */
         Guo(std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population, std::vector<boundary::Element<T>> const& boundaryElements,
             unsigned int const p = 0):
-            BC(population, boundaryElements, p), population_(population), boundaryElements_(boundaryElements), p_(p)
+            BC(population, boundaryElements, p)
         {
             return;
         }
@@ -75,22 +75,17 @@ class Guo: public BoundaryCondition<NX,NY,NZ,LT,T,NPOP,Guo<TP,O,NX,NY,NZ,LT,T,NP
         */
         template <timestep TS>
         void implementationAfterCollisionOperator();
-
-    private:
-        std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population_;
-        std::vector<boundary::Element<T>> const boundaryElements_;
-        unsigned int const p_;
 };
 
 template <boundary::Type TP, boundary::Orientation O, unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT,
           typename T, unsigned int NPOP> template <timestep TS>
 void Guo<TP,O,NX,NY,NZ,LT,T,NPOP>::implementationBeforeCollisionOperator()
 {
-    #pragma omp parallel for default(none) shared(boundaryElements_,population_,p_) schedule(static,32)
-    for(size_t i = 0; i < boundaryElements_.size(); ++i)
+    #pragma omp parallel for default(none) shared(BC::boundaryElements_,BC::population_,BC::p_) schedule(static,32)
+    for(size_t i = 0; i < BC::boundaryElements_.size(); ++i)
     {
         /// for neighbouring cell
-        auto const& boundaryElement = boundaryElements_[i];
+        auto const& boundaryElement = BC::boundaryElements_[i];
         std::array<unsigned int,3> const x_n = { (NX + boundaryElement.x + boundary::Normal<O>::x - 1) % NX,
                                                        boundaryElement.x + boundary::Normal<O>::x,
                                                       (boundaryElement.x + boundary::Normal<O>::x + 1) % NX };
@@ -115,7 +110,7 @@ void Guo<TP,O,NX,NY,NZ,LT,T,NPOP>::implementationBeforeCollisionOperator()
             for(unsigned int d = 0; d < LT<T>::OFF; ++d)
             {
                 unsigned int const curr = n*LT<T>::OFF + d;
-                f[curr] = LT<T>::MASK[curr]*population_->A[population_->template indexRead<TS>(x_n,y_n,z_n,n,d,p_)];
+                f[curr] = LT<T>::MASK[curr]*BC::population_->A[BC::population_->template indexRead<TS>(x_n,y_n,z_n,n,d,BC::p_)];
             }
         }
 
@@ -216,7 +211,7 @@ void Guo<TP,O,NX,NY,NZ,LT,T,NPOP>::implementationBeforeCollisionOperator()
             for(unsigned int d = 0; d < LT<T>::OFF; ++d)
             {
                 unsigned int const curr = n*LT<T>::OFF + d;
-                population_->A[population_-> template indexRead<TS>(x_c,y_c,z_c,n,d,p_)] = LT<T>::MASK[curr]*(feq[curr] + fneq[curr]);
+                BC::population_->A[BC::population_-> template indexRead<TS>(x_c,y_c,z_c,n,d,BC::p_)] = LT<T>::MASK[curr]*(feq[curr] + fneq[curr]);
             }
         }
     }

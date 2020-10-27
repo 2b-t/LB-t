@@ -94,7 +94,7 @@ class BGK_AVX512: public CollisionOperator<NX,NY,NZ,LT,T,NPOP,BGK_AVX512<NX,NY,N
         */
         BGK_AVX512(std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population, std::shared_ptr<Continuum<NX,NY,NZ,T>> continuum,
             T const Re, T const U, unsigned int const L, unsigned int const p = 0):
-            CO(population, continuum, p), population_(population), continuum_(continuum), p_(p),
+            CO(population, continuum, p), 
             nu_(U*static_cast<T>(L) / Re),
             tau_(nu_/(LT<T>::CS*LT<T>::CS) + 1.0/ 2.0), omega_(1.0/tau_)
         {
@@ -114,10 +114,6 @@ class BGK_AVX512: public CollisionOperator<NX,NY,NZ,LT,T,NPOP,BGK_AVX512<NX,NY,N
         void implementation(bool const isSave);
 
     protected:
-        std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population_;
-        std::shared_ptr<Continuum<NX,NY,NZ,T>>          continuum_;
-        unsigned int const p_;
-
         T const nu_;
         T const tau_;
         T const omega_;
@@ -127,7 +123,7 @@ class BGK_AVX512: public CollisionOperator<NX,NY,NZ,LT,T,NPOP,BGK_AVX512<NX,NY,N
 template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP> template<timestep TS>
 void BGK_AVX512<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
 {
-    #pragma omp parallel for default(none) shared(continuum_,population_) firstprivate(isSave,p_) schedule(static,1)
+    #pragma omp parallel for default(none) shared(CO::continuum_,CO::population_) firstprivate(isSave,CO::p_) schedule(static,1)
     for(unsigned int block = 0; block < CO::NUM_BLOCKS_; ++block)
     {
         unsigned int const z_start = CO::BLOCK_SIZE_ * (block / (CO::NUM_BLOCKS_X_*CO::NUM_BLOCKS_Y_));
@@ -164,7 +160,7 @@ void BGK_AVX512<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
                         #endif
                         for(unsigned int d = 0; d < LT<T>::OFF; ++d)
                         {
-                            f[n*LT<T>::OFF + d] = population_->A[population_-> template indexRead<TS>(x_n,y_n,z_n,n,d,p_)];
+                            f[n*LT<T>::OFF + d] = CO::population_->A[CO::population_-> template indexRead<TS>(x_n,y_n,z_n,n,d,CO::p_)];
                         }
                     }
 
@@ -189,10 +185,10 @@ void BGK_AVX512<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
 
                     if (isSave == true)
                     {
-                        continuum_->operator()(x, y, z, 0) = rho;
-                        continuum_->operator()(x, y, z, 1) = u;
-                        continuum_->operator()(x, y, z, 2) = v;
-                        continuum_->operator()(x, y, z, 3) = w;
+                        CO::continuum_->operator()(x, y, z, 0) = rho;
+                        CO::continuum_->operator()(x, y, z, 1) = u;
+                        CO::continuum_->operator()(x, y, z, 2) = v;
+                        CO::continuum_->operator()(x, y, z, 3) = w;
                     }
 
                     /// equilibrium distributions
@@ -239,7 +235,7 @@ void BGK_AVX512<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
                         for(unsigned int d = 0; d < LT<T>::OFF; ++d)
                         {
                             size_t const curr = n*LT<T>::OFF + d;
-                            population_->A[population_-> template indexWrite<TS>(x_n,y_n,z_n,n,d,p_)] = f[curr];
+                            CO::population_->A[CO::population_-> template indexWrite<TS>(x_n,y_n,z_n,n,d,CO::p_)] = f[curr];
                         }
                     }
                 }
