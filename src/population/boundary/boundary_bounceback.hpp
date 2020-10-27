@@ -7,6 +7,7 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#include <array>
 #include <memory>
 #if __has_include (<omp.h>)
     #include <omp.h>
@@ -87,9 +88,9 @@ void HalfwayBounceBack<NX,NY,NZ,LT,T,NPOP>::implementationAfterCollisionOperator
     for(size_t i = 0; i < BC::boundaryElements_.size(); ++i)
     {
         auto const& boundaryElement = boundaryElements_[i];
-        unsigned int const x_n[3] = { (NX + boundaryElement.x - 1) % NX, boundaryElement.x, (boundaryElement.x + 1) % NX };
-        unsigned int const y_n[3] = { (NY + boundaryElement.y - 1) % NY, boundaryElement.y, (boundaryElement.y + 1) % NY };
-        unsigned int const z_n[3] = { (NZ + boundaryElement.z - 1) % NZ, boundaryElement.z, (boundaryElement.z + 1) % NZ };
+        std::array<unsigned int,3> const x_n = { (NX + boundaryElement.x - 1) % NX, boundaryElement.x, (boundaryElement.x + 1) % NX };
+        std::array<unsigned int,3> const y_n = { (NY + boundaryElement.y - 1) % NY, boundaryElement.y, (boundaryElement.y + 1) % NY };
+        std::array<unsigned int,3> const z_n = { (NZ + boundaryElement.z - 1) % NZ, boundaryElement.z, (boundaryElement.z + 1) % NZ };
 
         #pragma GCC unroll (2)
         for(unsigned int n = 0; n <= 1; ++n)

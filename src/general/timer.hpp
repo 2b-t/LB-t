@@ -33,9 +33,9 @@ class Timer
         */
         double stop()
         {
-            stop_       = std::chrono::high_resolution_clock::now();
-            start_stop_ = std::chrono::duration_cast<std::chrono::duration<double>>(stop_ - start_);
-            runtime_    = start_stop_.count();
+            stop_        = std::chrono::high_resolution_clock::now();
+            startToStop_ = std::chrono::duration_cast<std::chrono::duration<double>>(stop_ - start_);
+            runtime_     = startToStop_.count();
 
             return runtime_;
         }
@@ -47,17 +47,17 @@ class Timer
         */
         double getRuntime()
         {
-            std::chrono::high_resolution_clock::time_point const       current_ = std::chrono::high_resolution_clock::now();
-            std::chrono::duration<double>                  const start_current_ = std::chrono::duration_cast<std::chrono::duration<double>>(current_ - start_);
+            std::chrono::high_resolution_clock::time_point const        current_ = std::chrono::high_resolution_clock::now();
+            std::chrono::duration<double>                  const startToCurrent_ = std::chrono::duration_cast<std::chrono::duration<double>>(current_ - start_);
 
-            return start_current_.count();
+            return startToCurrent_.count();
         }
 
     private:
-        std::chrono::high_resolution_clock::time_point start_      = std::chrono::high_resolution_clock::now(); ///< chrono library objects for start and end
-        std::chrono::high_resolution_clock::time_point stop_       = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double>                  start_stop_ = std::chrono::duration<double>::zero();     ///< chrono library objects for duration
-        double                                         runtime_    = 0.0;                                       ///< double value of runtime in seconds
+        std::chrono::high_resolution_clock::time_point start_       = std::chrono::high_resolution_clock::now(); ///< chrono library objects for start and end
+        std::chrono::high_resolution_clock::time_point stop_        = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double>                  startToStop_ = std::chrono::duration<double>::zero();     ///< chrono library objects for duration
+        double                                         runtime_     = 0.0;                                       ///< double value of runtime in seconds
 };
 
 #endif // LBT_TIMER

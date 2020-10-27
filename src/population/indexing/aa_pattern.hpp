@@ -15,6 +15,8 @@
  *           even and odd time steps.
 */
 
+#include <array>
+
 #include "indexing.hpp"
 
 
@@ -53,8 +55,12 @@ class AaPattern: public Indexing<NX,NY,NZ,LT,T,NPOP>
          * \return    Requested linear population index before collision
         */
         template <timestep TS>
-        static inline size_t __attribute__((always_inline)) indexRead(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
-                                                                      unsigned int const n,       unsigned int const d,       unsigned int const p)
+        static inline size_t __attribute__((always_inline)) indexRead(std::array<unsigned int,3> const &x, 
+                                                                      std::array<unsigned int,3> const &y,
+                                                                      std::array<unsigned int,3> const &z,
+                                                                      unsigned int               const n,
+                                                                      unsigned int               const d,
+                                                                      unsigned int               const p)
         {
             return IDX::spatialToLinear(x[1 + IDX::template oddEven<TS>(static_cast<int>(LT<T>::DX[(!n)*LT<T>::OFF+d]), 0)],
                                         y[1 + IDX::template oddEven<TS>(static_cast<int>(LT<T>::DY[(!n)*LT<T>::OFF+d]), 0)],
@@ -77,8 +83,12 @@ class AaPattern: public Indexing<NX,NY,NZ,LT,T,NPOP>
          * \return    Requested linear population index after collision
         */
         template <timestep TS>
-        static inline size_t __attribute__((always_inline)) indexWrite(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
-                                                                       unsigned int const n,       unsigned int const d,       unsigned int const p)
+        static inline size_t __attribute__((always_inline)) indexWrite(std::array<unsigned int,3> const &x, 
+                                                                       std::array<unsigned int,3> const &y,
+                                                                       std::array<unsigned int,3> const &z,
+                                                                       unsigned int               const n,
+                                                                       unsigned int               const d,
+                                                                       unsigned int               const p)
         {
             return IDX::spatialToLinear(x[1 + IDX::template oddEven<TS>(static_cast<int>(LT<T>::DX[n*LT<T>::OFF+d]), 0)],
                                         y[1 + IDX::template oddEven<TS>(static_cast<int>(LT<T>::DY[n*LT<T>::OFF+d]), 0)],

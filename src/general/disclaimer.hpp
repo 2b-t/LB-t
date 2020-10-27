@@ -70,8 +70,8 @@ void printDisclaimer()
             versionOMP = mapOMP.at(_OPENMP);
         }
         std::cout << "version " << versionOMP << " ";
-        size_t       omp_curr_threads = omp_get_max_threads();
-        size_t const omp_max_threads  = omp_get_num_procs();
+        size_t       omp_curr_threads = ::omp_get_max_threads();
+        size_t const omp_max_threads  = ::omp_get_num_procs();
         std::cout << "(currently running on " << omp_curr_threads
                   << "/" << omp_max_threads << " threads)" << std::endl;
     #else

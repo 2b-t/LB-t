@@ -97,8 +97,12 @@ class Population
          * \return    Requested linear population index before collision
         */
         template <timestep TS>
-        static inline size_t __attribute__((always_inline)) indexRead(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
-                                                                      unsigned int const n,       unsigned int const d,       unsigned int const p)
+        static inline size_t __attribute__((always_inline)) indexRead(std::array<unsigned int,3> const &x, 
+                                                                      std::array<unsigned int,3> const &y,
+                                                                      std::array<unsigned int,3> const &z,
+                                                                      unsigned int               const n,
+                                                                      unsigned int               const d,
+                                                                      unsigned int               const p = 0)
         {
             return AaPattern<NX,NY,NZ,LT,T,NPOP>::template indexRead<TS>(x,y,z,n,d,p);
         }
@@ -117,8 +121,12 @@ class Population
          * \return    Requested linear population index after collision
         */
         template <timestep TS>
-        static inline size_t __attribute__((always_inline)) indexWrite(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
-                                                                       unsigned int const n,       unsigned int const d,       unsigned int const p)
+        static inline size_t __attribute__((always_inline)) indexWrite(std::array<unsigned int,3> const &x, 
+                                                                       std::array<unsigned int,3> const &y,
+                                                                       std::array<unsigned int,3> const &z,
+                                                                       unsigned int               const n,
+                                                                       unsigned int               const d,
+                                                                       unsigned int               const p = 0)
         {
             return AaPattern<NX,NY,NZ,LT,T,NPOP>::template indexWrite<TS>(x,y,z,n,d,p);
         }
@@ -137,15 +145,23 @@ class Population
          * \return    Requested linear population index before collision (reading)
         */
         template <timestep TS>
-        inline auto&       __attribute__((always_inline)) read(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
-                                                               unsigned int const n,       unsigned int const d,       unsigned int const p = 0)
+        inline auto&       __attribute__((always_inline)) read(std::array<unsigned int,3> const &x, 
+                                                               std::array<unsigned int,3> const &y,
+                                                               std::array<unsigned int,3> const &z,
+                                                               unsigned int               const n,
+                                                               unsigned int               const d,
+                                                               unsigned int               const p = 0)
         {
             return A[indexRead<TS>(x,y,z,n,d,p)];
         }
 
         template <timestep TS>
-        inline auto const& __attribute__((always_inline)) read(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
-                                                               unsigned int const n,       unsigned int const d,       unsigned int const p = 0) const
+        inline auto const& __attribute__((always_inline)) read(std::array<unsigned int,3> const &x, 
+                                                               std::array<unsigned int,3> const &y,
+                                                               std::array<unsigned int,3> const &z,
+                                                               unsigned int               const n,
+                                                               unsigned int               const d,
+                                                               unsigned int               const p = 0) const
         {
             return A[indexRead<TS>(x,y,z,n,d,p)];
         }
@@ -164,15 +180,23 @@ class Population
          * \return    Requested linear population index after collision (writing)
         */
         template <timestep TS>
-        inline auto&       __attribute__((always_inline))  write(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
-                                                                 unsigned int const n,       unsigned int const d,       unsigned int const p = 0)
+        inline auto&       __attribute__((always_inline))  write(std::array<unsigned int,3> const &x, 
+                                                                 std::array<unsigned int,3> const &y,
+                                                                 std::array<unsigned int,3> const &z,
+                                                                 unsigned int               const n,
+                                                                 unsigned int               const d,
+                                                                 unsigned int               const p = 0)
         {
             return A[indexWrite<TS>(x,y,z,n,d,p)];
         }
 
         template <timestep TS>
-        inline auto const& __attribute__((always_inline)) write(unsigned int const (&x)[3], unsigned int const (&y)[3], unsigned int const (&z)[3],
-                                                                unsigned int const n,       unsigned int const d,       unsigned int const p = 0) const
+        inline auto const& __attribute__((always_inline)) write(std::array<unsigned int,3> const &x, 
+                                                                std::array<unsigned int,3> const &y,
+                                                                std::array<unsigned int,3> const &z,
+                                                                unsigned int               const n,
+                                                                unsigned int               const d,
+                                                                unsigned int               const p) const
         {
             return A[indexWrite<TS>(x,y,z,n,d,p)];
         }

@@ -8,6 +8,7 @@
 */
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 #if __has_include (<omp.h>)
     #include <omp.h>
@@ -101,21 +102,21 @@ void TRT<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
 
         for(unsigned int z = z_start; z < z_end; ++z)
         {
-            unsigned int const z_n[3] = { (NZ + z - 1) % NZ, z, (z + 1) % NZ };
+            std::array<unsigned int,3> const z_n = { (NZ + z - 1) % NZ, z, (z + 1) % NZ };
 
             unsigned int const y_start = CO::BLOCK_SIZE_*((block % (CO::NUM_BLOCKS_X_*CO::NUM_BLOCKS_Y_)) / CO::NUM_BLOCKS_X_);
             unsigned int const   y_end = std::min(y_start + CO::BLOCK_SIZE_, NY);
 
             for(unsigned int y = y_start; y < y_end; ++y)
             {
-                unsigned int const y_n[3] = { (NY + y - 1) % NY, y, (y + 1) % NY };
+                std::array<unsigned int,3> const y_n = { (NY + y - 1) % NY, y, (y + 1) % NY };
 
                 unsigned int const x_start = CO::BLOCK_SIZE_*(block % CO::NUM_BLOCKS_X_);
                 unsigned int const   x_end = std::min(x_start + CO::BLOCK_SIZE_, NX);
 
                 for(unsigned int x = x_start; x < x_end; ++x)
                 {
-                    unsigned int const x_n[3] = { (NX + x - 1) % NX, x, (x + 1) % NX };
+                    std::array<unsigned int,3> const x_n = { (NX + x - 1) % NX, x, (x + 1) % NX };
 
                     /// load distributions
                     alignas(CACHE_LINE) T f[LT<T>::ND] = {0.0};

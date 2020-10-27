@@ -103,7 +103,7 @@ class BoundaryCondition
          * \param[in] boundaryElements   Elements making up the boundary
          * \param[in] p                  Index of relevant population
         */
-        BoundaryCondition(std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population, std::vector<boundary::Element<T>> boundaryElements,
+        BoundaryCondition(std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population, std::vector<boundary::Element<T>> const& boundaryElements,
                           unsigned int const p = 0):
             boundaryElements_(boundaryElements), population_(population), p_(p)
         {

@@ -7,6 +7,7 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#include <array>
 #include <memory>
 
 #include "../../general/constexpr_math.hpp"
@@ -162,21 +163,21 @@ void CollisionOperator<NX,NY,NZ,LT,T,NPOP,DerivedClass>::initialisePopulationFro
 
         for(unsigned int z = z_start; z < z_end; ++z)
         {
-            unsigned int const z_n[3] = { (NZ + z - 1) % NZ, z, (z + 1) % NZ };
+            std::array<unsigned int,3> const z_n = { (NZ + z - 1) % NZ, z, (z + 1) % NZ };
 
             unsigned int const y_start = BLOCK_SIZE_*((block % (NUM_BLOCKS_X_*NUM_BLOCKS_Y_)) / NUM_BLOCKS_X_);
             unsigned int const   y_end = std::min(y_start + BLOCK_SIZE_, NY);
 
             for(unsigned int y = y_start; y < y_end; ++y)
             {
-                unsigned int const y_n[3] = { (NY + y - 1) % NY, y, (y + 1) % NY };
+                std::array<unsigned int,3> const y_n = { (NY + y - 1) % NY, y, (y + 1) % NY };
 
                 unsigned int const x_start = BLOCK_SIZE_*(block % NUM_BLOCKS_X_);
                 unsigned int const   x_end = std::min(x_start + BLOCK_SIZE_, NX);
 
                 for(unsigned int x = x_start; x < x_end; ++x)
                 {
-                    unsigned int const x_n[3] = { (NX + x - 1) % NX, x, (x + 1) % NX };
+                    std::array<unsigned int,3> const x_n = { (NX + x - 1) % NX, x, (x + 1) % NX };
 
                     T const rho = continuum_->operator()(x, y, z, 0);
                     T const u   = continuum_->operator()(x, y, z, 1);

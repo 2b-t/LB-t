@@ -91,15 +91,15 @@ void Guo<TP,O,NX,NY,NZ,LT,T,NPOP>::implementationBeforeCollisionOperator()
     {
         /// for neighbouring cell
         auto const& boundaryElement = boundaryElements_[i];
-        unsigned int const x_n[3] = { (NX + boundaryElement.x + boundary::Normal<O>::x - 1) % NX,
-                                            boundaryElement.x + boundary::Normal<O>::x,
-                                           (boundaryElement.x + boundary::Normal<O>::x + 1) % NX };
-        unsigned int const y_n[3] = { (NY + boundaryElement.y + boundary::Normal<O>::y - 1) % NY,
-                                            boundaryElement.y + boundary::Normal<O>::y,
-                                           (boundaryElement.y + boundary::Normal<O>::y + 1) % NY };
-        unsigned int const z_n[3] = { (NZ + boundaryElement.z + boundary::Normal<O>::z - 1) % NZ,
-                                            boundaryElement.z + boundary::Normal<O>::z,
-                                           (boundaryElement.z + boundary::Normal<O>::z + 1) % NZ };
+        std::array<unsigned int,3> const x_n = { (NX + boundaryElement.x + boundary::Normal<O>::x - 1) % NX,
+                                                       boundaryElement.x + boundary::Normal<O>::x,
+                                                      (boundaryElement.x + boundary::Normal<O>::x + 1) % NX };
+        std::array<unsigned int,3> const y_n = { (NY + boundaryElement.y + boundary::Normal<O>::y - 1) % NY,
+                                                       boundaryElement.y + boundary::Normal<O>::y,
+                                                      (boundaryElement.y + boundary::Normal<O>::y + 1) % NY };
+        std::array<unsigned int,3> const z_n = { (NZ + boundaryElement.z + boundary::Normal<O>::z - 1) % NZ,
+                                                       boundaryElement.z + boundary::Normal<O>::z,
+                                                      (boundaryElement.z + boundary::Normal<O>::z + 1) % NZ };
 
         // load distributions
         alignas(CACHE_LINE) T f[LT<T>::ND] = {0.0};
@@ -201,9 +201,9 @@ void Guo<TP,O,NX,NY,NZ,LT,T,NPOP>::implementationBeforeCollisionOperator()
         }
 
         // write new population values to cell: feq + fneq
-        unsigned int const x_c[3] = { (NX + boundaryElement.x - 1) % NX, boundaryElement.x, (boundaryElement.x + 1) % NX };
-        unsigned int const y_c[3] = { (NY + boundaryElement.y - 1) % NY, boundaryElement.y, (boundaryElement.y + 1) % NY };
-        unsigned int const z_c[3] = { (NZ + boundaryElement.z - 1) % NZ, boundaryElement.z, (boundaryElement.z + 1) % NZ };
+        std::array<unsigned int,3> const x_c = { (NX + boundaryElement.x - 1) % NX, boundaryElement.x, (boundaryElement.x + 1) % NX };
+        std::array<unsigned int,3> const y_c = { (NY + boundaryElement.y - 1) % NY, boundaryElement.y, (boundaryElement.y + 1) % NY };
+        std::array<unsigned int,3> const z_c = { (NZ + boundaryElement.z - 1) % NZ, boundaryElement.z, (boundaryElement.z + 1) % NZ };
 
         #pragma GCC unroll (2)
         for(unsigned int n = 0; n <= 1; ++n)
