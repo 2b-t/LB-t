@@ -44,19 +44,19 @@ namespace lattice
 
             /// discrete velocities
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> DX =
-            { 0,  1,  0,  1, -1,        //positive velocities
-              0, -1,  0, -1,  1 };      //negative velocities
+            { 0,  1,  0,  1, -1,   // positive velocities
+              0, -1,  0, -1,  1 }; // negative velocities
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> DY =
-            { 0,  0,  1,  1,  1,        //positive velocities
-              0,  0, -1, -1, -1 };      //negative velocities
+            { 0,  0,  1,  1,  1,   // positive velocities
+              0,  0, -1, -1, -1 }; // negative velocities
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> DZ =
             { 0,  0,  0,  0,  0,
               0,  0,  0,  0,  0 };
 
             /// corresponding weights
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> W =
-            { 4.0/9.0, 1.0/9.0, 1.0/9.0, 1.0/36.0, 1.0/36.0,        //positive velocities
-              4.0/9.0, 1.0/9.0, 1.0/9.0, 1.0/36.0, 1.0/36.0 };      //negative velocities
+            { 4.0/9.0, 1.0/9.0, 1.0/9.0, 1.0/36.0, 1.0/36.0,   // positive velocities
+              4.0/9.0, 1.0/9.0, 1.0/9.0, 1.0/36.0, 1.0/36.0 }; // negative velocities
 
             /// logical mask for relevant populations
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> MASK =
@@ -97,19 +97,19 @@ namespace lattice
 
             /// discrete velocities
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> DX =
-            { 0,  1,  0,  1, -1,  0,        //positive velocities
-              0, -1,  0, -1,  1,  0 };      //negative velocities
+            { 0,  1,  0,  1, -1,  0,   // positive velocities
+              0, -1,  0, -1,  1,  0 }; // negative velocities
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> DY =
-            { 0,  0,  1,  1,  1,  0,        //positive velocities
-              0,  0, -1, -1, -1,  0 };      //negative velocities
+            { 0,  0,  1,  1,  1,  0,   // positive velocities
+              0,  0, -1, -1, -1,  0 }; // negative velocities
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> DZ =
             { 0,  0,  0,  0,  0,  0,
               0,  0,  0,  0,  0,  0 };
 
             /// corresponding weights
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> W =
-            { 4.0/9.0, 1.0/9.0, 1.0/9.0, 1.0/36.0, 1.0/36.0,  0.0,        //positive velocities
-              4.0/9.0, 1.0/9.0, 1.0/9.0, 1.0/36.0, 1.0/36.0,  0.0 };      //negative velocities
+            { 4.0/9.0, 1.0/9.0, 1.0/9.0, 1.0/36.0, 1.0/36.0,  0.0,   // positive velocities
+              4.0/9.0, 1.0/9.0, 1.0/9.0, 1.0/36.0, 1.0/36.0,  0.0 }; // negative velocities
 
             /// logical mask for relevant populations
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> MASK =

@@ -1,9 +1,9 @@
-#ifndef LBT_D3Q19
-#define LBT_D3Q19
+#ifndef LBT_D3Q15
+#define LBT_D3Q15
 
 /**
- * \file     D3Q19.hpp
- * \mainpage Discretisation parameters for D3Q19-lattice
+ * \file     D3Q15.hpp
+ * \mainpage Discretisation parameters for D3Q15-lattice
  * \author   Tobit Flatscher (github.com/2b-t)
  *
  * \warning  Static classes with more complex members such as std::vector and std::array require C++17
@@ -18,8 +18,8 @@
 
 namespace lattice
 {
-    /**\class  lattice::D3Q19P20
-     * \brief  Class for D3Q19 lattice with padding to 20
+    /**\class  lattice::D3Q15P16
+     * \brief  Class for D3Q15 lattice with padding to 16
      *
      * \note   "Lattice BGK models for Navier-Stokes equation"
      *         Y.H. Qian, D. D'Humières, P. Lallemand
@@ -29,12 +29,12 @@ namespace lattice
      * \tparam T   Floating data type used for simulation
     */
     template <typename T = double>
-    class D3Q19P20 final
+    class D3Q15P16 final
     {
         public:
             /// lattice discretisation parameters
             static constexpr unsigned int    DIM =  3;
-            static constexpr unsigned int SPEEDS = 19;
+            static constexpr unsigned int SPEEDS = 15;
             static constexpr unsigned int HSPEED = (SPEEDS + 1)/2;
 
             /// linear memory layout padding
@@ -44,37 +44,35 @@ namespace lattice
 
             /// discrete velocities
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> DX =
-            { 0,  1,  0,  0,  1,  1,  1,  1,  0,  0,   //positive velocities
-              0, -1,  0,  0, -1, -1, -1, -1,  0,  0 }; //negative velocities
+            { 0,  1,  0,  0,  1,  1,  1,  1,   // positive velocities
+              0, -1,  0,  0, -1, -1, -1, -1 }; // negative velocities
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> DY =
-            { 0,  0,  1,  0,  1, -1,  0,  0,  1,  1,
-              0,  0, -1,  0, -1,  1,  0,  0, -1, -1 };
+            { 0,  0,  1,  0,  1, -1,  1, -1,
+              0,  0, -1,  0, -1,  1, -1,  1 };
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> DZ =
-            { 0,  0,  0,  1,  0,  0,  1, -1,  1, -1,
-              0,  0,  0, -1,  0,  0, -1,  1, -1,  1 };
+            { 0,  0,  0,  1,  1,  1, -1, -1,
+              0,  0,  0, -1, -1, -1,  1,  1 };
 
             /// corresponding weights
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> W =
-            { 1.0/3.0,                        //positive velocities
-              1.0/18.0, 1.0/18.0, 1.0/18.0,
-              1.0/36.0, 1.0/36.0, 1.0/36.0,
-              1.0/36.0, 1.0/36.0, 1.0/36.0,
-              1.0/3.0,                        //negative velocities
-              1.0/18.0, 1.0/18.0, 1.0/18.0,
-              1.0/36.0, 1.0/36.0, 1.0/36.0,
-              1.0/36.0, 1.0/36.0, 1.0/36.0 };
+            { 2.0/9.0,                                  // positive velocities
+              1.0/9.0, 1.0/9.0, 1.0/9.0,
+              1.0/72.0, 1.0/72.0, 1.0/72.0, 1.0/72.0,
+              2.0/9.0,                                  // negative velocities
+              1.0/9.0, 1.0/9.0, 1.0/9.0,
+              1.0/72.0, 1.0/72.0, 1.0/72.0, 1.0/72.0 };
 
             /// logical mask for relevant populations
             __attribute__((aligned(CACHE_LINE))) alignas(CACHE_LINE) static constexpr std::array<T, ND> MASK =
-            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-              0, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+            { 1, 1, 1, 1, 1, 1, 1, 1, 
+              0, 1, 1, 1, 1, 1, 1, 1 };
 
             /// lattice speed of sound
             static constexpr T CS = 1.0/cem::sqrt(3.0);
     };
 
     /// Alias default lattice
-    template<typename T> using D3Q19 = D3Q19P20<T>;
+    template<typename T> using D3Q15 = D3Q15P16<T>;
 }
 
-#endif // LBT_D3Q19
+#endif // LBT_D3Q15

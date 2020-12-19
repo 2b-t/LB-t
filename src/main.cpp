@@ -20,6 +20,7 @@
 #include "geometry/cylinder.hpp"
 #include "geometry/sphere.hpp"
 #include "lattice/D2Q9.hpp"
+#include "lattice/D3Q15.hpp"
 #include "lattice/D3Q19.hpp"
 #include "lattice/D3Q27.hpp"
 #include "population/collision/collision_bgk.hpp"

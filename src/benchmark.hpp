@@ -14,6 +14,7 @@
 #include "general/openmp_manager.hpp"
 #include "general/timer.hpp"
 #include "lattice/D2Q9.hpp"
+#include "lattice/D3Q15.hpp"
 #include "lattice/D3Q19.hpp"
 #include "lattice/D3Q27.hpp"
 #include "population/collision/collision_bgk.hpp"
@@ -72,6 +73,8 @@ void benchmarkSingleLatticeSingleCollisionOperator(CollisionOperator<NX,NY,NZ,LT
 template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T>
 void benchmarkSingleLatticeAllCollisionOperators(unsigned int const NT)
 {
+    std::cout << "- D" << LT<T>::DIM << "Q" << LT<T>::SPEEDS << " lattice with padding to " << LT<T>::ND << std::endl;
+
     auto continuum  = std::make_shared<Continuum<NX,NY,NZ,T>>();
     auto population = std::make_shared<Population<NX,NY,NZ,LT,T>>();
 
@@ -118,25 +121,18 @@ void benchmarkAllLatticesAllCollisionOperators()
     std::cout << "Starting benchmark..." << std::endl;
 
     std::cout << "D2Q9 lattice" << std::endl;
-    std::cout << "- D2Q9 lattice with padding to 10" << std::endl;
     ::benchmarkSingleLatticeAllCollisionOperators<512,512,1,lattice::D2Q9P10,double>(1000);
-    std::cout << std::endl;
-    std::cout << "- D2Q9 lattice with padding to 12" << std::endl;
     ::benchmarkSingleLatticeAllCollisionOperators<512,512,1,lattice::D2Q9P12,double>(1000);
-    std::cout << std::endl;
+
+    std::cout << "D3Q15 lattice" << std::endl;
+    ::benchmarkSingleLatticeAllCollisionOperators<128,128,128,lattice::D3Q15P16,double>(100);
 
     std::cout << "D3Q19 lattice" << std::endl;
-    std::cout << "- D3Q19 lattice with padding to 20" << std::endl;
     ::benchmarkSingleLatticeAllCollisionOperators<128,128,128,lattice::D3Q19P20,double>(100);
-    std::cout << std::endl;
 
     std::cout << "D3Q27 lattice" << std::endl;
-    std::cout << "- D3Q27 lattice with padding to 28" << std::endl;
     ::benchmarkSingleLatticeAllCollisionOperators<128,128,128,lattice::D3Q27P28,double>(100);
-    std::cout << std::endl;
-    std::cout << "- D3Q27 lattice with padding to full cache line" << std::endl;
     ::benchmarkSingleLatticeAllCollisionOperators<128,128,128,lattice::D3Q27PC,double>(100);
-    std::cout << std::endl;
 
     return;
 }

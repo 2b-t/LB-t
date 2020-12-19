@@ -7,7 +7,7 @@
 [![Turbulent gaseous flow in porous media](/doc/PorousMedia_Re3750Sc1.jpeg)](https://www.youtube.com/watch?v=7SR4vhMnWZc "Turbulent gaseous flow in porous media")
 
 ## Overview
-This is a **object-oriented parallel lattice-Boltzmann computational fluid dynamics (CFD) solver framework for arbitrary lattices (for any number of speed and spatial dimensions) based on C++17 and [OpenMP](https://www.openmp.org/)**. The files includes a Makefile for the Intel Compiler ICC as well as the Gnu Compiler GCC.
+This is a **object-oriented parallel lattice-Boltzmann computational fluid dynamics (CFD) solver framework for arbitrary lattices (for any number of speed and spatial dimensions) based on C++17 and [OpenMP](https://www.openmp.org/)**. The files include a Makefile for the Intel Compiler ICC as well as the Gnu Compiler GCC.
 
 ## Installation
 
@@ -60,7 +60,7 @@ Make sure that the latter plug-in is copied to the `output/` folder and the file
 -   Parallelisation on multiple threads with [OpenMP](https://www.openmp.org/)
 
 ## Current features
--   [D2Q9, D3Q19 and D3Q27 lattices](https://www.doi.org/10.1209/0295-5075/17/6/001)
+-   [D2Q9, D3Q15, D3Q19 and D3Q27 lattices](https://www.doi.org/10.1209/0295-5075/17/6/001)
 -   [BGK](https://www.doi.org/10.1103/PhysRev.94.511) and [TRT collision operators](http://global-sci.org/intro/article_detail/cicp/7862.html)
 -   [BGK with Smagorinsky turbulence model](https://arxiv.org/abs/comp-gas/9401004) for turbulent flows
 -   [Halfway bounce-back](https://www.doi.org/10.1007/BF02181482) boundaries for solid walls
