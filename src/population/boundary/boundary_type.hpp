@@ -23,7 +23,7 @@ namespace boundary
      * \param[in] normalComponent       Value that is returned if the velocity is normal
     */
     template <typename T>
-    static inline T velocityComponent(int const tangentialOrNormal, T const tangentialComponent, T const normalComponent)
+    static inline T velocityComponent(int const tangentialOrNormal, T const tangentialComponent, T const normalComponent) noexcept
     {
         return (tangentialOrNormal == 0) ? tangentialComponent : normalComponent;
     }
@@ -51,7 +51,7 @@ namespace boundary
              * \param[in] interpolatedValues   Interpolated values
              * \return    An array that contains a mixture of enforced or interpolated values depending on the precise boundary
             */
-            static inline std::array<T,4> get(std::array<T,4> const& boundaryValues, std::array<T,4> const& interpolatedValues);
+            static inline std::array<T,4> get(std::array<T,4> const& boundaryValues, std::array<T,4> const& interpolatedValues) noexcept;
     };
 
     /**\class Velocity: Partial template specialisation
@@ -61,7 +61,7 @@ namespace boundary
     class MacroscopicValues<T,O,Type::Velocity> final
     {
         public:
-            static inline std::array<T,4> get(std::array<T,4> const& boundaryValues, std::array<T,4> const& interpolatedValues)
+            static inline std::array<T,4> get(std::array<T,4> const& boundaryValues, std::array<T,4> const& interpolatedValues) noexcept
             {
                 return { interpolatedValues[0], boundaryValues[1], boundaryValues[2], boundaryValues[3] };
             }
@@ -74,7 +74,7 @@ namespace boundary
     class MacroscopicValues<T,O,Type::Pressure> final
     {
         public:
-            static inline std::array<T,4> get(std::array<T,4> const& boundaryValues, std::array<T,4> const& interpolatedValues)
+            static inline std::array<T,4> get(std::array<T,4> const& boundaryValues, std::array<T,4> const& interpolatedValues) noexcept
             {
                 return { boundaryValues[0],
                          velocityComponent(Normal<O>::x, boundaryValues[1], interpolatedValues[1]),

@@ -44,7 +44,7 @@ class Continuum
 
         /**\brief Class constructor
         */
-        Continuum()
+        Continuum() noexcept
         {
             if (M == nullptr)
             {
@@ -58,7 +58,7 @@ class Continuum
         /**\brief     Class copy constructor
          * \param[in] c   The continuum object to be copied
         */
-        Continuum(Continuum const& c)
+        Continuum(Continuum const& c) noexcept
         {
             std::memcpy(M, c.M, memorySize);
 
@@ -67,7 +67,7 @@ class Continuum
 
         /**\brief Class destructor
         */
-        ~Continuum()
+        ~Continuum() noexcept
         {
             #ifdef _WIN32
                 _aligned_free(M);
@@ -89,7 +89,7 @@ class Continuum
          * \return    Requested linear scalar index
         */
         inline size_t spatialToLinear(unsigned int const x, unsigned int const y, unsigned int const z,
-                                      unsigned int const m) const;
+                                      unsigned int const m) const noexcept;
 
         /**\fn         linearToSpatial
          * \brief      Generate 3D population coordinates from scalar index
@@ -97,7 +97,7 @@ class Continuum
          * \param[in]  index   Current linear scalar index
          * \return     Return value containing the x, y and z coordinates as well as the number of macroscopic values belonging to the scalar index
         */
-        std::tuple<unsigned int, unsigned int, unsigned int, unsigned int> linearToSpatial(size_t const index) const;
+        std::tuple<unsigned int, unsigned int, unsigned int, unsigned int> linearToSpatial(size_t const index) const noexcept;
 
         /**\fn        operator()
          * \brief     Access scalar values at given coordinates
@@ -108,8 +108,8 @@ class Continuum
          * \param[in] m   Macroscopic value (0: density, 1-3: ux, uy, uz)
          * \return    The requested scalar value
         */
-        inline T&       operator() (unsigned int const x, unsigned int const y, unsigned int const z, unsigned int const m);
-        inline T const& operator() (unsigned int const x, unsigned int const y, unsigned int const z, unsigned int const m) const;
+        inline T&       operator() (unsigned int const x, unsigned int const y, unsigned int const z, unsigned int const m) noexcept;
+        inline T const& operator() (unsigned int const x, unsigned int const y, unsigned int const z, unsigned int const m) const noexcept;
 
         /**\fn        setBoundary
          * \brief     Set not relevant nodes (e.g. boundary nodes) of a the hydrodynamic
@@ -118,7 +118,7 @@ class Continuum
          * \param[in] boundary   The boundary condition
         */
         template <template <typename U> class LT, typename U, unsigned int NPOP, typename DerivedClass>
-        void setBoundary(BoundaryCondition<NX,NY,NZ,LT,U,NPOP,DerivedClass> const& boundary);
+        void setBoundary(BoundaryCondition<NX,NY,NZ,LT,U,NPOP,DerivedClass> const& boundary) noexcept;
 
         /**\fn        exportBin
          * \brief     Export any scalar quantity at current time step to *.bin file writing to *.bin-files
@@ -127,7 +127,7 @@ class Continuum
          * \param[in] name   The export file name of the scalar
          * \param[in] step   The current time step that will be used for the name
         */
-        void exportBin(std::string const& name, unsigned int const step) const;
+        void exportBin(std::string const& name, unsigned int const step) const noexcept;
 
         /**\fn        exportScalarVtk
          * \brief     Export arbitrary scalar at current time step to a *.vtk-file that can then be read
@@ -138,7 +138,7 @@ class Continuum
          * \param[in] name   The export file name of the scalar
          * \param[in] step   The current time step that will be used for the name
         */
-        void exportScalarVtk(unsigned int const m, std::string const& name, unsigned int const step) const;
+        void exportScalarVtk(unsigned int const m, std::string const& name, unsigned int const step) const noexcept;
 
         /**\fn        exportVtk
          * \brief     Export velocity and density at current time step to a *.vtk-file that can then be
@@ -148,7 +148,7 @@ class Continuum
          *
          * \param[in] step   The current time step that will be used for the name
         */
-        void exportVtk(unsigned int const step) const;
+        void exportVtk(unsigned int const step) const noexcept;
 
         /**\fn        importBin
          * \brief     Import macroscopic values from *.bin-file
@@ -156,7 +156,7 @@ class Continuum
          * \param[in] name   The import file name holding the macroscopic quantities
          * \param[in] step   The current time step that will be used for the name
         */
-        void importBin(std::string const& name, unsigned int const step);
+        void importBin(std::string const& name, unsigned int const step) noexcept;
 
 
         static constexpr unsigned int numberOfMacroscopicValues = 4; // number of macroscopic values: rho, ux, uy, uz

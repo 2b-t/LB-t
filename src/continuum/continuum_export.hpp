@@ -21,7 +21,7 @@
 
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T> template <template <typename U> class LT, typename U, unsigned int NPOP,
           typename DerivedClass>
-void Continuum<NX,NY,NZ,T>::setBoundary(BoundaryCondition<NX,NY,NZ,LT,U,NPOP,DerivedClass> const& boundary)
+void Continuum<NX,NY,NZ,T>::setBoundary(BoundaryCondition<NX,NY,NZ,LT,U,NPOP,DerivedClass> const& boundary) noexcept
 {
     for(size_t i = 0; i < boundary.boundaryElements_.size(); ++i)
     {
@@ -36,7 +36,7 @@ void Continuum<NX,NY,NZ,T>::setBoundary(BoundaryCondition<NX,NY,NZ,LT,U,NPOP,Der
 }
 
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T>
-void Continuum<NX,NY,NZ,T>::exportBin(std::string const& name, unsigned int const step) const
+void Continuum<NX,NY,NZ,T>::exportBin(std::string const& name, unsigned int const step) const noexcept
 {
     std::filesystem::create_directories(path::outputBin);
 
@@ -57,7 +57,7 @@ void Continuum<NX,NY,NZ,T>::exportBin(std::string const& name, unsigned int cons
 }
 
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T>
-void Continuum<NX,NY,NZ,T>::exportScalarVtk(unsigned int const m, std::string const& name, unsigned int const step) const
+void Continuum<NX,NY,NZ,T>::exportScalarVtk(unsigned int const m, std::string const& name, unsigned int const step) const noexcept
 {
     std::filesystem::create_directories(path::outputVtk);
 
@@ -117,7 +117,7 @@ void Continuum<NX,NY,NZ,T>::exportScalarVtk(unsigned int const m, std::string co
 }
 
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T>
-void Continuum<NX,NY,NZ,T>::exportVtk(unsigned int const step) const
+void Continuum<NX,NY,NZ,T>::exportVtk(unsigned int const step) const noexcept
 {
     std::filesystem::create_directories(path::outputVtk);
 

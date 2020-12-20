@@ -44,7 +44,7 @@
  * \param[in] _a   A 512bit AVX512 intrinsic with 8 double numbers
  * \return    The horizontally added intrinsic as a double number
 */
-/*static inline double _mm512_reduce_add_pd(__m512d const _a)
+/*static inline double _mm512_reduce_add_pd(__m512d const _a) noexcept
 {
     __m256d const _b = _mm256_add_pd(_mm512_castpd512_pd256(_a), _mm512_extractf64x4_pd(_a, 1));
     __m128d const _c = _mm_add_pd(_mm256_castpd256_pd128(_b), _mm256_extractf128_pd(_b, 1));
@@ -93,7 +93,7 @@ class BGK_AVX512: public CollisionOperator<NX,NY,NZ,LT,T,NPOP,BGK_AVX512<NX,NY,N
          * \param[in] p            Index of relevant population
         */
         BGK_AVX512(std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population, std::shared_ptr<Continuum<NX,NY,NZ,T>> continuum,
-            T const Re, T const U, unsigned int const L, unsigned int const p = 0):
+            T const Re, T const U, unsigned int const L, unsigned int const p = 0) noexcept:
             CO(population, continuum, p), 
             nu_(U*static_cast<T>(L) / Re),
             tau_(nu_/(LT<T>::CS*LT<T>::CS) + 1.0/ 2.0), omega_(1.0/tau_)
@@ -111,7 +111,7 @@ class BGK_AVX512: public CollisionOperator<NX,NY,NZ,LT,T,NPOP,BGK_AVX512<NX,NY,N
          * \param[in] isSave   Boolean parameter whether the macroscopic values should be saved or not
         */
         template<timestep TS>
-        void implementation(bool const isSave);
+        void implementation(bool const isSave) noexcept;
 
     protected:
         T const nu_;
@@ -121,7 +121,7 @@ class BGK_AVX512: public CollisionOperator<NX,NY,NZ,LT,T,NPOP,BGK_AVX512<NX,NY,N
 
 
 template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP> template<timestep TS>
-void BGK_AVX512<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave)
+void BGK_AVX512<NX,NY,NZ,LT,T,NPOP>::implementation(bool const isSave) noexcept
 {
     #pragma omp parallel for default(none) shared(CO::continuum_,CO::population_) firstprivate(isSave,CO::p_) schedule(static,1)
     for(unsigned int block = 0; block < CO::NUM_BLOCKS_; ++block)

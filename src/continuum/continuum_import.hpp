@@ -18,7 +18,7 @@
 
 
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T>
-void Continuum<NX,NY,NZ,T>::importBin(std::string const& name, unsigned int const step)
+void Continuum<NX,NY,NZ,T>::importBin(std::string const& name, unsigned int const step) noexcept
 {
     std::filesystem::create_directories(path::outputBin);
 

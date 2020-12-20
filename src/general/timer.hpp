@@ -19,7 +19,7 @@ class Timer
         /**\fn    start
          * \brief Start stopwatch
         */
-        void start()
+        void start() noexcept
         {
             start_ = std::chrono::high_resolution_clock::now();
 
@@ -31,7 +31,7 @@ class Timer
          *
          * \return Runtime in seconds
         */
-        double stop()
+        double stop() noexcept
         {
             stop_        = std::chrono::high_resolution_clock::now();
             startToStop_ = std::chrono::duration_cast<std::chrono::duration<double>>(stop_ - start_);
@@ -45,7 +45,7 @@ class Timer
          *
          * \return Runtime in seconds
         */
-        double getRuntime()
+        double getRuntime() noexcept
         {
             std::chrono::high_resolution_clock::time_point const        current_ = std::chrono::high_resolution_clock::now();
             std::chrono::duration<double>                  const startToCurrent_ = std::chrono::duration_cast<std::chrono::duration<double>>(current_ - start_);

@@ -60,7 +60,7 @@ class AaPattern: public Indexing<NX,NY,NZ,LT,T,NPOP>
                                                                       std::array<unsigned int,3> const &z,
                                                                       unsigned int               const n,
                                                                       unsigned int               const d,
-                                                                      unsigned int               const p)
+                                                                      unsigned int               const p) noexcept
         {
             return IDX::spatialToLinear(x[1 + IDX::template oddEven<TS>(static_cast<int>(LT<T>::DX[(!n)*LT<T>::OFF+d]), 0)],
                                         y[1 + IDX::template oddEven<TS>(static_cast<int>(LT<T>::DY[(!n)*LT<T>::OFF+d]), 0)],
@@ -88,7 +88,7 @@ class AaPattern: public Indexing<NX,NY,NZ,LT,T,NPOP>
                                                                        std::array<unsigned int,3> const &z,
                                                                        unsigned int               const n,
                                                                        unsigned int               const d,
-                                                                       unsigned int               const p)
+                                                                       unsigned int               const p) noexcept
         {
             return IDX::spatialToLinear(x[1 + IDX::template oddEven<TS>(static_cast<int>(LT<T>::DX[n*LT<T>::OFF+d]), 0)],
                                         y[1 + IDX::template oddEven<TS>(static_cast<int>(LT<T>::DY[n*LT<T>::OFF+d]), 0)],

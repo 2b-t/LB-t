@@ -44,7 +44,7 @@ namespace geometry
                 Guo<boundary::Type::Pressure,boundary::Orientation::Right,NX,NY,NZ,LT,T,NPOP>,
                 HalfwayBounceBack<NX,NY,NZ,LT,T,NPOP> >
     sphere(std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population, unsigned int const radius, std::array<unsigned int,3> const& position,
-           boundary::Orientation const inletOrientation, bool const isWalls, T const RHO, T const U, T const V, T const W, unsigned int p = 0)
+           boundary::Orientation const inletOrientation, bool const isWalls, T const RHO, T const U, T const V, T const W, unsigned int p = 0) noexcept
     {
         static_assert(LT<T>::DIM == 3, "Please use geometry::cylinder(...) for 2D simulations.");
 

@@ -25,7 +25,7 @@ namespace cem
      * \return    The absolute value of \param x
     */
     template <typename T, typename std::enable_if<std::is_arithmetic<T>::value>::type* = nullptr>
-    constexpr T abs(T const x)
+    constexpr T abs(T const x) noexcept
     {
         return (x > static_cast<T>(0.0)) ? x : -x;
     }
@@ -46,7 +46,7 @@ namespace cem
     #else
     constexpr
     #endif
-    T sqrtNewton(T const x, T const curr, T const prev)
+    T sqrtNewton(T const x, T const curr, T const prev) noexcept
     {
         return abs(curr - prev) <= std::numeric_limits<T>::epsilon()
                ? curr
@@ -59,7 +59,7 @@ namespace cem
     #else
     constexpr
     #endif
-    T sqrt(T const x)
+    T sqrt(T const x) noexcept
     {
         assert(x >= static_cast<T>(0.0));
 
@@ -76,7 +76,7 @@ namespace cem
      * \return    The ceiled number \param num
     */
     template <typename T, typename std::enable_if<std::is_arithmetic<T>::value>::type* = nullptr>
-    constexpr size_t ceil(T const num)
+    constexpr size_t ceil(T const num) noexcept
     {
         return (abs(static_cast<T>(static_cast<size_t>(num)) - num) <= std::numeric_limits<T>::epsilon())
                ? static_cast<size_t>(num)
@@ -91,7 +91,7 @@ namespace cem
      * \return    The summed up arguments
     */
     template <typename... Args>
-    constexpr auto sum(Args const&... args)
+    constexpr auto sum(Args const&... args) noexcept
     {
         return (args + ...);
     }
@@ -105,7 +105,7 @@ namespace cem
      * \return    The arrays merged into a single array
     */
     template <typename T, size_t... SZ>
-    constexpr auto mergeArrays(std::array<T, SZ> const&... arr)
+    constexpr auto mergeArrays(std::array<T, SZ> const&... arr) noexcept
     {
         constexpr size_t numberOfArrays = sizeof...(SZ);
         std::array<T const*,numberOfArrays> const arrayDatas = {arr.data()...};

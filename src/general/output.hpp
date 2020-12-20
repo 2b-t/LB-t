@@ -32,7 +32,7 @@
  * \param[in] NT        Number of time steps
  * \param[in] runtime   Runtime so far in seconds
 */
-void statusOutput(unsigned int const step, unsigned int const NT, double const runtime)
+void statusOutput(unsigned int const step, unsigned int const NT, double const runtime) noexcept
 {
     std::printf("Time step %u (runtime %.2f s, %.2f%%)\n", step, runtime, 100.0*static_cast<double>(step)/static_cast<double>(NT));
 
@@ -72,7 +72,7 @@ class Output
          * \param[in] NT_PLOT      Number of time steps after which a plot step occurs
         */
         Output(std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population, std::shared_ptr<Continuum<NX,NY,NZ,T>> continuum,
-               T const Re, T const RHO, T const U, unsigned int const L, unsigned int const NT, unsigned int const NT_PLOT):
+               T const Re, T const RHO, T const U, unsigned int const L, unsigned int const NT, unsigned int const NT_PLOT) noexcept:
           population_(population), continuum_(continuum), Re_(Re), RHO_(RHO), U_(U), L_(L), NT_(NT), NT_PLOT_(NT_PLOT)
         {
            return;
@@ -81,7 +81,7 @@ class Output
         /**\fn    initialOutput
          * \brief Simulation parameters and OpenMP settings output to console.
         */
-        void initialOutput() const;
+        void initialOutput() const noexcept;
 
         /**\fn        outputPerformance
          * \brief     Output performance benchmark (simulation time, Mlups) at end of
@@ -89,12 +89,12 @@ class Output
          *
          * \param[in] runtime   Simulation runtime in seconds
         */
-        void outputPerformance(double const runtime) const;
+        void outputPerformance(double const runtime) const noexcept;
 
         /**\fn    exportSettings
          * \brief Export parameters to disk
         */
-        void exportSettings() const;
+        void exportSettings() const noexcept;
 
     private:
         std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population_;
@@ -109,7 +109,7 @@ class Output
 
 
 template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP>
-void Output<NX,NY,NZ,LT,T,NPOP>::initialOutput() const
+void Output<NX,NY,NZ,LT,T,NPOP>::initialOutput() const noexcept
 {
     std::printf("LBM simulation\n\n");
     std::printf("     domain size: %ux%ux%u\n", NX, NY, NZ);
@@ -133,7 +133,7 @@ void Output<NX,NY,NZ,LT,T,NPOP>::initialOutput() const
 }
 
 template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP>
-void Output<NX,NY,NZ,LT,T,NPOP>::outputPerformance(double const runtime) const
+void Output<NX,NY,NZ,LT,T,NPOP>::outputPerformance(double const runtime) const noexcept
 {
     constexpr double bytesPerMiB = 1024.0 * 1024.0;
     constexpr double bytesPerGiB = bytesPerMiB * 1024.0;
@@ -160,7 +160,7 @@ void Output<NX,NY,NZ,LT,T,NPOP>::outputPerformance(double const runtime) const
 }
 
 template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP>
-void Output<NX,NY,NZ,LT,T,NPOP>::exportSettings() const
+void Output<NX,NY,NZ,LT,T,NPOP>::exportSettings() const noexcept
 {
     std::filesystem::create_directories(path::outputBin);
 

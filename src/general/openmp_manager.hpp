@@ -28,7 +28,7 @@
              *
              * \return Reference to the singleton class
             */
-            static OpenMpManager& getInstance()
+            static OpenMpManager& getInstance() noexcept
             {
                 static OpenMpManager singletonOpenMpManager {};
 
@@ -40,7 +40,7 @@
              *
              * \param[in] isNested   Boolean true/false parameter
             */
-            void setNestedParallelism(bool const isNested) const
+            void setNestedParallelism(bool const isNested) const noexcept
             {
                 ::omp_set_nested(isNested);
 
@@ -53,7 +53,7 @@
              * \param[in] threadsNum   Number of wished threads (max is given by threads_max)
              * \return    Return exit success or failure
             */
-            int setThreadsNum(int const threadsNum)
+            int setThreadsNum(int const threadsNum) noexcept
             {
                 int isSuccess = EXIT_FAILURE;
 
@@ -73,7 +73,7 @@
              *
              * \return Return maximum number of possible threads
             */
-            int getThreadsMax() const
+            int getThreadsMax() const noexcept
             {
                 return threadsMax_;
             }
@@ -83,7 +83,7 @@
              *
              * \return Return number of active threads
             */
-            int getThreadsNum() const
+            int getThreadsNum() const noexcept
             {
                 return ::omp_get_max_threads();
             }
@@ -93,7 +93,7 @@
              *
              * \return Return number of threads currently active in parallel region
             */
-            int getThreadsCurrent() const
+            int getThreadsCurrent() const noexcept
             {
                 return ::omp_get_num_threads();
             }
@@ -102,7 +102,7 @@
         private:
             /** \brief Default constructor of parallelism class
             */
-            OpenMpManager()
+            OpenMpManager() noexcept
             {
                 ::omp_set_num_threads(::omp_get_num_procs());
 

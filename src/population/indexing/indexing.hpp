@@ -22,7 +22,7 @@ enum class timestep: bool { even = false, odd = true };
  * \param[in] ts   Timestep to be negated
  * \return    Negated timestep
  */
-constexpr timestep operator ! (timestep const& ts)
+constexpr timestep operator ! (timestep const& ts) noexcept
 {
     return (ts == timestep::even) ? timestep::odd : timestep::even;
 }
@@ -34,7 +34,7 @@ constexpr timestep operator ! (timestep const& ts)
  * \param[in]     ts   Timestep to be printed to output stream
  * \return        Output stream including the type of timestep
  */
-std::ostream& operator << (std::ostream& os, timestep const& ts)
+std::ostream& operator << (std::ostream& os, timestep const& ts) noexcept
 {
     os << ((ts == timestep::even) ? "even time step" : "odd time step");
     return os;
@@ -64,7 +64,7 @@ class Indexing
          * \param[in] evenIndex   index to be accessed at an even time step
         */
         template <timestep TS>
-        static inline int __attribute__((always_inline)) oddEven(int const oddIndex, int const evenIndex)
+        static inline int __attribute__((always_inline)) oddEven(int const oddIndex, int const evenIndex) noexcept
         {
             return (TS == timestep::odd) ? oddIndex : evenIndex;
         }
@@ -82,7 +82,7 @@ class Indexing
          * \return    Requested linear population index
         */
         static inline size_t __attribute__((always_inline)) spatialToLinear(unsigned int const x, unsigned int const y, unsigned int const z,
-                                                                            unsigned int const n, unsigned int const d, unsigned int const p)
+                                                                            unsigned int const n, unsigned int const d, unsigned int const p) noexcept
         {
             return (((z*NY + y)*NX + x)*NPOP + p)*LT<T>::ND + n*LT<T>::OFF + d;
         }
@@ -94,12 +94,12 @@ class Indexing
         * \return     Return the x, y, z coordinates as well as the number of population p, positive (0) or negative (1) index n and the number of relevant 
         *             population index d belonging to the scalar index
         */
-        std::tuple<unsigned int,unsigned int,unsigned int,unsigned int,unsigned int,unsigned int> linearToSpatial(size_t const index) const;
+        std::tuple<unsigned int,unsigned int,unsigned int,unsigned int,unsigned int,unsigned int> linearToSpatial(size_t const index) const noexcept;
 };
 
 
 template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP>
-std::tuple<unsigned int,unsigned int,unsigned int,unsigned int,unsigned int,unsigned int> Indexing<NX,NY,NZ,LT,T,NPOP>::linearToSpatial(size_t const index) const
+std::tuple<unsigned int,unsigned int,unsigned int,unsigned int,unsigned int,unsigned int> Indexing<NX,NY,NZ,LT,T,NPOP>::linearToSpatial(size_t const index) const noexcept
 {
     size_t factor = LT<T>::ND*NPOP*NX*NY;
     size_t rest   = index%factor;

@@ -46,7 +46,7 @@ class Population
 
         /**\brief Class constructor
         */
-        Population()
+        Population() noexcept
         {
             static_assert( (LT<T>::DIM == 2) ? (NZ == 1) : true, "Two-dimensional lattice with NZ != 1." );
 
@@ -62,7 +62,7 @@ class Population
         /**\brief     Class copy constructor
          * \param[in] p   The population object to be copied
         */
-        Population(Population const& p)
+        Population(Population const& p) noexcept
         {
             std::memcpy(A, p.A, memorySize);
 
@@ -71,7 +71,7 @@ class Population
 
         /**\brief Class destructor
         */
-        ~Population()
+        ~Population() noexcept
         {
             std::cout << "See you, comrade!" << std::endl;
             #ifdef _WIN32
@@ -102,7 +102,7 @@ class Population
                                                                       std::array<unsigned int,3> const &z,
                                                                       unsigned int               const n,
                                                                       unsigned int               const d,
-                                                                      unsigned int               const p = 0)
+                                                                      unsigned int               const p = 0) noexcept
         {
             return AaPattern<NX,NY,NZ,LT,T,NPOP>::template indexRead<TS>(x,y,z,n,d,p);
         }
@@ -126,7 +126,7 @@ class Population
                                                                        std::array<unsigned int,3> const &z,
                                                                        unsigned int               const n,
                                                                        unsigned int               const d,
-                                                                       unsigned int               const p = 0)
+                                                                       unsigned int               const p = 0) noexcept
         {
             return AaPattern<NX,NY,NZ,LT,T,NPOP>::template indexWrite<TS>(x,y,z,n,d,p);
         }
@@ -150,7 +150,7 @@ class Population
                                                                std::array<unsigned int,3> const &z,
                                                                unsigned int               const n,
                                                                unsigned int               const d,
-                                                               unsigned int               const p = 0)
+                                                               unsigned int               const p = 0) noexcept
         {
             return A[indexRead<TS>(x,y,z,n,d,p)];
         }
@@ -161,7 +161,7 @@ class Population
                                                                std::array<unsigned int,3> const &z,
                                                                unsigned int               const n,
                                                                unsigned int               const d,
-                                                               unsigned int               const p = 0) const
+                                                               unsigned int               const p = 0) const noexcept
         {
             return A[indexRead<TS>(x,y,z,n,d,p)];
         }
@@ -185,7 +185,7 @@ class Population
                                                                  std::array<unsigned int,3> const &z,
                                                                  unsigned int               const n,
                                                                  unsigned int               const d,
-                                                                 unsigned int               const p = 0)
+                                                                 unsigned int               const p = 0) noexcept
         {
             return A[indexWrite<TS>(x,y,z,n,d,p)];
         }
@@ -196,7 +196,7 @@ class Population
                                                                 std::array<unsigned int,3> const &z,
                                                                 unsigned int               const n,
                                                                 unsigned int               const d,
-                                                                unsigned int               const p) const
+                                                                unsigned int               const p) const noexcept
         {
             return A[indexWrite<TS>(x,y,z,n,d,p)];
         }
@@ -208,14 +208,14 @@ class Population
          *
          * \param[in] name   The import file name of the scalar
         */
-        void importBin(std::string const& name);
+        void importBin(std::string const& name) noexcept;
 
         /**\fn        exportBin
          * \brief     Export populations at current time step to *.bin file
          *
          * \param[in] name   The export file name of the scalar
         */
-        void exportBin(std::string const& name) const;
+        void exportBin(std::string const& name) const noexcept;
 
 
         /// lattice characteristics

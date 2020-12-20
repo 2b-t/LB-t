@@ -42,7 +42,7 @@ class CollisionOperator
          * \param[in] isSave   Boolean parameter whether the macroscopic values should be saved or not
         */
         template<timestep TS>
-        void collideStream(bool const isSave = false)
+        void collideStream(bool const isSave = false) noexcept
         {
             static_cast<DerivedClass*>(this)->template implementation<TS>(isSave);
 
@@ -59,7 +59,7 @@ class CollisionOperator
          * \param[in] V_0     The uniform initial velocity in z-direction across the flow field
         */
         template<timestep TS>
-        void initialise(T const RHO_0, T const U_0, T const V_0, T const W_0);
+        void initialise(T const RHO_0, T const U_0, T const V_0, T const W_0) noexcept;
 
     protected:
         /**\brief     Constructor
@@ -69,7 +69,7 @@ class CollisionOperator
          * \param[in] p            Index of relevant population
         */
         CollisionOperator(std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population, std::shared_ptr<Continuum<NX,NY,NZ,T>> continuum,
-                          unsigned int const p = 0):
+                          unsigned int const p = 0) noexcept:
             population_(population), continuum_(continuum), p_(p)
         {
             return;
@@ -83,7 +83,7 @@ class CollisionOperator
          * \param[in] V_0     The uniform initial velocity in y-direction across the flow field
          * \param[in] V_0     The uniform initial velocity in z-direction across the flow field
         */
-        void initialiseContinuum_(T const RHO_0, T const U_0, T const V_0, T const W_0);
+        void initialiseContinuum_(T const RHO_0, T const U_0, T const V_0, T const W_0) noexcept;
 
         /**\fn     initialisePopulationFromContinuum_
          * \brief  Initialise the microscopic distributions for the macroscopic continuum
@@ -91,7 +91,7 @@ class CollisionOperator
          * \tparam TS   Even or odd timestep
         */
         template<timestep TS>
-        void initialisePopulationFromContinuum_();
+        void initialisePopulationFromContinuum_() noexcept;
 
         /// macro and microscopic values
         std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population_;
@@ -110,7 +110,7 @@ class CollisionOperator
 
 template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP, typename DerivedClass>
 template<timestep TS>
-void CollisionOperator<NX,NY,NZ,LT,T,NPOP,DerivedClass>::initialise(T const RHO_0, T const U_0, T const V_0, T const W_0)
+void CollisionOperator<NX,NY,NZ,LT,T,NPOP,DerivedClass>::initialise(T const RHO_0, T const U_0, T const V_0, T const W_0) noexcept
 {
     initialiseContinuum_(RHO_0, U_0, V_0, W_0);
     initialisePopulationFromContinuum_<TS>();
@@ -119,7 +119,7 @@ void CollisionOperator<NX,NY,NZ,LT,T,NPOP,DerivedClass>::initialise(T const RHO_
 }
 
 template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP, typename DerivedClass>
-void CollisionOperator<NX,NY,NZ,LT,T,NPOP,DerivedClass>::initialiseContinuum_(T const RHO_0, T const U_0, T const V_0, T const W_0)
+void CollisionOperator<NX,NY,NZ,LT,T,NPOP,DerivedClass>::initialiseContinuum_(T const RHO_0, T const U_0, T const V_0, T const W_0) noexcept
 {
     #pragma omp parallel for default(none) shared(continuum_) firstprivate(RHO_0,U_0,V_0,W_0) schedule(static,1)
     for(unsigned int block = 0; block < NUM_BLOCKS_; ++block)
@@ -153,7 +153,7 @@ void CollisionOperator<NX,NY,NZ,LT,T,NPOP,DerivedClass>::initialiseContinuum_(T 
 
 template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP, typename DerivedClass>
 template<timestep TS>
-void CollisionOperator<NX,NY,NZ,LT,T,NPOP,DerivedClass>::initialisePopulationFromContinuum_()
+void CollisionOperator<NX,NY,NZ,LT,T,NPOP,DerivedClass>::initialisePopulationFromContinuum_() noexcept
 {
     #pragma omp parallel for default(none) shared(continuum_, population_) firstprivate(p_) schedule(static,1)
     for(unsigned int block = 0; block < NUM_BLOCKS_; ++block)

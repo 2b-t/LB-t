@@ -2,9 +2,9 @@
 
 [![Build Status](https://travis-ci.com/2b-t/LB-t.svg?branch=master)](https://travis-ci.com/2b-t/LB-t) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/18af2a859b2340a6bdfbd04cd8ed0626)](https://www.codacy.com/gh/2b-t/LB-t/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=2b-t/LB-t&amp;utm_campaign=Badge_Grade)
 
-*Author: [Tobit Flatscher](https://github.com/2b-t) (December 2019 - October 2020)
+Author: [Tobit Flatscher](https://github.com/2b-t) (December 2019 - December 2020)
 
-[![Turbulent gaseous flow in porous media](/doc/PorousMedia_Re3750Sc1.jpeg)](https://www.youtube.com/watch?v=7SR4vhMnWZc "Turbulent gaseous flow in porous media")
+[![Turbulent gaseous flow in porous media](doc/PorousMedia_Re3750Sc1.jpeg)](https://www.youtube.com/watch?v=7SR4vhMnWZc "Turbulent gaseous flow in porous media")
 
 ## Overview
 This is a **object-oriented parallel lattice-Boltzmann computational fluid dynamics (CFD) solver framework for arbitrary lattices (for any number of speed and spatial dimensions) based on C++17 and [OpenMP](https://www.openmp.org/)**. The files include a Makefile for the Intel Compiler ICC as well as the Gnu Compiler GCC.

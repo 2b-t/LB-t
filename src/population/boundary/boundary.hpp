@@ -65,7 +65,7 @@ class BoundaryCondition
          * \tparam TS   Even or odd timestep
         */
         template <timestep TS>
-        void beforeCollisionOperator()
+        void beforeCollisionOperator() noexcept
         {
             static_cast<DerivedClass*>(this)->template implementationBeforeCollisionOperator<TS>();
 
@@ -79,7 +79,7 @@ class BoundaryCondition
          * \tparam TS   Even or odd timestep
         */
         template <timestep TS>
-        void afterCollisionOperator()
+        void afterCollisionOperator() noexcept
         {
             static_cast<DerivedClass*>(this)->template implementationAfterCollisionOperator<TS>();
 
@@ -92,7 +92,7 @@ class BoundaryCondition
          *
          * \param[in] name   The export file name of the domain
         */
-        void exportDomainVtk(std::string const& name = "domain") const;
+        void exportDomainVtk(std::string const& name = "domain") const noexcept;
 
         std::vector<boundary::Element<T>> const boundaryElements_; ///< public in order to avoid circular dependency with continuum
 
@@ -104,7 +104,7 @@ class BoundaryCondition
          * \param[in] p                  Index of relevant population
         */
         BoundaryCondition(std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population, std::vector<boundary::Element<T>> const& boundaryElements,
-                          unsigned int const p = 0):
+                          unsigned int const p = 0) noexcept:
             boundaryElements_(boundaryElements), population_(population), p_(p)
         {
             return;
@@ -115,7 +115,7 @@ class BoundaryCondition
 };
 
 template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP, typename DerivedClass>
-void BoundaryCondition<NX,NY,NZ,LT,T,NPOP,DerivedClass>::exportDomainVtk(std::string const& name) const
+void BoundaryCondition<NX,NY,NZ,LT,T,NPOP,DerivedClass>::exportDomainVtk(std::string const& name) const noexcept
 {
     std::filesystem::create_directories(path::outputVtk);
 

@@ -24,7 +24,7 @@ namespace boundary
      * \param[in]     orientation   Orientation to be printed to output stream
      * \return        Output stream including the boundary condition orientation
     */
-    std::ostream& operator<<(std::ostream& os, Orientation const orientation)
+    std::ostream& operator<<(std::ostream& os, Orientation const orientation) noexcept
     {
         switch (orientation) {
             case Orientation::Left:

@@ -38,7 +38,7 @@
  * \param[in]     NT                  Number of timesteps that should be executed
  */
 template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP, typename DerivedClass>
-void benchmarkSingleLatticeSingleCollisionOperator(CollisionOperator<NX,NY,NZ,LT,T,NPOP,DerivedClass>& collisionOperator, unsigned int const NT)
+void benchmarkSingleLatticeSingleCollisionOperator(CollisionOperator<NX,NY,NZ,LT,T,NPOP,DerivedClass>& collisionOperator, unsigned int const NT) noexcept
 {
     collisionOperator.template initialise<timestep::even>(1.0, 0.05, 0.05, 0.05);
 
@@ -71,7 +71,7 @@ void benchmarkSingleLatticeSingleCollisionOperator(CollisionOperator<NX,NY,NZ,LT
  * \param[in] NT   Number of timesteps that should be executed
  */
 template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T>
-void benchmarkSingleLatticeAllCollisionOperators(unsigned int const NT)
+void benchmarkSingleLatticeAllCollisionOperators(unsigned int const NT) noexcept
 {
     std::cout << "- D" << LT<T>::DIM << "Q" << LT<T>::SPEEDS << " lattice with padding to " << LT<T>::ND << std::endl;
 
@@ -116,7 +116,7 @@ void benchmarkSingleLatticeAllCollisionOperators(unsigned int const NT)
  * \brief   Benchmark all lattices and their corresponding collision operators
  * \warning New lattices have to be added to this function manually!
  */
-void benchmarkAllLatticesAllCollisionOperators()
+void benchmarkAllLatticesAllCollisionOperators() noexcept
 {
     std::cout << "Starting benchmark..." << std::endl;
 

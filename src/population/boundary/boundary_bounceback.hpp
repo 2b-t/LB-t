@@ -47,7 +47,7 @@ class HalfwayBounceBack: public BoundaryCondition<NX,NY,NZ,LT,T,NPOP,HalfwayBoun
          * \param[in] p                  Index of relevant population
         */
         HalfwayBounceBack(std::shared_ptr<Population<NX,NY,NZ,LT,T,NPOP>> population, std::vector<boundary::Element<T>> const& boundaryElements,
-                          unsigned int const p = 0):
+                          unsigned int const p = 0) noexcept:
             BC(population, boundaryElements, p)
         {
             return;
@@ -59,7 +59,7 @@ class HalfwayBounceBack: public BoundaryCondition<NX,NY,NZ,LT,T,NPOP,HalfwayBoun
          * \tparam TS   Even or odd timestep
         */
         template <timestep TS>
-        void implementationBeforeCollisionOperator();
+        void implementationBeforeCollisionOperator() noexcept;
 
         /**\fn     implementationAfterCollisionOperator
          * \brief  Implementation of the boundary condition to be performed before the collision operator
@@ -67,17 +67,17 @@ class HalfwayBounceBack: public BoundaryCondition<NX,NY,NZ,LT,T,NPOP,HalfwayBoun
          * \tparam TS   Even or odd timestep
         */
         template <timestep TS>
-        void implementationAfterCollisionOperator();
+        void implementationAfterCollisionOperator() noexcept;
 };
 
 template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP> template <timestep TS>
-void HalfwayBounceBack<NX,NY,NZ,LT,T,NPOP>::implementationBeforeCollisionOperator()
+void HalfwayBounceBack<NX,NY,NZ,LT,T,NPOP>::implementationBeforeCollisionOperator() noexcept
 {
     return;
 }
 
 template <unsigned int NX, unsigned int NY, unsigned int NZ, template <typename T> class LT, typename T, unsigned int NPOP> template <timestep TS>
-void HalfwayBounceBack<NX,NY,NZ,LT,T,NPOP>::implementationAfterCollisionOperator()
+void HalfwayBounceBack<NX,NY,NZ,LT,T,NPOP>::implementationAfterCollisionOperator() noexcept
 {
     #pragma omp parallel for default(none) shared(BC::boundaryElements_,BC::population_,BC::p_) schedule(static,32)
     for(size_t i = 0; i < BC::boundaryElements_.size(); ++i)

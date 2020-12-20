@@ -10,13 +10,13 @@
 
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T>
 inline size_t __attribute__((always_inline)) Continuum<NX,NY,NZ,T>::spatialToLinear(unsigned int const x, unsigned int const y, unsigned int const z,
-                                                                                    unsigned int const m) const
+                                                                                    unsigned int const m) const noexcept
 {
     return ((z*NY + y)*NX + x)*numberOfMacroscopicValues + m;
 }
 
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T>
-std::tuple<unsigned int, unsigned int, unsigned int, unsigned int> Continuum<NX,NY,NZ,T>::linearToSpatial(size_t const index) const
+std::tuple<unsigned int, unsigned int, unsigned int, unsigned int> Continuum<NX,NY,NZ,T>::linearToSpatial(size_t const index) const noexcept
 {
     size_t factor = numberOfMacroscopicValues*NX*NY;
     size_t rest   = index%factor;
@@ -36,14 +36,14 @@ std::tuple<unsigned int, unsigned int, unsigned int, unsigned int> Continuum<NX,
 
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T>
 inline T& __attribute__((always_inline)) Continuum<NX,NY,NZ,T>::operator() (unsigned int const x, unsigned int const y, unsigned int const z,
-                                                                            unsigned int const m)
+                                                                            unsigned int const m) noexcept
 {
     return M[spatialToLinear(x,y,z,m)];
 }
 
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T>
 inline T const& __attribute__((always_inline)) Continuum<NX,NY,NZ,T>::operator() (unsigned int const x, unsigned int const y, unsigned int const z,
-                                                                                  unsigned int const m) const
+                                                                                  unsigned int const m) const noexcept
 {
     return M[spatialToLinear(x,y,z,m)];
 }
