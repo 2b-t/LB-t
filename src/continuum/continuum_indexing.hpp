@@ -7,6 +7,8 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#include <tuple>
+
 
 template <unsigned int NX, unsigned int NY, unsigned int NZ, typename T>
 inline size_t __attribute__((always_inline)) Continuum<NX,NY,NZ,T>::spatialToLinear(unsigned int const x, unsigned int const y, unsigned int const z,

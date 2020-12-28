@@ -5,10 +5,10 @@
 */
 
 #include <array>
+#include <cstdlib>
+#include <cstring>
 #include <iostream>
 #include <memory>
-#include <stdlib.h>
-#include <string.h>
 #include <vector>
 
 #include "continuum/continuum.hpp"
