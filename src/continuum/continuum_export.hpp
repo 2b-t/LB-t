@@ -69,30 +69,14 @@ void Continuum<NX,NY,NZ,T>::exportScalarVtk(unsigned int const m, std::string co
         std::fprintf(exportFile.get(), "# vtk DataFile Version 3.0\n");
         std::fprintf(exportFile.get(), "LBM CFD simulation scalar %s\n", name.c_str());
         std::fprintf(exportFile.get(), "ASCII\n");
-        std::fprintf(exportFile.get(), "DATASET RECTILINEAR_GRID\n");
+        std::fprintf(exportFile.get(), "DATASET STRUCTURED_POINTS\n");
 
-        std::fprintf(exportFile.get(), "DIMENSIONS %u %u %u\n", NX, NY, NZ);
-        std::fprintf(exportFile.get(), "X_COORDINATES %u float\n", NX);
-        for(unsigned int x = 0; x < NX; ++x)
-        {
-            std::fprintf(exportFile.get(),"%u ", x);
-        }
-        std::fprintf(exportFile.get(), "\n");
-        std::fprintf(exportFile.get(), "Y_COORDINATES %u float\n", NY);
-        for(unsigned int y = 0; y < NY; ++y)
-        {
-            std::fprintf(exportFile.get(),"%u ", y);
-        }
-        std::fprintf(exportFile.get(), "\n");
-        std::fprintf(exportFile.get(), "Z_COORDINATES %u float\n", NZ);
-        for(unsigned int z = 0; z < NZ; ++z)
-        {
-            std::fprintf(exportFile.get(), "%u ", z);
-        }
-        std::fprintf(exportFile.get(), "\n");
+        std::fprintf(exportFile.get(), "DIMENSIONS %u %u %u\n", NX+1, NY+1, NZ+1);
+        std::fprintf(exportFile.get(), "SPACING 1 1 1\n");
+        std::fprintf(exportFile.get(), "ORIGIN 0 0 0\n");
 
         constexpr size_t numberOfCells = static_cast<size_t>(NX)*static_cast<size_t>(NY)*static_cast<size_t>(NZ);
-        std::fprintf(exportFile.get(), "POINT_DATA %zu\n", numberOfCells);
+        std::fprintf(exportFile.get(), "CELL_DATA %zu\n", numberOfCells);
 
         std::fprintf(exportFile.get(), "SCALARS transport_scalar float 1\n");
         std::fprintf(exportFile.get(), "LOOKUP_TABLE default\n");
@@ -129,30 +113,14 @@ void Continuum<NX,NY,NZ,T>::exportVtk(unsigned int const step) const noexcept
         std::fprintf(exportFile.get(), "# vtk DataFile Version 3.0\n");
         std::fprintf(exportFile.get(), "LBM CFD simulation velocity\n");
         std::fprintf(exportFile.get(), "ASCII\n");
-        std::fprintf(exportFile.get(), "DATASET RECTILINEAR_GRID\n");
+        std::fprintf(exportFile.get(), "DATASET STRUCTURED_POINTS\n");
 
-        std::fprintf(exportFile.get(), "DIMENSIONS %u %u %u\n", NX, NY, NZ);
-        std::fprintf(exportFile.get(), "X_COORDINATES %u float\n", NX);
-        for(unsigned int x = 0; x < NX; ++x)
-        {
-            std::fprintf(exportFile.get(),"%u ", x);
-        }
-        std::fprintf(exportFile.get(), "\n");
-        std::fprintf(exportFile.get(), "Y_COORDINATES %u float\n", NY);
-        for(unsigned int y = 0; y < NY; ++y)
-        {
-            std::fprintf(exportFile.get(),"%u ", y);
-        }
-        std::fprintf(exportFile.get(), "\n");
-        std::fprintf(exportFile.get(), "Z_COORDINATES %u float\n", NZ);
-        for(unsigned int z = 0; z < NZ; ++z)
-        {
-            std::fprintf(exportFile.get(), "%u ", z);
-        }
-        std::fprintf(exportFile.get(), "\n");
+        std::fprintf(exportFile.get(), "DIMENSIONS %u %u %u\n", NX+1, NY+1, NZ+1);
+        std::fprintf(exportFile.get(), "SPACING 1 1 1\n");
+        std::fprintf(exportFile.get(), "ORIGIN 0 0 0\n");
 
         constexpr size_t numberOfCells = static_cast<size_t>(NX)*static_cast<size_t>(NY)*static_cast<size_t>(NZ);
-        std::fprintf(exportFile.get(), "POINT_DATA %zu\n", numberOfCells);
+        std::fprintf(exportFile.get(), "CELL_DATA %zu\n", numberOfCells);
 
         std::fprintf(exportFile.get(), "SCALARS density_variation float 1\n");
         std::fprintf(exportFile.get(), "LOOKUP_TABLE default\n");
