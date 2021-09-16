@@ -1,0 +1,58 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "detail": "Build workspace",
+      "type": "shell",
+      "command": [
+        "cmake -B${workspaceFolder}/build -S${workspaceFolder}/src -DVTK_DIR=${workspaceFolder}/../VTK-build &&",
+        "make -C${workspaceFolder}/build &&",
+        "cmake -B${workspaceFolder}/build-tests -S${workspaceFolder}/tests -DVTK_DIR=${workspaceFolder}/../VTK-build &&",
+        "make -C${workspaceFolder}/build-tests"
+      ],
+      "problemMatcher": "$gcc"
+    },
+    {
+      "label": "run",
+      "detail": "Run program.",
+      "type": "process",
+      "command": "${workspaceFolder}/build/lbt",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "dependsOn": [
+        "build"
+      ]
+    },
+    {
+      "label": "test",
+      "detail": "Run all unit tests and show results.",
+      "type": "process",
+      "command": "${workspaceFolder}/build-tests/run_lbt_tests",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "dependsOn": [
+        "build"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "clean",
+      "detail": "Run the clean target",
+      "type": "shell",
+      "command": "make clean -C${workspaceFolder}/build && make clean -C${workspaceFolder}/tests",
+      "problemMatcher": "$gcc"
+    },
+    {
+      "label": "purge",
+      "detail": "Purge workspace by deleting all generated files.",
+      "type": "shell",
+      "command": "rm -fr ${workspaceFolder}/build ${workspaceFolder}/build-tests",
+      "problemMatcher": []
+    }
+  ]
+}
