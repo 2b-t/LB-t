@@ -6,5 +6,4 @@ services:
       service: lbt_docker
     environment:
      - NVIDIA_VISIBLE_DEVICES=all
-     - QT_X11_NO_MITSHM=1
     runtime: nvidia
