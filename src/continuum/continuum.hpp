@@ -10,7 +10,9 @@
 #include <cassert>
 #include <cstdlib>
 #include <filesystem>
+#include <iomanip>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <type_traits>
 
@@ -23,6 +25,22 @@
 
 
 namespace lbt {
+
+  /**\fn        toString
+   * \brief     Convert a value \p s to a std::string considering the precision \p digits
+   *
+   * \tparam    S        The type of the value to be converted to string
+   * \param[in] s        The value to be converted to string
+   * \param[in] digits   The number of digits that should be considered when converting to string
+   * \return    The input value converted to a string
+  */
+  template <typename S>
+  std::string toString(S const s, std::int32_t const digits = 3) noexcept {
+    std::ostringstream ss {};
+    ss.precision(digits);
+    ss << std::fixed << s;
+    return ss.str();
+  }
 
   /**\class  Continuum
    * \brief  Class for the macroscopic variables
@@ -153,22 +171,6 @@ namespace lbt {
       void exportToMhd(double const timestamp, bool const is_compress = true) const noexcept;
 
     private:
-      /**\fn        toString_
-       * \brief     Convert a value \p s to a std::string considering the precision \p digits
-       *
-       * \tparam    S        The type of the value to be converted to string
-       * \param[in] s        The value to be converted to string
-       * \param[in] digits   The number of digits that should be considered when converting to string
-       * \return    The input value converted to a string
-      */
-      template <typename S>
-      static std::string toString_(S const s, std::int32_t const digits = 3) noexcept {
-        std::ostringstream ss {};
-        ss.precision(digits);
-        ss << std::fixed << s;
-        return ss.str();
-      }
-
       /**\fn        allocateScalar_
        * \brief     Allocate a certain scalar with the corresponding data type
        *
@@ -259,13 +261,13 @@ namespace lbt {
     std::filesystem::create_directories(output_path);
 
     // Export all different scalars
-    std::filesystem::path const filename_p {"p_" + toString_(timestamp)}; 
+    std::filesystem::path const filename_p {"p_" + toString(timestamp)}; 
     exportImageDataToVtk(p, output_path, filename_p);
-    std::filesystem::path const filename_u {"u_" + toString_(timestamp)}; 
+    std::filesystem::path const filename_u {"u_" + toString(timestamp)}; 
     exportImageDataToVtk(u, output_path, filename_u);
-    std::filesystem::path const filename_v {"v_" + toString_(timestamp)}; 
+    std::filesystem::path const filename_v {"v_" + toString(timestamp)}; 
     exportImageDataToVtk(v, output_path, filename_v);
-    std::filesystem::path const filename_w {"w_" + toString_(timestamp)}; 
+    std::filesystem::path const filename_w {"w_" + toString(timestamp)}; 
     exportImageDataToVtk(w, output_path, filename_w);
     return;
   }
@@ -275,13 +277,13 @@ namespace lbt {
     std::filesystem::create_directories(output_path);
 
     // Export all different scalars
-    std::filesystem::path const filename_p {"p_" + toString_(timestamp)}; 
+    std::filesystem::path const filename_p {"p_" + toString(timestamp)}; 
     exportImageDataToMhd(p, output_path, filename_p, is_compress);
-    std::filesystem::path const filename_u {"u_" + toString_(timestamp)}; 
+    std::filesystem::path const filename_u {"u_" + toString(timestamp)}; 
     exportImageDataToMhd(u, output_path, filename_u, is_compress);
-    std::filesystem::path const filename_v {"v_" + toString_(timestamp)}; 
+    std::filesystem::path const filename_v {"v_" + toString(timestamp)}; 
     exportImageDataToMhd(v, output_path, filename_v, is_compress);
-    std::filesystem::path const filename_w {"w_" + toString_(timestamp)}; 
+    std::filesystem::path const filename_w {"w_" + toString(timestamp)}; 
     exportImageDataToMhd(w, output_path, filename_w, is_compress);
     return;
   }

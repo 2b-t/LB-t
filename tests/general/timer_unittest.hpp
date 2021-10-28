@@ -17,7 +17,7 @@
  
 
 /// Test if start stop is working
-TEST(TimerTest, StartStop) {
+TEST(TimerTest, startStop) {
   using namespace std::chrono_literals;
   auto const runtime = 1s;
   double const abs_error {0.1};
@@ -28,7 +28,7 @@ TEST(TimerTest, StartStop) {
   double const duration = timer.stop();
   EXPECT_NEAR(duration, static_cast<double>(runtime.count()), abs_error);
 }
-TEST(TimerTest, StartStopStartStop) {
+TEST(TimerTest, startStopStartStop) {
   using namespace std::chrono_literals;
   auto const runtime_1 = 1s;
   auto const runtime_2 = 2s;

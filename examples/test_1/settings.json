@@ -1,43 +1,33 @@
 {
   "boundaryConditions": [
     {
-      "Velocity": null,
       "boundaryType": "slip",
-      "density": 0,
       "referencePlane": "left"
     },
     {
-      "Velocity": null,
       "boundaryType": "slip",
-      "density": 0,
       "referencePlane": "right"
     },
     {
-      "Velocity": null,
       "boundaryType": "slip",
-      "density": 0,
       "referencePlane": "top"
     },
     {
-      "Velocity": null,
       "boundaryType": "noSlip",
-      "density": 0,
       "referencePlane": "bottom"
     },
     {
-      "Velocity": null,
       "boundaryType": "pressure",
       "density": 1,
       "referencePlane": "front"
     },
     {
-      "Velocity": {
+      "velocity": {
         "x": 2.51,
         "y": 0,
         "z": 0
       },
       "boundaryType": "velocity",
-      "density": 1.0,
       "referencePlane": "back"
     }
   ],
@@ -47,31 +37,23 @@
     "NZ": 226
   },
   "geometry": {
+    "boundingBox": {
+      "min": {
+        "x": -472.98169999999988,
+        "y": -324.70295,
+        "z": 0
+      },
+      "max": {
+        "x": 527.0183,
+        "y": 325.29705,
+        "z": 350
+      }
+    },
     "models": [
       {
         "filename": "models/building.vtk"
       }
-    ],
-    "v0": {
-      "x": -472.98169999999988,
-      "y": -324.70295,
-      "z": 0
-    },
-    "v1": {
-      "x": 527.0183,
-      "y": -324.70295,
-      "z": 0
-    },
-    "v2": {
-      "x": -472.98169999999988,
-      "y": 325.29705,
-      "z": 0
-    },
-    "v3": {
-      "x": -472.98169999999988,
-      "y": -324.70295,
-      "z": 350
-    }
+    ]
   },
   "initialConditions": {
     "velocity": {

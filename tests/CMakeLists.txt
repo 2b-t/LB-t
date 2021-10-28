@@ -37,6 +37,7 @@ include(GoogleTest)
 # Add executable
 add_executable(run_lbt_tests
                run_unittests.cpp
+               ../src/general/disclaimer.cpp
                ../src/general/timer.cpp
                )
 

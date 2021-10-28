@@ -18,7 +18,7 @@
  
 
 /// Test that redirect is working
-TEST(StreamManagerTest, Redirect) {
+TEST(StreamManagerTest, redirect) {
   std::string const test_str {"Redirect message"};
 
   std::stringstream ss {};
@@ -31,7 +31,7 @@ TEST(StreamManagerTest, Redirect) {
 }
 
 /// Test that restore is working
-TEST(StreamManagerTest, Restore) {
+TEST(StreamManagerTest, restore) {
   std::string const test_str_src {"Message for source"};
   std::string const test_str_dst {"Message for destination"};
 
@@ -51,7 +51,7 @@ TEST(StreamManagerTest, Restore) {
 }
 
 /// Test that turn off is working
-TEST(StreamManagerTest, TurnOff) {
+TEST(StreamManagerTest, turnOff) {
   std::string const test_str_out {"Output this message"};
   std::string const test_str_no_out {"Do not output this message"};
   
@@ -69,7 +69,7 @@ TEST(StreamManagerTest, TurnOff) {
 }
 
 /// Test that turn_on is working (depends on turn_off!)
-TEST(StreamManagerTest, TurnOn) {
+TEST(StreamManagerTest, turnOn) {
   std::string const test_str_no_out {"Do not output this message"};
   std::string const test_str_out {"Output this message"};
   
@@ -87,7 +87,7 @@ TEST(StreamManagerTest, TurnOn) {
 }
 
 /// Test that destructor is resetting the stream
-TEST(StreamManagerTest, DestructorRestore) {
+TEST(StreamManagerTest, destructorRestore) {
   std::string const test_str_no_out {"Do not output this message"};
   std::string const test_str_out {"Output this message"};
 
@@ -105,7 +105,7 @@ TEST(StreamManagerTest, DestructorRestore) {
   ss_src << test_str_out;
   EXPECT_TRUE(ss_src.str() == test_str_out);
 }
-TEST(StreamManagerTest, DestructorTurnOn) {
+TEST(StreamManagerTest, destructorTurnOn) {
   std::string const test_str_no_out {"Do not output this message"};
   std::string const test_str_out {"Output this message"};
 

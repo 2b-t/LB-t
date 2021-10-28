@@ -110,7 +110,7 @@ namespace lbt {
         static constexpr unsigned int HSPEED = (SPEEDS + 1)/2;
 
         /// linear memory layout padding
-        static constexpr unsigned int PAD = ((CACHE_LINE_SIZE - sizeof(T)*SPEEDS % CACHE_LINE_SIZE) % CACHE_LINE_SIZE) / sizeof(T);
+        static constexpr unsigned int PAD = ((LBT_CACHE_LINE_SIZE - sizeof(T)*SPEEDS % LBT_CACHE_LINE_SIZE) % LBT_CACHE_LINE_SIZE) / sizeof(T);
         static constexpr unsigned int  ND = SPEEDS + PAD;
         static constexpr unsigned int OFF = ND/2;
 

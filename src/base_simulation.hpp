@@ -1,3 +1,7 @@
+#ifndef LBT_BASE_SIMULATION
+#define LBT_BASE_SIMULATION
+#pragma once
+
 /**\file     base_simulation.hpp
  * \mainpage Contains the main base class for simulation
  * \author   Tobit Flatscher (github.com/2b-t)
@@ -35,3 +39,5 @@ namespace lbt {
   };
 
 }
+
+#endif // LBT_BASE_SIMULATION

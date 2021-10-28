@@ -26,14 +26,20 @@ namespace lbt {
     ss << "<unknown operating system>";
     #endif
     ss << " with ";
-    #ifdef __ICC
+    #if defined(__ICC)
     ss << "ICC (Linux) "   << __ICC << std::endl;
-    #elif __ICL
+    #elif defined(__ICL)
     ss << "ICC (Windows) " << __ICL << std::endl;
-    #elif __GNUC__
+    #elif defined(__clang__)
+    ss << "Clang " << __clang_major__      << "."
+                   << __clang_minor__      << "."
+                   << __clang_patchlevel__ << std::endl;
+    #elif defined(__GNUC__) && !defined(__clang__)
     ss << "GCC " << __GNUC__            << "."
                  << __GNUC_MINOR__      << "."
                  << __GNUC_PATCHLEVEL__ << std::endl;
+    #elif defined(_MSC_BUILD)
+    ss << "Microsoft Visual C++ (MSVC) " << _MSC_VER << std::endl;
     #else
     ss << "<unknown compiler>" << std::endl;
     #endif
@@ -53,7 +59,9 @@ namespace lbt {
                                                                          {200805,"3.0"},
                                                                          {201107,"3.1"},
                                                                          {201307,"4.0"},
-                                                                         {201511,"4.5"}};
+                                                                         {201511,"4.5"},
+                                                                         {201811,"5.0"},
+                                                                         {202011,"5.1"}};
 
     std::string omp_version {"<unknown>"};
     if (omp_version_map.find(_OPENMP) != omp_version_map.end()) {
@@ -70,9 +78,9 @@ namespace lbt {
 
     ss << " Vector intrinsics: ";
     #ifdef __AVX512CD__
-    ss << "AVX512 (512bit, 8 doubles, 16 floats)" << std::endl;
+    ss << "AVX512 (512 bit, 8 doubles, 16 floats)" << std::endl;
     #elif __AVX2__
-    ss << "AVX2 (256bit, 4 doubles, 8 floats)"    << std::endl;
+    ss << "AVX2 (256 bit, 4 doubles, 8 floats)"    << std::endl;
     #else
     ss << "<not supported>" << std::endl;
     #endif
