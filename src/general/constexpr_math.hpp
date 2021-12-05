@@ -135,14 +135,12 @@ namespace lbt {
      * \param[in] num   The number that should be ceiled
      * \return    The ceiled number \p num
     */
-    template <typename T, typename std::enable_if_t<std::is_arithmetic_v<T>>* = nullptr>
+    template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
     constexpr std::decay_t<T> ceil(T x) noexcept {
       using F = std::decay_t<T>;
 
-      if constexpr (std::is_floating_point_v<T>) {
-        if (cem::isNan(x) || cem::isPosInf(x) || cem::isNegInf(x)) {
-          return x;
-        }
+      if (cem::isNan(x) || cem::isPosInf(x) || cem::isNegInf(x)) {
+        return x;
       }
       
       return cem::nearlyEqual(static_cast<F>(static_cast<std::int64_t>(x)), x)
