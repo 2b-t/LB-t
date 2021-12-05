@@ -71,11 +71,11 @@ namespace lbt {
 using IntegerDataTypes = ::testing::Types<std::int8_t,  std::int16_t,  std::int32_t,  std::int64_t, 
                                           std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t>;
 
-using FloatingPointDataTypes = ::testing::Types<float, double>;
+using FloatingPointDataTypes = ::testing::Types<float, double, long double>;
 
 using ArithmeticDataTypes = ::testing::Types<std::int8_t,  std::int16_t,  std::int32_t,  std::int64_t, 
                                              std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t,
-                                             float, double>;
+                                             float, double, long double>;
 
 
 /// Test random number generator for floating point data types
@@ -138,32 +138,158 @@ TYPED_TEST(RandomIntegerNumberTest, invertLimits) {
   }
 }
 
+/// Test function for detecting Nan values
+template <typename T>
+struct IsNanTest: public ::testing::Test {
+};
 
-// Template also these tests!
-// Come up with better implementation for corner cases
-// Come up with better implementation of nearly equal
-// Re-use existing tests for sqrt and abs
+TYPED_TEST_SUITE(IsNanTest, FloatingPointDataTypes);
 
-/// Tests for absolute value
-TEST(AbsTest, doubleZero) {
-  EXPECT_DOUBLE_EQ(lbt::cem::abs(0.0), 0.0);
-  EXPECT_DOUBLE_EQ(lbt::cem::abs(0.0), std::abs(0.0));
+TYPED_TEST(IsNanTest, signalingNanIsNan) {
+  constexpr auto nan {std::numeric_limits<TypeParam>::signaling_NaN()};
+  EXPECT_TRUE(lbt::cem::isNan(nan));
+  EXPECT_TRUE(lbt::cem::isNan(nan) == std::isnan(nan));
 }
-TEST(AbsTest, doublePositive) {
-  EXPECT_DOUBLE_EQ(lbt::cem::abs(1.0), 1.0);
-  EXPECT_DOUBLE_EQ(lbt::cem::abs(1.0), std::abs(1.0));
-  EXPECT_DOUBLE_EQ(lbt::cem::abs(3.33), 3.33);
-  EXPECT_DOUBLE_EQ(lbt::cem::abs(3.33), std::abs(3.33));
-  EXPECT_DOUBLE_EQ(lbt::cem::abs(4.0), 4.0);
-  EXPECT_DOUBLE_EQ(lbt::cem::abs(4.0), std::abs(4.0));
+
+TYPED_TEST(IsNanTest, quietNanIsNan) {
+  constexpr auto nan {std::numeric_limits<TypeParam>::quiet_NaN()};
+  EXPECT_TRUE(lbt::cem::isNan(nan));
+  EXPECT_TRUE(lbt::cem::isNan(nan) == std::isnan(nan));
 }
-TEST(AbsTest, doubleNegative) {
-  EXPECT_DOUBLE_EQ(lbt::cem::abs(-1.0), 1.0);
-  EXPECT_DOUBLE_EQ(lbt::cem::abs(-1.0), std::abs(1.0));
-  EXPECT_DOUBLE_EQ(lbt::cem::abs(-3.33), 3.33);
-  EXPECT_DOUBLE_EQ(lbt::cem::abs(-3.33), std::abs(3.33));
-  EXPECT_DOUBLE_EQ(lbt::cem::abs(-4.0), 4.0);
-  EXPECT_DOUBLE_EQ(lbt::cem::abs(-4.0), std::abs(4.0));
+
+TYPED_TEST(IsNanTest, positiveNumberIsNotNan) {
+  std::vector<TypeParam> const positive_numbers {+0, 1, 100, std::numeric_limits<TypeParam>::max()};
+  for (auto const& n: positive_numbers) {
+    EXPECT_FALSE(lbt::cem::isNan(n));
+    EXPECT_TRUE(lbt::cem::isNan(n) == std::isnan(n));
+  }
+}
+
+TYPED_TEST(IsNanTest, negativeNumberIsNotNan) {
+  std::vector<TypeParam> const negative_numbers {-0, -1, -100, std::numeric_limits<TypeParam>::min()};
+  for (auto const& n: negative_numbers) {
+    EXPECT_FALSE(lbt::cem::isNan(n));
+    EXPECT_TRUE(lbt::cem::isNan(n) == std::isnan(n));
+  }
+}
+
+/// Test function for detecting positive infinity
+template <typename T>
+struct IsPosInfTest: public ::testing::Test {
+};
+
+TYPED_TEST_SUITE(IsPosInfTest, FloatingPointDataTypes);
+
+TYPED_TEST(IsPosInfTest, positiveInfinityIsPositiveInfinity) {
+  constexpr auto pos_inf {std::numeric_limits<TypeParam>::infinity()};
+  EXPECT_TRUE(lbt::cem::isPosInf(pos_inf));
+  EXPECT_TRUE(lbt::cem::isPosInf(pos_inf) == std::isinf(pos_inf));
+}
+
+TYPED_TEST(IsPosInfTest, negativeInfinityIsNotPositiveInfinity) {
+  constexpr auto neg_inf {-std::numeric_limits<TypeParam>::infinity()};
+  EXPECT_FALSE(lbt::cem::isPosInf(neg_inf));
+}
+
+TYPED_TEST(IsPosInfTest, positiveNumberIsNotPositiveInfinity) {
+  std::vector<TypeParam> const positive_numbers {+0, 1, 100, std::numeric_limits<TypeParam>::max()};
+  for (auto const& n: positive_numbers) {
+    EXPECT_FALSE(lbt::cem::isPosInf(n));
+    EXPECT_TRUE(lbt::cem::isPosInf(n) == std::isinf(n));
+  }
+}
+
+TYPED_TEST(IsPosInfTest, negativeNumberIsNotPositiveInfinity) {
+  std::vector<TypeParam> const negative_numbers {-0, -1, -100, std::numeric_limits<TypeParam>::min()};
+  for (auto const& n: negative_numbers) {
+    EXPECT_FALSE(lbt::cem::isPosInf(n));
+    EXPECT_TRUE(lbt::cem::isPosInf(n) == std::isinf(n));
+  }
+}
+
+/// Test function for detecting negative infinity
+template <typename T>
+struct IsNegInfTest: public ::testing::Test {
+};
+
+TYPED_TEST_SUITE(IsNegInfTest, FloatingPointDataTypes);
+
+TYPED_TEST(IsNegInfTest, negativeInfinityIsNegativeInfinity) {
+  constexpr auto neg_inf {-std::numeric_limits<TypeParam>::infinity()};
+  EXPECT_TRUE(lbt::cem::isNegInf(neg_inf));
+  EXPECT_TRUE(lbt::cem::isPosInf(neg_inf) == std::isinf(neg_inf));
+}
+
+TYPED_TEST(IsNegInfTest, positiveInfinityIsNotNegativeInfinity) {
+  constexpr auto pos_inf {std::numeric_limits<TypeParam>::infinity()};
+  EXPECT_FALSE(lbt::cem::isNegInf(pos_inf));
+}
+
+TYPED_TEST(IsNegInfTest, positiveNumberIsNotNegativeInfinity) {
+  std::vector<TypeParam> const positive_numbers {+0, 1, 100, std::numeric_limits<TypeParam>::max()};
+  for (auto const& n: positive_numbers) {
+    EXPECT_FALSE(lbt::cem::isNegInf(n));
+    EXPECT_TRUE(lbt::cem::isPosInf(n) == std::isinf(n));
+  }
+}
+
+TYPED_TEST(IsNegInfTest, negativeNumberIsNotNegativeInfinity) {
+  std::vector<TypeParam> const negative_numbers {-0, -1, -100, std::numeric_limits<TypeParam>::min()};
+  for (auto const& n: negative_numbers) {
+    EXPECT_FALSE(lbt::cem::isNegInf(n));
+    EXPECT_TRUE(lbt::cem::isPosInf(n) == std::isinf(n));
+  }
+}
+
+/// Test function for calculating absolute value
+template <typename T>
+struct AbsTest: public ::testing::Test {
+};
+
+TYPED_TEST_SUITE(AbsTest, ArithmeticDataTypes);
+
+TYPED_TEST(AbsTest, negativeZeroIsPositiveZero) {
+  constexpr TypeParam negative_zero {-0};
+  constexpr TypeParam positive_zero {+0};
+  if constexpr (std::is_same_v<TypeParam,float>) {
+    EXPECT_FLOAT_EQ(lbt::cem::abs(negative_zero), positive_zero);
+    EXPECT_FLOAT_EQ(lbt::cem::abs(negative_zero), std::abs(negative_zero));
+  } else if constexpr (std::is_same_v<TypeParam,double>) {
+    EXPECT_DOUBLE_EQ(lbt::cem::abs(negative_zero), positive_zero);
+    EXPECT_DOUBLE_EQ(lbt::cem::abs(negative_zero), std::abs(negative_zero));
+  } else {
+    GTEST_SKIP() << "Test not implemented for given data type!";
+  }
+}
+
+TYPED_TEST(AbsTest, negativeNumberIsPositiveNumber) {
+  std::vector<std::pair<TypeParam, TypeParam>> const tests {{-1, 1}, {-100, 100}};
+  for (auto const& [n, p]: tests) {
+    if constexpr (std::is_same_v<TypeParam,float>) {
+      EXPECT_FLOAT_EQ(lbt::cem::abs(n), p);
+      EXPECT_FLOAT_EQ(lbt::cem::abs(n), std::abs(n));
+    } else if constexpr (std::is_same_v<TypeParam,double>) {
+      EXPECT_DOUBLE_EQ(lbt::cem::abs(n), p);
+      EXPECT_DOUBLE_EQ(lbt::cem::abs(n), std::abs(n));
+    } else {
+      GTEST_SKIP() << "Test not implemented for given data type!";
+    }
+  }
+}
+
+TYPED_TEST(AbsTest, positiveNumberStaysPositiveNumber) {
+  std::vector<TypeParam> const tests {1, 100};
+  for (auto const& n: tests) {
+    if constexpr (std::is_same_v<TypeParam,float>) {
+      EXPECT_FLOAT_EQ(lbt::cem::abs(n), n);
+      EXPECT_FLOAT_EQ(lbt::cem::abs(n), std::abs(n));
+    } else if constexpr (std::is_same_v<TypeParam,double>) {
+      EXPECT_DOUBLE_EQ(lbt::cem::abs(n), n);
+      EXPECT_DOUBLE_EQ(lbt::cem::abs(n), std::abs(n));
+    } else {
+      GTEST_SKIP() << "Test not implemented for given data type!";
+    }
+  }
 }
 
 /// Test floating number comparison
@@ -183,6 +309,15 @@ TEST(NearlyEqualTest, nearlyEqual) {
   //constexpr double some_very_large_positive_number {std::numeric_limits<double>::max()/2.0};
   //EXPECT_TRUE(lbt::cem::nearlyEqual(some_very_large_positive_number, std::nextafter(some_very_large_positive_number, 1.0)));
 }
+
+/// Templated fixture class
+//template <typename T>
+//struct SqrtTest: public ::testing::Test {
+//};
+
+//TYPED_TEST_SUITE(SqrtTest, FloatingPointDataTypes);
+
+//GTEST_SKIP() << "Test not implemented for given data type!";
 
 /// Tests for square root
 TEST(SqrtTest, doubleZero) {

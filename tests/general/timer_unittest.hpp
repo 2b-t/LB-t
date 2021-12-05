@@ -28,6 +28,7 @@ TEST(TimerTest, startStop) {
   double const duration = timer.stop();
   EXPECT_NEAR(duration, static_cast<double>(runtime.count()), abs_error);
 }
+
 TEST(TimerTest, startStopStartStop) {
   using namespace std::chrono_literals;
   auto const runtime_1 = 1s;

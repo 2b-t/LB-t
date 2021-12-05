@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    stdin_open: true # Docker run -i
+    #stdin_open: true # Docker run -i
     tty: true        # Docker run -t
     volumes: # Mount relevant folders into container
       - ./.vscode:/code/lbt/.vscode # Necessary for using VS Code Tasks inside container

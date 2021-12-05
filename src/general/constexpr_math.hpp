@@ -86,7 +86,7 @@ namespace lbt {
      * \param[in] epsilon   The tolerance to be considered
      * \return    The absolute value of \p x
     */
-    template <typename T, typename std::enable_if_t<std::is_arithmetic_v<T>>* = nullptr>
+    template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
     constexpr bool nearlyEqual(T a, T b, T epsilon = 10*std::numeric_limits<T>::epsilon()) noexcept {
       return (cem::abs(a - b) <= epsilon);
     }

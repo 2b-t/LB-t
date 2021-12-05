@@ -105,6 +105,7 @@ TEST(StreamManagerTest, destructorRestore) {
   ss_src << test_str_out;
   EXPECT_TRUE(ss_src.str() == test_str_out);
 }
+
 TEST(StreamManagerTest, destructorTurnOn) {
   std::string const test_str_no_out {"Do not output this message"};
   std::string const test_str_out {"Output this message"};
