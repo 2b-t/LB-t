@@ -13,7 +13,7 @@
 
 
 namespace lbt {
-  
+
   void exportImageDataToVtk(vtkSmartPointer<vtkImageData> const& image_data, std::filesystem::path const& output_path, std::string const& filename) noexcept {
     // Convert to structured grid
     vtkSmartPointer<vtkImageDataToPointSet> image_data_to_point_set {vtkSmartPointer<vtkImageDataToPointSet>::New()};

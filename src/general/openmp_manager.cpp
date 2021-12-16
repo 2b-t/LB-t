@@ -1,7 +1,5 @@
 #include "openmp_manager.hpp"
 
-#include <cstdlib>
-
 #if __has_include (<omp.h>)
     #include <omp.h>
 #endif

@@ -19,6 +19,7 @@
 #include <vtkImageData.h>
 #include <vtkSmartPointer.h>
 
+
 namespace lbt {
   
   /// Enum class for supported data types

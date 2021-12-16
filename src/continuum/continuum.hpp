@@ -26,15 +26,34 @@
 
 namespace lbt {
 
+  /**\fn     is_streamable
+   * \brief  Type trait for checking if a type \p T can be streamed into \p S via the stream operator <<
+   *
+   * \tparam S   The stream where \p T should be streamed into
+   * \tparam T   The value type to be streamed into \p S
+   * \tparam Dummy parameter used for SFINAE
+  */
+  template<typename S, typename T, typename = void>
+  struct is_streamable : std::false_type {
+  };
+  // Specialised template for streamable types
+  template<typename S, typename T>
+  struct is_streamable<S, T, decltype(std::declval<S&>() << std::declval<T&>(), void())> : std::true_type {
+  };
+  // Convient alias for is_streamable<S,T>::value
+  template <typename S, typename T>
+  static constexpr bool is_streamable_v = is_streamable<S,T>::value;
+
   /**\fn        toString
    * \brief     Convert a value \p s to a std::string considering the precision \p digits
    *
    * \tparam    S        The type of the value to be converted to string
+   * \tparam    Dummy parameter used for SFINAE
    * \param[in] s        The value to be converted to string
    * \param[in] digits   The number of digits that should be considered when converting to string
    * \return    The input value converted to a string
   */
-  template <typename S>
+  template <typename S, typename std::enable_if_t<is_streamable_v<std::ostringstream,S>>* = nullptr>
   std::string toString(S const s, std::int32_t const digits = 3) noexcept {
     std::ostringstream ss {};
     ss.precision(digits);

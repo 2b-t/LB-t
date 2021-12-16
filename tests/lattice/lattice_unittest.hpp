@@ -35,20 +35,20 @@ using LatticeFloatingTypes = std::tuple<double, float>;
 namespace lbt {
   namespace test {
     
-    /**\class  CartesianProduct
+    /**\class  CartesianProductApply
      * \brief  Class for creating product of tuples
      *
      * \tparam TC   Templated tuple of class-types to be instantiated with the data types \p TT
      * \tparam TT   Tuple containing the different types that \p C should be instantiated with
     */
     template <template <typename> class TC, typename TT>
-    class CartesianProduct {
+    class CartesianProductApply {
       protected:
-        CartesianProduct() = delete;
-        CartesianProduct(CartesianProduct const&) = delete;
-        CartesianProduct(CartesianProduct&&) = delete;
-        CartesianProduct& operator=(CartesianProduct const&) = delete;
-        CartesianProduct& operator=(CartesianProduct&&) = delete;
+        CartesianProductApply() = delete;
+        CartesianProductApply(CartesianProductApply const&) = delete;
+        CartesianProductApply(CartesianProductApply&&) = delete;
+        CartesianProductApply& operator=(CartesianProductApply const&) = delete;
+        CartesianProductApply& operator=(CartesianProductApply&&) = delete;
 
         /**\fn     tupleProduct
          * \brief  Helper function for creating the cartesian product of the class \p C and the types \p Ts
@@ -65,7 +65,7 @@ namespace lbt {
          * \brief  Helper function for converting a tuple of classes to a testing types construct
          *
          * \tparam Ts   The different types
-         * \return The classes as a testing::
+         * \return The classes as ::testing::Types
         */
         template <class... Ts>
         static constexpr auto toTestingTypes(std::tuple<Ts...>) noexcept {
@@ -77,14 +77,14 @@ namespace lbt {
 
     /// Convenient alias
     template<template <typename> class TC, typename... Ts>
-    using CartesianProduct_t = typename CartesianProduct<TC,Ts...>::type;
+    using CartesianProductApply_t = typename CartesianProductApply<TC,Ts...>::type;
   }
 }
 
 // Test if Cartesian product of types works correctly
 template <typename T> using CartesianProductClassTemplate = std::tuple<std::tuple<T>, std::tuple<T, T>>;
-TEST(CartesianProductTest, typesEqual) {
-  constexpr bool is_same = std::is_same_v<lbt::test::CartesianProduct_t<CartesianProductClassTemplate, std::tuple<double, float>>,
+TEST(CartesianProductApplyTest, typesEqual) {
+  constexpr bool is_same = std::is_same_v<lbt::test::CartesianProductApply_t<CartesianProductClassTemplate, std::tuple<double, float>>,
                                           ::testing::Types<std::tuple<double>, std::tuple<double, double>, 
                                                            std::tuple<float>,  std::tuple<float, float>>
                                          >;
@@ -92,7 +92,7 @@ TEST(CartesianProductTest, typesEqual) {
 }
 
 // Merge data types and lattices data types
-using LatticeTestTypes = lbt::test::CartesianProduct_t<LatticeTypes, LatticeFloatingTypes>;
+using LatticeTestTypes = lbt::test::CartesianProductApply_t<LatticeTypes, LatticeFloatingTypes>;
 
 /// Templated tests for each lattice
 template <typename L>
