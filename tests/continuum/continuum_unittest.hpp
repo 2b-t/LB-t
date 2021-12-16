@@ -8,8 +8,7 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
-#include <iostream>
-#include <sstream>
+#include <ostream>
 #include <string>
 #include <tuple>
 
@@ -53,7 +52,12 @@ namespace lbt {
         NotStreamable& operator = (NotStreamable&&) = default;
     };
 
-    // Cartesian product of multiple variadic template classes
+    /**\class  CartesianProduct
+     * \brief  Class for creating Cartesian product of two tuples
+     *
+     * \tparam T1   A tuple
+     * \tparam T2   Another tuple
+    */
     template <typename T1, typename T2>
     class CartesianProduct {
       protected:
@@ -113,36 +117,18 @@ TEST(CartesianProductTest, typesEqual) {
   EXPECT_TRUE(is_same);
 }
 
-// Define streams, streamable and non-streamable types
-using StreamDataTypes = std::tuple<std::ostringstream>;
-using StreamableDataTypes = std::tuple<std::int8_t,  std::int16_t,  std::int32_t,  std::int64_t, 
-                                             std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t,
-                                             float, double, std::string, lbt::test::Streamable>;
-using NonStreamableDataTypes = std::tuple<lbt::test::NotStreamable>;
-
 /// Test streamable type trait
-template <typename T>
-struct IsStreamableTraitStreamableDataTypes: public ::testing::Test {
-};
-
-using TupleStreamStreamableTypes = lbt::test::CartesianProduct_t<StreamDataTypes,StreamableDataTypes>;
-TYPED_TEST_SUITE(IsStreamableTraitStreamableDataTypes, TupleStreamStreamableTypes);
-
-TYPED_TEST(IsStreamableTraitStreamableDataTypes, areStreamableDataTypesStreamable) {
-  constexpr bool is_success = lbt::is_streamable_v<std::tuple_element_t<0, TypeParam>, std::tuple_element_t<1, TypeParam>>;
-  EXPECT_TRUE(is_success);
+TEST(IsStreamableTrait, areStreamableDataTypesStreamable) {
+  constexpr bool is_double_streamable = lbt::is_streamable_v<std::ostream, double>;
+  EXPECT_TRUE(is_double_streamable);
+  constexpr bool is_string_streamable = lbt::is_streamable_v<std::ostream, std::string>;
+  EXPECT_TRUE(is_string_streamable);
+  constexpr bool is_streamable_object_streamable = lbt::is_streamable_v<std::ostream, lbt::test::Streamable>;
+  EXPECT_TRUE(is_streamable_object_streamable);
 }
-
-template <typename T>
-struct IsStreamableTraitNonStreamableDataTypes: public ::testing::Test {
-};
-
-using TupleStreamNonStreamableTypes = lbt::test::CartesianProduct_t<StreamDataTypes,NonStreamableDataTypes>;
-TYPED_TEST_SUITE(IsStreamableTraitNonStreamableDataTypes, TupleStreamNonStreamableTypes);
-
-TYPED_TEST(IsStreamableTraitNonStreamableDataTypes, areNotStreamableDataTypesNotStreamable) {
-  constexpr bool is_success = lbt::is_streamable_v<std::tuple_element_t<0, TypeParam>, std::tuple_element_t<1, TypeParam>>;
-  EXPECT_FALSE(is_success);
+TEST(IsStreamableTrait, areNotStreamableDataTypesNotStreamable) {
+  constexpr bool is_notstreamable_object_streamable = lbt::is_streamable_v<std::ostream, lbt::test::NotStreamable>;
+  EXPECT_FALSE(is_notstreamable_object_streamable);
 }
 
 /// Tests conversion to string with optional precision

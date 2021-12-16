@@ -84,10 +84,11 @@ namespace lbt {
 // Test if Cartesian product of types works correctly
 template <typename T> using CartesianProductClassTemplate = std::tuple<std::tuple<T>, std::tuple<T, T>>;
 TEST(CartesianProductApplyTest, typesEqual) {
-  constexpr bool is_same = std::is_same_v<lbt::test::CartesianProductApply_t<CartesianProductClassTemplate, std::tuple<double, float>>,
-                                          ::testing::Types<std::tuple<double>, std::tuple<double, double>, 
-                                                           std::tuple<float>,  std::tuple<float, float>>
-                                         >;
+  using TemplateDataTypes = std::tuple<double, float>;
+  using ExpectedDataType = ::testing::Types<std::tuple<double>, std::tuple<double, double>, 
+                                            std::tuple<float>,  std::tuple<float, float>>;
+  constexpr bool is_same = std::is_same_v<lbt::test::CartesianProductApply_t<CartesianProductClassTemplate, TemplateDataTypes>,
+                                          ExpectedDataType>;
   EXPECT_TRUE(is_same);
 }
 
