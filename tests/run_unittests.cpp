@@ -11,6 +11,7 @@
 #include "general/stream_manager_unittest.hpp"
 #include "general/timer_unittest.hpp"
 #include "lattice/lattice_unittest.hpp"
+#include "utils/tuple_utils_unittest.hpp"
 #include "simulation_unittest.hpp"
 
 
