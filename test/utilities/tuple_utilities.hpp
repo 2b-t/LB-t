@@ -1,9 +1,9 @@
-#ifndef LBT_TUPLE_UTILS
-#define LBT_TUPLE_UTILS
+#ifndef LBT_TUPLE_UTILITIES
+#define LBT_TUPLE_UTILITIES
 #pragma once
 
 /**
- * \file     tuple_utils.hpp
+ * \file     tuple_utilities.hpp
  * \mainpage Utility tools for std::tuple for convenient unit-testing
  * \author   Tobit Flatscher (github.com/2b-t)
 */
@@ -151,4 +151,4 @@ namespace lbt {
   }
 }
 
-#endif // LBT_TUPLE_UTILS
+#endif // LBT_TUPLE_UTILITIES

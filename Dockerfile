@@ -12,12 +12,11 @@ RUN apt-get -y update && apt-get -y install \
     libomp-dev
 
 # Install VTK dependencies: libglvnd
-RUN apt-get -y update && apt-get -y install libxext-dev libx11-dev x11proto-gl-dev \
+RUN apt-get -y update \
+    && apt-get -y install libxext-dev libx11-dev x11proto-gl-dev \
     && git clone https://github.com/NVIDIA/libglvnd \
     && cd libglvnd \
-    && apt-get -y install autoconf autogen \
-    && apt-get -y install pkg-config \
-    && apt-get -y install libtool \
+    && apt-get -y install autoconf autogen libtool pkg-config \
     && ./autogen.sh \
     && autoreconf --install \
     && ./configure \

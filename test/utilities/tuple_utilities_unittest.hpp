@@ -1,9 +1,9 @@
-#ifndef LBT_TUPLE_UTILS_UNITTEST
-#define LBT_TUPLE_UTILS_UNITTEST
+#ifndef LBT_TUPLE_UTILITIES_UNITTEST
+#define LBT_TUPLE_UTILITIES_UNITTEST
 #pragma once
 
 /**
- * \file     tuple_utils_unittest.hpp
+ * \file     tuple_utilities_unittest.hpp
  * \mainpage Tests for utility tools for handling tuples
  * \author   Tobit Flatscher (github.com/2b-t)
 */
@@ -15,7 +15,7 @@
 
 #include <gtest/gtest.h>
 
-#include "tuple_utils.hpp"
+#include "tuple_utilities.hpp"
 
 
 namespace lbt {
@@ -89,4 +89,4 @@ TEST(ToTestingTypesConversion, typesEqual) {
   EXPECT_TRUE(is_same);
 }
 
-#endif // LBT_TUPLE_UTILS_UNITTEST
+#endif // LBT_TUPLE_UTILITIES_UNITTEST

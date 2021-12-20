@@ -15,7 +15,6 @@
 #include <gtest/gtest.h>
 
 #include "../../src/continuum/continuum.hpp"
-#include "../utils/tuple_utils.hpp"
 
 
 namespace lbt {

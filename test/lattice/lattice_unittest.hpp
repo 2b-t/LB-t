@@ -22,7 +22,7 @@
 #include "../../src/lattice/D3Q15.hpp"
 #include "../../src/lattice/D3Q19.hpp"
 #include "../../src/lattice/D3Q27.hpp"
-#include "../utils/tuple_utils.hpp"
+#include "../utilities/tuple_utilities.hpp"
 
 
 /// The different lattices to be tested
