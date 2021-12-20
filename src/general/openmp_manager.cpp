@@ -21,11 +21,11 @@ namespace lbt {
     return is_success;
   }
 
-  int OpenMpManager::setThreadsNum(int const number_of_threads) noexcept {
-    int is_success {false};
+  bool OpenMpManager::setThreadsNum(int const number_of_threads) noexcept {
+    bool is_success {false};
 
     #ifdef _OPENMP
-    if (number_of_threads <= threads_max) {
+    if ((number_of_threads > 0) && (number_of_threads <= threads_max)) {
       threads_num = number_of_threads;
       ::omp_set_num_threads(threads_num);
       is_success = true;
@@ -63,8 +63,8 @@ namespace lbt {
   }
 
   #ifdef _OPENMP
-  int OpenMpManager::threads_max = ::omp_get_num_procs();
-  int OpenMpManager::threads_num = ::omp_get_num_procs();
+  int OpenMpManager::threads_max {::omp_get_num_procs()};
+  int OpenMpManager::threads_num {::omp_get_num_procs()};
   #else
   int OpenMpManager::threads_max {1};
   int OpenMpManager::threads_num {1};

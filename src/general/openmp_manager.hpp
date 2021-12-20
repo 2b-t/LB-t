@@ -17,7 +17,7 @@ namespace lbt {
    * \brief   Singleton class for all variables regarding parallelism
    * \warning Variables as int instead of std::size_t because this way in OpenMP library
   */
-  class OpenMpManager final {
+  class OpenMpManager {
     public:
       /**\fn     getInstance
        * \brief  Getter of the instance of the singleton class
@@ -42,7 +42,7 @@ namespace lbt {
        * \param[in] number_of_threads   Number of wished threads (max is given by threads_max)
        * \return    Boolean argument indicating success or failure
       */
-      static int setThreadsNum(int const number_of_threads) noexcept;
+      static bool setThreadsNum(int const number_of_threads) noexcept;
 
       /**\fn     getThreadsMax
        * \brief  Get number of maximum number of possible threads.
@@ -67,15 +67,15 @@ namespace lbt {
       */
       static int getThreadsCurrent() noexcept;
 
+      OpenMpManager& operator=(OpenMpManager const&) = default;
 
-    private:
+    protected:
       /** \brief Default constructor of parallelism class
       */
       OpenMpManager() noexcept;
       
       OpenMpManager(OpenMpManager const&) = delete;
       OpenMpManager(OpenMpManager&&) = delete;
-      OpenMpManager& operator=(OpenMpManager const&) = delete;
       OpenMpManager& operator=(OpenMpManager&&) = delete;
 
       static int threads_max; ///< variable for maximum number of threads

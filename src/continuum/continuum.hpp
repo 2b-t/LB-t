@@ -45,19 +45,19 @@ namespace lbt {
   static constexpr bool is_streamable_v = is_streamable<S,T>::value;
 
   /**\fn        toString
-   * \brief     Convert a value \p s to a std::string considering the precision \p digits
+   * \brief     Convert a value \p t to a std::string considering the precision \p digits
    *
-   * \tparam    S        The type of the value to be converted to string
+   * \tparam    T        The type of the value to be converted to string
    * \tparam    Dummy parameter used for SFINAE
-   * \param[in] s        The value to be converted to string
+   * \param[in] t        The value to be converted to string
    * \param[in] digits   The number of digits that should be considered when converting to string
    * \return    The input value converted to a string
   */
-  template <typename S, typename std::enable_if_t<is_streamable_v<std::ostringstream,S>>* = nullptr>
-  std::string toString(S const s, std::int32_t const digits = 3) noexcept {
+  template <typename T, typename std::enable_if_t<is_streamable_v<std::ostringstream,T>>* = nullptr>
+  std::string toString(T const t, std::int32_t const digits = 3) noexcept {
     std::ostringstream ss {};
     ss.precision(digits);
-    ss << std::fixed << s;
+    ss << std::fixed << t;
     return ss.str();
   }
 

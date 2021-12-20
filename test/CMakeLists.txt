@@ -38,6 +38,7 @@ include(GoogleTest)
 add_executable(run_lbt_tests
                run_unittests.cpp
                ../src/general/disclaimer.cpp
+               ../src/general/openmp_manager.cpp
                ../src/general/timer.cpp
                )
 

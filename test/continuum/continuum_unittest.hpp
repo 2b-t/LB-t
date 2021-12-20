@@ -64,6 +64,7 @@ TEST(IsStreamableTrait, areStreamableDataTypesStreamable) {
   constexpr bool is_streamable_object_streamable = lbt::is_streamable_v<std::ostream, lbt::test::Streamable>;
   EXPECT_TRUE(is_streamable_object_streamable);
 }
+
 TEST(IsStreamableTrait, areNotStreamableDataTypesNotStreamable) {
   constexpr bool is_notstreamable_object_streamable = lbt::is_streamable_v<std::ostream, lbt::test::NotStreamable>;
   EXPECT_FALSE(is_notstreamable_object_streamable);
@@ -77,6 +78,7 @@ TEST(ToStringWithPrecisionTest, singleDigitToTwoDigitsDouble) {
   
   EXPECT_EQ(str, "0.10");
 }
+
 TEST(ToStringWithPrecisionTest, threeDigitsToTwoDigitsDouble) {
   constexpr double val {0.123};
   constexpr std::int32_t digits {2};
@@ -84,6 +86,7 @@ TEST(ToStringWithPrecisionTest, threeDigitsToTwoDigitsDouble) {
   
   EXPECT_EQ(str, "0.12");
 }
+
 TEST(ToStringWithPrecisionTest, singleDigitToThreeDigitsDouble) {
   constexpr double val {0.1};
   constexpr std::int32_t digits {3};
@@ -91,6 +94,7 @@ TEST(ToStringWithPrecisionTest, singleDigitToThreeDigitsDouble) {
   
   EXPECT_EQ(str, "0.100");
 }
+
 TEST(ToStringWithPrecisionTest, fourDigitsToThreeDigitsDouble) {
   constexpr double val {0.1234};
   constexpr std::int32_t digits {3};
@@ -98,6 +102,7 @@ TEST(ToStringWithPrecisionTest, fourDigitsToThreeDigitsDouble) {
   
   EXPECT_EQ(str, "0.123");
 }
+
 TEST(ToStringWithPrecisionTest, singleDigitToTwoDigitsFloat) {
   constexpr float val {0.1f};
   constexpr std::int32_t digits {2};
@@ -105,6 +110,7 @@ TEST(ToStringWithPrecisionTest, singleDigitToTwoDigitsFloat) {
   
   EXPECT_EQ(str, "0.10");
 }
+
 TEST(ToStringWithPrecisionTest, noDigitsInteger) {
   constexpr std::int32_t val {1};
   constexpr std::int32_t digits {3};

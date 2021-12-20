@@ -42,14 +42,17 @@ TEST(IsTupleTrait, tupleIsTuple) {
   constexpr bool is_tuple = lbt::test::is_tuple_v<std::tuple<int,double>>;
   EXPECT_TRUE(is_tuple);
 }
+
 TEST(IsTupleTrait, integerIsNotTuple) {
   constexpr bool is_tuple = lbt::test::is_tuple_v<int>;
   EXPECT_FALSE(is_tuple);
 }
+
 TEST(IsTupleTrait, pairIsNotTuple) {
   constexpr bool is_tuple = lbt::test::is_tuple_v<std::pair<int,double>>;
   EXPECT_FALSE(is_tuple);
 }
+
 TEST(IsTupleTrait, someTemplateClassIsNotTuple) {
   constexpr bool is_tuple = lbt::test::is_tuple_v<lbt::test::SomeTemplateClass<int,double>>;
   EXPECT_FALSE(is_tuple);

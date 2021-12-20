@@ -8,6 +8,7 @@
 #include "continuum/continuum_unittest.hpp"
 #include "general/constexpr_math_unittest.hpp"
 #include "general/disclaimer_unittest.hpp"
+#include "general/openmp_manager_unittest.hpp"
 #include "general/stream_manager_unittest.hpp"
 #include "general/timer_unittest.hpp"
 #include "lattice/lattice_unittest.hpp"
