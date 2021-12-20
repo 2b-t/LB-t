@@ -8,8 +8,8 @@
       "command": [
         "cmake -B${workspaceFolder}/build -S${workspaceFolder}/src -DVTK_DIR=${workspaceFolder}/../VTK-build &&",
         "make -C${workspaceFolder}/build &&",
-        "cmake -B${workspaceFolder}/build-tests -S${workspaceFolder}/tests -DVTK_DIR=${workspaceFolder}/../VTK-build &&",
-        "make -C${workspaceFolder}/build-tests"
+        "cmake -B${workspaceFolder}/build-test -S${workspaceFolder}/test -DVTK_DIR=${workspaceFolder}/../VTK-build &&",
+        "make -C${workspaceFolder}/build-test"
       ],
       "problemMatcher": "$gcc"
     },
@@ -30,7 +30,7 @@
       "label": "test",
       "detail": "Run all unit tests and show results.",
       "type": "process",
-      "command": "${workspaceFolder}/build-tests/run_lbt_tests",
+      "command": "${workspaceFolder}/build-test/run_lbt_tests",
       "group": {
         "kind": "test",
         "isDefault": true
@@ -44,14 +44,14 @@
       "label": "clean",
       "detail": "Run the clean target",
       "type": "shell",
-      "command": "make clean -C${workspaceFolder}/build && make clean -C${workspaceFolder}/tests",
+      "command": "make clean -C${workspaceFolder}/build && make clean -C${workspaceFolder}/build-test",
       "problemMatcher": "$gcc"
     },
     {
       "label": "purge",
       "detail": "Purge workspace by deleting all generated files.",
       "type": "shell",
-      "command": "rm -fr ${workspaceFolder}/build ${workspaceFolder}/build-tests",
+      "command": "rm -fr ${workspaceFolder}/build ${workspaceFolder}/build-test",
       "problemMatcher": []
     }
   ]

@@ -9,5 +9,5 @@ services:
     volumes: # Mount relevant folders into container
       - ./.vscode:/code/lbt/.vscode # Necessary for using VS Code Tasks inside container
       - ./src:/code/lbt/src
-      - ./tests:/code/lbt/tests
+      - ./test:/code/lbt/test
       - ./examples:/code/lbt/examples
