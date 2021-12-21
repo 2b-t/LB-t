@@ -22,7 +22,8 @@
 #include "../../src/lattice/D3Q15.hpp"
 #include "../../src/lattice/D3Q19.hpp"
 #include "../../src/lattice/D3Q27.hpp"
-#include "../utilities/tuple_utilities.hpp"
+#include "../../src/general/tuple_utilities.hpp"
+#include "../testing_utilities/testing_utilities.hpp"
 
 
 /// The different lattices to be tested
@@ -33,7 +34,7 @@ template <typename T> using LatticeTypes = std::tuple<lbt::lattice::D2Q9P10<T>, 
 using LatticeFloatingTypes = std::tuple<double, float>;
 
 // Merge data types and lattices data types
-using LatticeTestTypes = lbt::test::ToTestingTypes_t<lbt::test::CartesianProductApply_t<LatticeTypes, LatticeFloatingTypes>>;
+using LatticeTestTypes = lbt::test::ToTestingTypes_t<lbt::CartesianProductApply_t<LatticeTypes, LatticeFloatingTypes>>;
 
 /// Templated tests for each lattice
 template <typename L>

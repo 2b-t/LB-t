@@ -15,7 +15,7 @@
 
 #include <gtest/gtest.h>
 
-#include "tuple_utilities.hpp"
+#include "../../src/general/tuple_utilities.hpp"
 
 
 namespace lbt {
@@ -39,22 +39,22 @@ namespace lbt {
 
 // Test custom tuple trait
 TEST(IsTupleTrait, tupleIsTuple) {
-  constexpr bool is_tuple = lbt::test::is_tuple_v<std::tuple<int,double>>;
+  constexpr bool is_tuple = lbt::is_tuple_v<std::tuple<int,double>>;
   EXPECT_TRUE(is_tuple);
 }
 
 TEST(IsTupleTrait, integerIsNotTuple) {
-  constexpr bool is_tuple = lbt::test::is_tuple_v<int>;
+  constexpr bool is_tuple = lbt::is_tuple_v<int>;
   EXPECT_FALSE(is_tuple);
 }
 
 TEST(IsTupleTrait, pairIsNotTuple) {
-  constexpr bool is_tuple = lbt::test::is_tuple_v<std::pair<int,double>>;
+  constexpr bool is_tuple = lbt::is_tuple_v<std::pair<int,double>>;
   EXPECT_FALSE(is_tuple);
 }
 
 TEST(IsTupleTrait, someTemplateClassIsNotTuple) {
-  constexpr bool is_tuple = lbt::test::is_tuple_v<lbt::test::SomeTemplateClass<int,double>>;
+  constexpr bool is_tuple = lbt::is_tuple_v<lbt::test::SomeTemplateClass<int,double>>;
   EXPECT_FALSE(is_tuple);
 }
 
@@ -64,7 +64,7 @@ TEST(CartesianProductTest, typesEqual) {
   using TypesOuter = std::tuple<int,double,float>;
   using TypesResult = std::tuple<std::tuple<int,int>, std::tuple<int,double>, std::tuple<int,float>, 
                                  std::tuple<double,int>, std::tuple<double,double>, std::tuple<double,float>>;
-  constexpr bool is_same = std::is_same_v<lbt::test::CartesianProduct_t<TypesInner, TypesOuter>, TypesResult>;
+  constexpr bool is_same = std::is_same_v<lbt::CartesianProduct_t<TypesInner, TypesOuter>, TypesResult>;
   EXPECT_TRUE(is_same);
 }
 
@@ -75,17 +75,8 @@ TEST(CartesianProductApplyTest, typesEqual) {
   using TemplateDataTypes = std::tuple<double,float>;
   using ExpectedDataType = std::tuple<std::tuple<double>, std::tuple<double,double>, 
                                       std::tuple<float>,  std::tuple<float,float>>;
-  constexpr bool is_same = std::is_same_v<lbt::test::CartesianProductApply_t<CartesianProductClassTemplate, TemplateDataTypes>,
+  constexpr bool is_same = std::is_same_v<lbt::CartesianProductApply_t<CartesianProductClassTemplate, TemplateDataTypes>,
                                           ExpectedDataType>;
-  EXPECT_TRUE(is_same);
-}
-
-// Test conversion to ::testing::Types
-TEST(ToTestingTypesConversion, typesEqual) {
-  using SomeTuple = std::tuple<double,float>;
-  using ExpectedTestingTypes = ::testing::Types<double,float>;
-  constexpr bool is_same = std::is_same_v<lbt::test::ToTestingTypes_t<SomeTuple>,
-                                          ExpectedTestingTypes>;
   EXPECT_TRUE(is_same);
 }
 

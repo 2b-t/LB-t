@@ -9,11 +9,13 @@
 #include "general/constexpr_math_unittest.hpp"
 #include "general/disclaimer_unittest.hpp"
 #include "general/openmp_manager_unittest.hpp"
+#include "general/output_utilities_unittest.hpp"
 #include "general/stream_manager_unittest.hpp"
 #include "general/timer_unittest.hpp"
+#include "general/tuple_utilities_unittest.hpp"
 #include "general/vtk_utilities_unittest.hpp"
 #include "lattice/lattice_unittest.hpp"
-#include "utilities/tuple_utilities_unittest.hpp"
+#include "testing_utilities/testing_utilities_unittest.hpp"
 #include "simulation_unittest.hpp"
 
 
