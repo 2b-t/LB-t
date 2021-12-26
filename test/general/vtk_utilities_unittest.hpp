@@ -13,13 +13,18 @@
 #include "../../src/general/vtk_utilities.hpp"
 
 
-TEST(VtkUtilities, exportImageDataToVtk) {
-  GTEST_SKIP() << "Unit tests involving file import and export not implemented yet!";
-}
+namespace lbt {
+  namespace test {
 
-TEST(VtkUtilities, exportImageDataToMhd) {
-  GTEST_SKIP() << "Unit tests involving file import and export not implemented yet!";
-}
+    TEST(VtkUtilities, exportImageDataToVtk) {
+      GTEST_SKIP() << "Unit tests involving file import and export not implemented yet!";
+    }
 
+    TEST(VtkUtilities, exportImageDataToMhd) {
+      GTEST_SKIP() << "Unit tests involving file import and export not implemented yet!";
+    }
+
+  }
+}
 
 #endif // LBT_VTK_UTILITITES_UNITTEST

@@ -15,9 +15,15 @@
 #include "../../src/general/disclaimer.hpp"
  
 
-/// Tests that is non-empty
-TEST(DisclaimerTest, nonEmpty) {
-  EXPECT_FALSE(lbt::disclaimer().empty());
+namespace lbt {
+  namespace test {
+
+    /// Tests that is non-empty
+    TEST(DisclaimerTest, nonEmpty) {
+      EXPECT_FALSE(lbt::disclaimer().empty());
+    }
+
+  }
 }
 
 #endif // LBT_DISCLAIMER_UNITTEST

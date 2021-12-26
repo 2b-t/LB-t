@@ -236,13 +236,6 @@ namespace lbt {
     dilate->SetKernelSize(3, 3, 3);
     dilate->Update();
 
-    /*vtkSmartPointer<vtkImageOpenClose3D> open_close {vtkSmartPointer<vtkImageOpenClose3D>::New()};
-    open_close->SetInputData(image_data);
-    open_close->SetOpenValue(0);
-    open_close->SetCloseValue(1);
-    open_close->SetKernelSize(7, 7, 7);
-    open_close->Update();*/
-
     vtkSmartPointer<vtkImageData> cleaned_image_data {vtkSmartPointer<vtkImageData>::New()};
     cleaned_image_data->DeepCopy(dilate->GetOutput());
     return cleaned_image_data;

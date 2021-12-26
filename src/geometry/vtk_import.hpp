@@ -31,7 +31,6 @@ namespace lbt {
   */
   class Importer {
     public:
-      Importer() = delete;
       Importer(Importer const&) = delete;
       Importer(Importer&&) = delete;
       Importer& operator= (Importer const&) = delete;
@@ -96,6 +95,9 @@ namespace lbt {
       static constexpr auto scalar_data_type {VTK_UNSIGNED_CHAR};
 
     protected:
+      /// For unit testing
+      Importer() = default;
+
       /**\fn        loadObj
        * \brief     Function for loading an OBJ file
        *            Source: https://vtk.org/Wiki/VTK/Examples/Cxx/IO/ReadOBJ

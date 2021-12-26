@@ -16,14 +16,19 @@
 
 #include "testing_utilities.hpp"
 
+namespace lbt {
+  namespace test {
 
-// Test conversion to ::testing::Types
-TEST(ToTestingTypesConversion, typesEqual) {
-  using SomeTuple = std::tuple<double,float>;
-  using ExpectedTestingTypes = ::testing::Types<double,float>;
-  constexpr bool is_same = std::is_same_v<lbt::test::ToTestingTypes_t<SomeTuple>,
-                                          ExpectedTestingTypes>;
-  EXPECT_TRUE(is_same);
+    // Test conversion to ::testing::Types
+    TEST(ToTestingTypesConversion, typesEqual) {
+      using SomeTuple = std::tuple<double,float>;
+      using ExpectedTestingTypes = ::testing::Types<double,float>;
+      constexpr bool is_same = std::is_same_v<ToTestingTypes_t<SomeTuple>,
+                                              ExpectedTestingTypes>;
+      EXPECT_TRUE(is_same);
+    }
+
+  }
 }
 
 #endif // LBT_TESTING_UTILITIES_UNITTEST

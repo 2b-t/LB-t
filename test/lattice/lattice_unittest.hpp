@@ -26,73 +26,74 @@
 #include "../testing_utilities/testing_utilities.hpp"
 
 
-/// The different lattices to be tested
-template <typename T> using LatticeTypes = std::tuple<lbt::lattice::D2Q9P10<T>,  lbt::lattice::D2Q9P12<T>, 
-                                                      lbt::lattice::D3Q15P16<T>, lbt::lattice::D3Q19P20<T>, 
-                                                      lbt::lattice::D3Q27P28<T>, lbt::lattice::D3Q27PC<T>>;
-/// The different floating data types for the lattices
-using LatticeFloatingTypes = std::tuple<double, float>;
-
-// Merge data types and lattices data types
-using LatticeTestTypes = lbt::test::ToTestingTypes_t<lbt::CartesianProductApply_t<LatticeTypes, LatticeFloatingTypes>>;
-
-/// Templated tests for each lattice
-template <typename L>
-struct DdQqTest: public ::testing::Test {
-  using DdQq = L;
-};
-
-TYPED_TEST_SUITE(DdQqTest, LatticeTestTypes);
-
-/// Test that class contains all relevant class members
-TYPED_TEST(DdQqTest, containsAllVariables) {
-  using T = typename TypeParam::type;
-  EXPECT_TRUE(std::is_floating_point_v<T>);
-
-  EXPECT_TRUE(std::is_integral_v<decltype(TypeParam::DIM)>);
-  EXPECT_TRUE(std::is_integral_v<decltype(TypeParam::SPEEDS)>);
-  EXPECT_TRUE(std::is_integral_v<decltype(TypeParam::HSPEED)>);
-  EXPECT_TRUE(std::is_integral_v<decltype(TypeParam::PAD)>);
-  EXPECT_TRUE(std::is_integral_v<decltype(TypeParam::ND)>);
-  EXPECT_TRUE(std::is_integral_v<decltype(TypeParam::OFF)>);
-
-  using A = typename lbt::array<T, TypeParam::ND>;
-  constexpr bool has_dx {std::is_same_v<std::decay_t<decltype(TypeParam::DX)>, A>};
-  EXPECT_TRUE(has_dx);
-  constexpr bool has_dy {std::is_same_v<std::decay_t<decltype(TypeParam::DY)>, A>};
-  EXPECT_TRUE(has_dy);
-  constexpr bool has_dz {std::is_same_v<std::decay_t<decltype(TypeParam::DZ)>, A>};
-  EXPECT_TRUE(has_dz);
-  constexpr bool has_w {std::is_same_v<std::decay_t<decltype(TypeParam::W)>, A>};
-  EXPECT_TRUE(has_w);
-  constexpr bool has_mask {std::is_same_v<std::decay_t<decltype(TypeParam::MASK)>, A>};
-  EXPECT_TRUE(has_mask);
-
-  constexpr bool is_same_cs {std::is_same_v<std::decay_t<decltype(TypeParam::CS)>, T>};
-  EXPECT_TRUE(is_same_cs);
-}
-
-/// Tests for discretisation dimensions
-TYPED_TEST(DdQqTest, discretisationDimensions) {
-  EXPECT_TRUE(TypeParam::DIM > 0);
-  EXPECT_TRUE(TypeParam::DIM <= 3);
-}
-
-/// Tests correlation between array size parameters
-TYPED_TEST(DdQqTest, speedsCorrelations) {
-  EXPECT_TRUE(TypeParam::SPEEDS >= 2*TypeParam::DIM);
-  EXPECT_TRUE(TypeParam::HSPEED > TypeParam::DIM);
-  EXPECT_TRUE(TypeParam::PAD >= 0);
-  EXPECT_TRUE(TypeParam::ND > TypeParam::SPEEDS);
-
-  EXPECT_TRUE(TypeParam::HSPEED == (TypeParam::SPEEDS + 1)/2);
-  EXPECT_TRUE(TypeParam::ND > TypeParam::SPEEDS);
-  EXPECT_TRUE(TypeParam::ND == TypeParam::SPEEDS + TypeParam::PAD);
-  EXPECT_TRUE(TypeParam::OFF == TypeParam::ND/2);
-}
-
 namespace lbt {
   namespace test {
+
+    /// The different lattices to be tested
+    template <typename T> using LatticeTypes = std::tuple<lbt::lattice::D2Q9P10<T>,  lbt::lattice::D2Q9P12<T>, 
+                                                          lbt::lattice::D3Q15P16<T>, lbt::lattice::D3Q19P20<T>, 
+                                                          lbt::lattice::D3Q27P28<T>, lbt::lattice::D3Q27PC<T>>;
+    /// The different floating data types for the lattices
+    using LatticeFloatingTypes = std::tuple<double, float>;
+
+    // Merge data types and lattices data types
+    using LatticeTestTypes = ToTestingTypes_t<lbt::CartesianProductApply_t<LatticeTypes, LatticeFloatingTypes>>;
+
+    /// Templated tests for each lattice
+    template <typename L>
+    struct DdQqTest: public ::testing::Test {
+      using DdQq = L;
+    };
+
+    TYPED_TEST_SUITE(DdQqTest, LatticeTestTypes);
+
+    /// Test that class contains all relevant class members
+    TYPED_TEST(DdQqTest, containsAllVariables) {
+      using T = typename TypeParam::type;
+      EXPECT_TRUE(std::is_floating_point_v<T>);
+
+      EXPECT_TRUE(std::is_integral_v<decltype(TypeParam::DIM)>);
+      EXPECT_TRUE(std::is_integral_v<decltype(TypeParam::SPEEDS)>);
+      EXPECT_TRUE(std::is_integral_v<decltype(TypeParam::HSPEED)>);
+      EXPECT_TRUE(std::is_integral_v<decltype(TypeParam::PAD)>);
+      EXPECT_TRUE(std::is_integral_v<decltype(TypeParam::ND)>);
+      EXPECT_TRUE(std::is_integral_v<decltype(TypeParam::OFF)>);
+
+      using A = typename lbt::array<T, TypeParam::ND>;
+      constexpr bool has_dx {std::is_same_v<std::decay_t<decltype(TypeParam::DX)>, A>};
+      EXPECT_TRUE(has_dx);
+      constexpr bool has_dy {std::is_same_v<std::decay_t<decltype(TypeParam::DY)>, A>};
+      EXPECT_TRUE(has_dy);
+      constexpr bool has_dz {std::is_same_v<std::decay_t<decltype(TypeParam::DZ)>, A>};
+      EXPECT_TRUE(has_dz);
+      constexpr bool has_w {std::is_same_v<std::decay_t<decltype(TypeParam::W)>, A>};
+      EXPECT_TRUE(has_w);
+      constexpr bool has_mask {std::is_same_v<std::decay_t<decltype(TypeParam::MASK)>, A>};
+      EXPECT_TRUE(has_mask);
+
+      constexpr bool is_same_cs {std::is_same_v<std::decay_t<decltype(TypeParam::CS)>, T>};
+      EXPECT_TRUE(is_same_cs);
+    }
+
+    /// Tests for discretisation dimensions
+    TYPED_TEST(DdQqTest, discretisationDimensions) {
+      EXPECT_TRUE(TypeParam::DIM > 0);
+      EXPECT_TRUE(TypeParam::DIM <= 3);
+    }
+
+    /// Tests correlation between array size parameters
+    TYPED_TEST(DdQqTest, speedsCorrelations) {
+      EXPECT_TRUE(TypeParam::SPEEDS >= 2*TypeParam::DIM);
+      EXPECT_TRUE(TypeParam::HSPEED > TypeParam::DIM);
+      EXPECT_TRUE(TypeParam::PAD >= 0);
+      EXPECT_TRUE(TypeParam::ND > TypeParam::SPEEDS);
+
+      EXPECT_TRUE(TypeParam::HSPEED == (TypeParam::SPEEDS + 1)/2);
+      EXPECT_TRUE(TypeParam::ND > TypeParam::SPEEDS);
+      EXPECT_TRUE(TypeParam::ND == TypeParam::SPEEDS + TypeParam::PAD);
+      EXPECT_TRUE(TypeParam::OFF == TypeParam::ND/2);
+    }
+
     /**\fn        isSymmetric
      * \brief     Test if an array respects the lattice symmetries
      *
@@ -130,20 +131,17 @@ namespace lbt {
       }
       return is_antimetric;
     }
-  }
-}
-/// Test that first entry is the same and other are mirrored
-TYPED_TEST(DdQqTest, speedsSymmetries) {
-  bool is_correct {true};
-  is_correct &= lbt::test::isAntimetric(TypeParam::DX);
-  is_correct &= lbt::test::isAntimetric(TypeParam::DY);
-  is_correct &= lbt::test::isAntimetric(TypeParam::DZ);
-  is_correct &= lbt::test::isSymmetric(TypeParam::W);
-  EXPECT_TRUE(is_correct);
-}
 
-namespace lbt {
-  namespace test {
+    /// Test that first entry is the same and other are mirrored
+    TYPED_TEST(DdQqTest, speedsSymmetries) {
+      bool is_correct {true};
+      is_correct &= isAntimetric(TypeParam::DX);
+      is_correct &= isAntimetric(TypeParam::DY);
+      is_correct &= isAntimetric(TypeParam::DZ);
+      is_correct &= isSymmetric(TypeParam::W);
+      EXPECT_TRUE(is_correct);
+    }
+
     /**\fn        sumsTo
      * \brief     Test if an array sums to a given value
      *
@@ -158,42 +156,39 @@ namespace lbt {
       T const sum = std::accumulate(std::begin(arr), std::end(arr), static_cast<T>(0));
       return lbt::cem::nearlyEqual(sum, expected_sum);
     }
-  }
-}
-/// Array sum
-TYPED_TEST(DdQqTest, arraySum) {
-  bool is_correct {true};
-  is_correct &= lbt::test::sumsTo(TypeParam::DX, static_cast<typename TypeParam::type>(0));
-  is_correct &= lbt::test::sumsTo(TypeParam::DY, static_cast<typename TypeParam::type>(0));
-  is_correct &= lbt::test::sumsTo(TypeParam::DZ, static_cast<typename TypeParam::type>(0));
-  is_correct &= lbt::test::sumsTo(TypeParam::W,  static_cast<typename TypeParam::type>(1) + TypeParam::W[0]);
 
-  EXPECT_TRUE(is_correct);
-}
+    /// Array sum
+    TYPED_TEST(DdQqTest, arraySum) {
+      bool is_correct {true};
+      is_correct &= sumsTo(TypeParam::DX, static_cast<typename TypeParam::type>(0));
+      is_correct &= sumsTo(TypeParam::DY, static_cast<typename TypeParam::type>(0));
+      is_correct &= sumsTo(TypeParam::DZ, static_cast<typename TypeParam::type>(0));
+      is_correct &= sumsTo(TypeParam::W,  static_cast<typename TypeParam::type>(1) + TypeParam::W[0]);
 
-/// Test that mask is correct
-TYPED_TEST(DdQqTest, logicalMask) {
-  bool is_success {true};
-  constexpr std::size_t hspeed {TypeParam::ND/2};
-  for (std::size_t i = 0; i < TypeParam::ND; ++i) {
-    if (i == hspeed) {
-      TypeParam::MASK[i] == 0;
-    } else {
-      TypeParam::MASK[i] == 1;
+      EXPECT_TRUE(is_correct);
     }
-  }
 
-  EXPECT_TRUE(is_success);
-}
+    /// Test that mask is correct
+    TYPED_TEST(DdQqTest, logicalMask) {
+      bool is_success {true};
+      constexpr std::size_t hspeed {TypeParam::ND/2};
+      for (std::size_t i = 0; i < TypeParam::ND; ++i) {
+        if (i == hspeed) {
+          TypeParam::MASK[i] == 0;
+        } else {
+          TypeParam::MASK[i] == 1;
+        }
+      }
 
-/// Test that speed of sound positive
-TYPED_TEST(DdQqTest, speedOfSound) {
-  EXPECT_TRUE(TypeParam::CS > 0);
-  EXPECT_TRUE(TypeParam::CS <= 1);
-}
+      EXPECT_TRUE(is_success);
+    }
 
-namespace lbt {
-  namespace test {
+    /// Test that speed of sound positive
+    TYPED_TEST(DdQqTest, speedOfSound) {
+      EXPECT_TRUE(TypeParam::CS > 0);
+      EXPECT_TRUE(TypeParam::CS <= 1);
+    }
+
     /**\fn        isAligned
      * \brief     Test if a given pointer is aligned to a given block size
      *
@@ -204,16 +199,17 @@ namespace lbt {
     constexpr bool isAligned(void const* const p, std::size_t const alignment) noexcept {
       return (reinterpret_cast<std::uintptr_t>(p) % alignment == 0);
     }
-  }
-}
 
-/// Test alignment of the different arrays
-TYPED_TEST(DdQqTest, cacheLineAlignment) {
-  EXPECT_TRUE(lbt::test::isAligned(&TypeParam::DX[0], LBT_CACHE_LINE_SIZE));
-  EXPECT_TRUE(lbt::test::isAligned(&TypeParam::DY[0], LBT_CACHE_LINE_SIZE));
-  EXPECT_TRUE(lbt::test::isAligned(&TypeParam::DZ[0], LBT_CACHE_LINE_SIZE));
-  EXPECT_TRUE(lbt::test::isAligned(&TypeParam::W[0], LBT_CACHE_LINE_SIZE));
-  EXPECT_TRUE(lbt::test::isAligned(&TypeParam::MASK[0], LBT_CACHE_LINE_SIZE));
+    /// Test alignment of the different arrays
+    TYPED_TEST(DdQqTest, cacheLineAlignment) {
+      EXPECT_TRUE(isAligned(&TypeParam::DX[0], LBT_CACHE_LINE_SIZE));
+      EXPECT_TRUE(isAligned(&TypeParam::DY[0], LBT_CACHE_LINE_SIZE));
+      EXPECT_TRUE(isAligned(&TypeParam::DZ[0], LBT_CACHE_LINE_SIZE));
+      EXPECT_TRUE(isAligned(&TypeParam::W[0], LBT_CACHE_LINE_SIZE));
+      EXPECT_TRUE(isAligned(&TypeParam::MASK[0], LBT_CACHE_LINE_SIZE));
+    }
+
+  }
 }
 
 #endif // LBT_LATTICE_UNITTEST
