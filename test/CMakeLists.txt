@@ -40,6 +40,8 @@ add_executable(run_lbt_tests
                ../src/general/disclaimer.cpp
                ../src/general/openmp_manager.cpp
                ../src/general/timer.cpp
+               ../src/general/vtk_utilities.cpp
+               ../src/geometry/vtk_import.cpp
                )
 
 # Unit testing
