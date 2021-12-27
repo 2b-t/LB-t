@@ -20,16 +20,19 @@
 /*#include "population/collision/collision.hpp"
 #include "population/population.hpp"
 #include "general/openmp_manager.hpp"
-#include "general/output.hpp"*/
+#include "general/output_utilities.hpp"*/
 #include "geometry/vtk_import.hpp"
 #include "general/type_definitions.hpp"
 #include "base_simulation.hpp"
 
+
 namespace lbt {
+
   /**\fn    parseArray
-   * \brief Function for parsing a three-dimensional array from a given json string
+   * \brief Function for parsing a three-dimensional array from a given Json string
    * 
    * \tparam    T   The numerical data type of the array
+   * \tparam    Dummy parameter used for SFINAE
    * \param[in] j   The input json to be parsed to a three-dimensional array (x, y, z)
    * \return    The input json array parsed to a three-dimensional array of type \p T
   */
@@ -39,9 +42,17 @@ namespace lbt {
     return arr;
   }
 
+  /**\fn    toJson
+   * \brief Function for writing a three-dimensional array to a formatted Json string
+   * 
+   * \tparam    T   The numerical data type of the array
+   * \tparam    Dummy parameter used for SFINAE
+   * \param[in] arr   The three-dimensional array (x, y, z) to be written to a formatted Json string
+   * \return    The three-dimensional array of type \p T as a formatted Json string
+  */
   template <typename T, typename std::enable_if_t<std::is_arithmetic_v<T>>* = nullptr>
   nlohmann::json toJson(lbt::array<T, 3> const& arr) noexcept {
-    nlohmann::json j {};
+    nlohmann::json j{};
     j["x"] = arr.at(0);
     j["y"] = arr.at(1);
     j["z"] = arr.at(2);
@@ -50,15 +61,30 @@ namespace lbt {
 
   namespace settings {
 
+    /**\class Discretisation
+     * \brief Class holding the number of cells used to resolve the computational domain
+    */
     class Discretisation {
       using json = nlohmann::json;
 
       public:
+        /**\fn    Discretisation
+         * \brief Constructor of Discretisation class that parses the settings from a Json string
+         * 
+         * \param[in] NX   Number of cells in x
+         * \param[in] NY   Number of cells in y
+         * \param[in] NZ   Number of cells in z
+        */
         constexpr Discretisation(std::int32_t const& NX, std::int32_t const& NY, std::int32_t const& NZ) noexcept 
           : NX{NX}, NY{NY}, NZ{NZ} {
           return;
         };
 
+        /**\fn    Discretisation
+         * \brief Constructor of Discretisation class that parses the settings from a Json string
+         * 
+         * \param[in] j   The Json string to be parsed
+        */
         Discretisation(json const& j) {
           NX = j["NX"].get<std::int32_t>();
           NY = j["NY"].get<std::int32_t>();
@@ -66,6 +92,11 @@ namespace lbt {
           return;
         }
 
+        /**\fn    toJson
+         * \brief Function for saving the Discretisation parameters to a formatted Json string
+         * 
+         * \return The Discretisation class serialised as a Json string
+        */
         json toJson() const noexcept {
           json j {};
           j["NX"] = NX;
@@ -74,30 +105,54 @@ namespace lbt {
           return j;
         }
 
-        std::tuple<std::int32_t, std::int32_t, std::int32_t> getDiscretisation() const noexcept {
+        /**\fn    getDiscretisation
+         * \brief Function for getting the discretisation parameters
+         * 
+         * \return A tuple containing the discretisation parameters for all three Cartesian directions
+        */
+        constexpr std::tuple<std::int32_t, std::int32_t, std::int32_t> getDiscretisation() const noexcept {
           return std::make_tuple(NX, NY, NZ);
         }
       protected:
-        std::int32_t NX;
-        std::int32_t NY;
-        std::int32_t NZ;
+        std::int32_t NX; // Number of cells in x-direction
+        std::int32_t NY; // Number of cells in y-direction
+        std::int32_t NZ; // Number of cells in z-direction
     };
 
+    /**\class Physics
+     * \brief Class holding the physical parameters of the discretisation
+    */
     class Physics {
       using json = nlohmann::json;
 
       public:
+        /**\fn    Physics
+         * \brief Constructor of Physics class that parses the settings from a Json string
+         * 
+         * \param[in] density               Density of the fluid
+         * \param[in] kinematic_viscosity   Kinematic viscosity of the fluid
+        */
         constexpr Physics(double const density, double const kinematic_viscosity) noexcept 
           : density{density}, kinematic_viscosity{kinematic_viscosity} {
           return;
         }
 
+        /**\fn    Physics
+         * \brief Constructor of Physics class that parses the settings from a Json string
+         * 
+         * \param[in] j   The Json string to be parsed
+        */
         Physics(json const& j) {
           density = j["density"].get<double>();
           kinematic_viscosity = j["kinematicViscosity"].get<double>();
           return;
         }
 
+        /**\fn    toJson
+         * \brief Function for saving the physics parameters to a formatted Json string
+         * 
+         * \return The Physics class serialised as a Json string
+        */
         json toJson() const noexcept {
           json j {};
           j["density"] = density;
@@ -106,43 +161,79 @@ namespace lbt {
         }
 
       protected:
-        double density;
-        double kinematic_viscosity;
+        double density; // Density of the fluid
+        double kinematic_viscosity; // Kinematic viscosity of the fluid
     };
 
+    /**\class  InitialConditions
+     * \brief  Class holding the initial conditions of the simulation
+     * 
+     * \tparam T   The data type of the underlying arrays
+     * \tparam Dummy parameter used for SFINAE
+    */
     template <typename T, typename std::enable_if_t<std::is_arithmetic_v<T>>* = nullptr>
     class InitialConditions {
       using json = nlohmann::json;
 
       public:
+        /**\fn    InitialConditions
+         * \brief Constructor of InitialConditions class that parses the settings from a Json string
+         * 
+         * \param[in] initial_velocity   Initial velocity inside the domain
+        */
         constexpr InitialConditions(lbt::array<T, 3> const& initial_velocity) noexcept 
           : initial_velocity{initial_velocity} {
           return;
         }
 
+        /**\fn    InitialConditions
+         * \brief Constructor of InitialConditions class that parses the settings from a Json string
+         * 
+         * \param[in] j   The Json string to be parsed
+        */
         InitialConditions(json const& j) {
           initial_velocity = parseArray<T>(j["velocity"]);
           return;
         }
 
+        /**\fn    toJson
+         * \brief Function for saving the initial condition to a formatted Json string
+         * 
+         * \return The InitialCondition class serialised as a Json string
+        */
         json toJson() const noexcept {
-          return toJson(initial_velocity);
+          return lbt::toJson(initial_velocity);
         }
       
       protected:
-        lbt::array<T, 3> initial_velocity;
+        lbt::array<T, 3> initial_velocity; // Initial velocity inside the domain
     };
 
+    /**\class Geometry
+     * \brief Class holding the geometry parameters such as files to consider and bounding box
+    */
     class Geometry {
       using json = nlohmann::json;
 
       public:
+        /**\fn    Geometry
+         * \brief Constructor of Geometry class that parses the settings from a Json string
+         * 
+         * \param[in] files            Files to be used for the generation of the geometry
+         * \param[in] bounding_box     Bounding box to be considered for the geometries
+         * \param[in] reduction_rate   Geometric reduction rate of the polygons as a fraction [0, 1]
+        */
         Geometry(std::vector<std::string> const& files, std::array<double, 6> const& bounding_box,
                  double const reduction_rate) noexcept
           : files{files}, bounding_box{bounding_box}, reduction_rate{reduction_rate} {
           return;
         }
 
+        /**\fn    Geometry
+         * \brief Constructor of Geometry class that parses the settings from a Json string
+         * 
+         * \param[in] j   The Json string to be parsed
+        */
         Geometry(json const& j) {
           json const& j_files {j["models"]};
           for (auto const& f: j_files) {
@@ -159,6 +250,11 @@ namespace lbt {
           return;
         }
 
+        /**\fn    toJson
+         * \brief Function for saving the geometry parameters to a formatted Json string
+         * 
+         * \return The Geometry class serialised as a Json string
+        */
         json toJson() const {
           json ja {};
           for (auto const& f:files) {
@@ -176,6 +272,12 @@ namespace lbt {
           return j;
         }
 
+        /**\fn    getFilesWithPath
+         * \brief Function for getting a list of files with their full path
+         * 
+         * \param[in] parent_directory   The parent directory of the files
+         * \return    The full output path for all files
+        */
         std::vector<std::filesystem::path> getFilesWithPath(std::filesystem::path const& parent_directory) const noexcept {
           std::vector<std::filesystem::path> files_with_path {};
           for (auto const& f: files) {
@@ -185,25 +287,43 @@ namespace lbt {
         }
         
       protected:
-        std::vector<std::string> files;
-        std::array<double, 6> bounding_box;
-        std::optional<double> reduction_rate;
+        std::vector<std::string> files; // Files to be used for the generation of the geometry
+        std::array<double, 6> bounding_box; // Bounding box to be considered for the geometries
+        std::optional<double> reduction_rate; // Geometric reduction rate of the polygons
     };
 
+    /**\class Parallelism
+     * \brief Class holding the settings for multi-threading parallelism
+    */
     class Parallelism {
       using json = nlohmann::json;
 
       public:
+        /**\fn    Parallelism
+         * \brief Constructor of Parallelism class that parses the settings from a Json string
+         * 
+         * \param[in] number_of_threads   Number of CPU threads to be used for computations
+        */
         constexpr Parallelism(int const number_of_threads) noexcept 
           : number_of_threads{number_of_threads} {
           return;
         }
 
+        /**\fn    Parallelism
+         * \brief Constructor of Parallelism class that parses the settings from a Json string
+         * 
+         * \param[in] j   The Json string to be parsed
+        */
         Parallelism(json const& j) {
           number_of_threads = j["numberOfThreads"].get<int>();
           return;
         }
 
+        /**\fn    toJson
+         * \brief Function for saving the parallelism parameters to a formatted Json string
+         * 
+         * \return The Parallelism class serialised as a Json string
+        */
         json toJson() const noexcept {
           json j {};
           j["numberOfThreads"] = number_of_threads;
@@ -211,19 +331,35 @@ namespace lbt {
         }
 
       protected:
-        int number_of_threads ;
+        int number_of_threads; // Number of CPU threads to be used for computations
     };
 
+    /**\class Output
+     * \brief Class holding the settings for output of simulation files
+    */
     class Output {
       using json = nlohmann::json;
 
       public:
+        /**\fn    Output
+         * \brief Constructor of Output class that parses the settings from a Json string
+         * 
+         * \param[in] format           File format of the output
+         * \param[in] folder           Folder name where the files should be written to
+         * \param[in] first_output     First time step where a file should be outputted
+         * \param[in] write_interval   Interval in between writing time steps
+        */
         Output(DataType const format, std::string const& folder, double const first_output, 
               double const write_interval) noexcept 
           : format{format}, folder{folder}, first_output{first_output}, write_interval{write_interval} {
           return;
         }
 
+        /**\fn    Output
+         * \brief Constructor of Output class that parses the settings from a Json string
+         * 
+         * \param[in] j   The Json string to be parsed
+        */
         Output(json const& j) {
           format = DataType::MHD;
           if (j["dataFormat"] == "vtk") {
@@ -235,6 +371,11 @@ namespace lbt {
           return;
         }
 
+        /**\fn    toJson
+         * \brief Function for saving the output parameters to a formatted Json string
+         * 
+         * \return The Output class serialised as a Json string
+        */
         json toJson() const noexcept {
           json j {};
           if (format == DataType::VTK) {
@@ -248,27 +389,47 @@ namespace lbt {
           return j;
         }
 
+        /**\fn    getFullOutputPath
+         * \brief Function for saving getting the full output path by combining the parent directory with the output folder
+         * 
+         * \param[in] parent_directory   The parent directory of the folder
+         * \return    The full output path
+        */
         std::filesystem::path getFullOutputPath(std::filesystem::path const& parent_directory) const noexcept {
           std::filesystem::path const full_path {parent_directory / folder};
           return full_path;
         }     
 
       protected:
-        DataType format;
-        std::string folder;
-        double first_output;
-        double write_interval;
+        DataType format; // File format of the output
+        std::string folder; // Folder name where the files should be written to
+        double first_output; // First time step where a file should be outputted
+        double write_interval; // Interval in between writing time steps
     };
 
+    /**\class Times
+     * \brief Class holding the simulation times
+    */
     class Times {
       using json = nlohmann::json;
 
       public:
+        /**\fn    Times
+         * \brief Constructor of Times class that parses the settings from a Json string
+         * 
+         * \param[in] warmup   Simulation runtime before the actual simulation starts
+         * \param[in] end      Final time step of the simulation
+        */
         constexpr Times(double const warmup, double const end) noexcept 
           : warmup{warmup}, end{end} {
           return;
         }
 
+        /**\fn    Times
+         * \brief Constructor of Times class that parses the settings from a Json string
+         * 
+         * \param[in] j   The Json string to be parsed
+        */
         Times(json const& j) {
           warmup = j["warmUp"].get<double>();
           if (j.contains("startTime") == true) {
@@ -278,6 +439,11 @@ namespace lbt {
           return;
         }
 
+        /**\fn    toJson
+         * \brief Function for saving the timing parameters to a formatted Json string
+         * 
+         * \return The Time class serialised as a Json string
+        */
         json toJson() const noexcept {
           json j {};
           j["warmUp"] = warmup;
@@ -289,9 +455,9 @@ namespace lbt {
         }
 
       protected:
-        double warmup;
-        std::optional<double> start;
-        double end;
+        double warmup; // Simulation runtime before the actual simulation starts
+        std::optional<double> start; // Optional time for starting from an existing time step
+        double end; // Final time step of the simulation
     };
   }
   
@@ -310,20 +476,15 @@ namespace lbt {
       Simulation() = delete;
 
       /**\fn    Simulation
-       * \brief Constructor of Simulation class that parses the settings from a json string
+       * \brief Constructor of Simulation class that parses the settings from a Json string
        * 
        * \param[in] settings           The json string containing all the settings
        * \param[in] parent_directory   The directory where the simulation results should be outputted to
       */
-      Simulation(json const& settings, std::filesystem::path const& parent_directory) {
-        /// Parse settings
-        settings::Discretisation const discretisation {settings["discretisation"]};
-        settings::Physics const physics {settings["physics"]};
-        settings::InitialConditions<T> const initial_conditions {settings["initial_conditions"]};
-        settings::Geometry const geometry {settings["geometry"]};
-        settings::Parallelism const parallelism {settings["target"]};
-        settings::Output const output {settings["output"]};
-        settings::Times const times {settings["times"]};
+      Simulation(json const& settings, std::filesystem::path const& parent_directory)
+        : discretisation{settings["discretisation"]}, physics{settings["physics"]},
+          initial_conditions{settings["initial_conditions"]}, geometry{settings["geometry"]},
+          parallelism{settings["target"]}, output{settings["output"]}, times{settings["times"]} {
 
         // Import geometry files
         /*auto const geometry = Geometry::importFromFiles(geometry_files, NX, reduction_rate, bounding_box);
@@ -375,11 +536,28 @@ namespace lbt {
         return;
       }
 
+      /**\fn    toJson
+       * \brief Function for saving the simulation parameters to a formatted Json string by calling the underlying setting serialisation functions
+       * 
+       * \return The Simulation class serialised as a Json string
+      */
       json toJson() const noexcept override final {
         json settings {};
+
+        settings["discretisation"] = discretisation.toJson();
+        settings["physics"] = physics.toJson();
+        settings["initial_conditions"] = initial_conditions.toJson();
+        settings["geometry"] = geometry.toJson();
+        settings["target"] = parallelism.toJson();
+        settings["output"] = output.toJson();
+        settings["times"] = times.toJson();
+
         return settings;
       }
 
+      /**\fn    run
+       * \brief Function for running the simulation
+      */
       void run() noexcept override final {
         // Collision & streaming
         // Apply boundary conditions
@@ -388,6 +566,14 @@ namespace lbt {
       }
 
     private:
+      settings::Discretisation discretisation;
+      settings::Physics physics;
+      settings::InitialConditions<T> initial_conditions;
+      settings::Geometry geometry;
+      settings::Parallelism parallelism;
+      settings::Output output;
+      settings::Times times;
+
       std::shared_ptr<Continuum<T>> continuum;
       //std::shared_ptr<Population<LT,T,NPOP>> population;
       //std::shared_ptr<Output<LT,T,NPOP>> output;

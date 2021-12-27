@@ -112,7 +112,7 @@ namespace lbt {
         */
         ImporterMergeTest(int const resolution_x = 100, std::array<double,6> const& bounding_box = {-1, 2, -3, 4, -5, 6}) noexcept 
           : resolution_x{resolution_x}, bounding_box{bounding_box}, dimensions{0, 0, 0} {
-          lbt::test::MergeParameters param {GetParam()};
+          MergeParameters param {GetParam()};
           expected_colour = static_cast<double>(param.expected_colour);
           image_1 = lbt::Importer::newImageData(resolution_x, bounding_box, param.fill_colour_1);
           image_2 = lbt::Importer::newImageData(resolution_x, bounding_box, param.fill_colour_2);
@@ -200,8 +200,11 @@ namespace lbt {
       }
     }
 
+    /**\class  ImporterProtectedTest
+     * \brief  Helper class for testing protected member functions of lbt::Importer class
+    */
     class ImporterProtectedTest : public lbt::Importer, public testing::Test {
-      public:
+      protected:
         ImporterProtectedTest() = default;
     };
 
@@ -226,33 +229,27 @@ namespace lbt {
     }
 
     TEST_F(ImporterProtectedTest, rotatePolyData) {
-      // Generate poly-data and rotate
-      GTEST_SKIP() << "Unit test not implemented yet!";
+      GTEST_SKIP() << "Unit tests involving file import and export not implemented yet!";
     }
 
     TEST_F(ImporterProtectedTest, translatePolyData) {
-      // Generate poly-data and move origin
-      GTEST_SKIP() << "Unit test not implemented yet!";
+      GTEST_SKIP() << "Unit tests involving file import and export not implemented yet!";
     }
 
     TEST_F(ImporterProtectedTest, cleanPolyData) {
-      // Generate cleanable poly-data and clean it
-      GTEST_SKIP() << "Unit test not implemented yet!";
+      GTEST_SKIP() << "Unit tests involving file import and export not implemented yet!";
     }
 
     TEST_F(ImporterProtectedTest, reducePolyData) {
-      // Create poly-data manually and reduce the complexity
-      GTEST_SKIP() << "Unit test not implemented yet!";
+      GTEST_SKIP() << "Unit tests involving file import and export not implemented yet!";
     }
 
     TEST_F(ImporterProtectedTest, voxelisePolyData) {
-      // Create poly-data manually and voxelise it
-      GTEST_SKIP() << "Unit test not implemented yet!";
+      GTEST_SKIP() << "Unit tests involving file import and export not implemented yet!";
     }
 
     TEST_F(ImporterProtectedTest, cleanImageData) {
-      // Create image data manually and clean it
-      GTEST_SKIP() << "Unit test not implemented yet!";
+      GTEST_SKIP() << "Unit tests involving file import and export not implemented yet!";
     }
 
     /**\class GeometryConstructorTest

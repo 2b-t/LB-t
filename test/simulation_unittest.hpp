@@ -16,25 +16,45 @@
 #include "../src/simulation.hpp"
 
 
-/// Test parse-array function with json string
-TEST(ParseArrayFromJsonTest, correctParsing) {
-  using json = nlohmann::json;
+namespace lbt {
+  namespace test {
 
-  std::string const str {"{\"x\":1,\"y\":2,\"z\":3}"};
-  json const j = json::parse(str);
-  auto const arr = lbt::parseArray<int>(j);
+    /// Test parse-array function with json string
+    TEST(ParseArrayFromJsonTest, parseIntArray) {
+      using json = nlohmann::json;
 
-  EXPECT_EQ(arr.at(0), 1);
-  EXPECT_EQ(arr.at(1), 2);
-  EXPECT_EQ(arr.at(2), 3);
+      std::string const str {"{\"x\":1,\"y\":2,\"z\":3}"};
+      lbt::array<int, 3> const expected_result = {1, 2, 3};
+
+      json const j = json::parse(str);
+      auto const arr = lbt::parseArray<int>(j);
+
+      EXPECT_EQ(arr.at(0), expected_result.at(0));
+      EXPECT_EQ(arr.at(1), expected_result.at(1));
+      EXPECT_EQ(arr.at(2), expected_result.at(2));
+    }
+
+    /// Test writing array to json
+    TEST(WriteArrayToJson, writeIntArray) {
+      using json = nlohmann::json;
+
+      lbt::array<int, 3> const arr = {1, 2, 3};
+      std::string const expected_result {"{\"x\":1,\"y\":2,\"z\":3}"};
+
+      json const j = lbt::toJson(arr);
+
+      EXPECT_EQ(j.dump(), expected_result);
+    }
+
+    /// Check data members with given json string: See if imported correctly
+
+    /// Check that after initialisation all pointers initialised
+
+    /// Check that imported and exported settings are equal
+
+    /// Check copy and move operators
+
+  }
 }
-
-/// Check data members with given json string: See if imported correctly
-
-/// Check that after initialisation all pointers initialised
-
-/// Check that imported and exported settings are equal
-
-/// Check copy and move operators
 
 #endif // LBT_SIMULATION_UNITTEST
