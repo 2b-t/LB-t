@@ -21,8 +21,8 @@
 #include "population/population.hpp"
 #include "general/openmp_manager.hpp"
 #include "general/output_utilities.hpp"*/
-#include "geometry/vtk_import.hpp"
 #include "general/type_definitions.hpp"
+#include "geometry/vtk_import.hpp"
 #include "base_simulation.hpp"
 
 
