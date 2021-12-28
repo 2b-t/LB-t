@@ -13,6 +13,7 @@
 #include <gtest/gtest.h>
 
 #include "../../src/general/literals.hpp"
+#include "../../src/general/units.hpp"
 
 
 namespace lbt {
@@ -24,8 +25,9 @@ namespace lbt {
        * \brief Helper class for parametrised length
        * 
        * \tparam T   The type of physical unit (e.g. lbt::unit::Length)
+       * \tparam Dummy parameter used for SFINAE
       */
-      template <typename T>
+      template <typename T, typename std::enable_if_t<lbt::unit::is_unit_v<T>>* = nullptr>
       class UnitLiteralsHelper : public testing::Test, public testing::WithParamInterface<std::pair<T,long double>> {
       };
 

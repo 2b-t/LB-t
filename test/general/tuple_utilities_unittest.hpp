@@ -37,22 +37,22 @@ namespace lbt {
     };
 
     // Test custom tuple trait
-    TEST(IsTupleTrait, tupleIsTuple) {
+    TEST(IsTupleTraitTest, tupleIsTuple) {
       constexpr bool is_tuple = lbt::is_tuple_v<std::tuple<int,double>>;
       EXPECT_TRUE(is_tuple);
     }
 
-    TEST(IsTupleTrait, integerIsNotTuple) {
+    TEST(IsTupleTraitTest, integerIsNotTuple) {
       constexpr bool is_tuple = lbt::is_tuple_v<int>;
       EXPECT_FALSE(is_tuple);
     }
 
-    TEST(IsTupleTrait, pairIsNotTuple) {
+    TEST(IsTupleTraitTest, pairIsNotTuple) {
       constexpr bool is_tuple = lbt::is_tuple_v<std::pair<int,double>>;
       EXPECT_FALSE(is_tuple);
     }
 
-    TEST(IsTupleTrait, someTemplateClassIsNotTuple) {
+    TEST(IsTupleTraitTest, someTemplateClassIsNotTuple) {
       constexpr bool is_tuple = lbt::is_tuple_v<lbt::test::SomeTemplateClass<int,double>>;
       EXPECT_FALSE(is_tuple);
     }

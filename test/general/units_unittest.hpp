@@ -7,6 +7,8 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#include <type_traits>
+
 #include <gtest/gtest.h>
 
 #include "../../src/general/units.hpp"
@@ -14,6 +16,17 @@
 
 namespace lbt {
   namespace test {
+    /// Test custom is_unit type trait
+    TEST(IsUnitTraitTest, lengthIsUnit) {
+      constexpr bool is_unit = lbt::unit::is_unit_v<lbt::unit::Length>;
+      EXPECT_TRUE(is_unit);
+    }
+
+    TEST(IsUnitTraitTest, doubleIsNotUnit) {
+      constexpr bool is_unit = lbt::unit::is_unit_v<double>;
+      EXPECT_FALSE(is_unit);
+    }
+
     using UnitTestingTypes = ::testing::Types<lbt::unit::Length, lbt::unit::Distance,
                                               lbt::unit::Time, lbt::unit::Duration,
                                               lbt::unit::Mass, lbt::unit::Area, lbt::unit::Volume,
@@ -23,8 +36,9 @@ namespace lbt {
      * \brief Helper class for the tests of the lbt::unit::detail::UnitBase class
      * 
      * \tparam T   The type of physical unit (e.g. lbt::unit::Length)
+     * \tparam Dummy parameter used for SFINAE
     */
-    template <typename T>
+    template <typename T, typename std::enable_if_t<lbt::unit::is_unit_v<T>>* = nullptr>
     struct PhysicalUnitTest: public ::testing::Test {
     };
 

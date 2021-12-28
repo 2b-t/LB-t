@@ -8,6 +8,7 @@
 */
 
 #include <iostream>
+#include <type_traits>
 
 
 namespace lbt {
@@ -118,7 +119,21 @@ namespace lbt {
 
           long double value; // Stored unit value
       };
+
+      constexpr std::false_type is_unit_impl(...) noexcept;
+      template <typename T>
+      constexpr std::true_type is_unit_impl(UnitBase<T> const volatile&) noexcept;
     }
+    /**\fn     is_unit
+     * \brief  Type trait for checking if a type \p T is derived from the UnitBase template class
+     *
+     * \tparam T   The data type to be checked to be a unit
+    */
+    template <typename T>
+    using is_unit = decltype(lbt::unit::detail::is_unit_impl(std::declval<T&>()));
+    // Convient alias for is_unit<T>::value
+    template <typename T>
+    static constexpr bool is_unit_v = is_unit<T>::value;
 
     /**\class Length
      * \brief Unit class for lengths and distances
