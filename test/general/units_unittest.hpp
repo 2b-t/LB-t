@@ -19,10 +19,16 @@ namespace lbt {
                                               lbt::unit::Mass, lbt::unit::Area, lbt::unit::Volume,
                                               lbt::unit::Velocity, lbt::unit::Density, lbt::unit::KinematicViscosity>;
 
+    /**\class PhysicalUnitTest
+     * \brief Helper class for the tests of the lbt::unit::detail::UnitBase class
+     * 
+     * \tparam T   The type of physical unit (e.g. lbt::unit::Length)
+    */
     template <typename T>
     struct PhysicalUnitTest: public ::testing::Test {
     };
 
+    /// Tests for standard operations involving operations between physical units of the same type
     TYPED_TEST_SUITE(PhysicalUnitTest, UnitTestingTypes);
 
     TYPED_TEST(PhysicalUnitTest, constructorAndGet) {
@@ -70,7 +76,7 @@ namespace lbt {
       EXPECT_DOUBLE_EQ(res.get(), expected_result);
     }
 
-    /// Test operators for composed units
+    /// Tests involving operations between different physical units resulting in composed units
     TEST(AreaTest, lengthMultipliedByLengthIsArea) {
       lbt::unit::Length const a_length {2.0};
       lbt::unit::Length const another_length {3.5};

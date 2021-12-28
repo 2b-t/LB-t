@@ -264,6 +264,15 @@ namespace lbt {
       return m*lbt::unit::Velocity{1.0_mm/1.0_s};
     }
 
+    /**\fn        operator "" _m2ps
+     * \brief     User-defined literal for a kinematic viscosity given in square meters per second
+     * 
+     * \param[in] p   The kinematic viscosity in square meters per second
+     * \return    A kinematic viscosity in the base unit meters squared per second
+    */
+    constexpr lbt::unit::KinematicViscosity operator "" _m2ps(long double const m) noexcept {
+      return m*lbt::unit::KinematicViscosity{1.0_m*1.0_m/1.0_s};
+    }
     /**\fn        operator "" _St
      * \brief     User-defined literal for a kinematic viscosity given in Stokes
      * 
