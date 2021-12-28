@@ -22,7 +22,7 @@ namespace lbt {
      * \return    A length in the base unit meters
     */
     constexpr lbt::unit::Length operator "" _km(long double const k) noexcept {
-      return lbt::unit::Length{1000.0*k};
+      return k*lbt::unit::Length{1.0e3};
     }
     /**\fn        operator "" _m
      * \brief     User-defined literal for a length given in meters
@@ -31,7 +31,7 @@ namespace lbt {
      * \return    A length in the base unit meters
     */
     constexpr lbt::unit::Length operator "" _m(long double const m) noexcept {
-      return lbt::unit::Length{m};
+      return m*lbt::unit::Length{1.0};
     }
     /**\fn        operator "" _dm
      * \brief     User-defined literal for a length given in decimeters
@@ -40,7 +40,7 @@ namespace lbt {
      * \return    A length in the base unit meters
     */
     constexpr lbt::unit::Length operator "" _dm(long double const d) noexcept {
-      return lbt::unit::Length{d/10.0};
+      return d*lbt::unit::Length{1.0e-1};
     }
     /**\fn        operator "" _cm
      * \brief     User-defined literal for a length given in centimeters
@@ -49,7 +49,7 @@ namespace lbt {
      * \return    A length in the base unit meters
     */
     constexpr lbt::unit::Length operator "" _cm(long double const c) noexcept {
-      return lbt::unit::Length{c/100.0};
+      return c*lbt::unit::Length{1.0e-2};
     }
     /**\fn        operator "" _mm
      * \brief     User-defined literal for a length given in millimeters
@@ -58,7 +58,7 @@ namespace lbt {
      * \return    A length in the base unit meters
     */
     constexpr lbt::unit::Length operator "" _mm(long double const m) noexcept {
-      return lbt::unit::Length{m/1000.0};
+      return m*lbt::unit::Length{1.0e-3};
     }
     /**\fn        operator "" _um
      * \brief     User-defined literal for a length given in micrometers
@@ -67,9 +67,18 @@ namespace lbt {
      * \return    A length in the base unit meters
     */
     constexpr lbt::unit::Length operator "" _um(long double const u) noexcept {
-      return lbt::unit::Length{u/1.0e6};
+      return u*lbt::unit::Length{1.0e-6};
     }
 
+    /**\fn        operator "" _d
+     * \brief     User-defined literal for a time given in days
+     * 
+     * \param[in] d   The time in days
+     * \return    A time in the base unit seconds
+    */
+    constexpr lbt::unit::Time operator "" _d(long double const d) noexcept {
+      return d*lbt::unit::Time{86400.0};
+    }
     /**\fn        operator "" _h
      * \brief     User-defined literal for a time given in hours
      * 
@@ -77,7 +86,7 @@ namespace lbt {
      * \return    A time in the base unit seconds
     */
     constexpr lbt::unit::Time operator "" _h(long double const h) noexcept {
-      return lbt::unit::Time{3600.0*h};
+      return h*lbt::unit::Time{3600.0};
     }
     /**\fn        operator "" _min
      * \brief     User-defined literal for a time given in minutes
@@ -86,7 +95,7 @@ namespace lbt {
      * \return    A time in the base unit seconds
     */
     constexpr lbt::unit::Time operator "" _min(long double const m) noexcept {
-      return lbt::unit::Time{60.0*m};
+      return m*lbt::unit::Time{60.0};
     }
     /**\fn        operator "" _s
      * \brief     User-defined literal for a time given in seconds
@@ -95,7 +104,7 @@ namespace lbt {
      * \return    A time in the base unit seconds
     */
     constexpr lbt::unit::Time operator "" _s(long double const s) noexcept {
-      return lbt::unit::Time{s};
+      return s*lbt::unit::Time{1.0};
     }
     /**\fn        operator "" _ms
      * \brief     User-defined literal for a time given in milliseconds
@@ -104,7 +113,7 @@ namespace lbt {
      * \return    A time in the base unit seconds
     */
     constexpr lbt::unit::Time operator "" _ms(long double const m) noexcept {
-      return lbt::unit::Time{m/1000.0};
+      return m*lbt::unit::Time{1.0e-3};
     }
     /**\fn        operator "" _us
      * \brief     User-defined literal for a time given in microseconds
@@ -113,7 +122,7 @@ namespace lbt {
      * \return    A time in the base unit seconds
     */
     constexpr lbt::unit::Time operator "" _us(long double const u) noexcept {
-      return lbt::unit::Time{u/1.0e6};
+      return u*lbt::unit::Time{1.0e-6};
     }
 
     /**\fn        operator "" _t
@@ -123,7 +132,7 @@ namespace lbt {
      * \return    A mass in the base unit kilograms
     */
     constexpr lbt::unit::Mass operator "" _t(long double const t) noexcept {
-      return lbt::unit::Mass{1000.0*t};
+      return t*lbt::unit::Mass{1000.0};
     }
     /**\fn        operator "" _kg
      * \brief     User-defined literal for a mass given in kilograms
@@ -132,7 +141,7 @@ namespace lbt {
      * \return    A mass in the base unit kilograms
     */
     constexpr lbt::unit::Mass operator "" _kg(long double const k) noexcept {
-      return lbt::unit::Mass{k};
+      return k*lbt::unit::Mass{1.0};
     }
     /**\fn        operator "" _g
      * \brief     User-defined literal for a mass given in grams
@@ -141,7 +150,7 @@ namespace lbt {
      * \return    A mass in the base unit kilograms
     */
     constexpr lbt::unit::Mass operator "" _g(long double const g) noexcept {
-      return lbt::unit::Mass{g/1000.0};
+      return g*lbt::unit::Mass{1.0e-3};
     }
 
     /**\fn        operator "" _km2
@@ -160,7 +169,7 @@ namespace lbt {
      * \return    An area in the base unit square meters
     */
     constexpr lbt::unit::Area operator "" _m2(long double const m) noexcept {
-      return lbt::unit::Area{m};
+      return m*lbt::unit::Area{1.0_m*1.0_m};
     }
     /**\fn        operator "" _cm2
      * \brief     User-defined literal for an area given in square centimeters
@@ -197,7 +206,7 @@ namespace lbt {
      * \return    A volume in the base unit cubic meters
     */
     constexpr lbt::unit::Volume operator "" _m3(long double const m) noexcept {
-      return lbt::unit::Volume{m};
+      return m*lbt::unit::Volume{1.0_m*1.0_m*1.0_m};
     }
     /**\fn        operator "" _cm3
      * \brief     User-defined literal for a volume given in cubic centimeters
@@ -234,7 +243,7 @@ namespace lbt {
      * \return    A velocity in the base unit meters per second
     */
     constexpr lbt::unit::Velocity operator "" _mps(long double const m) noexcept {
-      return lbt::unit::Velocity{m};
+      return m*lbt::unit::Velocity{1.0_m/1.0_s};
     }
     /**\fn        operator "" _cmps
      * \brief     User-defined literal for a velocity given in centimeters per second
@@ -255,24 +264,6 @@ namespace lbt {
       return m*lbt::unit::Velocity{1.0_mm/1.0_s};
     }
 
-    /**\fn        operator "" _P
-     * \brief     User-defined literal for a kinematic viscosity given in Poise
-     * 
-     * \param[in] p   The kinematic viscosity in Poise
-     * \return    A kinematic viscosity in the base unit meters squared per second
-    */
-    constexpr lbt::unit::KinematicViscosity operator "" _P(long double const p) noexcept {
-      return lbt::unit::KinematicViscosity{0.1*p};
-    }
-    /**\fn        operator "" _cP
-     * \brief     User-defined literal for a kinematic viscosity given in Centipose
-     * 
-     * \param[in] c   The kinematic viscosity in Centipoise
-     * \return    A kinematic viscosity in the base unit meters squared per second
-    */
-    constexpr lbt::unit::KinematicViscosity operator "" _cP(long double const c) noexcept {
-      return lbt::unit::KinematicViscosity{c/1.0e3};
-    }
     /**\fn        operator "" _St
      * \brief     User-defined literal for a kinematic viscosity given in Stokes
      * 
@@ -280,7 +271,7 @@ namespace lbt {
      * \return    A kinematic viscosity in the base unit meters squared per second
     */
     constexpr lbt::unit::KinematicViscosity operator "" _St(long double const s) noexcept {
-      return lbt::unit::KinematicViscosity{s/1.0e4};
+      return s*lbt::unit::KinematicViscosity{1.0e-4};
     }
     /**\fn        operator "" _cSt
      * \brief     User-defined literal for a kinematic viscosity given in Centistokes
@@ -289,7 +280,7 @@ namespace lbt {
      * \return    A kinematic viscosity in the base unit meters squared per second
     */
     constexpr lbt::unit::KinematicViscosity operator "" _cSt(long double const c) noexcept {
-      return lbt::unit::KinematicViscosity{c/1.0e6};
+      return c*lbt::unit::KinematicViscosity{1.0e-6};
     }
 
   }
