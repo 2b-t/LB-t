@@ -75,7 +75,7 @@ namespace lbt {
          * \param[in] NY   Number of cells in y
          * \param[in] NZ   Number of cells in z
         */
-        constexpr Discretisation(std::int32_t const& NX, std::int32_t const& NY, std::int32_t const& NZ) noexcept 
+        constexpr Discretisation(std::int32_t const NX, std::int32_t const NY, std::int32_t const NZ) noexcept 
           : NX{NX}, NY{NY}, NZ{NZ} {
           return;
         };
@@ -112,6 +112,33 @@ namespace lbt {
         */
         constexpr std::tuple<std::int32_t, std::int32_t, std::int32_t> getDiscretisation() const noexcept {
           return std::make_tuple(NX, NY, NZ);
+        }
+
+        /**\fn    getNx
+         * \brief Getter for number of cells in x-direction
+         * 
+         * \return Number of cells in x-direction
+        */
+        constexpr auto getNx() const noexcept {
+          return NX;
+        }
+
+        /**\fn    getNy
+         * \brief Getter for number of cells in y-direction
+         * 
+         * \return Number of cells in y-direction
+        */
+        constexpr auto getNy() const noexcept {
+          return NY;
+        }
+
+        /**\fn    getNz
+         * \brief Getter for number of cells in z-direction
+         * 
+         * \return Number of cells in z-direction
+        */
+        constexpr auto getNz() const noexcept {
+          return NZ;
         }
       protected:
         std::int32_t NX; // Number of cells in x-direction
@@ -160,6 +187,24 @@ namespace lbt {
           return j;
         }
 
+        /**\fn    getDensity
+         * \brief Getter for fluid density
+         * 
+         * \return Fluid density in SI-units
+        */
+        constexpr auto getDensity() const noexcept {
+          return density;
+        }
+
+        /**\fn    getKinematicViscosity
+         * \brief Getter for kinematic viscosity of the fluid
+         * 
+         * \return Fluid kinematic viscosity in SI units
+        */
+        constexpr auto getKinematicViscosity() const noexcept {
+          return kinematic_viscosity;
+        }
+
       protected:
         double density; // Density of the fluid
         double kinematic_viscosity; // Kinematic viscosity of the fluid
@@ -204,7 +249,16 @@ namespace lbt {
         json toJson() const noexcept {
           return lbt::toJson(initial_velocity);
         }
-      
+
+        /**\fn    getInitialVelocity
+         * \brief Getter for initial velocity
+         * 
+         * \return Initial velocity in SI-units
+        */
+        constexpr auto getInitialVelocity() const noexcept {
+          return initial_velocity;
+        }
+
       protected:
         lbt::array<T, 3> initial_velocity; // Initial velocity inside the domain
     };
@@ -285,6 +339,24 @@ namespace lbt {
           }
           return files_with_path;
         }
+
+        /**\fn    getBoundingBox
+         * \brief Getter for bounding box
+         * 
+         * \return Geometric bounding box used for the simulation
+        */
+        constexpr auto getBoundingBox() const noexcept {
+          return bounding_box;
+        }
+
+        /**\fn    getReductionRate
+         * \brief Getter for reduction rate
+         * 
+         * \return Geometric reduction rate of the polygons
+        */
+        constexpr auto getReductionRate() const noexcept {
+          return reduction_rate;
+        }
         
       protected:
         std::vector<std::string> files; // Files to be used for the generation of the geometry
@@ -328,6 +400,15 @@ namespace lbt {
           json j {};
           j["numberOfThreads"] = number_of_threads;
           return j;
+        }
+
+        /**\fn    getNumberOfThreads
+         * \brief Getter for number of parallel CPU threads used for simulation and geometry pre-processing
+         * 
+         * \return Number of CPU threads used for simulation
+        */
+        constexpr auto getNumberOfThreads() const noexcept {
+          return number_of_threads;
         }
 
       protected:
@@ -398,7 +479,34 @@ namespace lbt {
         std::filesystem::path getFullOutputPath(std::filesystem::path const& parent_directory) const noexcept {
           std::filesystem::path const full_path {parent_directory / folder};
           return full_path;
-        }     
+        }
+
+        /**\fn    getFormat
+         * \brief Getter for export file format
+         * 
+         * \return Used export file format
+        */
+        constexpr auto getFormat() const noexcept {
+          return format;
+        }
+
+        /**\fn    getFirstOutput
+         * \brief Getter for first output time step
+         * 
+         * \return Time step where first output file is written
+        */
+        constexpr auto getFirstOutput() const noexcept {
+          return first_output;
+        }
+
+        /**\fn    getWriteInterval
+         * \brief Getter for interval at which output file is written
+         * 
+         * \return Interval at which output file is written
+        */
+        constexpr auto getWriteInterval() const noexcept {
+          return write_interval;
+        }
 
       protected:
         DataType format; // File format of the output
@@ -452,6 +560,33 @@ namespace lbt {
           }
           j["endTime"] = end;
           return j;
+        }
+
+        /**\fn    getWarmupTime
+         * \brief Getter for warm-up simulation time to be performed before the actual simulation
+         * 
+         * \return The warm-up time before the simualtion starts in SI-units
+        */
+        constexpr auto getWarmupTime() const noexcept {
+          return warmup;
+        }
+
+        /**\fn    getStartTime
+         * \brief Getter for optional start time from existing time step
+         * 
+         * \return The time where the simulation should be foreced to start from in SI-units
+        */
+        constexpr auto getStartTime() const noexcept {
+          return start;
+        }
+
+        /**\fn    getEndTime
+         * \brief Getter for end time of the simulation
+         * 
+         * \return The time where the simulation should stop in SI-units
+        */
+        constexpr auto getEndTime() const noexcept {
+          return end;
         }
 
       protected:

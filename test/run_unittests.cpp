@@ -13,6 +13,7 @@
 #include "general/stream_manager_unittest.hpp"
 #include "general/timer_unittest.hpp"
 #include "general/tuple_utilities_unittest.hpp"
+#include "general/unit_literals_unittest.hpp"
 #include "general/vtk_utilities_unittest.hpp"
 #include "geometry/vtk_import_unittest.hpp"
 #include "lattice/lattice_unittest.hpp"
