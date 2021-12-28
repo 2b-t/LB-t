@@ -19,22 +19,104 @@ namespace lbt {
                                               lbt::unit::Mass, lbt::unit::Area, lbt::unit::Volume,
                                               lbt::unit::Velocity, lbt::unit::Density, lbt::unit::KinematicViscosity>;
 
-    // Test basic operators for all data types
+    template <typename T>
+    struct PhysicalUnitTest: public ::testing::Test {
+    };
 
-    // Test operators for composed units
+    TYPED_TEST_SUITE(PhysicalUnitTest, UnitTestingTypes);
 
-    TEST(SomeTest, someName) {
-      using namespace lbt::literals;
-      constexpr auto t = 1.0_s;
-      constexpr auto d = 3.0_mm;
-      constexpr auto v = 1.0_kg / (3.0_mm*1.0_m2);
-      constexpr lbt::unit::Density c {v};
-      lbt::unit::Density const dd = 2.0;
-      long double const ddd = dd.get();
+    TYPED_TEST(PhysicalUnitTest, constructorAndGet) {
+      constexpr long double value {7.0};
+      TypeParam const unit {value};
+      EXPECT_DOUBLE_EQ(unit.get(), value);
+    }
 
-      auto a = 2.0*1.0_s;
+    TYPED_TEST(PhysicalUnitTest, setAndGet) {
+      constexpr long double value {7.0};
+      TypeParam unit {};
+      unit.set(value);
+      EXPECT_DOUBLE_EQ(unit.get(), value);
+    }
 
-      EXPECT_TRUE(false) << "Velocity: " << a;
+    TYPED_TEST(PhysicalUnitTest, addition) {
+      TypeParam const a {1.0};
+      TypeParam const b {2.0};
+      long double const expected_result {a.get() + b.get()};
+      TypeParam const res = a + b;
+      EXPECT_DOUBLE_EQ(res.get(), expected_result);
+    }
+
+    TYPED_TEST(PhysicalUnitTest, subtraction) {
+      TypeParam const a {1.0};
+      TypeParam const b {2.0};
+      long double const expected_result {a.get() - b.get()};
+      TypeParam const res = a - b;
+      EXPECT_DOUBLE_EQ(res.get(), expected_result);
+    }
+
+    TYPED_TEST(PhysicalUnitTest, multiplyConstant) {
+      TypeParam const a {1.0};
+      long double const c {2.0};
+      long double const expected_result {c*a.get()};
+      TypeParam const res = c*a;
+      EXPECT_DOUBLE_EQ(res.get(), expected_result);
+    }
+
+    TYPED_TEST(PhysicalUnitTest, divideConstant) {
+      TypeParam const a {1.0};
+      long double const c {2.0};
+      long double const expected_result {a.get()/c};
+      TypeParam const res = a/c;
+      EXPECT_DOUBLE_EQ(res.get(), expected_result);
+    }
+
+    /// Test operators for composed units
+    TEST(AreaTest, lengthMultipliedByLengthIsArea) {
+      lbt::unit::Length const a_length {2.0};
+      lbt::unit::Length const another_length {3.5};
+      long double const expected_result {a_length.get()*another_length.get()};
+      lbt::unit::Area const area {a_length*another_length};
+      EXPECT_DOUBLE_EQ(area.get(), expected_result);
+    }
+
+    TEST(VolumeTest, lengthMultipliedByAreaIsVolume) {
+      lbt::unit::Length const length {2.0};
+      lbt::unit::Area const area {3.5};
+      long double const expected_result {length.get()*area.get()};
+      lbt::unit::Volume const volume {length*area};
+      EXPECT_DOUBLE_EQ(volume.get(), expected_result);
+    }
+
+    TEST(VolumeTest, areaMultipliedByLengthIsVolume) {
+      lbt::unit::Area const area {3.5};
+      lbt::unit::Length const length {2.0};
+      long double const expected_result {area.get()*length.get()};
+      lbt::unit::Volume const volume {area*length};
+      EXPECT_DOUBLE_EQ(volume.get(), expected_result);
+    }
+
+    TEST(VelocityTest, lengthDividedByTimeIsVelocity) {
+      lbt::unit::Length const length {2.0};
+      lbt::unit::Time const time {3.5};
+      long double const expected_result {length.get()/time.get()};
+      lbt::unit::Velocity const velocity {length/time};
+      EXPECT_DOUBLE_EQ(velocity.get(), expected_result);
+    }
+
+    TEST(DensityTest, massDividedByVolumeIsDensity) {
+      lbt::unit::Mass const mass {2.0};
+      lbt::unit::Volume const volume {3.5};
+      long double const expected_result {mass.get()/volume.get()};
+      lbt::unit::Density const density {mass/volume};
+      EXPECT_DOUBLE_EQ(density.get(), expected_result);
+    }
+
+    TEST(KinematicViscosityTest, areaDividedByTimeIsKinematicViscosity) {
+      lbt::unit::Area const area {2.0};
+      lbt::unit::Time const time {3.5};
+      long double const expected_result {area.get()/time.get()};
+      lbt::unit::KinematicViscosity const kinematic_viscosity {area/time};
+      EXPECT_DOUBLE_EQ(kinematic_viscosity.get(), expected_result);
     }
 
   }
