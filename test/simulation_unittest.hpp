@@ -8,6 +8,7 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#include <cstdint>
 #include <string>
 
 #include <gtest/gtest.h>

@@ -9,35 +9,20 @@
 */
 
 #include <cmath>
+#include <cstdint>
 #include <limits>
 #include <numeric>
-#include <tuple>
 #include <type_traits>
 
 #include <gtest/gtest.h>
 
 #include "../../src/general/constexpr_math.hpp"
 #include "../../src/general/type_definitions.hpp"
-#include "../../src/lattice/D2Q9.hpp"
-#include "../../src/lattice/D3Q15.hpp"
-#include "../../src/lattice/D3Q19.hpp"
-#include "../../src/lattice/D3Q27.hpp"
-#include "../../src/general/tuple_utilities.hpp"
-#include "../testing_utilities/testing_utilities.hpp"
+#include "lattice_testing_types.hpp"
 
 
 namespace lbt {
   namespace test {
-
-    /// The different lattices to be tested
-    template <typename T> using LatticeTypes = std::tuple<lbt::lattice::D2Q9P10<T>,  lbt::lattice::D2Q9P12<T>, 
-                                                          lbt::lattice::D3Q15P16<T>, lbt::lattice::D3Q19P20<T>, 
-                                                          lbt::lattice::D3Q27P28<T>, lbt::lattice::D3Q27PC<T>>;
-    /// The different floating data types for the lattices
-    using LatticeFloatingTypes = std::tuple<double, float>;
-
-    // Merge data types and lattices data types
-    using LatticeTestTypes = ToTestingTypes_t<lbt::CartesianProductApply_t<LatticeTypes, LatticeFloatingTypes>>;
 
     /// Templated tests for each lattice
     template <typename L>
@@ -77,21 +62,21 @@ namespace lbt {
 
     /// Tests for discretisation dimensions
     TYPED_TEST(DdQqTest, discretisationDimensions) {
-      EXPECT_TRUE(TypeParam::DIM > 0);
-      EXPECT_TRUE(TypeParam::DIM <= 3);
+      EXPECT_GT(TypeParam::DIM, 0);
+      EXPECT_LE(TypeParam::DIM, 3);
     }
 
     /// Tests correlation between array size parameters
     TYPED_TEST(DdQqTest, speedsCorrelations) {
-      EXPECT_TRUE(TypeParam::SPEEDS >= 2*TypeParam::DIM);
-      EXPECT_TRUE(TypeParam::HSPEED > TypeParam::DIM);
-      EXPECT_TRUE(TypeParam::PAD >= 0);
-      EXPECT_TRUE(TypeParam::ND > TypeParam::SPEEDS);
+      EXPECT_GE(TypeParam::SPEEDS, 2*TypeParam::DIM);
+      EXPECT_GT(TypeParam::HSPEED, TypeParam::DIM);
+      EXPECT_GE(TypeParam::PAD, 0);
+      EXPECT_GT(TypeParam::ND, TypeParam::SPEEDS);
 
-      EXPECT_TRUE(TypeParam::HSPEED == (TypeParam::SPEEDS + 1)/2);
-      EXPECT_TRUE(TypeParam::ND > TypeParam::SPEEDS);
-      EXPECT_TRUE(TypeParam::ND == TypeParam::SPEEDS + TypeParam::PAD);
-      EXPECT_TRUE(TypeParam::OFF == TypeParam::ND/2);
+      EXPECT_EQ(TypeParam::HSPEED, (TypeParam::SPEEDS + 1)/2);
+      EXPECT_GT(TypeParam::ND, TypeParam::SPEEDS);
+      EXPECT_EQ(TypeParam::ND, TypeParam::SPEEDS + TypeParam::PAD);
+      EXPECT_EQ(TypeParam::OFF, TypeParam::ND/2);
     }
 
     /**\fn        isSymmetric
@@ -106,9 +91,9 @@ namespace lbt {
     constexpr bool isSymmetric(lbt::array<T,N> const& arr) noexcept {
       constexpr std::size_t hspeed {N/2};
       bool is_symmetric {true};
-      is_symmetric &= (arr[0] == arr[hspeed]);
+      is_symmetric &= lbt::cem::nearlyEqual(arr.at(0), arr.at(hspeed));
       for (std::size_t i = 1; i < hspeed; ++i) {
-        is_symmetric &= lbt::cem::nearlyEqual(arr[i], arr[i + hspeed]);
+        is_symmetric &= lbt::cem::nearlyEqual(arr.at(i), arr.at(i + hspeed));
       }
       return is_symmetric;
     }
@@ -125,9 +110,9 @@ namespace lbt {
     constexpr bool isAntimetric(lbt::array<T,N> const& arr) noexcept {
       constexpr std::size_t hspeed {N/2};
       bool is_antimetric {true};
-      is_antimetric &= (arr[0] == arr[hspeed]);
+      is_antimetric &= lbt::cem::nearlyEqual(arr.at(0), arr.at(hspeed));
       for (std::size_t i = 1; i < hspeed; ++i) {
-        is_antimetric &= lbt::cem::nearlyEqual(arr[i], -arr[i + hspeed]);
+        is_antimetric &= lbt::cem::nearlyEqual(arr.at(i), -arr.at(i + hspeed));
       }
       return is_antimetric;
     }
@@ -163,7 +148,7 @@ namespace lbt {
       is_correct &= sumsTo(TypeParam::DX, static_cast<typename TypeParam::type>(0));
       is_correct &= sumsTo(TypeParam::DY, static_cast<typename TypeParam::type>(0));
       is_correct &= sumsTo(TypeParam::DZ, static_cast<typename TypeParam::type>(0));
-      is_correct &= sumsTo(TypeParam::W,  static_cast<typename TypeParam::type>(1) + TypeParam::W[0]);
+      is_correct &= sumsTo(TypeParam::W,  static_cast<typename TypeParam::type>(1) + TypeParam::W.at(0));
 
       EXPECT_TRUE(is_correct);
     }
@@ -171,12 +156,15 @@ namespace lbt {
     /// Test that mask is correct
     TYPED_TEST(DdQqTest, logicalMask) {
       bool is_success {true};
-      constexpr std::size_t hspeed {TypeParam::ND/2};
-      for (std::size_t i = 0; i < TypeParam::ND; ++i) {
-        if (i == hspeed) {
-          TypeParam::MASK[i] == 0;
-        } else {
-          TypeParam::MASK[i] == 1;
+      constexpr std::int32_t hspeed {TypeParam::ND/2};
+      for (std::int32_t i = 0; i <= 1; ++i) {
+        for (std::int32_t j = 0; j < TypeParam::HSPEED; ++j) {
+          std::int32_t const index {i*TypeParam::OFF + j};
+          if (index != hspeed) {
+            is_success &= lbt::cem::nearlyEqual(TypeParam::MASK.at(index), static_cast<typename TypeParam::type>(1));
+          } else {
+            is_success &= lbt::cem::nearlyEqual(TypeParam::MASK.at(index), static_cast<typename TypeParam::type>(0));
+          }
         }
       }
 
@@ -185,8 +173,8 @@ namespace lbt {
 
     /// Test that speed of sound positive
     TYPED_TEST(DdQqTest, speedOfSound) {
-      EXPECT_TRUE(TypeParam::CS > 0);
-      EXPECT_TRUE(TypeParam::CS <= 1);
+      EXPECT_GT(TypeParam::CS, 0);
+      EXPECT_LE(TypeParam::CS, 1);
     }
 
     /**\fn        isAligned
@@ -202,11 +190,11 @@ namespace lbt {
 
     /// Test alignment of the different arrays
     TYPED_TEST(DdQqTest, cacheLineAlignment) {
-      EXPECT_TRUE(isAligned(&TypeParam::DX[0], LBT_CACHE_LINE_SIZE));
-      EXPECT_TRUE(isAligned(&TypeParam::DY[0], LBT_CACHE_LINE_SIZE));
-      EXPECT_TRUE(isAligned(&TypeParam::DZ[0], LBT_CACHE_LINE_SIZE));
-      EXPECT_TRUE(isAligned(&TypeParam::W[0], LBT_CACHE_LINE_SIZE));
-      EXPECT_TRUE(isAligned(&TypeParam::MASK[0], LBT_CACHE_LINE_SIZE));
+      EXPECT_TRUE(isAligned(&TypeParam::DX.at(0), LBT_CACHE_LINE_SIZE));
+      EXPECT_TRUE(isAligned(&TypeParam::DY.at(0), LBT_CACHE_LINE_SIZE));
+      EXPECT_TRUE(isAligned(&TypeParam::DZ.at(0), LBT_CACHE_LINE_SIZE));
+      EXPECT_TRUE(isAligned(&TypeParam::W.at(0), LBT_CACHE_LINE_SIZE));
+      EXPECT_TRUE(isAligned(&TypeParam::MASK.at(0), LBT_CACHE_LINE_SIZE));
     }
 
   }

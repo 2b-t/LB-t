@@ -18,6 +18,7 @@
 #include "general/vtk_utilities_unittest.hpp"
 #include "geometry/vtk_import_unittest.hpp"
 #include "lattice/lattice_unittest.hpp"
+#include "population/indexing/indexing_unittest.hpp"
 #include "testing_utilities/testing_utilities_unittest.hpp"
 #include "simulation_unittest.hpp"
 

@@ -28,7 +28,7 @@ namespace lbt {
        * \tparam Dummy parameter used for SFINAE
       */
       template <typename T, typename std::enable_if_t<lbt::unit::is_unit_v<T>>* = nullptr>
-      class UnitLiteralsHelper : public testing::Test, public testing::WithParamInterface<std::pair<T,long double>> {
+      class UnitLiteralsHelper : public testing::Test, public ::testing::WithParamInterface<std::pair<T,long double>> {
       };
 
       /// Parametrised unit-tests
@@ -37,13 +37,13 @@ namespace lbt {
         auto const [length, expected_result] = GetParam();
         EXPECT_DOUBLE_EQ(length.get(), expected_result);
       }
-      INSTANTIATE_TEST_SUITE_P(LengthLiteralsTest, LengthLiteralsHelper, testing::Values(
-          std::make_pair(0.6_km, 600.0L),
-          std::make_pair(3.2_m,    3.2L),
-          std::make_pair(9.9_dm,   0.99L),
-          std::make_pair(7.3_cm,   0.073L),
-          std::make_pair(2.6_mm,   0.0026L),
-          std::make_pair(8.9_um,   8.9e-6L)
+      INSTANTIATE_TEST_SUITE_P(LengthLiteralsTest, LengthLiteralsHelper, ::testing::Values(
+          std::make_pair(0.6_km, 6.0e+2L),
+          std::make_pair(3.2_m,  3.2L),
+          std::make_pair(9.9_dm, 9.9e-1L),
+          std::make_pair(7.3_cm, 7.3e-2L),
+          std::make_pair(2.6_mm, 2.6e-3L),
+          std::make_pair(8.9_um, 8.9e-6L)
         )
       );
 
@@ -52,13 +52,13 @@ namespace lbt {
         auto const [time, expected_result] = GetParam();
         EXPECT_DOUBLE_EQ(time.get(), expected_result);
       }
-      INSTANTIATE_TEST_SUITE_P(TimeLiteralsTest, TimeLiteralsHelper, testing::Values(
-          std::make_pair(0.8_d,   69120.0L),
-          std::make_pair(1.3_h,    4680.0L),
-          std::make_pair(6.9_min,   414.0L),
-          std::make_pair(5.6_s,       5.6L),
-          std::make_pair(1.4_ms,      0.0014L),
-          std::make_pair(2.9_us,      2.9e-6L)
+      INSTANTIATE_TEST_SUITE_P(TimeLiteralsTest, TimeLiteralsHelper, ::testing::Values(
+          std::make_pair(0.8_d,   6.912e+4L),
+          std::make_pair(1.3_h,   4.680e+3L),
+          std::make_pair(6.9_min, 4.14e+2L),
+          std::make_pair(5.6_s,   5.6L),
+          std::make_pair(1.4_ms,  1.4e-3L),
+          std::make_pair(2.9_us,  2.9e-6L)
         )
       );
 
@@ -67,10 +67,10 @@ namespace lbt {
         auto const [mass, expected_result] = GetParam();
         EXPECT_DOUBLE_EQ(mass.get(), expected_result);
       }
-      INSTANTIATE_TEST_SUITE_P(MassLiteralsTest, MassLiteralsHelper, testing::Values(
-          std::make_pair(9.9_t,  9900.0L),
-          std::make_pair(0.7_kg,    0.7L),
-          std::make_pair(3.8_g,     0.0038L)
+      INSTANTIATE_TEST_SUITE_P(MassLiteralsTest, MassLiteralsHelper, ::testing::Values(
+          std::make_pair(9.9_t,  9.9e+3L),
+          std::make_pair(0.7_kg, 7.0e-1L),
+          std::make_pair(3.8_g,  3.8e-3L)
         )
       );
 
@@ -79,11 +79,11 @@ namespace lbt {
         auto const [area, expected_result] = GetParam();
         EXPECT_DOUBLE_EQ(area.get(), expected_result);
       }
-      INSTANTIATE_TEST_SUITE_P(AreaLiteralsTest, AreaLiteralsHelper, testing::Values(
-          std::make_pair(0.1_km2, 100000.0L),
-          std::make_pair(2.9_m2,       2.9L),
-          std::make_pair(7.4_cm2,      0.00074L),
-          std::make_pair(6.6_mm2,      6.6e-6L)
+      INSTANTIATE_TEST_SUITE_P(AreaLiteralsTest, AreaLiteralsHelper, ::testing::Values(
+          std::make_pair(0.1_km2, 1.0e+5L),
+          std::make_pair(2.9_m2,  2.9L),
+          std::make_pair(7.4_cm2, 7.4e-4L),
+          std::make_pair(6.6_mm2, 6.6e-6L)
         )
       );
 
@@ -92,7 +92,7 @@ namespace lbt {
         auto const [volume, expected_result] = GetParam();
         EXPECT_DOUBLE_EQ(volume.get(), expected_result);
       }
-      INSTANTIATE_TEST_SUITE_P(VolumeLiteralsTest, VolumeLiteralsHelper, testing::Values(
+      INSTANTIATE_TEST_SUITE_P(VolumeLiteralsTest, VolumeLiteralsHelper, ::testing::Values(
           std::make_pair(0.3_km3, 3.0e+8L),
           std::make_pair(8.6_m3,  8.6L),
           std::make_pair(1.2_cm3, 1.2e-6L),
@@ -105,11 +105,11 @@ namespace lbt {
         auto const [velocity, expected_result] = GetParam();
         EXPECT_DOUBLE_EQ(velocity.get(), expected_result);
       }
-      INSTANTIATE_TEST_SUITE_P(VelocityLiteralsTest, VelocityLiteralsHelper, testing::Values(
+      INSTANTIATE_TEST_SUITE_P(VelocityLiteralsTest, VelocityLiteralsHelper, ::testing::Values(
           std::make_pair(9.0_kmph, 2.5L),
           std::make_pair(1.7_mps,  1.7L),
-          std::make_pair(8.9_cmps, 0.089L),
-          std::make_pair(5.3_mmps, 0.0053L)
+          std::make_pair(8.9_cmps, 8.9e-2L),
+          std::make_pair(5.3_mmps, 5.3e-3L)
         )
       );
 
@@ -118,9 +118,9 @@ namespace lbt {
         auto const [kinematic_viscosity, expected_result] = GetParam();
         EXPECT_DOUBLE_EQ(kinematic_viscosity.get(), expected_result);
       }
-      INSTANTIATE_TEST_SUITE_P(KinematicViscosityLiteralsTest, KinematicViscosityLiteralsHelper, testing::Values(
+      INSTANTIATE_TEST_SUITE_P(KinematicViscosityLiteralsTest, KinematicViscosityLiteralsHelper, ::testing::Values(
           std::make_pair(7.4_m2ps, 7.4L),
-          std::make_pair(5.6_St,   0.00056L),
+          std::make_pair(5.6_St,   5.6e-4L),
           std::make_pair(3.5_cSt,  3.5e-6L)
         )
       );

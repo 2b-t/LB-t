@@ -25,7 +25,7 @@ namespace lbt {
     /**\class ImporterNewImageTest
      * \brief Helper class for setting up a test for allocating new image data
     */
-    class ImporterNewImageTest : public testing::Test {
+    class ImporterNewImageTest : public ::testing::Test {
       public:
         /**\fn        ImporterNewImageTest
          * \brief     (Default) constructor
@@ -102,7 +102,7 @@ namespace lbt {
     /**\class ImporterMergeTest
      * \brief Helper class for setting up a parametrised image data merge test
     */
-    class ImporterMergeTest : public testing::Test, public testing::WithParamInterface<lbt::test::MergeParameters<char>> {
+    class ImporterMergeTest : public ::testing::Test, public ::testing::WithParamInterface<lbt::test::MergeParameters<char>> {
       public:
         /**\fn        ImporterMergeTest
          * \brief     (Default) constructor
@@ -145,7 +145,7 @@ namespace lbt {
         }
       }
     }
-    INSTANTIATE_TEST_SUITE_P(ImporterTest, ImporterMergeTest, testing::Values(
+    INSTANTIATE_TEST_SUITE_P(ImporterTest, ImporterMergeTest, ::testing::Values(
         lbt::test::MergeParameters<char>{lbt::Importer::background_colour, lbt::Importer::background_colour, lbt::Importer::background_colour},
         lbt::test::MergeParameters<char>{lbt::Importer::foreground_colour, lbt::Importer::foreground_colour, lbt::Importer::foreground_colour},
         lbt::test::MergeParameters<char>{lbt::Importer::foreground_colour, lbt::Importer::background_colour, lbt::Importer::foreground_colour},
@@ -203,7 +203,7 @@ namespace lbt {
     /**\class  ImporterProtectedTest
      * \brief  Helper class for testing protected member functions of lbt::Importer class
     */
-    class ImporterProtectedTest : public lbt::Importer, public testing::Test {
+    class ImporterProtectedTest : public lbt::Importer, public ::testing::Test {
       protected:
         ImporterProtectedTest() = default;
     };
@@ -255,7 +255,7 @@ namespace lbt {
     /**\class GeometryConstructorTest
      * \brief Helper class for setting up a test for the geometry class
     */
-    class GeometryConstructorTest : public testing::Test {
+    class GeometryConstructorTest : public ::testing::Test {
       public:
         /**\fn        GeometryConstructorTest
          * \brief     (Default) constructor

@@ -8,6 +8,7 @@
 */
 
 #include <cassert>
+#include <cstdint>
 #include <filesystem>
 #include <string>
 #include <type_traits>

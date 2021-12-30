@@ -7,6 +7,7 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#include <cstdint>
 #include <cstdlib>
 #include <filesystem>
 #include <memory>

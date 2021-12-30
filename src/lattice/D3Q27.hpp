@@ -10,6 +10,7 @@
  * \warning  Static classes with more complex members such as std::vector and std::array require C++17
 */
 
+#include <cstdint>
 #include <type_traits>
 
 #include "../general/constexpr_math.hpp"
@@ -18,6 +19,7 @@
 
 namespace lbt {
   namespace lattice {
+
     /**\class  lattice::D3Q27P28
      * \brief  Class for D3Q27 lattice with padding to 28
      *
@@ -34,14 +36,14 @@ namespace lbt {
         using type = T;
 
         /// lattice discretisation parameters
-        static constexpr unsigned int    DIM =  3;
-        static constexpr unsigned int SPEEDS = 27;
-        static constexpr unsigned int HSPEED = (SPEEDS + 1)/2;
+        static constexpr std::int32_t    DIM =  3;
+        static constexpr std::int32_t SPEEDS = 27;
+        static constexpr std::int32_t HSPEED = (SPEEDS + 1)/2;
 
         /// linear memory layout padding
-        static constexpr unsigned int PAD = 1;
-        static constexpr unsigned int  ND = SPEEDS + PAD;
-        static constexpr unsigned int OFF = ND/2;
+        static constexpr std::int32_t PAD = 1;
+        static constexpr std::int32_t  ND = SPEEDS + PAD;
+        static constexpr std::int32_t OFF = ND/2;
 
         /// discrete velocities
         LBT_ALIGN static constexpr lbt::array<T, ND> DX =
@@ -105,14 +107,14 @@ namespace lbt {
         using type = T;
 
         /// lattice discretisation parameters
-        static constexpr unsigned int    DIM =  3;
-        static constexpr unsigned int SPEEDS = 27;
-        static constexpr unsigned int HSPEED = (SPEEDS + 1)/2;
+        static constexpr std::int32_t    DIM =  3;
+        static constexpr std::int32_t SPEEDS = 27;
+        static constexpr std::int32_t HSPEED = (SPEEDS + 1)/2;
 
         /// linear memory layout padding
-        static constexpr unsigned int PAD = ((LBT_CACHE_LINE_SIZE - sizeof(T)*SPEEDS % LBT_CACHE_LINE_SIZE) % LBT_CACHE_LINE_SIZE) / sizeof(T);
-        static constexpr unsigned int  ND = SPEEDS + PAD;
-        static constexpr unsigned int OFF = ND/2;
+        static constexpr std::int32_t PAD = ((LBT_CACHE_LINE_SIZE - sizeof(T)*SPEEDS % LBT_CACHE_LINE_SIZE) % LBT_CACHE_LINE_SIZE) / sizeof(T);
+        static constexpr std::int32_t  ND = SPEEDS + PAD;
+        static constexpr std::int32_t OFF = ND/2;
 
         /// discrete velocities
         LBT_ALIGN static constexpr lbt::array<T, ND> DX =
@@ -166,6 +168,7 @@ namespace lbt {
         /// lattice speed of sound
         static constexpr T CS = 1.0/cem::sqrt(3.0);
     };
+
   }
 }
 
