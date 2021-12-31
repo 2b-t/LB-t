@@ -62,8 +62,8 @@ namespace lbt {
        * \brief     Generate 3D population coordinates from scalar index
        *
        * \param[in] index   Current linear population index
-       * \return    Return the x, y, z coordinates as well as the number of population p, positive (0) or negative (1) index n and the number of relevant 
-       *            population index d belonging to the scalar index
+       * \return    Return the x, y, z coordinates as well as the positive (0) or negative (1) index n and the number of relevant 
+       *            population index d belonging to the scalar index and the index of the population p
       */
       constexpr std::tuple<std::int32_t,std::int32_t,std::int32_t,std::int32_t,std::int32_t,std::int32_t>
       linearToSpatial(std::int64_t const index) const noexcept;
@@ -102,7 +102,7 @@ namespace lbt {
     factor = LT::SPEEDS;
     std::int32_t const d {static_cast<std::int32_t>(rest%factor)};
 
-    return std::make_tuple(x,y,z,p,n,d);
+    return std::make_tuple(x,y,z,n,d,p);
   }
 
 }

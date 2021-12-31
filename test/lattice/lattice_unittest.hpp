@@ -27,7 +27,6 @@ namespace lbt {
     /// Templated tests for each lattice
     template <typename L>
     struct DdQqTest: public ::testing::Test {
-      using DdQq = L;
     };
 
     TYPED_TEST_SUITE(DdQqTest, LatticeTestTypes);

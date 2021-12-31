@@ -5,6 +5,7 @@
 
 #include <gtest/gtest.h>
 
+#include "continuum/characteristic_numbers_unittest.hpp"
 #include "continuum/continuum_unittest.hpp"
 #include "general/constexpr_math_unittest.hpp"
 #include "general/disclaimer_unittest.hpp"
@@ -18,6 +19,7 @@
 #include "general/vtk_utilities_unittest.hpp"
 #include "geometry/vtk_import_unittest.hpp"
 #include "lattice/lattice_unittest.hpp"
+#include "population/indexing/aa_pattern_unittest.hpp"
 #include "population/indexing/indexing_unittest.hpp"
 #include "testing_utilities/testing_utilities_unittest.hpp"
 #include "simulation_unittest.hpp"

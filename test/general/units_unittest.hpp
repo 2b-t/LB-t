@@ -139,6 +139,14 @@ namespace lbt {
       EXPECT_DOUBLE_EQ(kinematic_viscosity.get(), expected_result);
     }
 
+    TEST(KinematicViscosityTest, velocityMultipliedByLengthIsKinematicViscosity) {
+      lbt::unit::Velocity const velocity {2.0};
+      lbt::unit::Length const length {3.5};
+      long double const expected_result {velocity.get()*length.get()};
+      lbt::unit::KinematicViscosity const kinematic_viscosity {velocity*length};
+      EXPECT_DOUBLE_EQ(kinematic_viscosity.get(), expected_result);
+    }
+
   }
 }
 

@@ -365,8 +365,21 @@ namespace lbt {
     constexpr KinematicViscosity operator/ (Area const& a, Time const& t) noexcept {
       return KinematicViscosity{a.get()/t.get()};
     }
-  }
 
+    /**\fn        operator*
+     * \brief     Multiplication operator between a velocity and a length resulting in a kinematic viscosity
+     * 
+     * \param[in] v   A velocity
+     * \param[in] l   A length
+     * \return    The kinematic viscosity resulting from the multiplication of a velocity and a length
+    */
+    constexpr KinematicViscosity operator* (Velocity const& v, Length const& l) noexcept {
+      return KinematicViscosity{v.get()*l.get()};
+    }
+    constexpr KinematicViscosity operator* (Length const& l, Velocity const& v) noexcept {
+      return KinematicViscosity{v.get()*l.get()};
+    }
+  }
 }
 
 #endif // LBT_UNITS
