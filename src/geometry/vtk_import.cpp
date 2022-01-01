@@ -420,21 +420,21 @@ namespace lbt {
     return geometry;
   }
 
-  void Geometry::exportToMhd(std::filesystem::path const& output_path, std::string const& filename, bool const is_compress) const noexcept {
-    exportImageDataToMhd(image_data, output_path, filename, is_compress);
+  void Geometry::saveToMhd(std::filesystem::path const& output_path, std::string const& filename, bool const is_compress) const noexcept {
+    saveImageDataToMhd(image_data, output_path, filename, is_compress);
     return;
   }
   
-  void Geometry::exportToVtk(std::filesystem::path const& output_path, std::string const& filename) const noexcept {
-    exportImageDataToVtk(image_data, output_path, filename);
+  void Geometry::saveToVtk(std::filesystem::path const& output_path, std::string const& filename) const noexcept {
+    saveImageDataToVtk(image_data, output_path, filename);
     return;
   }
 
-  void Geometry::exportToFile(std::filesystem::path const& output_path, std::string const& filename, DataType const data_type, bool const is_compress) const noexcept {
+  void Geometry::saveToFile(std::filesystem::path const& output_path, std::string const& filename, DataType const data_type, bool const is_compress) const noexcept {
     if (data_type == DataType::MHD) {
-      exportToMhd(output_path, filename, is_compress);
+      saveToMhd(output_path, filename, is_compress);
     } else if (data_type == DataType::VTK) {
-      exportToVtk(output_path, filename);
+      saveToVtk(output_path, filename);
     }
     return;
   }

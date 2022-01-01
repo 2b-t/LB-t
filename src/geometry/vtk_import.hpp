@@ -292,7 +292,7 @@ namespace lbt {
       */
       static Geometry importFromMhd(std::filesystem::path const& filename) noexcept;
 
-      /**\fn        exportToMhd
+      /**\fn        saveToMhd
        * \brief     Function for exporting a geometry to a MHD file
        *
        * \param[in] output_path   The output path where the file should be saved
@@ -300,18 +300,18 @@ namespace lbt {
        * \param[in] is_compress   Boolean flag signaling whether the file should be compressed or not
        * \return    None
       */
-      void exportToMhd(std::filesystem::path const& output_path, std::string const& filename, bool const is_compress) const noexcept;
+      void saveToMhd(std::filesystem::path const& output_path, std::string const& filename, bool const is_compress) const noexcept;
 
-      /**\fn        exportToVtk
+      /**\fn        saveToVtk
        * \brief     Function for exporting geometry to a VTK file
        *
        * \param[in] output_path   The output path where the file should be saved
        * \param[in] filename      The filename without the file ending
        * \return    None
       */
-      void exportToVtk(std::filesystem::path const& output_path, std::string const& filename) const noexcept;
+      void saveToVtk(std::filesystem::path const& output_path, std::string const& filename) const noexcept;
 
-      /**\fn        exportToFile
+      /**\fn        saveToFile
        * \brief     Function for exporting geometry to a MHD (default) or VTK file
        *
        * \param[in] output_path   The output path where the file should be saved
@@ -320,7 +320,8 @@ namespace lbt {
        * \param[in] is_compress   Boolean flag signaling whether the file should be compressed or not
        * \return    None
       */
-      void exportToFile(std::filesystem::path const& output_path, std::string const& filename, DataType const data_type = DataType::MHD, bool const is_compress = true) const noexcept;
+      void saveToFile(std::filesystem::path const& output_path, std::string const& filename, 
+                      DataType const data_type = DataType::MHD, bool const is_compress = true) const noexcept;
 
     protected:
       vtkSmartPointer<vtkImageData> image_data;

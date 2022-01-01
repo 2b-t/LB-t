@@ -16,16 +16,18 @@
 
 
 namespace lbt {
-  /**\fn        exportImageDataToVtk
+
+  /**\fn        saveImageDataToVtk
    * \brief     Export a scalar to a *.vtk-file
    *
    * \param[in] image_data    The meta-image data to be allocated
    * \param[in] output_path   The output path where the file should be saved
    * \param[in] filename      The filename of the exported file without the file ending
   */
-  void exportImageDataToVtk(vtkSmartPointer<vtkImageData> const& image_data, std::filesystem::path const& output_path, std::string const& filename) noexcept;
+  void saveImageDataToVtk(vtkSmartPointer<vtkImageData> const& image_data, 
+                          std::filesystem::path const& output_path, std::string const& filename) noexcept;
 
-  /**\fn        exportImageDataToMhd
+  /**\fn        saveImageDataToMhd
    * \brief     Export a scalar to a meta-image *.mhd-file
    *
    * \param[in] image_data    The meta-image data to be allocated
@@ -33,7 +35,8 @@ namespace lbt {
    * \param[in] output_path   The output path where the file should be saved
    * \param[in] is_compress   Boolean variable signaling whether the output should be compressed or not
   */
-  void exportImageDataToMhd(vtkSmartPointer<vtkImageData> const& image_data, std::filesystem::path const& output_path, std::string const& filename, bool const is_compress) noexcept;
+  void saveImageDataToMhd(vtkSmartPointer<vtkImageData> const& image_data, 
+                          std::filesystem::path const& output_path, std::string const& filename, bool const is_compress) noexcept;
 }
 
 #endif // LBT_VTK_UTILITITES
