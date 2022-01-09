@@ -14,8 +14,8 @@
 
 #include <gtest/gtest.h>
 
-#include "../../../src/population/ab_population.hpp"
-#include "../../lattice/lattice_testing_types.hpp"
+#include "../../src/population/ab_population.hpp"
+#include "../lattice/lattice_testing_types.hpp"
 
 
 namespace lbt {

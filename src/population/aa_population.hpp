@@ -42,7 +42,7 @@ namespace lbt {
         static_assert((LT::DIM == 2) ? (NZ == 1) : true, "Two-dimensional lattice with NZ != 1.");
 
         memory_size = static_cast<std::int64_t>(sizeof(T))*NZ*NY*NX*NPOP*LT::ND;
-        A = lbt::aligned_alloc(memory_size, LBT_CACHE_LINE_SIZE));
+        A = lbt::aligned_alloc(memory_size, LBT_CACHE_LINE_SIZE);
 
         return;
       }
@@ -76,7 +76,7 @@ namespace lbt {
                                   std::int32_t               const n,
                                   std::int32_t               const d,
                                   std::int32_t               const p = 0) noexcept {
-        return A[indexRead<TS>(x,y,z,n,d,p)];
+        return A[AaPattern<LT,NPOP>::indexRead<TS>(x,y,z,n,d,p)];
       }
 
       template <Timestep TS>
@@ -86,7 +86,7 @@ namespace lbt {
                                         std::int32_t               const n,
                                         std::int32_t               const d,
                                         std::int32_t               const p = 0) const noexcept {
-        return A[indexRead<TS>(x,y,z,n,d,p)];
+        return A[AaPattern<LT,NPOP>::indexRead<TS>(x,y,z,n,d,p)];
       }
 
       /**\fn        write
@@ -109,7 +109,7 @@ namespace lbt {
                                    std::int32_t               const n,
                                    std::int32_t               const d,
                                    std::int32_t               const p = 0) noexcept {
-        return A[indexWrite<TS>(x,y,z,n,d,p)];
+        return A[AaPattern<LT,NPOP>::indexWrite<TS>(x,y,z,n,d,p)];
       }
 
       template <Timestep TS>
@@ -119,13 +119,14 @@ namespace lbt {
                                          std::int32_t               const n,
                                          std::int32_t               const d,
                                          std::int32_t               const p) const noexcept {
-        return A[indexWrite<TS>(x,y,z,n,d,p)];
+        return A[AaPattern<LT,NPOP>::indexWrite<TS>(x,y,z,n,d,p)];
       }
 
       // LBT_FORCE_INLINE lbt::array<LT::type,LT::ND> read(std::int32_t const x, std::int32_t const y, std::int32_t const z)
       // Vectorised and non-vectorised store and load
 
     protected:
+      using T = typename LT::type;
       std::int64_t memory_size;
       T* A;
   };
