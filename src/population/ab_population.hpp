@@ -106,7 +106,6 @@ namespace lbt {
       template <Timestep TS>
       LBT_FORCE_INLINE auto& write(std::int32_t const x, std::int32_t const y, std::int32_t const z,
                                    std::int32_t const n, std::int32_t const d, std::int32_t const p = 0) noexcept {
-        // TODO: include streaming as well
         if constexpr (TS == Timestep::Even) {
           return B[indexWrite<TS>(x,y,z,n,d,p)];
         } else {
@@ -117,7 +116,6 @@ namespace lbt {
       template <Timestep TS>
       LBT_FORCE_INLINE auto const& write(std::int32_t const x, std::int32_t const y, std::int32_t const z,
                                          std::int32_t const n, std::int32_t const d, std::int32_t const p) const noexcept {
-        // TODO: include streaming as well
         if constexpr (TS == Timestep::Even) {
           return B[indexWrite<TS>(x,y,z,n,d,p)];
         } else {

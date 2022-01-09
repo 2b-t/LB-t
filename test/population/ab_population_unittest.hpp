@@ -1,10 +1,10 @@
-#ifndef LBT_AA_PATTERN_UNITTEST
-#define LBT_AA_PATTERN_UNITTEST
+#ifndef LBT_AB_POPULATION_UNITTEST
+#define LBT_AB_POPULATION_UNITTEST
 #pragma once
 
 /**
- * \file     aa_pattern_unittest.hpp
- * \mainpage Tests for indexing of population via the one-population AA-access pattern
+ * \file     ab_population_unittest.hpp
+ * \mainpage Tests for a population with A-B access pattern
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
@@ -14,14 +14,12 @@
 
 #include <gtest/gtest.h>
 
-#include "../../../src/population/indexing/aa_pattern.hpp"
+#include "../../../src/population/ab_population.hpp"
 #include "../../lattice/lattice_testing_types.hpp"
 
 
 namespace lbt {
   namespace test {
-    // Check for all different lattices:
-
     // Check if even and odd function is working
 
     // Check if index read is index write in the next step
@@ -30,4 +28,4 @@ namespace lbt {
   }
 }
 
-#endif // LBT_AA_PATTERN_UNITTEST
+#endif // LBT_AB_POPULATION_UNITTEST

@@ -65,9 +65,9 @@ namespace lbt {
        * \warning   Inline function! Has to be declared in header!
        *
        * \tparam    TS    Even (0, false) or odd (1, true) time step
-       * \param[in] x     x coordinates of current cell and its neighbours [x-1,x,x+1]
-       * \param[in] y     y coordinates of current cell and its neighbours [y-1,y,y+1]
-       * \param[in] z     z coordinates of current cell and its neighbours [z-1,z,z+1]
+       * \param[in] x     x coordinates of current cell and its neighbours [(NX+x-1)%NX,x,(x+1)%NX]
+       * \param[in] y     y coordinates of current cell and its neighbours [(NY+y-1)%NY,y,(y+1)%NY]
+       * \param[in] z     z coordinates of current cell and its neighbours [(NZ+z-1)%NZ,z,(z+1)%NZ]
        * \param[in] n     Positive (0) or negative (1) index/lattice velocity
        * \param[in] d     Relevant population index
        * \param[in] p     Relevant population (default = 0)
@@ -86,15 +86,31 @@ namespace lbt {
                                oddEven<TS>(n, !n),
                                d, p);
       }
+      template <Timestep TS>
+      LBT_FORCE_INLINE constexpr std::int64_t indexRead(std::int32_t const x,
+                                                        std::int32_t const y,
+                                                        std::int32_t const z,
+                                                        std::int32_t const n,
+                                                        std::int32_t const d,
+                                                        std::int32_t const p) const noexcept {
+        if constexpr (TS == Timestep::Odd) {
+          std::int32_t const xn = (Indexing<LT,NP>::NX + x + static_cast<std::int32_t>(LT::DX[(!n)*LT::OFF+d])) % Indexing<LT,NP>::NX;
+          std::int32_t const yn = (Indexing<LT,NP>::NY + y + static_cast<std::int32_t>(LT::DY[(!n)*LT::OFF+d])) % Indexing<LT,NP>::NY;
+          std::int32_t const zn = (Indexing<LT,NP>::NZ + z + static_cast<std::int32_t>(LT::DZ[(!n)*LT::OFF+d])) % Indexing<LT,NP>::NZ;
+          return Indexing<LT,NP>::spatialToLinear(xn,yn,zn,n,d,p);
+        } else {
+          return Indexing<LT,NP>::spatialToLinear(x,y,z,!n,d,p);
+        }
+      }
 
       /**\fn        indexWrite
        * \brief     Function for determining linear index when reading/writing values after collision depending on even and odd time step.
        * \warning   Inline function! Has to be declared in header!
        *
        * \tparam    TS    Even (0, false) or odd (1, true) time step
-       * \param[in] x     x coordinates of current cell and its neighbours [x-1,x,x+1]
-       * \param[in] y     y coordinates of current cell and its neighbours [y-1,y,y+1]
-       * \param[in] z     z coordinates of current cell and its neighbours [z-1,z,z+1]
+       * \param[in] x     x coordinates of current cell and its neighbours [(NX+x-1)%NX,x,(x+1)%NX]
+       * \param[in] y     y coordinates of current cell and its neighbours [(NY+y-1)%NY,y,(y+1)%NY]
+       * \param[in] z     z coordinates of current cell and its neighbours [(NZ+z-1)%NZ,z,(z+1)%NZ]
        * \param[in] n     Positive (0) or negative (1) index/lattice velocity
        * \param[in] d     Relevant population index
        * \param[in] p     Relevant population (default = 0)
@@ -112,6 +128,22 @@ namespace lbt {
                                z[1 + oddEven<TS>(static_cast<std::int32_t>(LT::DZ[n*LT::OFF+d]), 0)],
                                oddEven<TS>(!n, n),
                                d, p);
+      }
+      template <Timestep TS>
+      LBT_FORCE_INLINE constexpr std::int64_t indexWrite(std::int32_t const x,
+                                                         std::int32_t const y,
+                                                         std::int32_t const z,
+                                                         std::int32_t const n,
+                                                         std::int32_t const d,
+                                                         std::int32_t const p) const noexcept {
+        if constexpr (TS == Timestep::Odd) {
+          std::int32_t const xn = (Indexing<LT,NP>::NX + x + static_cast<std::int32_t>(LT::DX[n*LT::OFF+d])) % Indexing<LT,NP>::NX;
+          std::int32_t const yn = (Indexing<LT,NP>::NY + y + static_cast<std::int32_t>(LT::DY[n*LT::OFF+d])) % Indexing<LT,NP>::NY;
+          std::int32_t const zn = (Indexing<LT,NP>::NZ + z + static_cast<std::int32_t>(LT::DZ[n*LT::OFF+d])) % Indexing<LT,NP>::NZ;
+          return Indexing<LT,NP>::spatialToLinear(xn,yn,zn,!n,d,p);
+        } else {
+          return Indexing<LT,NP>::spatialToLinear(x,y,z,n,d,p);
+        }
       }
   };
 

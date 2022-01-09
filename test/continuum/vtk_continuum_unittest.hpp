@@ -1,9 +1,9 @@
-#ifndef LBT_CONTINUUM_UNITTEST
-#define LBT_CONTINUUM_UNITTEST
+#ifndef LBT_VTK_CONTINUUM_UNITTEST
+#define LBT_VTK_CONTINUUM_UNITTEST
 #pragma once
 
 /**
- * \file     continuum_unittest.hpp
+ * \file     vtk_continuum_unittest.hpp
  * \mainpage Tests for continuum class
  * \author   Tobit Flatscher (github.com/2b-t)
 */
@@ -14,8 +14,8 @@
 
 #include <gtest/gtest.h>
 
-#include "../../src/continuum/continuum.hpp"
+#include "../../src/continuum/vtk_continuum.hpp"
 
 // Test setters and getters of continuum class
 
-#endif // LBT_CONTINUUM_UNITTEST
+#endif // LBT_VTK_CONTINUUM_UNITTEST
