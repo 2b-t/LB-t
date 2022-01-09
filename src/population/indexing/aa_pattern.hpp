@@ -1,5 +1,6 @@
 #ifndef LBT_AA_PATTERN
 #define LBT_AA_PATTERN
+#pragma once
 
 /**
  * \file     aa_pattern.hpp
@@ -24,33 +25,6 @@
 
 
 namespace lbt {
-
-  /**\enum  Timestep
-   * \brief Strongly typed enum for even and odd time steps required for AA access pattern
-   */
-  enum class Timestep: bool { Even = false, Odd = true };
-
-  /**\fn        Negation timestep operator
-   * \brief     Negation operator for the timestep
-   *
-   * \param[in] ts   Timestep to be negated
-   * \return    Negated timestep
-   */
-  constexpr Timestep operator! (Timestep const& ts) noexcept {
-    return (ts == Timestep::Even) ? Timestep::Odd : Timestep::Even;
-  }
-
-  /**\fn            Timestep output stream operator
-   * \brief         Output stream operator for the timestep
-   *
-   * \param[in,out] os   Output stream
-   * \param[in]     ts   Timestep to be printed to output stream
-   * \return        Output stream including the type of timestep
-   */
-  std::ostream& operator << (std::ostream& os, Timestep const& ts) noexcept {
-    os << ((ts == Timestep::Even) ? "even time step" : "odd time step");
-    return os;
-  }
 
   /**\class  AaPattern
    * \brief  Class that is responsible for indexing according to Bailey's A-A pattern

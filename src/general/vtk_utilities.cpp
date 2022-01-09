@@ -16,6 +16,8 @@ namespace lbt {
 
   void saveImageDataToVtk(vtkSmartPointer<vtkImageData> const& image_data, std::filesystem::path const& output_path, 
                           std::string const& filename) noexcept {
+    std::filesystem::create_directories(output_path);
+
     // Convert to structured grid
     vtkSmartPointer<vtkImageDataToPointSet> image_data_to_point_set {vtkSmartPointer<vtkImageDataToPointSet>::New()};
     image_data_to_point_set->SetInputData(image_data);
@@ -35,6 +37,8 @@ namespace lbt {
 
   void saveImageDataToMhd(vtkSmartPointer<vtkImageData> const& image_data, std::filesystem::path const& output_path, 
                           std::string const& filename, bool const is_compress) noexcept {
+    std::filesystem::create_directories(output_path);
+
     std::filesystem::path const filename_with_extension = output_path / std::string{filename + ".mhd"};
     vtkSmartPointer<vtkMetaImageWriter> meta_image_writer {vtkSmartPointer<vtkMetaImageWriter>::New()};
     meta_image_writer->SetFileName(filename_with_extension.c_str());

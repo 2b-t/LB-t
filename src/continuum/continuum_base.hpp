@@ -1,5 +1,6 @@
 #ifndef LBT_CONTINUUM_BASE
 #define LBT_CONTINUUM_BASE
+#pragma once
 
 /**
  * \file     continuum_base.hpp
@@ -9,6 +10,7 @@
 
 #include <cstdint>
 #include <filesystem>
+#include <type_traits>
 
 
 namespace lbt {
@@ -17,8 +19,9 @@ namespace lbt {
    * \brief  Base class for the macroscopic variables
    *
    * \tparam T   Floating data type used for simulation
+   * \tparam Dummy argument used for SFINAE
   */
-  template <typename T>
+  template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
   class ContinuumBase {
     public:
       /**\fn        setP

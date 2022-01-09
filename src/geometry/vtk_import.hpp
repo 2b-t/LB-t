@@ -20,6 +20,8 @@
 #include <vtkPolyData.h>
 #include <vtkSmartPointer.h>
 
+#include "../general/vtk_utilities.hpp"
+
 
 namespace lbt {
 
@@ -202,9 +204,7 @@ namespace lbt {
       */
       static vtkSmartPointer<vtkImageData> cleanImageData(vtkSmartPointer<vtkImageData> image_data) noexcept;
   };
-  
-  /// Enum class for supported data types
-  enum class DataType {VTK, MHD};
+
 
   /**\class  Geometry
    * \brief  Class containing a Geometry as image-data

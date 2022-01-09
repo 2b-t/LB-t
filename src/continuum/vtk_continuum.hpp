@@ -1,5 +1,6 @@
 #ifndef LBT_VTK_CONTINUUM
 #define LBT_VTK_CONTINUUM
+#pragma once
 
 /**
  * \file     vtk_continuum.hpp
@@ -26,22 +27,27 @@
 namespace lbt {
 
   /**\class  VtkContinuum
-   * \brief  Class for the macroscopic variables
+   * \brief  Class for the macroscopic variables based on VTK library
    *
-   * \tparam T    Floating data type used for simulation
+   * \tparam T   Floating data type used for simulation
   */
   template <typename T>
   class VtkContinuum : public ContinuumBase<T> {
+    static_assert(std::is_same_v<T,float> || std::is_same_v<T,double>, "'T' is neither of type 'double' or 'float'.");
+
     public:
-      /**\brief Class constructor
+      /**\fn    VtkContinuum
+       * \brief Class constructor
        * 
-       * \param[in] NX            Simulation domain resolution in x-direction
-       * \param[in] NY            Simulation domain resolution in y-direction
-       * \param[in] NZ            Simulation domain resolution in z-direction
-       * \param[in] output_path   The path where the output files should be written to
+       * \param[in] NX                 Simulation domain resolution in x-direction
+       * \param[in] NY                 Simulation domain resolution in y-direction
+       * \param[in] NZ                 Simulation domain resolution in z-direction
+       * \param[in] output_path        The path where the output files should be written to
+       * \param[in] export_data_type   The export_data_type to be used when using the save function
       */
-      VtkContinuum(std::int32_t const NX, std::int32_t const NY, std::int32_t const NZ, std::filesystem::path const& output_path) noexcept
-        : ContinuumBase<T>{NX, NY, NZ, output_path}, p{vtkSmartPointer<vtkImageData>::New()}, 
+      VtkContinuum(std::int32_t const NX, std::int32_t const NY, std::int32_t const NZ, std::filesystem::path const& output_path,
+                   DataType const export_data_type = DataType::MHD) noexcept
+        : ContinuumBase<T>{NX, NY, NZ, output_path}, export_data_type{export_data_type}, p{vtkSmartPointer<vtkImageData>::New()}, 
           u{vtkSmartPointer<vtkImageData>::New()}, v{vtkSmartPointer<vtkImageData>::New()}, w{vtkSmartPointer<vtkImageData>::New()} {
         allocateScalar_(p);
         allocateScalar_(u);
@@ -83,7 +89,7 @@ namespace lbt {
       */
       void saveToMhd(double const timestamp, bool const is_compress = true) const noexcept;
 
-    public:
+    protected:
       /**\fn        allocateScalar_
        * \brief     Allocate a certain scalar with the corresponding data type
        *
@@ -115,6 +121,7 @@ namespace lbt {
       inline T getImageDataComponent_(vtkSmartPointer<vtkImageData> const& image_data, 
                                       std::int32_t const x, std::int32_t const y, std::int32_t const z) const noexcept;
 
+      DataType export_data_type;
       vtkSmartPointer<vtkImageData> p;
       vtkSmartPointer<vtkImageData> u;
       vtkSmartPointer<vtkImageData> v;
@@ -168,38 +175,36 @@ namespace lbt {
   template <typename T>
   void VtkContinuum<T>::save(double const timestamp) const noexcept {
     // Potentially add settings for export format
-    saveToMhd(timestamp, true);
+    if (export_data_type == DataType::MHD) {
+      saveToMhd(timestamp, true);
+    } else if (export_data_type == DataType::VTK) {
+      saveToVtk(timestamp);
+    }
     return;
   }
 
   template <typename T>
   void VtkContinuum<T>::saveToVtk(double const timestamp) const noexcept {
-    std::filesystem::create_directories(ContinuumBase<T>::output_path);
-
-    // Export all different scalars
-    std::filesystem::path const filename_p {"p_" + toString(timestamp)}; 
+    std::string const filename_p {"p_" + toString(timestamp)}; 
     saveImageDataToVtk(p, ContinuumBase<T>::output_path, filename_p);
-    std::filesystem::path const filename_u {"u_" + toString(timestamp)}; 
+    std::string const filename_u {"u_" + toString(timestamp)}; 
     saveImageDataToVtk(u, ContinuumBase<T>::output_path, filename_u);
-    std::filesystem::path const filename_v {"v_" + toString(timestamp)}; 
+    std::string const filename_v {"v_" + toString(timestamp)}; 
     saveImageDataToVtk(v, ContinuumBase<T>::output_path, filename_v);
-    std::filesystem::path const filename_w {"w_" + toString(timestamp)}; 
+    std::string const filename_w {"w_" + toString(timestamp)}; 
     saveImageDataToVtk(w, ContinuumBase<T>::output_path, filename_w);
     return;
   }
 
   template <typename T>
   void VtkContinuum<T>::saveToMhd(double const timestamp, bool const is_compress) const noexcept {
-    std::filesystem::create_directories(ContinuumBase<T>::output_path);
-
-    // Export all different scalars
-    std::filesystem::path const filename_p {"p_" + toString(timestamp)}; 
+    std::string const filename_p {"p_" + toString(timestamp)}; 
     saveImageDataToMhd(p, ContinuumBase<T>::output_path, filename_p, is_compress);
-    std::filesystem::path const filename_u {"u_" + toString(timestamp)}; 
+    std::string const filename_u {"u_" + toString(timestamp)}; 
     saveImageDataToMhd(u, ContinuumBase<T>::output_path, filename_u, is_compress);
-    std::filesystem::path const filename_v {"v_" + toString(timestamp)}; 
+    std::string const filename_v {"v_" + toString(timestamp)}; 
     saveImageDataToMhd(v, ContinuumBase<T>::output_path, filename_v, is_compress);
-    std::filesystem::path const filename_w {"w_" + toString(timestamp)}; 
+    std::string const filename_w {"w_" + toString(timestamp)}; 
     saveImageDataToMhd(w, ContinuumBase<T>::output_path, filename_w, is_compress);
     return;
   }
@@ -237,7 +242,7 @@ namespace lbt {
     } else if constexpr (std::is_same_v<T,double>) {
       image_data->SetScalarComponentFromDouble(x, y, z, 0, value);
     } else {
-      static_assert(true, "Invalid template parameter T");
+      static_assert(std::is_same_v<T,T>, "Invalid template parameter 'T'.");
     }
     return;
   }
@@ -250,7 +255,7 @@ namespace lbt {
     } else if constexpr (std::is_same_v<T,double>) {
       return image_data->GetScalarComponentAsDouble(x, y, z, 0);
     } else {
-      static_assert(true, "Invalid template parameter T");
+      static_assert(std::is_same_v<T,T>, "Invalid template parameter 'T'.");
     }
   }
 

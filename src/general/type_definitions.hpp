@@ -3,20 +3,25 @@
 #pragma once
 
 /**\file     type_definitions.hpp
- * \mainpage Contains general type definitions depending on the compiler
+ * \mainpage Contains general type definitions depending on the compiler and operating system
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
 #include <array>
 #include <cstdlib>
+#include <iostream>
 #include <memory>
+
+#ifdef _WIN32
+  #include <malloc.h>
+#endif
 
 
 /// Helper macros for stringification
 #define LBT_TO_STRING_HELPER(X)   #X
 #define LBT_TO_STRING(X)          LBT_TO_STRING_HELPER(X)
 
-/// Cache-line alignment of arrays
+/// Cache-line alignment of arrays in Bytes
 #define LBT_CACHE_LINE_SIZE    64
 
 /// Definitions for unrolling, inlining and cache-alignment depending on compiler
@@ -48,8 +53,47 @@
 
 /// Define the type of arrays to be used
 namespace lbt {
+  // Alias for arrays
   template <typename T, std::size_t N>
   using array = std::array<T, N>;
+
+  /**\fn        aligned_alloc
+   * \brief     Wrapper for functions for allocation of aligned memory on the heap
+   * 
+   * \tparam    T             Data type of the resulting pointer
+   * \param[in] memory_size   Size of the memory to be allocated in Bytes
+   * \param[in] alignment     Alignment size in Bytes
+   * \return    Pointer to the first element of the allocated memory
+  */
+  template <typename T = void>
+  T* aligned_alloc(std::int64_t const memory_size, std::int64_t const alignment = LBT_CACHE_LINE_SIZE) noexcept {
+    #ifdef _WIN32
+      T* ptr = static_cast<T*>(_aligned_malloc(static_cast<std::size_t>(memory_size), static_cast<std::size_t>(alignment)));
+    #else
+      T* ptr = static_cast<T*>(std::aligned_alloc(static_cast<std::size_t>(alignment), static_cast<std::size_t>(memory_size)));
+    #endif
+
+    if (ptr == nullptr) {
+      std::cerr << "Fatal error: Aligned memory could not be allocated!" << std::endl;
+      std::exit(EXIT_FAILURE);
+    }
+
+    return ptr;
+  }
+
+  /**\fn        aligned_free
+   * \brief     Wrapper for functions for freeing aligned heap memory
+   * 
+   * \param[in] ptr   The pointer to the heap-allocated memory that should be freed
+  */
+  void aligned_free(void* ptr) noexcept {
+    #ifdef _WIN32
+      _aligned_free(ptr);
+    #else
+      std::free(ptr);
+    #endif
+    return;
+  }
 }
 
 #endif // LBT_TYPE_DEFINITIONS

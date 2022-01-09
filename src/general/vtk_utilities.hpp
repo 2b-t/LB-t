@@ -17,6 +17,9 @@
 
 namespace lbt {
 
+  /// Enum class for supported data types
+  enum class DataType {VTK, MHD};
+
   /**\fn        saveImageDataToVtk
    * \brief     Export a scalar to a *.vtk-file
    *
