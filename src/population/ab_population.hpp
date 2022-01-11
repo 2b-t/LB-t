@@ -37,23 +37,9 @@ namespace lbt {
        * \brief Class constructor
       */
       AbPopulation(std::int32_t const NX, std::int32_t const NY, std::int32_t const NZ) noexcept
-        : Indexing<LT,NPOP>{NX, NY, NZ} {
+        : Indexing<LT,NPOP>{NX, NY, NZ}, A(static_cast<std::size_t>(NZ)*NY*NX*NPOP*LT::ND), B(static_cast<std::size_t>(NZ)*NY*NX*NPOP*LT::ND) {
         static_assert((LT::DIM == 2) ? (NZ == 1) : true, "Two-dimensional lattice with NZ != 1.");
 
-        memory_size = static_cast<std::int64_t>(sizeof(T))*NZ*NY*NX*NPOP*LT::ND;
-        A = lbt::aligned_alloc(memory_size, LBT_CACHE_LINE_SIZE);
-        B = lbt::aligned_alloc(memory_size, LBT_CACHE_LINE_SIZE);
-
-        return;
-      }
-
-      /**\fn    ~AbPopulation
-       * \brief Class destructor
-      */
-      ~AbPopulation() noexcept {
-        lbt::aligned_free(A);
-        lbt::aligned_free(B);
-        std::clog << "See you, comrade!" << std::endl;
         return;
       }
 
@@ -125,9 +111,8 @@ namespace lbt {
 
     protected:
       using T = typename LT::type;
-      std::int64_t memory_size;
-      T* A;
-      T* B;
+      LBT_ALIGN lbt::HeapArray<T> A;
+      LBT_ALIGN lbt::HeapArray<T> B;
   };
 
 }

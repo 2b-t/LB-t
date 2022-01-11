@@ -36,6 +36,8 @@ namespace lbt {
     static_assert(std::is_floating_point_v<T>, "Invalid template parameter 'T'.");
 
     public:
+      SimpleContinuum() = delete;
+
       /**\fn    SimpleContinuum
        * \brief Class constructor
        * 
@@ -45,24 +47,13 @@ namespace lbt {
        * \param[in] output_path   The path where the output files should be written to
       */
       SimpleContinuum(std::int32_t const NX, std::int32_t const NY, std::int32_t const NZ, std::filesystem::path const& output_path) noexcept
-        : ContinuumBase<T>{NX, NY, NZ, output_path} {
-        memory_size = static_cast<std::int64_t>(sizeof(T))*NZ*NY*NX*number_of_values;
-        M = lbt::aligned_alloc<T>(memory_size, LBT_CACHE_LINE_SIZE);
+        : ContinuumBase<T>{NX, NY, NZ, output_path}, memory_size{static_cast<std::size_t>(NZ)*NY*NX*number_of_values}, M(memory_size) {
         return;
       }
-      /**\fn    ~SimpleContinuum
-       * \brief Class destructor
-      */
-      ~SimpleContinuum() noexcept {
-        lbt::aligned_free(M);
-        return;
-      }
-
-      SimpleContinuum() = delete;
-      SimpleContinuum(SimpleContinuum&) = delete;
-      SimpleContinuum& operator = (SimpleContinuum&) = delete;
-      SimpleContinuum(SimpleContinuum&&) = delete;
-      SimpleContinuum& operator = (SimpleContinuum&&) = delete;
+      SimpleContinuum(SimpleContinuum&) = default;
+      SimpleContinuum& operator = (SimpleContinuum&) = default;
+      SimpleContinuum(SimpleContinuum&&) = default;
+      SimpleContinuum& operator = (SimpleContinuum&&) = default;
 
       void setP(std::int32_t const x, std::int32_t const y, std::int32_t const z, T const value) noexcept override;
       void setU(std::int32_t const x, std::int32_t const y, std::int32_t const z, T const value) noexcept override;
@@ -157,8 +148,8 @@ namespace lbt {
       void saveToSingleVtk_(std::filesystem::path const& output_path, std::string const& filename) const noexcept;
 
       static constexpr std::int32_t number_of_values = 4; // Number of macroscopic values: rho, ux, uy, uz
-      std::int64_t memory_size; // Size of array for macroscopic population in bytes
-      T* M; // Heap-allocated array
+      std::size_t memory_size; // Size of the array in Bytes
+      lbt::HeapArray<T> M; // Heap-allocated array
   };
 
   template <typename T>

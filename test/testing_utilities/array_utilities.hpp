@@ -29,7 +29,7 @@ namespace lbt {
      * \return    Boolean expression that signals whether the array \p arr respects the lattice symmetries or not
     */
     template <typename T, std::size_t N, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
-    constexpr bool isSymmetric(lbt::array<T,N> const& arr) noexcept {
+    constexpr bool isSymmetric(lbt::StackArray<T,N> const& arr) noexcept {
       constexpr std::size_t hspeed {N/2};
       bool is_symmetric {true};
       is_symmetric &= lbt::cem::nearlyEqual(arr.at(0), arr.at(hspeed));
@@ -48,7 +48,7 @@ namespace lbt {
      * \return    Boolean expression that signals whether the array \p arr respects the lattice symmetries or not
     */
     template <typename T, std::size_t N, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
-    constexpr bool isAntimetric(lbt::array<T,N> const& arr) noexcept {
+    constexpr bool isAntimetric(lbt::StackArray<T,N> const& arr) noexcept {
       constexpr std::size_t hspeed {N/2};
       bool is_antimetric {true};
       is_antimetric &= lbt::cem::nearlyEqual(arr.at(0), arr.at(hspeed));
@@ -68,7 +68,7 @@ namespace lbt {
      * \return    Boolean expression that signals whether the array \p arr sums to the given value \p expected_sum or not
     */
     template <typename T, std::size_t N, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
-    constexpr bool sumsTo(lbt::array<T,N> const& arr, T const expected_sum) noexcept {
+    constexpr bool sumsTo(lbt::StackArray<T,N> const& arr, T const expected_sum) noexcept {
       T const sum = std::accumulate(std::begin(arr), std::end(arr), static_cast<T>(0));
       return lbt::cem::nearlyEqual(sum, expected_sum);
     }

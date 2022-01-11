@@ -74,12 +74,12 @@ namespace lbt {
        * \return    Requested linear population index before collision
       */
       template <Timestep TS>
-      LBT_FORCE_INLINE constexpr std::int64_t indexRead(lbt::array<std::int32_t,3> const& x,
-                                                        lbt::array<std::int32_t,3> const& y,
-                                                        lbt::array<std::int32_t,3> const& z,
-                                                        std::int32_t               const n,
-                                                        std::int32_t               const d,
-                                                        std::int32_t               const p) const noexcept {
+      LBT_FORCE_INLINE constexpr std::int64_t indexRead(lbt::StackArray<std::int32_t,3> const& x,
+                                                        lbt::StackArray<std::int32_t,3> const& y,
+                                                        lbt::StackArray<std::int32_t,3> const& z,
+                                                        std::int32_t                    const n,
+                                                        std::int32_t                    const d,
+                                                        std::int32_t                    const p) const noexcept {
         return spatialToLinear(x[1 + oddEven<TS>(static_cast<std::int32_t>(LT::DX[(!n)*LT::OFF+d]), 0)],
                                y[1 + oddEven<TS>(static_cast<std::int32_t>(LT::DY[(!n)*LT::OFF+d]), 0)],
                                z[1 + oddEven<TS>(static_cast<std::int32_t>(LT::DZ[(!n)*LT::OFF+d]), 0)],
@@ -117,12 +117,12 @@ namespace lbt {
        * \return    Requested linear population index after collision
       */
       template <Timestep TS>
-      LBT_FORCE_INLINE constexpr std::int64_t indexWrite(lbt::array<std::int32_t,3> const& x,
-                                                         lbt::array<std::int32_t,3> const& y,
-                                                         lbt::array<std::int32_t,3> const& z,
-                                                         std::int32_t               const n,
-                                                         std::int32_t               const d,
-                                                         std::int32_t               const p) const noexcept {
+      LBT_FORCE_INLINE constexpr std::int64_t indexWrite(lbt::StackArray<std::int32_t,3> const& x,
+                                                         lbt::StackArray<std::int32_t,3> const& y,
+                                                         lbt::StackArray<std::int32_t,3> const& z,
+                                                         std::int32_t                    const n,
+                                                         std::int32_t                    const d,
+                                                         std::int32_t                    const p) const noexcept {
         return spatialToLinear(x[1 + oddEven<TS>(static_cast<std::int32_t>(LT::DX[n*LT::OFF+d]), 0)],
                                y[1 + oddEven<TS>(static_cast<std::int32_t>(LT::DY[n*LT::OFF+d]), 0)],
                                z[1 + oddEven<TS>(static_cast<std::int32_t>(LT::DZ[n*LT::OFF+d]), 0)],

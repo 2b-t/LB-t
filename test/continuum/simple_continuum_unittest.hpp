@@ -16,6 +16,8 @@
 
 #include "../../src/continuum/simple_continuum.hpp"
 
-// Test setters and getters of continuum class
+// TODO: Test setters and getters of continuum class
+// TODO: Test indexing
+// TODO: Add tests that are skipped for export
 
 #endif // LBT_SIMPLE_CONTINUUM_UNITTEST

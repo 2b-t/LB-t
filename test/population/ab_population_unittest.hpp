@@ -20,11 +20,11 @@
 
 namespace lbt {
   namespace test {
-    // Check if even and odd function is working
+    // TODO: Check for even and odd time steps
 
-    // Check if index read is index write in the next step
+    // TODO: Check if index read is index write in the next step: Write values
 
-    // Check if indexing works also over borders
+    // TODO: Check if indexing works also over borders: Write values
   }
 }
 

@@ -7,7 +7,7 @@
 
 #include "continuum/characteristic_numbers_unittest.hpp"
 // TODO: Implement these unit-tests
-//#include "continuum/simple_continuum_unittest.hpp"
+#include "continuum/simple_continuum_unittest.hpp"
 #include "general/constexpr_math_unittest.hpp"
 #include "general/disclaimer_unittest.hpp"
 #include "general/literals_unittest.hpp"
@@ -20,17 +20,17 @@
 #include "general/units_unittest.hpp"
 #include "lattice/lattice_unittest.hpp"
 // TODO: Implement these unit-tests
-//#include "population/indexing/aa_pattern_unittest.hpp"
+#include "population/indexing/aa_pattern_unittest.hpp"
 #include "population/indexing/indexing_unittest.hpp"
 // TODO: Double check these two headers
-//#include "population/aa_population_unittest.hpp"
-//#include "population/ab_population_unittest.hpp"
+#include "population/aa_population_unittest.hpp"
+#include "population/ab_population_unittest.hpp"
 #include "testing_utilities/testing_utilities_unittest.hpp"
 #include "simulation_unittest.hpp"
 
 #if __has_include (<vtkSmartPointer.h>)
   // TODO: Implement these unit tests
-  //#include "continuum/vtk_continuum_unittest.hpp"
+  #include "continuum/vtk_continuum_unittest.hpp"
   #include "general/vtk_utilities_unittest.hpp"
   #include "geometry/vtk_import_unittest.hpp"
 #endif

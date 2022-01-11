@@ -9,8 +9,13 @@
 
 #include <array>
 #include <cstdlib>
+#include <cstring>
 #include <iostream>
 #include <memory>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <vector>
 
 #ifdef _WIN32
   #include <malloc.h>
@@ -53,24 +58,24 @@
 
 /// Define the type of arrays to be used
 namespace lbt {
-  // Alias for arrays
+  // Convenient alias for stack-allocated arrays
   template <typename T, std::size_t N>
-  using array = std::array<T, N>;
+  using StackArray = std::array<T, N>;
 
   /**\fn        aligned_alloc
    * \brief     Wrapper for functions for allocation of aligned memory on the heap
    * 
-   * \tparam    T             Data type of the resulting pointer
-   * \param[in] memory_size   Size of the memory to be allocated in Bytes
-   * \param[in] alignment     Alignment size in Bytes
+   * \tparam    T           Data type of the resulting pointer
+   * \param[in] N           Number of array elements
+   * \param[in] alignment   Alignment size in Bytes
    * \return    Pointer to the first element of the allocated memory
   */
   template <typename T = void>
-  T* aligned_alloc(std::int64_t const memory_size, std::int64_t const alignment = LBT_CACHE_LINE_SIZE) noexcept {
+  T* aligned_alloc(std::size_t const N, std::size_t const alignment = LBT_CACHE_LINE_SIZE) noexcept {
     #ifdef _WIN32
-      T* ptr = static_cast<T*>(_aligned_malloc(static_cast<std::size_t>(memory_size), static_cast<std::size_t>(alignment)));
+      T* ptr = static_cast<T*>(_aligned_malloc(sizeof(T)*N, alignment));
     #else
-      T* ptr = static_cast<T*>(std::aligned_alloc(static_cast<std::size_t>(alignment), static_cast<std::size_t>(memory_size)));
+      T* ptr = static_cast<T*>(std::aligned_alloc(alignment, sizeof(T)*N));
     #endif
 
     if (ptr == nullptr) {
@@ -94,6 +99,111 @@ namespace lbt {
     #endif
     return;
   }
+
+  /**\class  AlignedArray
+   * \brief  Class for aligned heap-allocated array
+   *
+   * \tparam T   The data-type of the array
+  */
+  template <typename T>
+  class AlignedArray {
+    public:
+      AlignedArray() = delete;
+
+      /**\fn        AlignedArray
+       * \brief     Class constructor
+       * 
+       * \param[in] N           The number of elements that should be allocated
+       * \param[in] alignment   The alignment that should be used for the heap-allocated array
+      */
+      AlignedArray(std::size_t const N, std::size_t const alignment = LBT_CACHE_LINE_SIZE) noexcept
+        : N{N}, alignment{alignment}, ptr{aligned_alloc<T>(N, alignment)} {
+        return;
+      }
+      ~AlignedArray() noexcept {
+        aligned_free(ptr);
+        return;
+      }
+      AlignedArray(AlignedArray const& arr) noexcept
+        : N{arr.N}, alignment{arr.alignment}, ptr{aligned_alloc<T>(N, alignment)} {
+        std::memcpy(ptr, arr.ptr, sizeof(T)*N);
+        return;
+      }
+      AlignedArray& operator= (AlignedArray const& arr) noexcept {
+        this->N = arr.N;
+        this->alignment = arr.alignment;
+        this->ptr = aligned_alloc<T>(this->N, this->alignment);
+        std::memcpy(ptr, arr.ptr, sizeof(T)*N);
+        return *this;
+      }
+      AlignedArray(AlignedArray&& arr) noexcept
+        : N{arr.N}, alignment{arr.alignment}, ptr{arr.ptr} {
+        return; 
+      }
+      AlignedArray& operator= (AlignedArray&& arr) noexcept {
+        this->N = arr.N;
+        this->alignment = arr.alignment;
+        this->ptr = arr.ptr;
+        return *this; 
+      }
+
+      /**\fn        operator[]
+       * \brief     Operator for accessing the \p i-th index of the array without checking the bounds
+       * 
+       * \param[in] i   The index of the array that should be accessed
+       * \return    The i-th element of the underlying heap-allocated array
+      */
+      T const& operator[] (std::size_t const i) const noexcept {
+        return ptr[i];
+      }
+      T& operator[] (std::size_t const i) noexcept {
+        return ptr[i];
+      }
+
+      /**\fn        at
+       * \brief     Function for accessing the \p i-th index of the array checking the bounds
+       * 
+       * \param[in] i   The index of the array that should be accessed
+       * \return    The i-th element of the underlying heap-allocated array
+      */
+      T const& at(std::size_t const i) const {
+        if (i < N) {
+          return ptr[i];
+        } else {
+          std::stringstream ss {};
+          ss << "Index i out of range (i >= N): " << i << " >= " << N << "!";
+          throw std::out_of_range(ss.str());
+        }
+        
+      }
+      T& at(std::size_t const i) {
+        if (i < N) {
+          return ptr[i];
+        } else {
+          std::stringstream ss {};
+          ss << "Index i out of range (i >= N): " << i << " >= " << N << "!";
+          throw std::out_of_range(ss.str());
+        }
+      }
+
+      /**\fn    size
+       * \brief The size of the array
+       * 
+       * \return The number of elements inside the heap-allocated array
+      */
+      std::size_t size() const noexcept {
+        return N;
+      }
+
+    protected:
+      std::size_t N;
+      std::size_t alignment;
+      T* ptr;
+  };
+
+  // Convenient alias for heap-allocated arrays (possibly exchange with std::vector)
+  template <typename T>
+  using HeapArray = AlignedArray<T>;
 }
 
 #endif // LBT_TYPE_DEFINITIONS

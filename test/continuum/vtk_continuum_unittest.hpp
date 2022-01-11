@@ -16,6 +16,8 @@
 
 #include "../../src/continuum/vtk_continuum.hpp"
 
-// Test setters and getters of continuum class
+// TODO: Test setters and getters of continuum class
+// TODO: Test indexing
+// TODO: Add tests that are skipped for export
 
 #endif // LBT_VTK_CONTINUUM_UNITTEST

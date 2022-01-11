@@ -46,18 +46,18 @@ namespace lbt {
         static constexpr std::int32_t OFF = ND/2;
 
         /// discrete velocities
-        LBT_ALIGN static constexpr lbt::array<T, ND> DX =
+        LBT_ALIGN static constexpr lbt::StackArray<T, ND> DX =
         { 0,  1,  0,  0,  1,  1,  1,  1,  0,  0,   //positive velocities
           0, -1,  0,  0, -1, -1, -1, -1,  0,  0 }; //negative velocities
-        LBT_ALIGN static constexpr lbt::array<T, ND> DY =
+        LBT_ALIGN static constexpr lbt::StackArray<T, ND> DY =
         { 0,  0,  1,  0,  1, -1,  0,  0,  1,  1,
           0,  0, -1,  0, -1,  1,  0,  0, -1, -1 };
-        LBT_ALIGN static constexpr lbt::array<T, ND> DZ =
+        LBT_ALIGN static constexpr lbt::StackArray<T, ND> DZ =
         { 0,  0,  0,  1,  0,  0,  1, -1,  1, -1,
           0,  0,  0, -1,  0,  0, -1,  1, -1,  1 };
 
         /// corresponding weights
-        LBT_ALIGN static constexpr lbt::array<T, ND> W =
+        LBT_ALIGN static constexpr lbt::StackArray<T, ND> W =
         { 1.0/3.0,                        //positive velocities
           1.0/18.0, 1.0/18.0, 1.0/18.0,
           1.0/36.0, 1.0/36.0, 1.0/36.0,
@@ -68,7 +68,7 @@ namespace lbt {
           1.0/36.0, 1.0/36.0, 1.0/36.0 };
 
         /// logical mask for relevant populations
-        LBT_ALIGN static constexpr lbt::array<T, ND> MASK =
+        LBT_ALIGN static constexpr lbt::StackArray<T, ND> MASK =
         { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
           0, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 

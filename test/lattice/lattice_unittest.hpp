@@ -40,7 +40,7 @@ namespace lbt {
       EXPECT_TRUE(std::is_integral_v<decltype(TypeParam::ND)>);
       EXPECT_TRUE(std::is_integral_v<decltype(TypeParam::OFF)>);
 
-      using A = typename lbt::array<T, TypeParam::ND>;
+      using A = typename lbt::StackArray<T, TypeParam::ND>;
       constexpr bool has_dx {std::is_same_v<std::decay_t<decltype(TypeParam::DX)>, A>};
       EXPECT_TRUE(has_dx);
       constexpr bool has_dy {std::is_same_v<std::decay_t<decltype(TypeParam::DY)>, A>};

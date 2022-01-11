@@ -25,7 +25,7 @@ namespace lbt {
       using json = nlohmann::json;
 
       std::string const str {"{\"x\":1,\"y\":2,\"z\":3}"};
-      constexpr lbt::array<int, 3> expected_result = {1, 2, 3};
+      constexpr std::array<int, 3> expected_result = {1, 2, 3};
 
       json const j = json::parse(str);
       auto const arr = lbt::parseArray<int>(j);
@@ -39,7 +39,7 @@ namespace lbt {
     TEST(WriteArrayToJson, writeIntArray) {
       using json = nlohmann::json;
 
-      lbt::array<int, 3> const arr = {1, 2, 3};
+      std::array<int, 3> const arr = {1, 2, 3};
       std::string const expected_result {"{\"x\":1,\"y\":2,\"z\":3}"};
 
       json const j = lbt::toJson(arr);

@@ -20,13 +20,13 @@
 
 namespace lbt {
   namespace test {
-    // Check for all different lattices:
+    // TODO: Check the following for all different lattices
 
-    // Check if even and odd function is working
+    // TODO: Check if even and odd function is working
 
-    // Check if index read is index write in the next step
+    // TODO: Check if index read is index write in the next step
 
-    // Check if indexing works also over borders
+    // TODO: Check if indexing works also over borders
   }
 }
 

@@ -19,6 +19,9 @@
 namespace lbt {
   namespace test {
 
+    // TODO: Add very basic tests for stack-allocated arrays: initialisation, size, at, operator []
+
+    // TODO: Look for better names for these tests
     class AlignedArrayTest : public ::testing::Test, public ::testing::WithParamInterface<std::int64_t> {
       public:
     };
@@ -40,6 +43,13 @@ namespace lbt {
       EXPECT_TRUE(is_same);
       lbt::aligned_free(ptr);
     }
+
+    // TODO: Test aligned array allocation
+    // TODO: Test copy and move constructor
+    // TODO: Test operator[]
+    // TODO: Test size()
+
+    // TODO: Add very basic tests for heap-allocated arrays: initialisation, size, at, operator []
   }
 }
 

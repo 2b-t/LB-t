@@ -7,6 +7,7 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#include <array>
 #include <cstdint>
 #include <cstdlib>
 #include <filesystem>
@@ -22,7 +23,6 @@
 #include "population/population.hpp"
 #include "general/openmp_manager.hpp"
 #include "general/output_utilities.hpp"*/
-#include "general/type_definitions.hpp"
 #include "geometry/vtk_import.hpp"
 #include "base_simulation.hpp"
 
@@ -38,8 +38,8 @@ namespace lbt {
    * \return    The input json array parsed to a three-dimensional array of type \p T
   */
   template <typename T, typename std::enable_if_t<std::is_arithmetic_v<T>>* = nullptr>
-  lbt::array<T, 3> parseArray(nlohmann::json const& j) {
-    lbt::array<T, 3> const arr {j["x"].get<T>(), j["y"].get<T>(), j["z"].get<T>()};
+  std::array<T, 3> parseArray(nlohmann::json const& j) {
+    std::array<T, 3> const arr {j["x"].get<T>(), j["y"].get<T>(), j["z"].get<T>()};
     return arr;
   }
 
@@ -52,7 +52,7 @@ namespace lbt {
    * \return    The three-dimensional array of type \p T as a formatted Json string
   */
   template <typename T, typename std::enable_if_t<std::is_arithmetic_v<T>>* = nullptr>
-  nlohmann::json toJson(lbt::array<T, 3> const& arr) noexcept {
+  nlohmann::json toJson(std::array<T, 3> const& arr) noexcept {
     nlohmann::json j{};
     j["x"] = arr.at(0);
     j["y"] = arr.at(1);
@@ -227,7 +227,7 @@ namespace lbt {
          * 
          * \param[in] initial_velocity   Initial velocity inside the domain
         */
-        constexpr InitialConditions(lbt::array<T, 3> const& initial_velocity) noexcept 
+        constexpr InitialConditions(std::array<T, 3> const& initial_velocity) noexcept 
           : initial_velocity{initial_velocity} {
           return;
         }
@@ -261,7 +261,7 @@ namespace lbt {
         }
 
       protected:
-        lbt::array<T, 3> initial_velocity; // Initial velocity inside the domain
+        std::array<T, 3> initial_velocity; // Initial velocity inside the domain
     };
 
     /**\class Geometry
@@ -318,8 +318,8 @@ namespace lbt {
           json j {};
           j["models"] = ja;
           
-          j["boundingBox"]["min"] = lbt::toJson(lbt::array<double,3>{bounding_box.at(0), bounding_box.at(2), bounding_box.at(4)});
-          j["boundingBox"]["max"] = lbt::toJson(lbt::array<double,3>{bounding_box.at(1), bounding_box.at(3), bounding_box.at(5)});
+          j["boundingBox"]["min"] = lbt::toJson(std::array<double,3>{bounding_box.at(0), bounding_box.at(2), bounding_box.at(4)});
+          j["boundingBox"]["max"] = lbt::toJson(std::array<double,3>{bounding_box.at(1), bounding_box.at(3), bounding_box.at(5)});
 
           if (reduction_rate != std::nullopt) {
             j["reductionRate"] = reduction_rate.value();
