@@ -25,6 +25,8 @@ namespace lbt {
     // TODO: Check if index read is index write in the next step: Write values
 
     // TODO: Check if indexing works also over borders: Write values
+
+    // TODO: If encapsulated array has size() function: Check if size has been initialised correctly
   }
 }
 
