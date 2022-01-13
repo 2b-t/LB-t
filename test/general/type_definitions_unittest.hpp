@@ -19,13 +19,31 @@
 namespace lbt {
   namespace test {
 
-    // TODO: Add very basic tests for stack-allocated arrays: initialisation, size, at, operator []
+    TEST(StackArrayTest, initialisation) {
+      constexpr lbt::StackArray<int,3> arr {1, 2, 3};
+      EXPECT_EQ(arr[0], 1);
+      EXPECT_EQ(arr[1], 2);
+      EXPECT_EQ(arr[2], 3);
+    }
+    TEST(StackArrayTest, accessOperator) {
+      constexpr std::size_t N {21};
+      lbt::StackArray<int,N> arr {};
+      for (std::size_t i = 0; i < N; ++i) {
+        arr[i] = static_cast<int>(i)+1;
+      }
+      for (std::size_t i = 0; i < N; ++i) {
+        EXPECT_EQ(arr[i], static_cast<int>(i)+1);
+      }
+    }
+    TEST(StackArrayTest, size) {
+      constexpr std::size_t N {21};
+      constexpr lbt::StackArray<int,N> arr {};
+      EXPECT_EQ(arr.size(), N);
+    }
 
-    // TODO: Look for better names for these tests
-    class AlignedArrayTest : public ::testing::Test, public ::testing::WithParamInterface<std::int64_t> {
-      public:
+    class AlignedAllocTestHelper : public ::testing::Test, public ::testing::WithParamInterface<std::int64_t> {
     };
-    TEST_P(AlignedArrayTest, alignment) {
+    TEST_P(AlignedAllocTestHelper, alignment) {
       auto const alignment {GetParam()};
       constexpr std::int64_t memory_size {10};
       auto const ptr {lbt::aligned_alloc<int>(memory_size, alignment)};
@@ -33,9 +51,9 @@ namespace lbt {
       EXPECT_TRUE(is_aligned);
       lbt::aligned_free(ptr);
     }
-    INSTANTIATE_TEST_SUITE_P(AlignedHeapAllocatedArrayTest, AlignedArrayTest, ::testing::Values(8,16,32,64,128));
+    INSTANTIATE_TEST_SUITE_P(AlignedAllocTest, AlignedAllocTestHelper, ::testing::Values(8,16,32,64,128));
 
-    TEST(AlignedHeapAllocatedArrayTest, dataType) {
+    TEST(AlignedAllocTest, dataType) {
       auto const alignment {64};
       constexpr std::int64_t memory_size {10};
       auto const ptr {lbt::aligned_alloc<int>(memory_size, alignment)};
@@ -44,12 +62,37 @@ namespace lbt {
       lbt::aligned_free(ptr);
     }
 
-    // TODO: Test aligned array allocation
-    // TODO: Test copy and move constructor
-    // TODO: Test operator[]
-    // TODO: Test size()
+    TEST(AlignedArrayTest, initialisation) {
+      constexpr std::size_t N {21};
+      lbt::AlignedArray<int> arr (N);
+      for (std::size_t i = 0; i < N; ++i) {
+        arr[i] = static_cast<int>(i)+1;
+      }
+      for (std::size_t i = 0; i < N; ++i) {
+        EXPECT_EQ(arr[i], static_cast<int>(i)+1);
+      }
+    }
+    TEST(AlignedArrayTest, size) {
+      constexpr std::size_t N {21};
+      lbt::AlignedArray<int> arr (N);
+      EXPECT_EQ(arr.size(), N);
+    }
 
-    // TODO: Add very basic tests for heap-allocated arrays: initialisation, size, at, operator []
+    TEST(HeapArrayTest, initialisation) {
+      constexpr std::size_t N {21};
+      lbt::HeapArray<int> arr (N);
+      for (std::size_t i = 0; i < N; ++i) {
+        arr[i] = static_cast<int>(i)+1;
+      }
+      for (std::size_t i = 0; i < N; ++i) {
+        EXPECT_EQ(arr[i], static_cast<int>(i)+1);
+      }
+    }
+    TEST(HeapArrayTest, size) {
+      constexpr std::size_t N {21};
+      lbt::HeapArray<int> arr (N);
+      EXPECT_EQ(arr.size(), N);
+    }
   }
 }
 

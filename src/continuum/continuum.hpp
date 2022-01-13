@@ -9,23 +9,19 @@
 */
 
 #if __has_include (<vtkSmartPointer.h>)
-
   #include "vtk_continuum.hpp"
 
   namespace lbt {
     template <typename T>
     using Continuum = VtkContinuum<T>;
   }
-
 #else
-
   #include "simple_continuum.hpp"
 
   namespace lbt {
     template <typename T>
     using Continuum = SimpleContinuum<T>;
   }
-
 #endif
 
 #endif // LBT_CONTINUUM

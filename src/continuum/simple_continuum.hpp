@@ -221,7 +221,7 @@ namespace lbt {
     std::string const filename_u {"u_" + toString(timestamp)}; 
     saveScalarToVtk_(1, ContinuumBase<T>::output_path, filename_u);
     std::string const filename_v {"v_" + toString(timestamp)}; 
-    savescalarToVtk_(2, ContinuumBase<T>::output_path, filename_v);
+    saveScalarToVtk_(2, ContinuumBase<T>::output_path, filename_v);
     std::string const filename_w {"w_" + toString(timestamp)}; 
     saveScalarToVtk_(3, ContinuumBase<T>::output_path, filename_w);
     return;

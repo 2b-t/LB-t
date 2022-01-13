@@ -21,11 +21,11 @@ namespace lbt {
   /**\class  AbPopulation
    * \brief  Class that holds macroscopic values with indexing based on the A-B access pattern
    *
-   * \tparam LT     Static lattice::DdQq class containing discretisation parameters
-   * \tparam NPOP   Number of populations stored side by side in a single merged grid (default = 1)
+   * \tparam LT   Static lattice::DdQq class containing discretisation parameters
+   * \tparam NP   Number of populations stored side by side in a single merged grid (default = 1)
   */
-  template <class LT, std::int32_t NPOP = 1>
-  class AbPopulation: public Indexing<LT,NPOP> {
+  template <class LT, std::int32_t NP = 1>
+  class AbPopulation: public Indexing<LT,NP> {
     public:
       AbPopulation() = delete;
       AbPopulation(AbPopulation&) = delete;
@@ -37,7 +37,7 @@ namespace lbt {
        * \brief Class constructor
       */
       AbPopulation(std::int32_t const NX, std::int32_t const NY, std::int32_t const NZ) noexcept
-        : Indexing<LT,NPOP>{NX, NY, NZ}, A(static_cast<std::size_t>(NZ)*NY*NX*NPOP*LT::ND), B(static_cast<std::size_t>(NZ)*NY*NX*NPOP*LT::ND) {
+        : Indexing<LT,NP>{NX, NY, NZ}, A(static_cast<std::size_t>(NZ)*NY*NX*NP*LT::ND), B(static_cast<std::size_t>(NZ)*NY*NX*NP*LT::ND) {
         static_assert((LT::DIM == 2) ? (NZ == 1) : true, "Two-dimensional lattice with NZ != 1.");
 
         return;
@@ -60,9 +60,9 @@ namespace lbt {
       LBT_FORCE_INLINE auto& read(std::int32_t const x, std::int32_t const y, std::int32_t const z,
                                   std::int32_t const n, std::int32_t const d, std::int32_t const p = 0) noexcept {
         if constexpr (TS == Timestep::Even) {
-          return A[Indexing<LT,NPOP>::indexRead<TS>(x,y,z,n,d,p)];
+          return A[Indexing<LT,NP>::indexRead<TS>(x,y,z,n,d,p)];
         } else {
-          return B[Indexing<LT,NPOP>::indexRead<TS>(x,y,z,n,d,p)];
+          return B[Indexing<LT,NP>::indexRead<TS>(x,y,z,n,d,p)];
         }
       }
 
@@ -70,9 +70,9 @@ namespace lbt {
       LBT_FORCE_INLINE auto const& read(std::int32_t const x, std::int32_t const y, std::int32_t const z,
                                         std::int32_t const n, std::int32_t const d, std::int32_t const p = 0) const noexcept {
         if constexpr (TS == Timestep::Even) {
-          return A[Indexing<LT,NPOP>::indexRead<TS>(x,y,z,n,d,p)];
+          return A[Indexing<LT,NP>::indexRead<TS>(x,y,z,n,d,p)];
         } else {
-          return B[Indexing<LT,NPOP>::indexRead<TS>(x,y,z,n,d,p)];
+          return B[Indexing<LT,NP>::indexRead<TS>(x,y,z,n,d,p)];
         }
       }
 
@@ -93,9 +93,9 @@ namespace lbt {
       LBT_FORCE_INLINE auto& write(std::int32_t const x, std::int32_t const y, std::int32_t const z,
                                    std::int32_t const n, std::int32_t const d, std::int32_t const p = 0) noexcept {
         if constexpr (TS == Timestep::Even) {
-          return B[Indexing<LT,NPOP>::indexWrite<TS>(x,y,z,n,d,p)];
+          return B[Indexing<LT,NP>::indexWrite<TS>(x,y,z,n,d,p)];
         } else {
-          return A[Indexing<LT,NPOP>::indexWrite<TS>(x,y,z,n,d,p)];
+          return A[Indexing<LT,NP>::indexWrite<TS>(x,y,z,n,d,p)];
         }
       }
 
@@ -103,9 +103,9 @@ namespace lbt {
       LBT_FORCE_INLINE auto const& write(std::int32_t const x, std::int32_t const y, std::int32_t const z,
                                          std::int32_t const n, std::int32_t const d, std::int32_t const p) const noexcept {
         if constexpr (TS == Timestep::Even) {
-          return B[Indexing<LT,NPOP>::indexWrite<TS>(x,y,z,n,d,p)];
+          return B[Indexing<LT,NP>::indexWrite<TS>(x,y,z,n,d,p)];
         } else {
-          return A[Indexing<LT,NPOP>::indexWrite<TS>(x,y,z,n,d,p)];
+          return A[Indexing<LT,NP>::indexWrite<TS>(x,y,z,n,d,p)];
         }
       }
 

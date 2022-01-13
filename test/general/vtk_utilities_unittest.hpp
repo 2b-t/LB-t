@@ -10,21 +10,23 @@
 
 #include <gtest/gtest.h>
 
-#include "../../src/general/vtk_utilities.hpp"
+#if __has_include (<vtkSmartPointer.h>)
+  #include "../../src/general/vtk_utilities.hpp"
 
 
-namespace lbt {
-  namespace test {
+  namespace lbt {
+    namespace test {
 
-    TEST(VtkUtilities, exportImageDataToVtk) {
-      GTEST_SKIP() << "Unit tests involving file import and export not implemented yet!";
+      TEST(VtkUtilities, exportImageDataToVtk) {
+        GTEST_SKIP() << "Unit tests involving file import and export not implemented yet!";
+      }
+
+      TEST(VtkUtilities, exportImageDataToMhd) {
+        GTEST_SKIP() << "Unit tests involving file import and export not implemented yet!";
+      }
+
     }
-
-    TEST(VtkUtilities, exportImageDataToMhd) {
-      GTEST_SKIP() << "Unit tests involving file import and export not implemented yet!";
-    }
-
   }
-}
+#endif
 
 #endif // LBT_VTK_UTILITITES_UNITTEST

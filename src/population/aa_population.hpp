@@ -22,11 +22,11 @@ namespace lbt {
   /**\class  AaPopulation
    * \brief  Class that holds macroscopic values with indexing based on the A-A access pattern
    *
-   * \tparam LT     Static lattice::DdQq class containing discretisation parameters
-   * \tparam NPOP   Number of populations stored side by side in a single merged grid (default = 1)
+   * \tparam LT   Static lattice::DdQq class containing discretisation parameters
+   * \tparam NP   Number of populations stored side by side in a single merged grid (default = 1)
   */
-  template <class LT, std::int32_t NPOP = 1>
-  class AaPopulation: public AaPattern<LT,NPOP> {
+  template <class LT, std::int32_t NP = 1>
+  class AaPopulation: public AaPattern<LT,NP> {
     public:
       AaPopulation() = delete;
 
@@ -34,7 +34,7 @@ namespace lbt {
        * \brief Class constructor
       */
       AaPopulation(std::int32_t const NX, std::int32_t const NY, std::int32_t const NZ) noexcept
-        : AaPattern<LT,NPOP>{NX, NY, NZ}, A(static_cast<std::size_t>(NZ)*NY*NX*NPOP*LT::ND) {
+        : AaPattern<LT,NP>{NX, NY, NZ}, A(static_cast<std::size_t>(NZ)*NY*NX*NP*LT::ND) {
         static_assert((LT::DIM == 2) ? (NZ == 1) : true, "Two-dimensional lattice with NZ != 1.");
         return;
       }
@@ -63,7 +63,7 @@ namespace lbt {
                                   std::int32_t               const n,
                                   std::int32_t               const d,
                                   std::int32_t               const p = 0) noexcept {
-        return A[AaPattern<LT,NPOP>::indexRead<TS>(x,y,z,n,d,p)];
+        return A[AaPattern<LT,NP>::indexRead<TS>(x,y,z,n,d,p)];
       }
 
       template <Timestep TS>
@@ -73,7 +73,7 @@ namespace lbt {
                                         std::int32_t               const n,
                                         std::int32_t               const d,
                                         std::int32_t               const p = 0) const noexcept {
-        return A[AaPattern<LT,NPOP>::indexRead<TS>(x,y,z,n,d,p)];
+        return A[AaPattern<LT,NP>::indexRead<TS>(x,y,z,n,d,p)];
       }
 
       /**\fn        write
@@ -96,7 +96,7 @@ namespace lbt {
                                    std::int32_t               const n,
                                    std::int32_t               const d,
                                    std::int32_t               const p = 0) noexcept {
-        return A[AaPattern<LT,NPOP>::indexWrite<TS>(x,y,z,n,d,p)];
+        return A[AaPattern<LT,NP>::indexWrite<TS>(x,y,z,n,d,p)];
       }
 
       template <Timestep TS>
@@ -106,7 +106,7 @@ namespace lbt {
                                          std::int32_t               const n,
                                          std::int32_t               const d,
                                          std::int32_t               const p) const noexcept {
-        return A[AaPattern<LT,NPOP>::indexWrite<TS>(x,y,z,n,d,p)];
+        return A[AaPattern<LT,NP>::indexWrite<TS>(x,y,z,n,d,p)];
       }
 
       // LBT_FORCE_INLINE lbt::array<LT::type,LT::ND> read(std::int32_t const x, std::int32_t const y, std::int32_t const z)
