@@ -57,10 +57,58 @@
           return;
         }
         VtkContinuum() = delete;
-        VtkContinuum(VtkContinuum&) = delete;
-        VtkContinuum& operator = (VtkContinuum&) = delete;
-        VtkContinuum(VtkContinuum&&) = delete;
-        VtkContinuum& operator = (VtkContinuum&&) = delete;
+        VtkContinuum(VtkContinuum const& c) 
+          : ContinuumBase<T>{c} {
+          this->export_data_type = c.export_data_type;
+          this->p = vtkSmartPointer<vtkImageData>::New();
+          this->p->DeepCopy(c.p);
+          this->u = vtkSmartPointer<vtkImageData>::New();
+          this->u->DeepCopy(c.u);
+          this->v = vtkSmartPointer<vtkImageData>::New();
+          this->v->DeepCopy(c.v);
+          this->w = vtkSmartPointer<vtkImageData>::New();
+          this->w->DeepCopy(c.w);
+          return;
+        }
+        VtkContinuum& operator= (VtkContinuum const& c) {
+          ContinuumBase<T>::operator=(c);
+          this->export_data_type = c.export_data_type;
+          this->p = vtkSmartPointer<vtkImageData>::New();
+          this->p->DeepCopy(c.p);
+          this->u = vtkSmartPointer<vtkImageData>::New();
+          this->u->DeepCopy(c.u);
+          this->v = vtkSmartPointer<vtkImageData>::New();
+          this->v->DeepCopy(c.v);
+          this->w = vtkSmartPointer<vtkImageData>::New();
+          this->w->DeepCopy(c.w);
+          return *this;
+        }
+        VtkContinuum(VtkContinuum&& c)
+          : ContinuumBase<T>{std::move(c)} {
+          this->export_data_type = c.export_data_type;
+          this->p = c.p;
+          this->u = c.u;
+          this->v = c.v;
+          this->w = c.w;
+          c.p = vtkSmartPointer<vtkImageData>::New();
+          c.u = vtkSmartPointer<vtkImageData>::New();
+          c.v = vtkSmartPointer<vtkImageData>::New();
+          c.w = vtkSmartPointer<vtkImageData>::New();
+          return;
+        }
+        VtkContinuum& operator= (VtkContinuum&& c) {
+          ContinuumBase<T>::operator=(std::move(c));
+          this->export_data_type = c.export_data_type;
+          this->p = c.p;
+          this->u = c.u;
+          this->v = c.v;
+          this->w = c.w;
+          c.p = vtkSmartPointer<vtkImageData>::New();
+          c.u = vtkSmartPointer<vtkImageData>::New();
+          c.v = vtkSmartPointer<vtkImageData>::New();
+          c.w = vtkSmartPointer<vtkImageData>::New();
+          return *this;
+        }
 
         void setP(std::int32_t const x, std::int32_t const y, std::int32_t const z, T const value) noexcept override;
         void setU(std::int32_t const x, std::int32_t const y, std::int32_t const z, T const value) noexcept override;

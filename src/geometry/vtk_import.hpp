@@ -243,6 +243,7 @@
         */
         Geometry(Geometry&& geometry) noexcept
           : image_data{geometry.image_data} {
+          geometry.image_data = vtkSmartPointer<vtkImageData>::New();
           return;
         }
 
@@ -266,6 +267,7 @@
         */
         Geometry& operator= (Geometry&& geometry) noexcept {
           this->image_data = geometry.image_data;
+          geometry.image_data = vtkSmartPointer<vtkImageData>::New();
           return *this;
         }
 

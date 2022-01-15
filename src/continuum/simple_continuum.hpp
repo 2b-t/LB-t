@@ -32,7 +32,7 @@ namespace lbt {
    * \tparam T   Floating data type used for simulation
   */
   template <typename T>
-  class SimpleContinuum : public ContinuumBase<T> {
+  class SimpleContinuum: public ContinuumBase<T> {
     static_assert(std::is_floating_point_v<T>, "Invalid template parameter 'T'.");
 
     public:
@@ -50,8 +50,8 @@ namespace lbt {
         : ContinuumBase<T>{NX, NY, NZ, output_path}, memory_size{static_cast<std::size_t>(NZ)*NY*NX*number_of_values}, M(memory_size) {
         return;
       }
-      SimpleContinuum(SimpleContinuum&) = default;
-      SimpleContinuum& operator = (SimpleContinuum&) = default;
+      SimpleContinuum(SimpleContinuum const&) = default;
+      SimpleContinuum& operator = (SimpleContinuum const&) = default;
       SimpleContinuum(SimpleContinuum&&) = default;
       SimpleContinuum& operator = (SimpleContinuum&&) = default;
 
@@ -154,46 +154,46 @@ namespace lbt {
 
   template <typename T>
   void SimpleContinuum<T>::setP(std::int32_t const x, std::int32_t const y, std::int32_t const z, T const value) noexcept {
-    (*this)(x,y,z,0) = value;
+    this->operator()(x,y,z,0) = value;
     return;
   }
 
   template <typename T>
   void SimpleContinuum<T>::setU(std::int32_t const x, std::int32_t const y, std::int32_t const z, T const value) noexcept {
-    (*this)(x,y,z,1) = value;
+    this->operator()(x,y,z,1) = value;
     return;
   }
 
   template <typename T>
   void SimpleContinuum<T>::setV(std::int32_t const x, std::int32_t const y, std::int32_t const z, T const value) noexcept {
-    (*this)(x,y,z,2) = value;
+    this->operator()(x,y,z,2) = value;
     return;
   }
 
   template <typename T>
   void SimpleContinuum<T>::setW(std::int32_t const x, std::int32_t const y, std::int32_t const z, T const value) noexcept {
-    (*this)(x,y,z,3) = value;
+    this->operator()(x,y,z,3) = value;
     return;
   }
 
   template <typename T>
   T SimpleContinuum<T>::getP(std::int32_t const x, std::int32_t const y, std::int32_t const z) const noexcept {
-    return (*this)(x,y,z,0);
+    return this->operator()(x,y,z,0);
   }
 
   template <typename T>
   T SimpleContinuum<T>::getU(std::int32_t const x, std::int32_t const y, std::int32_t const z) const noexcept {
-    return (*this)(x,y,z,1);
+    return this->operator()(x,y,z,1);
   }
 
   template <typename T>
   T SimpleContinuum<T>::getV(std::int32_t const x, std::int32_t const y, std::int32_t const z) const noexcept {
-    return (*this)(x,y,z,2);
+    return this->operator()(x,y,z,2);
   }
 
   template <typename T>
   T SimpleContinuum<T>::getW(std::int32_t const x, std::int32_t const y, std::int32_t const z) const noexcept {
-    return (*this)(x,y,z,3);
+    return this->operator()(x,y,z,3);
   }
 
   template <typename T>

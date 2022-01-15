@@ -18,6 +18,7 @@
 
 namespace lbt {
   namespace test {
+
     /**\class  ToTestingTypes
      * \brief  Helper class for converting a tuple of classes to a testing types construct
      *
@@ -35,7 +36,7 @@ namespace lbt {
         ToTestingTypes& operator=(ToTestingTypes&&) = delete;
 
         /**\fn     helper
-         * \brief  Helper function for converting a tuple of classes to a testing types construct
+         * \brief  Helper method for converting a tuple of classes to a testing types construct
          *
          * \tparam Ts   The different types
          * \return The classes inside a ::testing::Types type list
@@ -51,6 +52,39 @@ namespace lbt {
     /// Convenient alias
     template<typename T>
     using ToTestingTypes_t = typename ToTestingTypes<T>::type;
+
+
+    /**\class  TemplateDataType
+     * \brief  Helper class for determining template argument of a class with a single template argument
+     *
+     * \tparam C   The class that the template argument should be determined of
+    */
+    template <typename C>
+    struct TemplateDataType {
+      protected:
+        TemplateDataType() = delete;
+        TemplateDataType(TemplateDataType const&) = delete;
+        TemplateDataType(TemplateDataType&&) = delete;
+        TemplateDataType& operator=(TemplateDataType const&) = delete;
+        TemplateDataType& operator=(TemplateDataType&&) = delete;
+
+        /**\fn      helper
+         * \brief   Helper method for determing template argument type
+         * \warning Can only called in unevaluated context!
+         *
+         * \tparam  TC   The class template
+         * \tparam  T    The class template's template argument type
+         * \return  A value with the type of the template argument
+        */
+        template <template <typename T> class TC, typename T>
+        static constexpr auto helper(TC<T> const&) -> std::decay_t<decltype(std::declval<T>())>;
+      public:
+        using type = decltype(helper(std::declval<C>()));
+    };
+    /// Convenient alias
+    template <typename C>
+    using TemplateDataType_t = typename TemplateDataType<C>::type;
+
   }
 }
 

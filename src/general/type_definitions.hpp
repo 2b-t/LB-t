@@ -138,12 +138,14 @@ namespace lbt {
       }
       AlignedArray(AlignedArray&& arr) noexcept
         : N{arr.N}, alignment{arr.alignment}, ptr{arr.ptr} {
+        arr.ptr = nullptr;
         return; 
       }
       AlignedArray& operator= (AlignedArray&& arr) noexcept {
         this->N = arr.N;
         this->alignment = arr.alignment;
         this->ptr = arr.ptr;
+        arr.ptr = nullptr;
         return *this; 
       }
 

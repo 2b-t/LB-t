@@ -126,8 +126,8 @@ namespace lbt {
       }
 
       ContinuumBase() = delete;
-      ContinuumBase(ContinuumBase&) = default;
-      ContinuumBase& operator = (ContinuumBase&) = default;
+      ContinuumBase(ContinuumBase const&) = default;
+      ContinuumBase& operator = (ContinuumBase const&) = default;
       ContinuumBase(ContinuumBase&&) = default;
       ContinuumBase& operator = (ContinuumBase&&) = default;
 

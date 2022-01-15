@@ -20,7 +20,7 @@ namespace lbt {
   namespace test {
 
     // Test conversion to ::testing::Types
-    TEST(ToTestingTypesConversion, typesEqual) {
+    TEST(ToTestingTypesConversionTest, typesEqual) {
       using SomeTuple = std::tuple<double,float>;
       using ExpectedTestingTypes = ::testing::Types<double,float>;
       constexpr bool is_same = std::is_same_v<ToTestingTypes_t<SomeTuple>,
@@ -28,6 +28,12 @@ namespace lbt {
       EXPECT_TRUE(is_same);
     }
 
+    TEST(TemplateDataTypeTest, doubleTupleTemplateType) {
+      using Tup = std::tuple<double>;
+      constexpr bool is_same = std::is_same_v<TemplateDataType_t<Tup>,
+                                              double>;
+      EXPECT_TRUE(is_same);
+    }
   }
 }
 
