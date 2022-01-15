@@ -1,10 +1,10 @@
-#ifndef LBT_CONTINUUM_UNITTEST
-#define LBT_CONTINUUM_UNITTEST
+#ifndef LBT_CONTINUUM_BASE_UNITTEST
+#define LBT_CONTINUUM_BASE_UNITTEST
 #pragma once
 
 /**
- * \file     continuum_unittest.hpp
- * \mainpage Tests for continuum class
+ * \file     continuum_base_unittest.hpp
+ * \mainpage Tests for continuum base class
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
@@ -18,22 +18,21 @@
 
 #include "../../src/general/constexpr_math.hpp"
 #include "../testing_utilities/testing_utilities.hpp"
-#include "continuum_unittest.hpp"
 
 
 namespace lbt {
   namespace test{
     
-    /**\class  ContinuumTest
+    /**\class  ContinuumBaseTest
      * \brief  Helper class for tests of different continua
      *
      * \tparam C   The continuum class
     */
     template <typename C>
-    class ContinuumTest {
+    class ContinuumBaseTest {
         using T = TemplateDataType_t<C>;
       public:
-        /**\fn        ContinuumTest
+        /**\fn        ContinuumBaseTest
          * \brief     (Default) constructor
          *
          * \param[in] NX            Resolution of the continuum in x-direction
@@ -43,8 +42,8 @@ namespace lbt {
          * 
          * \return    The classes inside a ::testing::Types type list
         */
-        ContinuumTest(std::int32_t const NX, std::int32_t const NY, std::int32_t const NZ, 
-                      std::filesystem::path const& output_path) noexcept
+        ContinuumBaseTest(std::int32_t const NX, std::int32_t const NY, std::int32_t const NZ, 
+                          std::filesystem::path const& output_path) noexcept
           : NX{NX}, NY{NX}, NZ{NZ}, output_path{output_path}, c{NX, NY, NZ, output_path} {
           return;
         }
@@ -119,4 +118,4 @@ namespace lbt {
   }
 }
 
-#endif // LBT_CONTINUUM_UNITTEST
+#endif // LBT_CONTINUUM_BASE_UNITTEST

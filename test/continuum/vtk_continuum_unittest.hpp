@@ -19,7 +19,7 @@
 
 #include "../../src/general/tuple_utilities.hpp"
 #include "../testing_utilities/testing_utilities.hpp"
-#include "continuum_unittest.hpp"
+#include "continuum_base_unittest.hpp"
 
 #if __has_include (<vtkSmartPointer.h>)
   #include "../../src/continuum/vtk_continuum.hpp"
@@ -27,11 +27,11 @@
   namespace lbt {
     namespace test {
       template <typename C>
-      class VtkContinuumTest: public ContinuumTest<C>, public ::testing::Test {
+      class VtkContinuumTest: public ContinuumBaseTest<C>, public ::testing::Test {
         public:
           VtkContinuumTest(std::int32_t const NX = 7, std::int32_t const NY = 9, std::int32_t const NZ = 11, 
                            std::filesystem::path const& output_path = "") noexcept
-            : ContinuumTest<C>{NX, NY, NZ, output_path} {
+            : ContinuumBaseTest<C>{NX, NY, NZ, output_path} {
             return;
           }
       };

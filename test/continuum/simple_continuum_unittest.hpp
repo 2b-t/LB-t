@@ -20,16 +20,17 @@
 #include "../../src/continuum/simple_continuum.hpp"
 #include "../../src/general/tuple_utilities.hpp"
 #include "../testing_utilities/testing_utilities.hpp"
-#include "continuum_unittest.hpp"
+#include "continuum_base_unittest.hpp"
+
 
 namespace lbt {
   namespace test {
     template <typename C>
-    class SimpleContinuumTest: public ContinuumTest<C>, public ::testing::Test {
+    class SimpleContinuumTest: public ContinuumBaseTest<C>, public ::testing::Test {
       public:
         SimpleContinuumTest(std::int32_t const NX = 7, std::int32_t const NY = 9, std::int32_t const NZ = 11, 
                             std::filesystem::path const& output_path = "") noexcept
-          : ContinuumTest<C>{NX, NY, NZ, output_path} {
+          : ContinuumBaseTest<C>{NX, NY, NZ, output_path} {
           return;
         }
     };
