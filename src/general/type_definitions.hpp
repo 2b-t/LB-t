@@ -42,7 +42,7 @@ namespace lbt {
   #define LBT_FORCE_INLINE   __forceinline
   #define LBT_ALIGN          __attribute__((aligned(lbt::alignment))) alignas(lbt::alignment)
 #elif defined(__clang__)
-  #define LBT_UNROLL(n)      _ Pragma(LBT_TO_STRING(unroll (16)))
+  #define LBT_UNROLL(n)      _ Pragma(LBT_TO_STRING(unroll (n)))
   #define LBT_FORCE_INLINE   __attribute__((always_inline))
   #define LBT_ALIGN          __attribute__((aligned(lbt::alignment))) alignas(lbt::alignment)
 #elif defined(__GNUC__) && !defined(__clang__)
