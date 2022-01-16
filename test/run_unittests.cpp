@@ -27,6 +27,7 @@
 #include "testing_utilities/testing_utilities_unittest.hpp"
 #include "simulation_unittest.hpp"
 
+// Only compiled with VTK
 #if __has_include (<vtkSmartPointer.h>)
   #include "continuum/vtk_continuum_unittest.hpp"
   #include "general/vtk_utilities_unittest.hpp"

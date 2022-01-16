@@ -25,7 +25,6 @@ namespace lbt {
     template <typename L>
     struct DdQqTest: public ::testing::Test {
     };
-
     TYPED_TEST_SUITE(DdQqTest, LatticeTestTypes);
 
     /// Test that class contains all relevant class members

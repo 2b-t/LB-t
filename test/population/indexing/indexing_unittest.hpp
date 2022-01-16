@@ -169,7 +169,7 @@ namespace lbt {
     }
 
     TYPED_TEST(IndexingTest, linearToSpatial) {
-      // Max sure that the conversion from linear to spatial and back works
+      // Make sure that the conversion from linear to spatial and back works
       constexpr std::int32_t expected_x {5};
       constexpr std::int32_t expected_y {2};
       constexpr std::int32_t expected_z {3};

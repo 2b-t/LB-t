@@ -56,7 +56,7 @@ namespace lbt {
        * \param[in] even_index   index to be accessed at an even time step
       */
       template <Timestep TS>
-      LBT_FORCE_INLINE constexpr std::int32_t oddEven(std::int32_t const odd_index, std::int32_t const even_index) const noexcept {
+      LBT_FORCE_INLINE static constexpr std::int32_t oddEven(std::int32_t const odd_index, std::int32_t const even_index) noexcept {
         return (TS == Timestep::Odd) ? odd_index : even_index;
       }
 
@@ -80,11 +80,11 @@ namespace lbt {
                                                         std::int32_t                    const n,
                                                         std::int32_t                    const d,
                                                         std::int32_t                    const p) const noexcept {
-        return spatialToLinear(x[1 + oddEven<TS>(static_cast<std::int32_t>(LT::DX[(!n)*LT::OFF+d]), 0)],
-                               y[1 + oddEven<TS>(static_cast<std::int32_t>(LT::DY[(!n)*LT::OFF+d]), 0)],
-                               z[1 + oddEven<TS>(static_cast<std::int32_t>(LT::DZ[(!n)*LT::OFF+d]), 0)],
-                               oddEven<TS>(n, !n),
-                               d, p);
+        return Indexing<LT,NP>::spatialToLinear(x[1 + oddEven<TS>(static_cast<std::int32_t>(LT::DX[(!n)*LT::OFF+d]), 0)],
+                                                y[1 + oddEven<TS>(static_cast<std::int32_t>(LT::DY[(!n)*LT::OFF+d]), 0)],
+                                                z[1 + oddEven<TS>(static_cast<std::int32_t>(LT::DZ[(!n)*LT::OFF+d]), 0)],
+                                                oddEven<TS>(n, !n),
+                                                d, p);
       }
       template <Timestep TS>
       LBT_FORCE_INLINE constexpr std::int64_t indexRead(std::int32_t const x,
@@ -123,11 +123,11 @@ namespace lbt {
                                                          std::int32_t                    const n,
                                                          std::int32_t                    const d,
                                                          std::int32_t                    const p) const noexcept {
-        return spatialToLinear(x[1 + oddEven<TS>(static_cast<std::int32_t>(LT::DX[n*LT::OFF+d]), 0)],
-                               y[1 + oddEven<TS>(static_cast<std::int32_t>(LT::DY[n*LT::OFF+d]), 0)],
-                               z[1 + oddEven<TS>(static_cast<std::int32_t>(LT::DZ[n*LT::OFF+d]), 0)],
-                               oddEven<TS>(!n, n),
-                               d, p);
+        return Indexing<LT,NP>::spatialToLinear(x[1 + oddEven<TS>(static_cast<std::int32_t>(LT::DX[n*LT::OFF+d]), 0)],
+                                                y[1 + oddEven<TS>(static_cast<std::int32_t>(LT::DY[n*LT::OFF+d]), 0)],
+                                                z[1 + oddEven<TS>(static_cast<std::int32_t>(LT::DZ[n*LT::OFF+d]), 0)],
+                                                oddEven<TS>(!n, n),
+                                                d, p);
       }
       template <Timestep TS>
       LBT_FORCE_INLINE constexpr std::int64_t indexWrite(std::int32_t const x,
