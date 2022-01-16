@@ -123,9 +123,9 @@ namespace lbt {
                                                          std::int32_t                    const n,
                                                          std::int32_t                    const d,
                                                          std::int32_t                    const p) const noexcept {
-        return Indexing<LT,NP>::spatialToLinear(x[1 + oddEven<TS>(static_cast<std::int32_t>(LT::DX[n*LT::OFF+d]), 0)],
-                                                y[1 + oddEven<TS>(static_cast<std::int32_t>(LT::DY[n*LT::OFF+d]), 0)],
-                                                z[1 + oddEven<TS>(static_cast<std::int32_t>(LT::DZ[n*LT::OFF+d]), 0)],
+        return Indexing<LT,NP>::spatialToLinear(x[1 - oddEven<TS>(0, static_cast<std::int32_t>(LT::DX[n*LT::OFF+d]))],
+                                                y[1 - oddEven<TS>(0, static_cast<std::int32_t>(LT::DY[n*LT::OFF+d]))],
+                                                z[1 - oddEven<TS>(0, static_cast<std::int32_t>(LT::DZ[n*LT::OFF+d]))],
                                                 oddEven<TS>(!n, n),
                                                 d, p);
       }
@@ -137,12 +137,12 @@ namespace lbt {
                                                          std::int32_t const d,
                                                          std::int32_t const p) const noexcept {
         if constexpr (TS == Timestep::Odd) {
-          std::int32_t const xn = (Indexing<LT,NP>::NX + x + static_cast<std::int32_t>(LT::DX[n*LT::OFF+d])) % Indexing<LT,NP>::NX;
-          std::int32_t const yn = (Indexing<LT,NP>::NY + y + static_cast<std::int32_t>(LT::DY[n*LT::OFF+d])) % Indexing<LT,NP>::NY;
-          std::int32_t const zn = (Indexing<LT,NP>::NZ + z + static_cast<std::int32_t>(LT::DZ[n*LT::OFF+d])) % Indexing<LT,NP>::NZ;
-          return Indexing<LT,NP>::spatialToLinear(xn,yn,zn,!n,d,p);
+          return Indexing<LT,NP>::spatialToLinear(x,y,z,!n,d,p);
         } else {
-          return Indexing<LT,NP>::spatialToLinear(x,y,z,n,d,p);
+          std::int32_t const xn = (Indexing<LT,NP>::NX + x - static_cast<std::int32_t>(LT::DX[n*LT::OFF+d])) % Indexing<LT,NP>::NX;
+          std::int32_t const yn = (Indexing<LT,NP>::NY + y - static_cast<std::int32_t>(LT::DY[n*LT::OFF+d])) % Indexing<LT,NP>::NY;
+          std::int32_t const zn = (Indexing<LT,NP>::NZ + z - static_cast<std::int32_t>(LT::DZ[n*LT::OFF+d])) % Indexing<LT,NP>::NZ;
+          return Indexing<LT,NP>::spatialToLinear(xn,yn,zn,n,d,p);
         }
       }
   };

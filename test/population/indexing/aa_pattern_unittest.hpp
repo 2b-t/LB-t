@@ -46,7 +46,7 @@ namespace lbt {
       EXPECT_EQ(even_result, even_index);
     }
 
-    /*TYPED_TEST(AaPatternTest, indexReadIsIndexWrite) {
+    TYPED_TEST(AaPatternTest, indexReadIsIndexWrite) {
       for (std::int32_t z = 0; z < this->NZ; ++z) {
         for (std::int32_t y = 0; y < this->NY; ++y) {
           for (std::int32_t x = 0; x < this->NX; ++x) {
@@ -67,9 +67,9 @@ namespace lbt {
           }
         }
       }
-    }*/
+    }
 
-    /*TYPED_TEST(AaPatternTest, indexArrayReadIsIndexArrayWrite) {
+    TYPED_TEST(AaPatternTest, indexArrayReadIsIndexArrayWrite) {
       for (std::int32_t z = 0; z < this->NZ; ++z) {
         lbt::StackArray<std::int32_t,3> const z_n = {(this->NZ+z-1)%this->NZ, z, (z+1)%this->NZ};
         for (std::int32_t y = 0; y < this->NY; ++y) {
@@ -93,7 +93,7 @@ namespace lbt {
           }
         }
       }
-    }*/
+    }
 
     TYPED_TEST(AaPatternTest, indexIsIndexArray) {
       for (std::int32_t z = 0; z < this->NZ; ++z) {
