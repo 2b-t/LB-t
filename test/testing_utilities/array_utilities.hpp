@@ -80,8 +80,8 @@ namespace lbt {
      * \param[in] alignment   Alignment to be checked
      * \return    Boolean expression that signals whether the pointer \p p is aligned by \p alignment or not
     */
-    constexpr bool isAligned(void const* const ptr, std::int64_t const alignment) noexcept {
-      return (reinterpret_cast<std::uintptr_t>(ptr) % static_cast<std::size_t>(alignment) == 0);
+    constexpr bool isAligned(void const* const ptr, std::size_t const alignment) noexcept {
+      return (reinterpret_cast<std::uintptr_t>(ptr) % alignment == 0);
     }
 
   }

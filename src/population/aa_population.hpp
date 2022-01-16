@@ -110,7 +110,7 @@ namespace lbt {
       }
 
       // LBT_FORCE_INLINE lbt::array<LT::type,LT::ND> read(std::int32_t const x, std::int32_t const y, std::int32_t const z)
-      // Vectorised and non-vectorised store and load
+      // Vectorised and non-vectorised store and load of all populations of one cell
 
     protected:
       using T = typename LT::type;

@@ -16,17 +16,14 @@
 
 #include "../../src/population/ab_population.hpp"
 #include "../lattice/lattice_testing_types.hpp"
+#include "population_base_unittest.hpp"
 
 
 namespace lbt {
   namespace test {
-    // TODO: Check for even and odd time steps
+    // TODO: 2D tests
 
-    // TODO: Check if index read is index write in the next step: Write values
-
-    // TODO: Check if indexing works also over borders: Write values
-
-    // TODO: If encapsulated array has size() function: Check if size has been initialised correctly
+    // TODO: 3D tests
   }
 }
 

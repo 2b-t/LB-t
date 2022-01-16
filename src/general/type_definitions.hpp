@@ -12,6 +12,7 @@
 #include <cstring>
 #include <iostream>
 #include <memory>
+#include <new>
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -27,32 +28,38 @@
 #define LBT_TO_STRING(X)          LBT_TO_STRING_HELPER(X)
 
 /// Cache-line alignment of arrays in Bytes
-#define LBT_CACHE_LINE_SIZE    64
+namespace lbt {
+  #ifdef __cpp_lib_hardware_interference_size
+    inline constexpr std::size_t alignment = std::hardware_constructive_interference_size;
+  #else
+    inline constexpr std::size_t alignment = 64;
+  #endif
+}
 
 /// Definitions for unrolling, inlining and cache-alignment depending on compiler
 #if defined(__ICC) || defined(__ICL)
   #define LBT_UNROLL(n)      _ Pragma(LBT_TO_STRING(unroll (n)))
   #define LBT_FORCE_INLINE   __forceinline
-  #define LBT_ALIGN          __attribute__((aligned(LBT_CACHE_LINE_SIZE))) alignas(LBT_CACHE_LINE_SIZE)
+  #define LBT_ALIGN          __attribute__((aligned(lbt::alignment))) alignas(lbt::alignment)
 #elif defined(__clang__)
   #define LBT_UNROLL(n)      _ Pragma(LBT_TO_STRING(unroll (16)))
   #define LBT_FORCE_INLINE   __attribute__((always_inline))
-  #define LBT_ALIGN          __attribute__((aligned(LBT_CACHE_LINE_SIZE))) alignas(LBT_CACHE_LINE_SIZE)
+  #define LBT_ALIGN          __attribute__((aligned(lbt::alignment))) alignas(lbt::alignment)
 #elif defined(__GNUC__) && !defined(__clang__)
   #define LBT_UNROLL(n)      _ Pragma(LBT_TO_STRING(GCC unroll (16)))
   #define LBT_FORCE_INLINE   __attribute__((always_inline))
-  #define LBT_ALIGN          __attribute__((aligned(LBT_CACHE_LINE_SIZE))) alignas(LBT_CACHE_LINE_SIZE)
+  #define LBT_ALIGN          __attribute__((aligned(lbt::alignment))) alignas(lbt::alignment)
 #elif defined(_MSC_BUILD)
   #pragma message ("LB-t loop unrolling not supported: Microsoft Visual C++ (MSVC) detected")
   #define LBT_UNROLL(n)
   #define LBT_FORCE_INLINE     forceinline
-  #define LBT_ALIGN            alignas(LBT_CACHE_LINE_SIZE)
+  #define LBT_ALIGN            alignas(lbt::alignment)
 #else
   #warning "LB-t loop unrolling not supported: Unknown compiler"
   #define LBT_UNROLL(n)
   #warning "LB-t force inlining not supported: Unknown compiler"
   #define LBT_FORCE_INLINE
-  #define LBT_ALIGN            alignas(LBT_CACHE_LINE_SIZE)
+  #define LBT_ALIGN            alignas(lbt::alignment)
 #endif
 
 
@@ -71,7 +78,7 @@ namespace lbt {
    * \return    Pointer to the first element of the allocated memory
   */
   template <typename T = void>
-  T* aligned_alloc(std::size_t const N, std::size_t const alignment = LBT_CACHE_LINE_SIZE) noexcept {
+  T* aligned_alloc(std::size_t const N, std::size_t const alignment = lbt::alignment) noexcept {
     #ifdef _WIN32
       T* ptr = static_cast<T*>(_aligned_malloc(sizeof(T)*N, alignment));
     #else
@@ -116,7 +123,7 @@ namespace lbt {
        * \param[in] N           The number of elements that should be allocated
        * \param[in] alignment   The alignment that should be used for the heap-allocated array
       */
-      AlignedArray(std::size_t const N, std::size_t const alignment = LBT_CACHE_LINE_SIZE) noexcept
+      AlignedArray(std::size_t const N, std::size_t const alignment = lbt::alignment) noexcept
         : N{N}, alignment{alignment}, ptr{aligned_alloc<T>(N, alignment)} {
         return;
       }

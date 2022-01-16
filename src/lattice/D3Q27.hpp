@@ -112,7 +112,7 @@ namespace lbt {
         static constexpr std::int32_t HSPEED = (SPEEDS + 1)/2;
 
         /// linear memory layout padding
-        static constexpr std::int32_t PAD = ((LBT_CACHE_LINE_SIZE - sizeof(T)*SPEEDS % LBT_CACHE_LINE_SIZE) % LBT_CACHE_LINE_SIZE) / sizeof(T);
+        static constexpr std::int32_t PAD = ((lbt::alignment - sizeof(T)*SPEEDS % lbt::alignment) % lbt::alignment) / sizeof(T);
         static constexpr std::int32_t  ND = SPEEDS + PAD;
         static constexpr std::int32_t OFF = ND/2;
 

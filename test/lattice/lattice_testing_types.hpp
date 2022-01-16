@@ -24,15 +24,20 @@ namespace lbt {
   namespace test {
 
     /// The different lattices to be tested
-    template <typename T> using LatticeTypes = std::tuple<lbt::lattice::D2Q9P10<T>,  lbt::lattice::D2Q9P12<T>, 
-                                                          lbt::lattice::D3Q15P16<T>, lbt::lattice::D3Q19P20<T>, 
-                                                          lbt::lattice::D3Q27P28<T>, lbt::lattice::D3Q27PC<T>>;
+    template <typename T> using LatticeTypes2D = std::tuple<lbt::lattice::D2Q9P10<T>,  lbt::lattice::D2Q9P12<T>>;
+    template <typename T> using LatticeTypes3D = std::tuple<lbt::lattice::D3Q15P16<T>, lbt::lattice::D3Q19P20<T>, 
+                                                            lbt::lattice::D3Q27P28<T>, lbt::lattice::D3Q27PC<T>>;
+    template <typename T> using LatticeTypes = decltype(std::tuple_cat(std::declval<LatticeTypes2D<T>>(), 
+                                                                       std::declval<LatticeTypes3D<T>>()));
+
     /// The different floating data types for the lattices
     using LatticeFloatingTypes = std::tuple<double, float>;
 
     // Merge data types and lattices data types
+    using LatticeTestTypes2D = ToTestingTypes_t<lbt::CartesianProductApply_t<LatticeTypes2D, LatticeFloatingTypes>>;
+    using LatticeTestTypes3D = ToTestingTypes_t<lbt::CartesianProductApply_t<LatticeTypes3D, LatticeFloatingTypes>>;
     using LatticeTestTypes = ToTestingTypes_t<lbt::CartesianProductApply_t<LatticeTypes, LatticeFloatingTypes>>;
-
+    
   }
 }
 

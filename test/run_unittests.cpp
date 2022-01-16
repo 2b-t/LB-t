@@ -18,10 +18,9 @@
 #include "general/type_definitions_unittest.hpp"
 #include "general/units_unittest.hpp"
 #include "lattice/lattice_unittest.hpp"
-// TODO: Implement these unit-tests
 #include "population/indexing/aa_pattern_unittest.hpp"
 #include "population/indexing/indexing_unittest.hpp"
-// TODO: Implement unit-tests
+// TODO: Implement unit-tests for A-A and A-B populations
 #include "population/aa_population_unittest.hpp"
 #include "population/ab_population_unittest.hpp"
 #include "testing_utilities/testing_utilities_unittest.hpp"

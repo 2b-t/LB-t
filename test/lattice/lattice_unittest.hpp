@@ -121,11 +121,11 @@ namespace lbt {
 
     /// Test alignment of the different arrays
     TYPED_TEST(DdQqTest, cacheLineAlignment) {
-      EXPECT_TRUE(isAligned(&TypeParam::DX.at(0), LBT_CACHE_LINE_SIZE));
-      EXPECT_TRUE(isAligned(&TypeParam::DY.at(0), LBT_CACHE_LINE_SIZE));
-      EXPECT_TRUE(isAligned(&TypeParam::DZ.at(0), LBT_CACHE_LINE_SIZE));
-      EXPECT_TRUE(isAligned(&TypeParam::W.at(0), LBT_CACHE_LINE_SIZE));
-      EXPECT_TRUE(isAligned(&TypeParam::MASK.at(0), LBT_CACHE_LINE_SIZE));
+      EXPECT_TRUE(isAligned(&TypeParam::DX.at(0), lbt::alignment));
+      EXPECT_TRUE(isAligned(&TypeParam::DY.at(0), lbt::alignment));
+      EXPECT_TRUE(isAligned(&TypeParam::DZ.at(0), lbt::alignment));
+      EXPECT_TRUE(isAligned(&TypeParam::W.at(0), lbt::alignment));
+      EXPECT_TRUE(isAligned(&TypeParam::MASK.at(0), lbt::alignment));
     }
 
   }
