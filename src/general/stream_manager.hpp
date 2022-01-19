@@ -31,7 +31,6 @@ namespace lbt {
         : src_stream{src}, src_buf{src.rdbuf()} {
         return;
       }
-
       StreamManager() = delete;
       StreamManager(StreamManager const&) = delete;
       StreamManager(StreamManager&&) = delete;

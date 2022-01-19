@@ -27,21 +27,19 @@ namespace lbt {
   template <class LT, std::int32_t NP = 1>
   class AbPopulation: public Indexing<LT,NP> {
     public:
-      AbPopulation() = delete;
-      AbPopulation(AbPopulation&) = delete;
-      AbPopulation& operator= (AbPopulation&) = delete;
-      AbPopulation(AbPopulation&&) = delete;
-      AbPopulation& operator= (AbPopulation&&) = delete;
-
       /**\fn    AbPopulation
        * \brief Class constructor
       */
       AbPopulation(std::int32_t const NX, std::int32_t const NY, std::int32_t const NZ) noexcept
         : Indexing<LT,NP>{NX, NY, NZ}, A(static_cast<std::size_t>(NZ)*NY*NX*NP*LT::ND), B(static_cast<std::size_t>(NZ)*NY*NX*NP*LT::ND) {
         static_assert((LT::DIM == 2) ? (NZ == 1) : true, "Two-dimensional lattice with NZ != 1.");
-
         return;
       }
+      AbPopulation() = delete;
+      AbPopulation(AbPopulation const&) = default;
+      AbPopulation& operator= (AbPopulation const&) = default;
+      AbPopulation(AbPopulation&&) = default;
+      AbPopulation& operator= (AbPopulation&&) = default;
 
       /**\fn        read
        * \brief     Function for accessing values before collision depending on even and odd time step.

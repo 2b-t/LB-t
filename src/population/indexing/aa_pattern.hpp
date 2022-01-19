@@ -38,14 +38,17 @@ namespace lbt {
    * \tparam NP   Number of populations stored side by side in a single merged grid (default = 1)
   */
   template <typename LT, std::int32_t NP>
-  class AaPattern : public Indexing<LT,NP> {
-    // Move protected data members to bottom
-
+  class AaPattern: public Indexing<LT,NP> {
     public:
       constexpr AaPattern(std::int32_t const NX, std::int32_t const NY, std::int32_t const NZ) noexcept
         : Indexing<LT,NP>{NX,NY,NZ} {
         return;
       }
+      AaPattern() = delete;
+      AaPattern(AaPattern const&) = default;
+      AaPattern& operator= (AaPattern const&) = default;
+      AaPattern(AaPattern&&) = default;
+      AaPattern& operator= (AaPattern&&) = default;
 
       /**\fn        oddEven
        * \brief     Function for access of individual indices in odd and even time steps

@@ -73,7 +73,6 @@ namespace lbt {
       /** \brief Default constructor of parallelism class
       */
       OpenMpManager() noexcept;
-      
       OpenMpManager(OpenMpManager const&) = delete;
       OpenMpManager(OpenMpManager&&) = delete;
       OpenMpManager& operator=(OpenMpManager&&) = delete;

@@ -115,8 +115,6 @@ namespace lbt {
   template <typename T>
   class AlignedArray {
     public:
-      AlignedArray() = delete;
-
       /**\fn        AlignedArray
        * \brief     Class constructor
        * 
@@ -127,6 +125,7 @@ namespace lbt {
         : N{N}, alignment{alignment}, ptr{aligned_alloc<T>(N, alignment)} {
         return;
       }
+      AlignedArray() = delete;
       ~AlignedArray() noexcept {
         aligned_free(ptr);
         return;

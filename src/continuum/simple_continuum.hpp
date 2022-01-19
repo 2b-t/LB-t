@@ -36,8 +36,6 @@ namespace lbt {
     static_assert(std::is_floating_point_v<T>, "Invalid template parameter 'T'.");
 
     public:
-      SimpleContinuum() = delete;
-
       /**\fn    SimpleContinuum
        * \brief Class constructor
        * 
@@ -50,6 +48,7 @@ namespace lbt {
         : ContinuumBase<T>{NX, NY, NZ, output_path}, memory_size{static_cast<std::size_t>(NZ)*NY*NX*number_of_values}, M(memory_size) {
         return;
       }
+      SimpleContinuum() = delete;
       SimpleContinuum(SimpleContinuum const&) = default;
       SimpleContinuum& operator = (SimpleContinuum const&) = default;
       SimpleContinuum(SimpleContinuum&&) = default;

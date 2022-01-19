@@ -28,8 +28,6 @@ namespace lbt {
   template <class LT, std::int32_t NP = 1>
   class AaPopulation: public AaPattern<LT,NP> {
     public:
-      AaPopulation() = delete;
-
       /**\fn    AaPopulation
        * \brief Class constructor
       */
@@ -38,8 +36,9 @@ namespace lbt {
         static_assert((LT::DIM == 2) ? (NZ == 1) : true, "Two-dimensional lattice with NZ != 1.");
         return;
       }
-      AaPopulation(AaPopulation&) = default;
-      AaPopulation& operator= (AaPopulation&) = default;
+      AaPopulation() = delete;
+      AaPopulation(AaPopulation const&) = default;
+      AaPopulation& operator= (AaPopulation const&) = default;
       AaPopulation(AaPopulation&&) = default;
       AaPopulation& operator= (AaPopulation&&) = default;
 
