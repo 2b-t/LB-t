@@ -22,7 +22,7 @@ namespace lbt {
   namespace test {
 
     // Test fixture for typed indexing tests
-    template <typename L>
+    template <typename LT>
     class IndexingLimitsTest : public ::testing::Test {
     };
 
@@ -47,12 +47,15 @@ namespace lbt {
       EXPECT_EQ(index, expected_index);
     }
 
-    template <typename L>
+    template <typename LT>
     class IndexingTest : public ::testing::Test {
       public:
         // Initialise with arbitrary resolution
         constexpr IndexingTest(std::int32_t const NX = 9, std::int32_t const NY = 11, std::int32_t const NZ = 21) noexcept
           : NX{NX}, NY{NY}, NZ{NZ}, indexing{NX,NY,NZ} {
+          if constexpr (LT::DIM == 2) {
+            this->NZ = 1;
+          }
           return;
         }
       protected:
@@ -60,7 +63,7 @@ namespace lbt {
         std::int32_t NY;
         std::int32_t NZ;
         static constexpr std::int32_t NP {2};
-        lbt::Indexing<L,NP> indexing;
+        lbt::Indexing<LT,NP> indexing;
     };
 
     TYPED_TEST_SUITE(IndexingTest, LatticeTestTypes);

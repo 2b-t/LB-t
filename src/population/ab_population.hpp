@@ -31,8 +31,8 @@ namespace lbt {
        * \brief Class constructor
       */
       AbPopulation(std::int32_t const NX, std::int32_t const NY, std::int32_t const NZ) noexcept
-        : Indexing<LT,NP>{NX, NY, NZ}, A(static_cast<std::size_t>(NZ)*NY*NX*NP*LT::ND), B(static_cast<std::size_t>(NZ)*NY*NX*NP*LT::ND) {
-        static_assert((LT::DIM == 2) ? (NZ == 1) : true, "Two-dimensional lattice with NZ != 1.");
+        : Indexing<LT,NP>{NX, NY, NZ}, A(static_cast<std::int64_t>(NZ)*NY*NX*NP*LT::ND), B(static_cast<std::int64_t>(NZ)*NY*NX*NP*LT::ND) {
+        assert((LT::DIM == 2) ? (NZ == 1) : true); // Two-dimensional lattice with NZ != 1
         return;
       }
       AbPopulation() = delete;
@@ -58,9 +58,9 @@ namespace lbt {
       LBT_FORCE_INLINE auto& read(std::int32_t const x, std::int32_t const y, std::int32_t const z,
                                   std::int32_t const n, std::int32_t const d, std::int32_t const p = 0) noexcept {
         if constexpr (TS == Timestep::Even) {
-          return A[Indexing<LT,NP>::indexRead<TS>(x,y,z,n,d,p)];
+          return A[Indexing<LT,NP>::spatialToLinear(x,y,z,n,d,p)];
         } else {
-          return B[Indexing<LT,NP>::indexRead<TS>(x,y,z,n,d,p)];
+          return B[Indexing<LT,NP>::spatialToLinear(x,y,z,n,d,p)];
         }
       }
 
@@ -68,9 +68,9 @@ namespace lbt {
       LBT_FORCE_INLINE auto const& read(std::int32_t const x, std::int32_t const y, std::int32_t const z,
                                         std::int32_t const n, std::int32_t const d, std::int32_t const p = 0) const noexcept {
         if constexpr (TS == Timestep::Even) {
-          return A[Indexing<LT,NP>::indexRead<TS>(x,y,z,n,d,p)];
+          return A[Indexing<LT,NP>::spatialToLinear(x,y,z,n,d,p)];
         } else {
-          return B[Indexing<LT,NP>::indexRead<TS>(x,y,z,n,d,p)];
+          return B[Indexing<LT,NP>::spatialToLinear(x,y,z,n,d,p)];
         }
       }
 
@@ -91,9 +91,9 @@ namespace lbt {
       LBT_FORCE_INLINE auto& write(std::int32_t const x, std::int32_t const y, std::int32_t const z,
                                    std::int32_t const n, std::int32_t const d, std::int32_t const p = 0) noexcept {
         if constexpr (TS == Timestep::Even) {
-          return B[Indexing<LT,NP>::indexWrite<TS>(x,y,z,n,d,p)];
+          return B[Indexing<LT,NP>::spatialToLinear(x,y,z,n,d,p)];
         } else {
-          return A[Indexing<LT,NP>::indexWrite<TS>(x,y,z,n,d,p)];
+          return A[Indexing<LT,NP>::spatialToLinear(x,y,z,n,d,p)];
         }
       }
 
@@ -101,9 +101,9 @@ namespace lbt {
       LBT_FORCE_INLINE auto const& write(std::int32_t const x, std::int32_t const y, std::int32_t const z,
                                          std::int32_t const n, std::int32_t const d, std::int32_t const p) const noexcept {
         if constexpr (TS == Timestep::Even) {
-          return B[Indexing<LT,NP>::indexWrite<TS>(x,y,z,n,d,p)];
+          return B[Indexing<LT,NP>::spatialToLinear(x,y,z,n,d,p)];
         } else {
-          return A[Indexing<LT,NP>::indexWrite<TS>(x,y,z,n,d,p)];
+          return A[Indexing<LT,NP>::spatialToLinear(x,y,z,n,d,p)];
         }
       }
 

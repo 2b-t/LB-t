@@ -8,6 +8,7 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#include <cassert>
 #include <cstdint>
 #include <tuple>
 
@@ -27,7 +28,7 @@ namespace lbt {
    * \param[in] ts   Timestep to be negated
    * \return    Negated timestep
    */
-  constexpr Timestep operator! (Timestep const& ts) noexcept {
+  inline constexpr Timestep operator! (Timestep const& ts) noexcept {
     return (ts == Timestep::Even) ? Timestep::Odd : Timestep::Even;
   }
 
@@ -38,7 +39,7 @@ namespace lbt {
    * \param[in]     ts   Timestep to be printed to output stream
    * \return        Output stream including the type of timestep
    */
-  std::ostream& operator << (std::ostream& os, Timestep const& ts) noexcept {
+  inline std::ostream& operator << (std::ostream& os, Timestep const& ts) noexcept {
     os << ((ts == Timestep::Even) ? "even time step" : "odd time step");
     return os;
   }
@@ -61,6 +62,7 @@ namespace lbt {
       */
       constexpr Indexing(std::int32_t const NX, std::int32_t const NY, std::int32_t const NZ) noexcept
         : NX{NX}, NY{NY}, NZ{NZ} {
+        assert((LT::DIM == 2) ? (NZ == 1) : true); // Two-dimensional lattice with NZ != 1
         return;
       }
       Indexing() = delete;

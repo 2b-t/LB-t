@@ -27,6 +27,9 @@ namespace lbt {
       public:
         AaPatternTest(std::int32_t const NX = 7, std::int32_t const NY = 9, std::int32_t const NZ = 11) noexcept
           : NX{NX}, NY{NY}, NZ{NZ}, aa_pattern{NX,NY,NZ} {
+          if constexpr (LT::DIM == 2) {
+            this->NZ = 1;
+          }
           return;
         }
       protected:

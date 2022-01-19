@@ -20,7 +20,6 @@
 #include "lattice/lattice_unittest.hpp"
 #include "population/indexing/aa_pattern_unittest.hpp"
 #include "population/indexing/indexing_unittest.hpp"
-// TODO: Implement unit-tests for A-A and A-B populations
 #include "population/aa_population_unittest.hpp"
 #include "population/ab_population_unittest.hpp"
 #include "testing_utilities/testing_utilities_unittest.hpp"

@@ -17,6 +17,7 @@
 */
 
 #include <array>
+#include <cassert>
 #include <cstdint>
 #include <iostream>
 
@@ -42,6 +43,7 @@ namespace lbt {
     public:
       constexpr AaPattern(std::int32_t const NX, std::int32_t const NY, std::int32_t const NZ) noexcept
         : Indexing<LT,NP>{NX,NY,NZ} {
+        assert((LT::DIM == 2) ? (NZ == 1) : true); // Two-dimensional lattice with NZ != 1
         return;
       }
       AaPattern() = delete;

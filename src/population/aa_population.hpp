@@ -32,8 +32,8 @@ namespace lbt {
        * \brief Class constructor
       */
       AaPopulation(std::int32_t const NX, std::int32_t const NY, std::int32_t const NZ) noexcept
-        : AaPattern<LT,NP>{NX, NY, NZ}, A(static_cast<std::size_t>(NZ)*NY*NX*NP*LT::ND) {
-        static_assert((LT::DIM == 2) ? (NZ == 1) : true, "Two-dimensional lattice with NZ != 1.");
+        : AaPattern<LT,NP>{NX, NY, NZ}, A(static_cast<std::int64_t>(NZ)*NY*NX*NP*LT::ND) {
+        assert((LT::DIM == 2) ? (NZ == 1) : true); // Two-dimensional lattice with NZ != 1
         return;
       }
       AaPopulation() = delete;
@@ -62,7 +62,7 @@ namespace lbt {
                                   std::int32_t               const n,
                                   std::int32_t               const d,
                                   std::int32_t               const p = 0) noexcept {
-        return A[AaPattern<LT,NP>::indexRead<TS>(x,y,z,n,d,p)];
+        return A[AaPattern<LT,NP>::template indexRead<TS>(x,y,z,n,d,p)];
       }
 
       template <Timestep TS>
@@ -72,7 +72,26 @@ namespace lbt {
                                         std::int32_t               const n,
                                         std::int32_t               const d,
                                         std::int32_t               const p = 0) const noexcept {
-        return A[AaPattern<LT,NP>::indexRead<TS>(x,y,z,n,d,p)];
+        return A[AaPattern<LT,NP>::template indexRead<TS>(x,y,z,n,d,p)];
+      }
+      template <Timestep TS>
+      LBT_FORCE_INLINE auto& read(std::int32_t const x,
+                                  std::int32_t const y,
+                                  std::int32_t const z,
+                                  std::int32_t const n,
+                                  std::int32_t const d,
+                                  std::int32_t const p = 0) noexcept {
+        return A[AaPattern<LT,NP>::template indexRead<TS>(x,y,z,n,d,p)];
+      }
+
+      template <Timestep TS>
+      LBT_FORCE_INLINE auto const& read(std::int32_t const x,
+                                        std::int32_t const y,
+                                        std::int32_t const z,
+                                        std::int32_t const n,
+                                        std::int32_t const d,
+                                        std::int32_t const p = 0) const noexcept {
+        return A[AaPattern<LT,NP>::template indexRead<TS>(x,y,z,n,d,p)];
       }
 
       /**\fn        write
@@ -95,7 +114,7 @@ namespace lbt {
                                    std::int32_t               const n,
                                    std::int32_t               const d,
                                    std::int32_t               const p = 0) noexcept {
-        return A[AaPattern<LT,NP>::indexWrite<TS>(x,y,z,n,d,p)];
+        return A[AaPattern<LT,NP>::template indexWrite<TS>(x,y,z,n,d,p)];
       }
 
       template <Timestep TS>
@@ -104,8 +123,27 @@ namespace lbt {
                                          std::array<std::int32_t,3> const &z,
                                          std::int32_t               const n,
                                          std::int32_t               const d,
-                                         std::int32_t               const p) const noexcept {
-        return A[AaPattern<LT,NP>::indexWrite<TS>(x,y,z,n,d,p)];
+                                         std::int32_t               const p = 0) const noexcept {
+        return A[AaPattern<LT,NP>::template indexWrite<TS>(x,y,z,n,d,p)];
+      }
+      template <Timestep TS>
+      LBT_FORCE_INLINE auto& write(std::int32_t const x,
+                                   std::int32_t const y,
+                                   std::int32_t const z,
+                                   std::int32_t const n,
+                                   std::int32_t const d,
+                                   std::int32_t const p = 0) noexcept {
+        return A[AaPattern<LT,NP>::template indexWrite<TS>(x,y,z,n,d,p)];
+      }
+
+      template <Timestep TS>
+      LBT_FORCE_INLINE auto const& write(std::int32_t const x,
+                                         std::int32_t const y,
+                                         std::int32_t const z,
+                                         std::int32_t const n,
+                                         std::int32_t const d,
+                                         std::int32_t const p = 0) const noexcept {
+        return A[AaPattern<LT,NP>::template indexWrite<TS>(x,y,z,n,d,p)];
       }
 
       // LBT_FORCE_INLINE lbt::array<LT::type,LT::ND> read(std::int32_t const x, std::int32_t const y, std::int32_t const z)
