@@ -3,7 +3,7 @@
 #pragma once
 
 /**
- * \file     tuple_utilities_unittest.hpp
+ * \file     tuple_utilities_test.hpp
  * \mainpage Tests for utility tools for handling tuples
  * \author   Tobit Flatscher (github.com/2b-t)
 */

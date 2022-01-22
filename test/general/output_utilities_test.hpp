@@ -3,7 +3,7 @@
 #pragma once
 
 /**
- * \file     output_utilities_unittest.hpp
+ * \file     output_utilities_test.hpp
  * \mainpage Tests for tools for console and file output
  * \author   Tobit Flatscher (github.com/2b-t)
 */

@@ -3,7 +3,7 @@
 #pragma once
 
 /**
- * \file     timer_unittest.hpp
+ * \file     timer_test.hpp
  * \mainpage Tests for output stream manager
  * \author   Tobit Flatscher (github.com/2b-t)
 */

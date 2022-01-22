@@ -3,7 +3,7 @@
 #pragma once
 
 /**
- * \file     openmp_manager_unittest.hpp
+ * \file     openmp_manager_test.hpp
  * \brief    Unit-test for parallel computing settings
  *
  * \author   Tobit Flatscher (github.com/2b-t)

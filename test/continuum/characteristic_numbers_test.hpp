@@ -3,7 +3,7 @@
 #pragma once
 
 /**
- * \file     characteristic_numbers_unittest.hpp
+ * \file     characteristic_numbers_test.hpp
  * \mainpage Tests for characteristic numbers of fluid mechanics
  * \author   Tobit Flatscher (github.com/2b-t)
 */

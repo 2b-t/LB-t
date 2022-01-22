@@ -3,7 +3,7 @@
 #pragma once
 
 /**
- * \file     simple_continuum_unittest.hpp
+ * \file     simple_continuum_test.hpp
  * \mainpage Tests for continuum class
  * \author   Tobit Flatscher (github.com/2b-t)
 */
@@ -20,7 +20,7 @@
 #include "../../src/continuum/simple_continuum.hpp"
 #include "../../src/general/tuple_utilities.hpp"
 #include "../testing_utilities/testing_utilities.hpp"
-#include "continuum_base_unittest.hpp"
+#include "continuum_base_test.hpp"
 
 
 namespace lbt {

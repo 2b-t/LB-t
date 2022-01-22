@@ -3,7 +3,7 @@
 #pragma once
 
 /**
- * \file     aa_population_unittest.hpp
+ * \file     aa_population_test.hpp
  * \mainpage Tests for a population with A-A access pattern
  * \author   Tobit Flatscher (github.com/2b-t)
 */
@@ -16,7 +16,7 @@
 
 #include "../../src/population/aa_population.hpp"
 #include "../lattice/lattice_testing_types.hpp"
-#include "population_base_unittest.hpp"
+#include "population_base_test.hpp"
 
 
 namespace lbt {

@@ -3,7 +3,7 @@
 #pragma once
 
 
-/**\file     vtk_import_unittest.hpp
+/**\file     vtk_import_test.hpp
  * \mainpage Functions for unit testing voxelising geometries
  * \author   Tobit Flatscher (github.com/2b-t)
 */

@@ -3,7 +3,7 @@
 #pragma once
 
 /**
- * \file     lattice_unittest.hpp
+ * \file     lattice_test.hpp
  * \mainpage Tests for different discretisation lattices
  * \author   Tobit Flatscher (github.com/2b-t)
 */

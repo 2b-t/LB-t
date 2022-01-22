@@ -3,7 +3,7 @@
 #pragma once
 
 /**
- * \file     stream_manager_unittest.hpp
+ * \file     stream_manager_test.hpp
  * \mainpage Tests for output stream manager
  * \author   Tobit Flatscher (github.com/2b-t)
 */

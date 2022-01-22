@@ -3,7 +3,7 @@
 #pragma once
 
 /**
- * \file     aa_pattern_unittest.hpp
+ * \file     aa_pattern_test.hpp
  * \mainpage Tests for indexing of population via the one-population AA-access pattern
  * \author   Tobit Flatscher (github.com/2b-t)
 */

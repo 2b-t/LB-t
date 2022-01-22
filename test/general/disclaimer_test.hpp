@@ -3,7 +3,7 @@
 #pragma once
 
 /**
- * \file     disclaimer_unittest.hpp
+ * \file     disclaimer_test.hpp
  * \mainpage Tests for printing the program's disclaimer
  * \author   Tobit Flatscher (github.com/2b-t)
 */

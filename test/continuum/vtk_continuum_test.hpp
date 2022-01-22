@@ -3,7 +3,7 @@
 #pragma once
 
 /**
- * \file     vtk_continuum_unittest.hpp
+ * \file     vtk_continuum_test.hpp
  * \mainpage Tests for continuum class based on VTK library
  * \author   Tobit Flatscher (github.com/2b-t)
 */
@@ -19,7 +19,7 @@
 
 #include "../../src/general/tuple_utilities.hpp"
 #include "../testing_utilities/testing_utilities.hpp"
-#include "continuum_base_unittest.hpp"
+#include "continuum_base_test.hpp"
 
 #if __has_include (<vtkSmartPointer.h>)
   #include "../../src/continuum/vtk_continuum.hpp"

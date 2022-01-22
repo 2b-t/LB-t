@@ -3,7 +3,7 @@
 #pragma once
 
 /**
- * \file     simulation_unittest.hpp
+ * \file     simulation_test.hpp
  * \mainpage Tests for the main simulation class
  * \author   Tobit Flatscher (github.com/2b-t)
 */

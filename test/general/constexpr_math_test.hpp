@@ -3,7 +3,7 @@
 #pragma once
 
 /**
- * \file     constexpr_math_unittest.hpp
+ * \file     constexpr_math_test.hpp
  * \mainpage Tests for constexpr math functions
  * \author   Tobit Flatscher (github.com/2b-t)
 */

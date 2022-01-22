@@ -3,7 +3,7 @@
 #pragma once
 
 /**
- * \file     testing_utilities_unittest.hpp
+ * \file     testing_utilities_test.hpp
  * \mainpage Tests for utility tools related to googletest
  * \author   Tobit Flatscher (github.com/2b-t)
 */

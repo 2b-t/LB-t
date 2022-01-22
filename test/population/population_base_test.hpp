@@ -3,7 +3,7 @@
 #pragma once
 
 /**
- * \file     population_base_unittest.hpp
+ * \file     population_base_test.hpp
  * \mainpage Tests for a population with arbitrary access patterns and underlying memory layout
  * \author   Tobit Flatscher (github.com/2b-t)
 */

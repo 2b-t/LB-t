@@ -2,7 +2,7 @@
 #define LBT_LITERALS_UNITTEST
 #pragma once
 
-/**\file     literals_unittest.hpp
+/**\file     literals_test.hpp
  * \mainpage Contains unit-tests for literals of different physical units
  * \author   Tobit Flatscher (github.com/2b-t)
 */

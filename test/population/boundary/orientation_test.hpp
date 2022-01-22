@@ -3,7 +3,7 @@
 #pragma once
 
 /**
- * \file     orientation_unittest.hpp
+ * \file     orientation_test.hpp
  * \mainpage Tests for orientation structs for boundary conditions
  * \author   Tobit Flatscher (github.com/2b-t)
 */

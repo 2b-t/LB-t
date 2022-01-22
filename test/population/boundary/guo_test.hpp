@@ -3,7 +3,7 @@
 #pragma once
 
 /**
- * \file     guo_unittest.hpp
+ * \file     guo_test.hpp
  * \mainpage Tests for helper functions for boundary conditions
  * \author   Tobit Flatscher (github.com/2b-t)
 */

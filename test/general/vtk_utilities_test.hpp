@@ -3,7 +3,7 @@
 #pragma once
 
 
-/**\file     vtk_utilities_unittest.hpp
+/**\file     vtk_utilities_test.hpp
  * \mainpage Unit tests for handling geometries with VTK
  * \author   Tobit Flatscher (github.com/2b-t)
 */

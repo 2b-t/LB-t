@@ -3,7 +3,7 @@
 #pragma once
 
 /**
- * \file     normal_unittest.hpp
+ * \file     normal_test.hpp
  * \mainpage Tests for normal structs for boundary conditions
  * \author   Tobit Flatscher (github.com/2b-t)
 */

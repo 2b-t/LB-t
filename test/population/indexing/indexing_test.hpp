@@ -3,7 +3,7 @@
 #pragma once
 
 /**
- * \file     indexing_unittest.hpp
+ * \file     indexing_test.hpp
  * \mainpage Tests for indexing of population
  * \author   Tobit Flatscher (github.com/2b-t)
 */

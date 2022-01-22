@@ -3,7 +3,7 @@
 #pragma once
 
 /**
- * \file     continuum_base_unittest.hpp
+ * \file     continuum_base_test.hpp
  * \mainpage Tests for continuum base class
  * \author   Tobit Flatscher (github.com/2b-t)
 */
