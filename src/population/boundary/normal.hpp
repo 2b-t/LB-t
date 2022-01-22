@@ -1,58 +1,21 @@
-#ifndef LBT_BOUNDARY_ORIENTATION
-#define LBT_BOUNDARY_ORIENTATION
+#ifndef LBT_BOUNDARY_NORMAL
+#define LBT_BOUNDARY_NORMAL
 #pragma once
 
 /**
- * \file     boundary_orientation.hpp
- * \mainpage Holds orientation parameters for boundary conditions
+ * \file     normal.hpp
+ * \mainpage Holds normal for boundary conditions
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
 #include <cstdint>
 #include <ostream>
 
+#include "orientation.hpp"
+
 
 namespace lbt {
   namespace boundary{
-
-    /**\enum  boundary::Orientation
-     * \brief Strongly typed for all possible boundary orientations
-    */
-    enum class Orientation { Left, Right, Front, Back, Bottom, Top };
-
-    /**\fn            Orientation output stream operator
-     * \brief         Output stream operator for the boundary orientation
-     *
-     * \param[in,out] os            Output stream
-     * \param[in]     orientation   Orientation to be printed to output stream
-     * \return        Output stream including the boundary condition orientation
-    */
-    inline std::ostream& operator<< (std::ostream& os, Orientation const orientation) noexcept {
-      switch (orientation) {
-        case Orientation::Left:
-          os << "Left";
-          break;
-        case Orientation::Right:
-          os << "Right";
-          break;
-        case Orientation::Front:
-          os << "Front";
-          break;
-        case Orientation::Back:
-          os << "Back";
-          break;
-        case Orientation::Bottom:
-          os << "Bottom";
-          break;
-        case Orientation::Top:
-          os << "Top";
-          break;
-        default:
-          os << "None";
-          break;
-        }
-        return os;
-    }
 
     /**\class  Normal
      * \brief  Class for the normals for each individual direction
@@ -67,6 +30,7 @@ namespace lbt {
         static constexpr std::int32_t z =  0;
     };
 
+    // Specialised templates for all directions
     template <>
     class Normal<Orientation::Left> {
       public:
@@ -118,4 +82,4 @@ namespace lbt {
   }
 }
 
-#endif // LBT_BOUNDARY_ORIENTATION
+#endif // LBT_BOUNDARY_NORMAL

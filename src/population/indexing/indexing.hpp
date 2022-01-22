@@ -22,7 +22,7 @@ namespace lbt {
    */
   enum class Timestep: bool { Even = false, Odd = true };
 
-  /**\fn        Negation timestep operator
+  /**\fn        operator!
    * \brief     Negation operator for the timestep
    *
    * \param[in] ts   Timestep to be negated

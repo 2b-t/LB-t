@@ -1,5 +1,5 @@
 /**\file     run_unittests.cpp
- * \mainpage Performs all unit tests for LB-t with and without the VTK library
+ * \mainpage Performs all unit tests for LB-t with or without the VTK library
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
@@ -18,6 +18,9 @@
 #include "general/type_definitions_unittest.hpp"
 #include "general/units_unittest.hpp"
 #include "lattice/lattice_unittest.hpp"
+#include "population/boundary/guo_unittest.hpp"
+#include "population/boundary/normal_unittest.hpp"
+#include "population/boundary/orientation_unittest.hpp"
 #include "population/indexing/aa_pattern_unittest.hpp"
 #include "population/indexing/indexing_unittest.hpp"
 #include "population/aa_population_unittest.hpp"
@@ -25,7 +28,7 @@
 #include "testing_utilities/testing_utilities_unittest.hpp"
 #include "simulation_unittest.hpp"
 
-// Only compiled with VTK
+// Only compiled when VTK is installed
 #if __has_include (<vtkSmartPointer.h>)
   #include "continuum/vtk_continuum_unittest.hpp"
   #include "general/vtk_utilities_unittest.hpp"

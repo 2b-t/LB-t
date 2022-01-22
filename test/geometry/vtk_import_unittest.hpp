@@ -26,7 +26,7 @@
       /**\class ImporterNewImageTest
        * \brief Helper class for setting up a test for allocating new image data
       */
-      class ImporterNewImageTest : public ::testing::Test {
+      class ImporterNewImageTest: public ::testing::Test {
         public:
           /**\fn        ImporterNewImageTest
            * \brief     (Default) constructor
@@ -103,7 +103,7 @@
       /**\class ImporterMergeTest
        * \brief Helper class for setting up a parametrised image data merge test
       */
-      class ImporterMergeTest : public ::testing::Test, public ::testing::WithParamInterface<lbt::test::MergeParameters<char>> {
+      class ImporterMergeTest: public ::testing::Test, public ::testing::WithParamInterface<lbt::test::MergeParameters<char>> {
         public:
           /**\fn        ImporterMergeTest
            * \brief     (Default) constructor
