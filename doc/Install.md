@@ -45,15 +45,15 @@ For the visualisation of the results I can recommend [Paraview](https://www.para
   - Create a folder where the build directory should be located with `$ mkdir VTK-build`, browse it with `$ cd VTK-build` and build it with `$ cmake -DCMAKE_BUILD_TYPE:STRING=Release ../VTK` where the last argument corresponds to the path of VTK (in this case a folder `VTK` relative to `VTK-build`)
   - Compile the library with `$ make -j8` where the number (in this case `8`) corresponds to the number of cores that should be used
   
-- For parsing the settings file you will need the [nlohmann json parser](https://github.com/nlohmann/json). One could embed the package, reference it externally or embed it as [described here](https://json.nlohmann.me/integration/cmake/). I have chosen to use nlohmann as an external reference which means you will have to install it as a package, e.g. on Debian with `$ sudo apt-get install nlohmann-json3-dev`
+- For parsing the settings file you will need the [**nlohmann json** parser](https://github.com/nlohmann/json). One could embed the package, reference it externally or embed it as [described here](https://json.nlohmann.me/integration/cmake/). I have chosen to use nlohmann as an external reference which means you will have to install it as a package, e.g. on Debian with `$ sudo apt-get install nlohmann-json3-dev`
   Alternatively you an clone the repository with `$ git clone https://github.com/nlohmann/json`, then browse the cloned folder `$ cd json` , use make and cmake to build and install it with `$ cmake .`, `$ make` and finally `$ sudo make install`.
 
 - Finally you should be able to build this code
   - Clone this repository to a folder of your choice
   - Browse the main folder and add a new folder`build` right next to `src` and `test`.
   - Open a new console inside the `build` folder and build the code by typing `$ cmake -DVTK_DIR="../../VTK-build" ../src`, where the string following `VTK_DIR` should correspond to the location where the built VTK files are located, 
-  - Finally compile the files by typing `$ make`
+  - Finally compile the files by typing `$ make`, optionally with the flag `-j$(nproc)` to use the maximum number of cores available
   
-  For the compilation you will need a C++17-compliant compiler. In case you are running an older Linux version such as Ubuntu 18.04 you might have to install a newer version of GCC as described [here](https://askubuntu.com/a/1149383) and set it as default as described [here](https://askubuntu.com/a/265180):  `$ sudo apt install g++-9` and `$ sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 9`
+  For the compilation you will need a C++17-compliant compiler. In case you are running an older Linux version such as Ubuntu 18.04 you might have to install a newer version of GCC as described [here](https://askubuntu.com/a/1149383) and set it as default as described [here](https://askubuntu.com/a/265180):  `$ sudo apt install g++-9` and `$ sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 9`.
 
 For the visualisation of the results I can recommend [Paraview](https://www.paraview.org/) which can be installed on Ubuntu machines with `$ sudo apt-get install -y paraview`. An extensive installation guide for other Linux distributions can be found [here](https://www.paraview.org/Wiki/ParaView:Build_And_Install).

@@ -7,9 +7,9 @@
       "type": "shell",
       "command": [
         "cmake -B${workspaceFolder}/build -S${workspaceFolder}/src -DVTK_DIR=${workspaceFolder}/../VTK-build &&",
-        "make -C${workspaceFolder}/build &&",
+        "make -j$(nproc) -C${workspaceFolder}/build &&",
         "cmake -B${workspaceFolder}/build-test -S${workspaceFolder}/test -DVTK_DIR=${workspaceFolder}/../VTK-build &&",
-        "make -C${workspaceFolder}/build-test"
+        "make -j$(nproc) -C${workspaceFolder}/build-test"
       ],
       "problemMatcher": "$gcc"
     },
