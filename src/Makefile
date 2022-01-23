@@ -10,7 +10,7 @@ BUILDDIR = ../build
 OBJDIR   = $(BUILDDIR)/obj
 BINDIR   = $(BUILDDIR)/bin
 
-SOURCES  = $(SRCDIR)/minimal_main.cpp $(wildcard $(SRCDIR)/*/*.cpp)
+SOURCES  = $(SRCDIR)/simple_main.cpp $(wildcard $(SRCDIR)/*/*.cpp)
 INCLUDES = $(wildcard $(SRCDIR)/*/*.hpp) $(wildcard $(SRCDIR)/*/*/*.hpp)
 OBJECTS  = $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 PROGRAM	 = main.$(COMPILER)

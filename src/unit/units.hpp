@@ -7,6 +7,7 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+
 #include <iostream>
 #include <type_traits>
 
@@ -94,10 +95,13 @@ namespace lbt {
           /**\fn    get
            * \brief Getter for value stored inside
            * 
+           * \tparam T   The data type that should be returned from this function
+           * \tparam Template parameter used for SFINAE of function only for arithmetic data types
            * \return Value stored inside the unit class in its base unit
           */
+          template <typename U = long double, typename std::enable_if_t<std::is_arithmetic_v<U>>* = nullptr>
           constexpr auto get() const noexcept {
-            return value;
+            return static_cast<U>(value);
           }
 
         protected:
@@ -295,6 +299,46 @@ namespace lbt {
         KinematicViscosity& operator= (KinematicViscosity const&) = default;
         KinematicViscosity(KinematicViscosity&&) = default;
         KinematicViscosity& operator= (KinematicViscosity&&) = default;
+    };
+
+    /**\class Temperature
+     * \brief Unit class for temperature
+    */
+    class Temperature : public lbt::unit::detail::UnitBase<Temperature> {
+      public:
+        /**\fn    Temperature
+         * \brief Constructor, defaults to 0 degrees (273.15 Kelvin)
+         * 
+         * \param[in] value   The value to be stored inside the class in Kelvin
+        */
+        constexpr Temperature(long double const value = 273.15) noexcept
+          : UnitBase{value} {
+          return;
+        }
+        Temperature(Temperature const&) = default;
+        Temperature& operator= (Temperature const&) = default;
+        Temperature(Temperature&&) = default;
+        Temperature& operator= (Temperature&&) = default;
+    };
+
+    /**\class Pressure
+     * \brief Unit class for pressure
+    */
+    class Pressure : public lbt::unit::detail::UnitBase<Pressure> {
+      public:
+        /**\fn    Pressure
+         * \brief Constructor, defaults to 101325 Pa
+         * 
+         * \param[in] value   The value to be stored inside the class in Pascal
+        */
+        constexpr Pressure(long double const value = 101325) noexcept
+          : UnitBase{value} {
+          return;
+        }
+        Pressure(Pressure const&) = default;
+        Pressure& operator= (Pressure const&) = default;
+        Pressure(Pressure&&) = default;
+        Pressure& operator= (Pressure&&) = default;
     };
 
     /// Conversion operators for mixed units

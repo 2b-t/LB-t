@@ -11,8 +11,8 @@
 
 #include <gtest/gtest.h>
 
-#include "../../src/continuum/characteristic_numbers.hpp"
-#include "../../src/general/literals.hpp"
+#include "../../src/unit/characteristic_numbers.hpp"
+#include "../../src/unit/literals.hpp"
 
 
 namespace lbt {

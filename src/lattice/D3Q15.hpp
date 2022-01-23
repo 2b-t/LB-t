@@ -10,6 +10,7 @@
  * \warning  Static classes with more complex members such as std::vector and std::array require C++17
 */
 
+
 #include <cstdint>
 #include <type_traits>
 

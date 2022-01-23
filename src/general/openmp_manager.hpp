@@ -11,6 +11,9 @@
 */
 
 
+#include <ostream>
+
+
 namespace lbt {
 
   /**\class   OpenMpManager
@@ -66,6 +69,15 @@ namespace lbt {
        * \return Return number of threads currently active in parallel region
       */
       static int getThreadsCurrent() noexcept;
+
+      /**\fn     operator<<
+       * \brief  Output stream operator 
+       *
+       * \param[in,out] os               The stream where the OpenMP manager should be written to
+       * \param[in]     openmp_manager   The OpenMP manager that should be printed to the stream
+       * \return        The output stream containing the contents of the OpenMP manager
+      */
+      friend std::ostream& operator<< (std::ostream& os, OpenMpManager const& openmp_manager) noexcept;
 
       OpenMpManager& operator=(OpenMpManager const&) = default;
 

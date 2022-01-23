@@ -1,5 +1,7 @@
 #include "openmp_manager.hpp"
 
+#include <ostream>
+
 #if __has_include (<omp.h>)
     #include <omp.h>
 #endif
@@ -55,6 +57,11 @@ namespace lbt {
     int const number_of_active_threads {1};
     #endif
     return number_of_active_threads;
+  }
+
+  std::ostream& operator<< (std::ostream& os, OpenMpManager const& openmp_manager) noexcept {
+    os << "Threads (active/max): " << openmp_manager.threads_num << "/" << openmp_manager.threads_max;
+    return os;
   }
 
   OpenMpManager::OpenMpManager() noexcept {

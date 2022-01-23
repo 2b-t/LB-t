@@ -8,6 +8,7 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+
 #include <cmath>
 #include <cstdint>
 #include <limits>
@@ -64,7 +65,6 @@ namespace lbt {
       return random_number;
     }
 
-
     /// Define testing data types
     using IntegerDataTypes = ::testing::Types<std::int8_t,  std::int16_t,  std::int32_t,  std::int64_t, 
                                               std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t>;
@@ -75,6 +75,25 @@ namespace lbt {
                                                 std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t,
                                                 float, double>;
 
+    /// Test pi definition
+    template <typename T>
+    struct PiConstantTest: public ::testing::Test {
+    };
+
+    TYPED_TEST_SUITE(PiConstantTest, FloatingPointDataTypes);
+
+    TYPED_TEST(PiConstantTest, equalToStdPi) {
+      auto const result {lbt::cem::pi<TypeParam>};
+      auto const expected_result {static_cast<TypeParam>(M_PI)};
+
+      if constexpr (std::is_same_v<TypeParam,float>) {
+        EXPECT_FLOAT_EQ(result, expected_result);
+      } else if constexpr (std::is_same_v<TypeParam,double>) {
+        EXPECT_DOUBLE_EQ(result, expected_result);
+      } else {
+        GTEST_SKIP() << "Test not implemented for given data type!";
+      }
+    }
 
     /// Test random number generator for floating point data types
     template <typename T>

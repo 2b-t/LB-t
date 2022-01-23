@@ -9,6 +9,7 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+
 #include <cassert>
 #include <cstdint>
 #include <limits>
@@ -17,6 +18,10 @@
 
 namespace lbt {
   namespace cem {
+
+    /// Variable template for pi
+    template <typename T>
+    constexpr T pi = static_cast<T>(3.1415926535897932385L);
 
     /**\fn        cem::isNan
      * \brief     Constexpr function for determining if a variable corresponds to Not-A-Number (NaN)

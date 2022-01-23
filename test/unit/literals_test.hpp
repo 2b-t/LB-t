@@ -7,13 +7,14 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+
 #include <type_traits>
 #include <utility>
 
 #include <gtest/gtest.h>
 
-#include "../../src/general/literals.hpp"
-#include "../../src/general/units.hpp"
+#include "../../src/unit/literals.hpp"
+#include "../../src/unit/units.hpp"
 
 
 namespace lbt {
@@ -122,6 +123,30 @@ namespace lbt {
           std::make_pair(7.4_m2ps, 7.4L),
           std::make_pair(5.6_St,   5.6e-4L),
           std::make_pair(3.5_cSt,  3.5e-6L)
+        )
+      );
+
+      using TemperatureLiteralsHelper = UnitLiteralsHelper<lbt::unit::Temperature>;
+      TEST_P(TemperatureLiteralsHelper, unitConversion) {
+        auto const [temperature, expected_result] = GetParam();
+        EXPECT_DOUBLE_EQ(temperature.get(), expected_result);
+      }
+      INSTANTIATE_TEST_SUITE_P(TemperatureLiteralsTest, TemperatureLiteralsHelper, ::testing::Values(
+          std::make_pair(315.3_K,  315.3L),
+          std::make_pair(20.4_deg, 293.55L)
+        )
+      );
+
+      using PressureLiteralsHelper = UnitLiteralsHelper<lbt::unit::Pressure>;
+      TEST_P(PressureLiteralsHelper, unitConversion) {
+        auto const [pressure, expected_result] = GetParam();
+        EXPECT_DOUBLE_EQ(pressure.get(), expected_result);
+      }
+      INSTANTIATE_TEST_SUITE_P(PressureLiteralsTest, PressureLiteralsHelper, ::testing::Values(
+          std::make_pair(0.3_Pa,  0.3L),
+          std::make_pair(2.3_hPa, 2.3e2L),
+          std::make_pair(1.2_bar, 1.2e5L),
+          std::make_pair(1.4_atm, 141855L)
         )
       );
 

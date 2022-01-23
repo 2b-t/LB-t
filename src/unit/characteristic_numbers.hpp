@@ -7,7 +7,7 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
-#include "../general/units.hpp"
+#include "units.hpp"
 
 
 namespace lbt {

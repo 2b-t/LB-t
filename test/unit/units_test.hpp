@@ -7,11 +7,12 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+
 #include <type_traits>
 
 #include <gtest/gtest.h>
 
-#include "../../src/general/units.hpp"
+#include "../../src/unit/units.hpp"
 
 
 namespace lbt {
@@ -30,7 +31,8 @@ namespace lbt {
     using UnitTestingTypes = ::testing::Types<lbt::unit::Length, lbt::unit::Distance,
                                               lbt::unit::Time, lbt::unit::Duration,
                                               lbt::unit::Mass, lbt::unit::Area, lbt::unit::Volume,
-                                              lbt::unit::Velocity, lbt::unit::Density, lbt::unit::KinematicViscosity>;
+                                              lbt::unit::Velocity, lbt::unit::Density, lbt::unit::KinematicViscosity, 
+                                              lbt::unit::Temperature, lbt::unit::Pressure>;
 
     /**\class PhysicalUnitTest
      * \brief Helper class for the tests of the lbt::unit::detail::UnitBase class
