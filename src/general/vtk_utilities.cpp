@@ -1,10 +1,12 @@
 #include "vtk_utilities.hpp"
 
-#include <cstdlib>
-#include <filesystem>
-#include <string>
+#include "use_vtk.hpp"
 
-#if __has_include (<vtkSmartPointer.h>)
+#ifdef LBT_USE_VTK
+  #include <cstdlib>
+  #include <filesystem>
+  #include <string>
+
   #include <vtkImageData.h>
   #include <vtkImageDataToPointSet.h>
   #include <vtkMetaImageWriter.h>
@@ -51,4 +53,4 @@
     }
 
   }
-#endif
+#endif // LBT_USE_VTK

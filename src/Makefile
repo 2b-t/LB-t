@@ -1,7 +1,7 @@
-# Makefile for LB-t without VTK and nlohmann-json libraries
+# Makefile for LB-t lattice-Boltzmann solver (without VTK and nlohmann-json libraries)
 # Tobit Flatscher - github.com/2b-t (2022)
 
-# Compiler settings: ICC or GCC (alternatively: 'export COMPILER=ICC' or 'make COMPILER=ICC run' in console)
+# Compiler settings: ICC or GCC (alternatively 'make COMPILER=ICC run' in console)
 COMPILER = GCC
 
 # Define sub-directories to be included in compilation
@@ -10,8 +10,8 @@ BUILDDIR = ../build
 OBJDIR   = $(BUILDDIR)/obj
 BINDIR   = $(BUILDDIR)/bin
 
-SOURCES  = $(SRCDIR)/minimal_main.cpp #$(wildcard $(SRCDIR)/*/*.cpp)
-INCLUDES = #$(wildcard $(SRCDIR)/*/*.hpp) $(wildcard $(SRCDIR)/*/*/*.hpp)
+SOURCES  = $(SRCDIR)/minimal_main.cpp $(wildcard $(SRCDIR)/*/*.cpp)
+INCLUDES = $(wildcard $(SRCDIR)/*/*.hpp) $(wildcard $(SRCDIR)/*/*/*.hpp)
 OBJECTS  = $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 PROGRAM	 = main.$(COMPILER)
 
@@ -19,6 +19,7 @@ PROGRAM	 = main.$(COMPILER)
 WARNINGS  = -Wall -pedantic -Wextra -Weffc++ -Woverloaded-virtual -Wfloat-equal -Wshadow -Wredundant-decls -Winline -fmax-errors=1
 CXXFLAGS += -std=c++17 -O3 -flto -fwhole-program -funroll-all-loops -finline-functions -mavx2 -march=native -fno-exceptions -DNDEBUG
 CXXFLAGS += -funsafe-math-optimizations -fassociative-math -freciprocal-math -obey-inline -fstrict-aliasing -fearly-inlining
+CXXFLAGS += -DLBT_FORCE_NO_VTK
 LDFLAGS  += -O3 -flto
 
 # Compiler settings for specific compiler

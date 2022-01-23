@@ -8,13 +8,16 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
-#include <cassert>
-#include <cstdint>
-#include <filesystem>
-#include <string>
-#include <type_traits>
 
-#if __has_include (<vtkSmartPointer.h>)
+#include "../general/use_vtk.hpp"
+
+#ifdef LBT_USE_VTK
+  #include <cassert>
+  #include <cstdint>
+  #include <filesystem>
+  #include <string>
+  #include <type_traits>
+
   #include <vtkDataArray.h>
   #include <vtkImageData.h>
   #include <vtkPointData.h>
@@ -309,6 +312,6 @@
     }
 
   }
-#endif
+#endif // LBT_USE_VTK
 
 #endif // LBT_VTK_CONTINUUM

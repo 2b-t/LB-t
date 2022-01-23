@@ -2,15 +2,17 @@
 #define LBT_VTK_IMPORT_UNITTEST
 #pragma once
 
-
 /**\file     vtk_import_test.hpp
  * \mainpage Functions for unit testing voxelising geometries
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
-#include <type_traits>
 
-#if __has_include (<vtkSmartPointer.h>)
+#include "../../src/general/use_vtk.hpp"
+
+#ifdef LBT_USE_VTK
+  #include <type_traits>
+
   #include <vtkImageData.h>
   #include <vtkPolyData.h>
   #include <vtkSmartPointer.h>
@@ -348,6 +350,6 @@
 
     }
   }
-#endif
+#endif // LBT_USE_VTK
 
 #endif // LBT_VTK_IMPORT_UNITTEST

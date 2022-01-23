@@ -2,16 +2,18 @@
 #define LBT_VTK_UTILITITES
 #pragma once
 
-
 /**\file     vtk_utilities.hpp
  * \mainpage Functions for handling geometries with VTK
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
-#include <filesystem>
-#include <string>
 
-#if __has_include (<vtkSmartPointer.h>)
+#include "use_vtk.hpp"
+
+#ifdef LBT_USE_VTK
+  #include <filesystem>
+  #include <string>
+
   #include <vtkImageData.h>
   #include <vtkSmartPointer.h>
 
@@ -42,6 +44,6 @@
     void saveImageDataToMhd(vtkSmartPointer<vtkImageData> const& image_data, 
                             std::filesystem::path const& output_path, std::string const& filename, bool const is_compress) noexcept;
   }
-#endif
+#endif // LBT_USE_VTK
 
 #endif // LBT_VTK_UTILITITES

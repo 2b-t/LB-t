@@ -2,21 +2,23 @@
 #define LBT_VTK_IMPORT
 #pragma once
 
-
 /**\file     vtk_import.hpp
  * \mainpage Functions for voxelising geometries given by a STL or OBJ file for further processing 
  *           in the LBM simulation.
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
-#include <array>
-#include <cstdlib>
-#include <filesystem>
-#include <optional>
-#include <string>
-#include <vector>
 
-#if __has_include (<vtkSmartPointer.h>)
+#include "../general/use_vtk.hpp"
+
+#ifdef LBT_USE_VTK
+  #include <array>
+  #include <cstdlib>
+  #include <filesystem>
+  #include <optional>
+  #include <string>
+  #include <vector>
+
   #include <vtkImageData.h>
   #include <vtkPolyData.h>
   #include <vtkSmartPointer.h>
@@ -331,6 +333,6 @@
     };
 
   }
-#endif
+#endif // LBT_USE_VTK
 
 #endif // LBT_VTK_IMPORT

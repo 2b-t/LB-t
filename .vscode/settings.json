@@ -70,7 +70,8 @@
       "typeinfo": "cpp",
       "valarray": "cpp",
       "*.txx": "cpp",
-      "*.tpp": "cpp"
+      "*.tpp": "cpp",
+      "filesystem": "cpp"
     },
     "cmake.configureOnOpen": false
 }

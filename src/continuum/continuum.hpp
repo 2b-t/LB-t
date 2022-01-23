@@ -8,7 +8,10 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
-#if __has_include (<vtkSmartPointer.h>)
+
+#include "../general/use_vtk.hpp"
+
+#ifdef LBT_USE_VTK
   #include "vtk_continuum.hpp"
 
   namespace lbt {
@@ -22,6 +25,6 @@
     template <typename T>
     using Continuum = SimpleContinuum<T>;
   }
-#endif
+#endif // LBT_USE_VTK
 
 #endif // LBT_CONTINUUM

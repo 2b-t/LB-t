@@ -28,12 +28,10 @@
 #include "testing_utilities/testing_utilities_test.hpp"
 #include "simulation_test.hpp"
 
-// Only compiled when VTK is installed
-#if __has_include (<vtkSmartPointer.h>)
-  #include "continuum/vtk_continuum_test.hpp"
-  #include "general/vtk_utilities_test.hpp"
-  #include "geometry/vtk_import_test.hpp"
-#endif
+// Only compiled if VTK is installed
+#include "continuum/vtk_continuum_test.hpp"
+#include "general/vtk_utilities_test.hpp"
+#include "geometry/vtk_import_test.hpp"
 
 
 int main(int argc, char** argv) {

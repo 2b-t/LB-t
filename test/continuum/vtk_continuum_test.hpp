@@ -8,21 +8,24 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
-#include <cstdint>
-#include <filesystem>
-#include <ostream>
-#include <string>
-#include <tuple>
-#include <type_traits>
 
-#include <gtest/gtest.h>
+#include "../../src/general/use_vtk.hpp"
 
-#include "../../src/general/tuple_utilities.hpp"
-#include "../testing_utilities/testing_utilities.hpp"
-#include "continuum_base_test.hpp"
+#ifdef LBT_USE_VTK
+  #include <cstdint>
+  #include <filesystem>
+  #include <ostream>
+  #include <string>
+  #include <tuple>
+  #include <type_traits>
 
-#if __has_include (<vtkSmartPointer.h>)
+  #include <gtest/gtest.h>
+
   #include "../../src/continuum/vtk_continuum.hpp"
+  #include "../../src/general/tuple_utilities.hpp"
+  #include "../testing_utilities/testing_utilities.hpp"
+  #include "continuum_base_test.hpp"
+
 
   namespace lbt {
     namespace test {
@@ -64,6 +67,6 @@
     }
   }
 
-#endif
+#endif // LBT_USE_VTK
 
 #endif // LBT_VTK_CONTINUUM_UNITTEST

@@ -1,21 +1,23 @@
 #include "vtk_import.hpp"
 
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <cstdlib>
-#include <filesystem>
-#include <iostream>
-#include <limits>
-#include <optional>
-#include <string>
-#include <vector>
+#include "../general/use_vtk.hpp"
 
-#if __has_include (<omp.h>)
+#ifdef LBT_USE_VTK
+  #include <algorithm>
+  #include <array>
+  #include <cmath>
+  #include <cstdlib>
+  #include <filesystem>
+  #include <iostream>
+  #include <limits>
+  #include <optional>
+  #include <string>
+  #include <vector>
+
+  #if __has_include (<omp.h>)
     #include <omp.h>
-#endif
+  #endif
 
-#if __has_include (<vtkSmartPointer.h>)
   #include <vtkCleanPolyData.h>
   #include <vtkDecimatePro.h>
   #include <vtkFloatArray.h>
@@ -441,4 +443,4 @@
     }
 
   }
-#endif
+#endif // LBT_USE_VTK
