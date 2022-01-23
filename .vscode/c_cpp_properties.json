@@ -4,7 +4,8 @@
       "name": "Linux",
       "includePath": [
         "${workspaceFolder}/**",
-        "${workspaceFolder}/../VTK/**"
+        "${workspaceFolder}/../VTK/**",
+        "${workspaceFolder}/../VTK-build/**"
       ],
       "defines": [],
       "compilerPath": "/usr/bin/gcc",
