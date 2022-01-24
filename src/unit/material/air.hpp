@@ -41,6 +41,8 @@ namespace lbt {
         // Approximative implementations for pow, exp and log: exp(exponent*log(base))
         // https://en.wikipedia.org/wiki/Exponential_function
         // https://en.wikipedia.org/wiki/Natural_logarithm
+        // Use these implementations for calculating these formulas
+        // Add documentation and unit tests to corresponding formulas
     };
 
   }
