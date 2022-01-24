@@ -28,10 +28,10 @@ int main(int argc, char* argv[]) {
   constexpr auto temperature = 20.0_deg;
   constexpr auto pressure = 1.0_atm;
 
-  constexpr auto density = lbt::material::Air::density(temperature, pressure);
-  constexpr auto kinematic_viscosity = lbt::material::Air::kinematic_viscosity(temperature, pressure);
+  //constexpr auto density = lbt::material::Air::density(temperature, pressure);
+  //constexpr auto kinematic_viscosity = lbt::material::Air::kinematic_viscosity(temperature, pressure);
 
-  // Compute Reynolds number as well as conversion factors and pass them to the population class
+  // Compute Reynolds number as well as conversion factors and pass them to the collision operator class
 
   auto& omp_manager = lbt::OpenMpManager::getInstance();
   //omp_manager.setThreadsNum(2);

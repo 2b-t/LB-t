@@ -31,8 +31,9 @@ namespace lbt {
     using UnitTestingTypes = ::testing::Types<lbt::unit::Length, lbt::unit::Distance,
                                               lbt::unit::Time, lbt::unit::Duration,
                                               lbt::unit::Mass, lbt::unit::Area, lbt::unit::Volume,
-                                              lbt::unit::Velocity, lbt::unit::Density, lbt::unit::KinematicViscosity, 
-                                              lbt::unit::Temperature, lbt::unit::Pressure>;
+                                              lbt::unit::Velocity, lbt::unit::Density, 
+                                              lbt::unit::Temperature, lbt::unit::Pressure, 
+                                              lbt::unit::KinematicViscosity, lbt::unit::DynamicViscosity>;
 
     /**\class PhysicalUnitTest
      * \brief Helper class for the tests of the lbt::unit::detail::UnitBase class
@@ -74,6 +75,14 @@ namespace lbt {
       long double const expected_result {a.get() - b.get()};
       TypeParam const res = a - b;
       EXPECT_DOUBLE_EQ(res.get(), expected_result);
+    }
+
+    TYPED_TEST(PhysicalUnitTest, division) {
+      TypeParam const a {1.0};
+      TypeParam const b {2.0};
+      long double const expected_result {a.get() / b.get()};
+      long double const res {a / b};
+      EXPECT_DOUBLE_EQ(res, expected_result);
     }
 
     TYPED_TEST(PhysicalUnitTest, multiplyConstant) {
@@ -147,6 +156,30 @@ namespace lbt {
       long double const expected_result {velocity.get()*length.get()};
       lbt::unit::KinematicViscosity const kinematic_viscosity {velocity*length};
       EXPECT_DOUBLE_EQ(kinematic_viscosity.get(), expected_result);
+    }
+
+    TEST(KinematicViscosityTest, dynamicViscosityDividedByDensityIsKinematicViscosity) {
+      lbt::unit::DynamicViscosity const dynamic_viscosity {2.0};
+      lbt::unit::Density const density {3.5};
+      long double const expected_result {dynamic_viscosity.get()/density.get()};
+      lbt::unit::KinematicViscosity const kinematic_viscosity {dynamic_viscosity/density};
+      EXPECT_DOUBLE_EQ(kinematic_viscosity.get(), expected_result);
+    }
+
+    TEST(DynamicViscosityTest, pressureMultipliedByTimeIsDynamicViscosity) {
+      lbt::unit::Pressure const pressure {2.0};
+      lbt::unit::Time const time {3.5};
+      long double const expected_result {pressure.get()*time.get()};
+      lbt::unit::DynamicViscosity const dynamic_viscosity {pressure*time};
+      EXPECT_DOUBLE_EQ(dynamic_viscosity.get(), expected_result);
+    }
+
+    TEST(DynamicViscosityTest, kinematicViscosityMultipliedByDensityIsDynamicViscosity) {
+      lbt::unit::KinematicViscosity const kinematic_viscosity {2.0};
+      lbt::unit::Density const density {3.5};
+      long double const expected_result {kinematic_viscosity.get()*density.get()};
+      lbt::unit::DynamicViscosity const dynamic_viscosity {kinematic_viscosity*density};
+      EXPECT_DOUBLE_EQ(dynamic_viscosity.get(), expected_result);
     }
 
   }

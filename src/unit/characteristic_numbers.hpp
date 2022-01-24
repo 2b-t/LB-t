@@ -80,18 +80,6 @@ namespace lbt {
       protected:
         long double value;
     };
-
-    /**\fn        operator/
-     * \brief     Division operator between a kinematic viscosity and another kinematic viscosity resulting in a dimensionless Reynolds number
-     * 
-     * \param[in] a   A kinematic viscosity
-     * \param[in] b   Another kinematic viscosity
-     * \return    The Reynolds number resulting from the division of two kinematic viscosities
-    */
-    constexpr ReynoldsNumber operator/ (lbt::unit::KinematicViscosity const& a, lbt::unit::KinematicViscosity const& b) noexcept {
-      return ReynoldsNumber{a.get()/b.get()};
-    }
-
   }
 }
 

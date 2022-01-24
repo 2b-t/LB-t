@@ -48,6 +48,17 @@ namespace lbt {
             return T{a.value - b.value};
           }
 
+          /**\fn    operator/
+           * \brief Division operator between two derived classes
+           * 
+           * \param[in] t1   One derived unit class
+           * \param[in] t2   Another derived unit class
+           * \return    The dimensionless resulting number
+          */
+          friend constexpr long double operator/ (T const& t1, T const& t2) noexcept {
+            return t1.get()/t2.get();
+          }
+
           /**\fn    operator*
            * \brief Multiplication operator between a constant and a derived class
            * 
@@ -281,26 +292,6 @@ namespace lbt {
         Density& operator= (Density&&) = default;
     };
 
-    /**\class KinematicViscosity
-     * \brief Unit class for fluid kinematic viscosity
-    */
-    class KinematicViscosity : public lbt::unit::detail::UnitBase<KinematicViscosity> {
-      public:
-        /**\fn    KinematicViscosity
-         * \brief Constructor
-         * 
-         * \param[in] value   The value to be stored inside the class in the base unit meter squared per second
-        */
-        constexpr KinematicViscosity(long double const value = 0.0) noexcept
-          : UnitBase{value} {
-          return;
-        }
-        KinematicViscosity(KinematicViscosity const&) = default;
-        KinematicViscosity& operator= (KinematicViscosity const&) = default;
-        KinematicViscosity(KinematicViscosity&&) = default;
-        KinematicViscosity& operator= (KinematicViscosity&&) = default;
-    };
-
     /**\class Temperature
      * \brief Unit class for temperature
     */
@@ -339,6 +330,46 @@ namespace lbt {
         Pressure& operator= (Pressure const&) = default;
         Pressure(Pressure&&) = default;
         Pressure& operator= (Pressure&&) = default;
+    };
+
+    /**\class KinematicViscosity
+     * \brief Unit class for fluid kinematic viscosity
+    */
+    class KinematicViscosity : public lbt::unit::detail::UnitBase<KinematicViscosity> {
+      public:
+        /**\fn    KinematicViscosity
+         * \brief Constructor
+         * 
+         * \param[in] value   The value to be stored inside the class in the base unit meter squared per second
+        */
+        constexpr KinematicViscosity(long double const value = 0.0) noexcept
+          : UnitBase{value} {
+          return;
+        }
+        KinematicViscosity(KinematicViscosity const&) = default;
+        KinematicViscosity& operator= (KinematicViscosity const&) = default;
+        KinematicViscosity(KinematicViscosity&&) = default;
+        KinematicViscosity& operator= (KinematicViscosity&&) = default;
+    };
+
+    /**\class DynamicViscosity
+     * \brief Unit class for fluid dynamic viscosity
+    */
+    class DynamicViscosity : public lbt::unit::detail::UnitBase<DynamicViscosity> {
+      public:
+        /**\fn    DynamicViscosity
+         * \brief Constructor
+         * 
+         * \param[in] value   The value to be stored inside the class in the base unit Pascal seconds
+        */
+        constexpr DynamicViscosity(long double const value = 0.0) noexcept
+          : UnitBase{value} {
+          return;
+        }
+        DynamicViscosity(DynamicViscosity const&) = default;
+        DynamicViscosity& operator= (DynamicViscosity const&) = default;
+        DynamicViscosity(DynamicViscosity&&) = default;
+        DynamicViscosity& operator= (DynamicViscosity&&) = default;
     };
 
     /// Conversion operators for mixed units
@@ -422,6 +453,45 @@ namespace lbt {
     }
     constexpr KinematicViscosity operator* (Length const& l, Velocity const& v) noexcept {
       return KinematicViscosity{v.get()*l.get()};
+    }
+
+    /**\fn        operator/
+     * \brief     Division operator between a dynamic viscosity and a density resulting in a kinematic viscosity
+     * 
+     * \param[in] mu    A dynamic viscosity
+     * \param[in] rho   A density
+     * \return    The kinematic viscosity resulting from the division of a dynamic viscosity and a density
+    */
+    constexpr KinematicViscosity operator/ (DynamicViscosity const& mu, Density const& rho) noexcept {
+      return KinematicViscosity{mu.get()/rho.get()};
+    }
+
+    /**\fn        operator*
+     * \brief     Multiplication operator between a pressure and a time resulting in a dynamic viscosity
+     * 
+     * \param[in] p   A pressure
+     * \param[in] t   A time
+     * \return    The dynamic viscosity resulting from the multiplication of a pressure and a time
+    */
+    constexpr DynamicViscosity operator* (Pressure const& p, Time const& t) noexcept {
+      return DynamicViscosity{p.get()*t.get()};
+    }
+    constexpr DynamicViscosity operator* (Time const& t, Pressure const& p) noexcept {
+      return DynamicViscosity{p.get()*t.get()};
+    }
+
+    /**\fn        operator*
+     * \brief     Multiplication operator between a kinematic viscosity and a density resulting in a dynamic viscosity
+     * 
+     * \param[in] nu    A kinematic viscosity
+     * \param[in] rho   A density
+     * \return    The dynamic viscosity resulting from the multiplication of a kinematic viscosity and a density
+    */
+    constexpr DynamicViscosity operator* (KinematicViscosity const& nu, Density const& rho) noexcept {
+      return DynamicViscosity{nu.get()*rho.get()};
+    }
+    constexpr DynamicViscosity operator* (Density const& rho, KinematicViscosity const& nu) noexcept {
+      return DynamicViscosity{nu.get()*rho.get()};
     }
   }
 }

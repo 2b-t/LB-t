@@ -114,18 +114,6 @@ namespace lbt {
         )
       );
 
-      using KinematicViscosityLiteralsHelper = UnitLiteralsHelper<lbt::unit::KinematicViscosity>;
-      TEST_P(KinematicViscosityLiteralsHelper, unitConversion) {
-        auto const [kinematic_viscosity, expected_result] = GetParam();
-        EXPECT_DOUBLE_EQ(kinematic_viscosity.get(), expected_result);
-      }
-      INSTANTIATE_TEST_SUITE_P(KinematicViscosityLiteralsTest, KinematicViscosityLiteralsHelper, ::testing::Values(
-          std::make_pair(7.4_m2ps, 7.4L),
-          std::make_pair(5.6_St,   5.6e-4L),
-          std::make_pair(3.5_cSt,  3.5e-6L)
-        )
-      );
-
       using TemperatureLiteralsHelper = UnitLiteralsHelper<lbt::unit::Temperature>;
       TEST_P(TemperatureLiteralsHelper, unitConversion) {
         auto const [temperature, expected_result] = GetParam();
@@ -144,9 +132,34 @@ namespace lbt {
       }
       INSTANTIATE_TEST_SUITE_P(PressureLiteralsTest, PressureLiteralsHelper, ::testing::Values(
           std::make_pair(0.3_Pa,  0.3L),
+          std::make_pair(3.4_mPa, 3.4e-3L),
           std::make_pair(2.3_hPa, 2.3e2L),
           std::make_pair(1.2_bar, 1.2e5L),
           std::make_pair(1.4_atm, 141855L)
+        )
+      );
+
+      using KinematicViscosityLiteralsHelper = UnitLiteralsHelper<lbt::unit::KinematicViscosity>;
+      TEST_P(KinematicViscosityLiteralsHelper, unitConversion) {
+        auto const [kinematic_viscosity, expected_result] = GetParam();
+        EXPECT_DOUBLE_EQ(kinematic_viscosity.get(), expected_result);
+      }
+      INSTANTIATE_TEST_SUITE_P(KinematicViscosityLiteralsTest, KinematicViscosityLiteralsHelper, ::testing::Values(
+          std::make_pair(7.4_m2ps, 7.4L),
+          std::make_pair(5.6_St,   5.6e-4L),
+          std::make_pair(3.5_cSt,  3.5e-6L)
+        )
+      );
+
+      using DynamicViscosityLiteralsHelper = UnitLiteralsHelper<lbt::unit::DynamicViscosity>;
+      TEST_P(DynamicViscosityLiteralsHelper, unitConversion) {
+        auto const [dynamic_viscosity, expected_result] = GetParam();
+        EXPECT_DOUBLE_EQ(dynamic_viscosity.get(), expected_result);
+      }
+      INSTANTIATE_TEST_SUITE_P(DynamicViscosityLiteralsTest, DynamicViscosityLiteralsHelper, ::testing::Values(
+          std::make_pair(2.4_Pas,  2.4L),
+          std::make_pair(7.8_P,    7.8e-1L),
+          std::make_pair(342.5_cP, 0.3425L)
         )
       );
 

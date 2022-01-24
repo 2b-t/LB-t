@@ -265,34 +265,6 @@ namespace lbt {
       return m*lbt::unit::Velocity{1.0_mm/1.0_s};
     }
 
-    /**\fn        operator "" _m2ps
-     * \brief     User-defined literal for a kinematic viscosity given in square meters per second
-     * 
-     * \param[in] p   The kinematic viscosity in square meters per second
-     * \return    A kinematic viscosity in the base unit meters squared per second
-    */
-    constexpr lbt::unit::KinematicViscosity operator "" _m2ps(long double const m) noexcept {
-      return m*lbt::unit::KinematicViscosity{1.0_m*1.0_m/1.0_s};
-    }
-    /**\fn        operator "" _St
-     * \brief     User-defined literal for a kinematic viscosity given in Stokes
-     * 
-     * \param[in] p   The kinematic viscosity in Stokes
-     * \return    A kinematic viscosity in the base unit meters squared per second
-    */
-    constexpr lbt::unit::KinematicViscosity operator "" _St(long double const s) noexcept {
-      return s*lbt::unit::KinematicViscosity{1.0e-4};
-    }
-    /**\fn        operator "" _cSt
-     * \brief     User-defined literal for a kinematic viscosity given in Centistokes
-     * 
-     * \param[in] p   The kinematic viscosity in Centistokes
-     * \return    A kinematic viscosity in the base unit meters squared per second
-    */
-    constexpr lbt::unit::KinematicViscosity operator "" _cSt(long double const c) noexcept {
-      return c*lbt::unit::KinematicViscosity{1.0e-6};
-    }
-
     /**\fn        operator "" _K
      * \brief     User-defined literal for a temperature given in Kelvin
      * 
@@ -321,6 +293,15 @@ namespace lbt {
     constexpr lbt::unit::Pressure operator "" _Pa(long double const p) noexcept {
       return p*lbt::unit::Pressure{1.0};
     }
+    /**\fn        operator "" _mPa
+     * \brief     User-defined literal for a pressure given in milli-Pascal
+     * 
+     * \param[in] p   The pressure in milli-Pascal
+     * \return    A pressure in the base unit Pascal
+    */
+    constexpr lbt::unit::Pressure operator "" _mPa(long double const p) noexcept {
+      return p*lbt::unit::Pressure{1.0e-3};
+    }
     /**\fn        operator "" _hPa
      * \brief     User-defined literal for a pressure given in hecto-Pascal
      * 
@@ -347,6 +328,62 @@ namespace lbt {
     */
     constexpr lbt::unit::Pressure operator "" _atm(long double const p) noexcept {
       return p*lbt::unit::Pressure{101325};
+    }
+
+    /**\fn        operator "" _m2ps
+     * \brief     User-defined literal for a kinematic viscosity given in square meters per second
+     * 
+     * \param[in] p   The kinematic viscosity in square meters per second
+     * \return    A kinematic viscosity in the base unit meters squared per second
+    */
+    constexpr lbt::unit::KinematicViscosity operator "" _m2ps(long double const m) noexcept {
+      return m*lbt::unit::KinematicViscosity{1.0_m*1.0_m/1.0_s};
+    }
+    /**\fn        operator "" _St
+     * \brief     User-defined literal for a kinematic viscosity given in Stokes
+     * 
+     * \param[in] p   The kinematic viscosity in Stokes
+     * \return    A kinematic viscosity in the base unit meters squared per second
+    */
+    constexpr lbt::unit::KinematicViscosity operator "" _St(long double const s) noexcept {
+      return s*lbt::unit::KinematicViscosity{1.0e-4};
+    }
+    /**\fn        operator "" _cSt
+     * \brief     User-defined literal for a kinematic viscosity given in Centistokes
+     * 
+     * \param[in] p   The kinematic viscosity in Centistokes
+     * \return    A kinematic viscosity in the base unit meters squared per second
+    */
+    constexpr lbt::unit::KinematicViscosity operator "" _cSt(long double const c) noexcept {
+      return c*lbt::unit::KinematicViscosity{1.0e-6};
+    }
+
+    /**\fn        operator "" _Pas
+     * \brief     User-defined literal for a dynamic viscosity given in Centistokes
+     * 
+     * \param[in] p   The dynamic viscosity in Centistokes
+     * \return    A dynamic viscosity in the base unit Pascal seconds
+    */
+    constexpr lbt::unit::DynamicViscosity operator "" _Pas(long double const c) noexcept {
+      return c*lbt::unit::DynamicViscosity{1.0};
+    }
+    /**\fn        operator "" _P
+     * \brief     User-defined literal for a dynamic viscosity given in Poise
+     * 
+     * \param[in] p   The dynamic viscosity in Poise
+     * \return    A dynamic viscosity in the base unit Pascal seconds
+    */
+    constexpr lbt::unit::DynamicViscosity operator "" _P(long double const c) noexcept {
+      return c*lbt::unit::DynamicViscosity{1.0e-1};
+    }
+    /**\fn        operator "" _cP
+     * \brief     User-defined literal for a dynamic viscosity given in Centipoise
+     * 
+     * \param[in] p   The dynamic viscosity in Centipoise
+     * \return    A dynamic viscosity in the base unit Pascal seconds
+    */
+    constexpr lbt::unit::DynamicViscosity operator "" _cP(long double const c) noexcept {
+      return c*lbt::unit::DynamicViscosity{1.0_mPa*1.0_s};
     }
 
   }
