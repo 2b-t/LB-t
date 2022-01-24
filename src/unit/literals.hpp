@@ -359,13 +359,22 @@ namespace lbt {
     }
 
     /**\fn        operator "" _Pas
-     * \brief     User-defined literal for a dynamic viscosity given in Centistokes
+     * \brief     User-defined literal for a dynamic viscosity given in Pascal seconds
      * 
-     * \param[in] p   The dynamic viscosity in Centistokes
+     * \param[in] p   The dynamic viscosity in Pascal seconds
      * \return    A dynamic viscosity in the base unit Pascal seconds
     */
     constexpr lbt::unit::DynamicViscosity operator "" _Pas(long double const c) noexcept {
       return c*lbt::unit::DynamicViscosity{1.0};
+    }
+    /**\fn        operator "" _mPas
+     * \brief     User-defined literal for a dynamic viscosity given in milli Pascal seconds
+     * 
+     * \param[in] p   The dynamic viscosity in milli Pascal seconds
+     * \return    A dynamic viscosity in the base unit Pascal seconds
+    */
+    constexpr lbt::unit::DynamicViscosity operator "" _mPas(long double const c) noexcept {
+      return c*lbt::unit::DynamicViscosity{1.0_mPa*1.0_s};
     }
     /**\fn        operator "" _P
      * \brief     User-defined literal for a dynamic viscosity given in Poise

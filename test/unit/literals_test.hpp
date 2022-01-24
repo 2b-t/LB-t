@@ -157,9 +157,10 @@ namespace lbt {
         EXPECT_DOUBLE_EQ(dynamic_viscosity.get(), expected_result);
       }
       INSTANTIATE_TEST_SUITE_P(DynamicViscosityLiteralsTest, DynamicViscosityLiteralsHelper, ::testing::Values(
-          std::make_pair(2.4_Pas,  2.4L),
-          std::make_pair(7.8_P,    7.8e-1L),
-          std::make_pair(342.5_cP, 0.3425L)
+          std::make_pair(2.4_Pas,     2.4L),
+          std::make_pair(1234.5_mPas, 1.2345L),
+          std::make_pair(7.8_P,       7.8e-1L),
+          std::make_pair(342.5_cP,    0.3425L)
         )
       );
 

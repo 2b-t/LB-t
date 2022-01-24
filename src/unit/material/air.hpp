@@ -8,15 +8,18 @@
 */
 
 
-#include "ideal_gas.hpp"
+#include <cmath>
+
+#include "../../general/constexpr_math.hpp"
 #include "../literals.hpp"
 #include "../units.hpp"
+#include "ideal_gas.hpp"
 
 
 namespace lbt {
   namespace material {
 
-    /*using namespace lbt::literals;
+    using namespace lbt::literals;
 
     class Air {
       public:
@@ -27,7 +30,8 @@ namespace lbt {
         };
         static constexpr lbt::unit::KinematicViscosity kinematic_viscosity(lbt::unit::Temperature const t = 0.0_deg, 
                                                                            lbt::unit::Pressure const p = 1.0_atm) noexcept {
-          return lbt::cem::pow(t.get(), 0.7355)*2.791e-7;
+          //return lbt::cem::pow(t.get(), 0.7355)*2.791e-7;
+          return lbt::unit::KinematicViscosity{std::pow(t.get(), 0.7355)*2.791e-7};
         }
         // https://en.wikipedia.org/wiki/Viscosity#Air
         static constexpr lbt::unit::DynamicViscosity dynamic_viscosity(lbt::unit::Temperature const t = 0.0_deg, 
@@ -37,7 +41,7 @@ namespace lbt {
         // Approximative implementations for pow, exp and log: exp(exponent*log(base))
         // https://en.wikipedia.org/wiki/Exponential_function
         // https://en.wikipedia.org/wiki/Natural_logarithm
-    };*/
+    };
 
   }
 }

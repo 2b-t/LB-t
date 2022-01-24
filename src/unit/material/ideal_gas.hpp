@@ -8,6 +8,8 @@
 */
 
 
+#include <cmath>
+
 #include "../../general/constexpr_math.hpp"
 #include "../literals.hpp"
 #include "../units.hpp"
@@ -17,7 +19,7 @@ namespace lbt {
   namespace material {
     namespace ideal_gas {
 
-      /*using namespace lbt::literals;
+      using namespace lbt::literals;
 
       // Viscosity: Sutherland's law: https://de.wikipedia.org/wiki/Sutherland-Modell
 
@@ -62,7 +64,7 @@ namespace lbt {
           // Calculated according to ideal gas law 
           static constexpr lbt::unit::Density density(lbt::unit::Temperature const t = 0.0_deg, 
                                                       lbt::unit::Pressure const p = 1.0_atm) noexcept {
-            return lbt::unit::Density{p.get/(T<long double>::specific_gas_constant*t.get())};
+            return lbt::unit::Density{p.get()/(T<long double>::specific_gas_constant*t.get())};
           };
           // Calculated according to Maxwell-Boltzmann distribution https://physics.stackexchange.com/a/510860/245414
           static constexpr lbt::unit::KinematicViscosity kinematic_viscosity(lbt::unit::Temperature const t = 0.0_deg, 
@@ -79,7 +81,7 @@ namespace lbt {
       using Air = IdealGas<physical_constant::Air>;
       using CarbonDioxide = IdealGas<physical_constant::CarbonDioxide>;
       using Hydrogen = IdealGas<physical_constant::Hydrogen>;
-      using Oxygen = IdealGas<physical_constant::Oxygen>;*/
+      using Oxygen = IdealGas<physical_constant::Oxygen>;
 
     }
   }
