@@ -19,9 +19,11 @@
 namespace lbt {
   namespace cem {
 
-    /// Variable template for pi
+    /// Variable templates for Euler's identity pi and Euler's number e
     template <typename T>
     constexpr T pi = static_cast<T>(3.1415926535897932385L);
+    template <typename T>
+    constexpr T e = static_cast<T>(2.71828182845904523536L);
 
     /**\fn        cem::isNan
      * \brief     Constexpr function for determining if a variable corresponds to Not-A-Number (NaN)
@@ -97,24 +99,33 @@ namespace lbt {
       return (cem::abs(a - b) <= epsilon);
     }
 
+    namespace detail {
+      /**\fn        cem::sqrtNewton
+       * \brief     Square root implementation with recursive Newton-Raphson method that can
+       *            be evaluated as a constant expression at compile time
+       *
+       * \tparam    T      Floating point data type of the corresponding number
+       * \param[in] x      The number of interest
+       * \param[in] curr   The result from the current iteration
+       * \param[in] prev   The result from the previous iteration
+       * \return    The square root of \p x
+      */
+      template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
+      constexpr std::decay_t<T> sqrtNewton(T x, T curr, T prev) noexcept {
+        using F = std::decay_t<T>;
+        return cem::nearlyEqual(curr, prev)
+              ? curr
+              : sqrtNewton(x, static_cast<F>(0.5) * (curr + x / curr), curr);
+      }
+    }
     /**\fn        cem::sqrt
      * \brief     Square root implementation with recursive Newton-Raphson method that can
      *            be evaluated as a constant expression at compile time
      *
      * \tparam    T      Floating point data type of the corresponding number
      * \param[in] x      The number of interest
-     * \param[in] curr   The result from the current iteration
-     * \param[in] prev   The result from the previous iteration
      * \return    The square root of \p x
     */
-    template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
-    constexpr std::decay_t<T> sqrtNewton(T x, T curr, T prev) noexcept {
-      using F = std::decay_t<T>;
-      return cem::nearlyEqual(curr, prev)
-             ? curr
-             : cem::sqrtNewton(x, static_cast<F>(0.5) * (curr + x / curr), curr);
-    }
-
     template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
     constexpr std::decay_t<T> sqrt(T x) noexcept {
       using F = std::decay_t<T>;
@@ -130,7 +141,7 @@ namespace lbt {
       }
 
       return ((x >= static_cast<F>(0.0)) && (x < std::numeric_limits<F>::infinity()))
-             ? cem::sqrtNewton(x, x, static_cast<F>(0))
+             ? cem::detail::sqrtNewton<F>(x, x, static_cast<F>(0))
              : std::numeric_limits<F>::quiet_NaN();
     }
 
@@ -153,6 +164,128 @@ namespace lbt {
              ? static_cast<F>(static_cast<std::int64_t>(x))
              : static_cast<F>(static_cast<std::int64_t>(x)) + ((x > 0) ? 1 : 0);
     }
+
+    // TODO: Add documentation and tests (comparison to std as well as corner cases)
+    // https://en.wikipedia.org/wiki/Exponential_function
+    // exp with Taylor expansion
+    namespace detail {
+      template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
+      constexpr std::decay_t<T> expTaylor(T x, T sum, T prod, T n, int const i) noexcept {
+        return cem::nearlyEqual(sum, sum + prod/n) ? sum : expTaylor(x, sum + prod/n, prod*x, n*i, i+1);
+      }
+    }
+    template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
+    constexpr std::decay_t<T> exp(T x) noexcept {
+      using F = std::decay_t<T>;
+
+      if (cem::isNan(x)) {
+        return std::numeric_limits<T>::quiet_NaN();
+      } else if (cem::nearlyEqual<F>(x, static_cast<F>(0.0))) {
+        return static_cast<F>(1.0);
+      } else if (cem::nearlyEqual<F>(x, static_cast<F>(1.0))) {
+        return cem::e<F>;
+      } else if (cem::isNegInf(x)) {
+        return static_cast<F>(0.0);
+      } else if (cem::isPosInf(x)) {
+        return std::numeric_limits<T>::infinity();
+      }
+
+      return cem::detail::expTaylor<F>(x, static_cast<F>(1.0), x, static_cast<F>(1.0), 2);
+    }
+
+    // Natural logarithm: https://en.wikipedia.org/wiki/Natural_logarithm#High_precision
+    namespace detail {
+      template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
+      constexpr std::decay_t<T> logNewtonIteration(T x, T y) noexcept {
+        using F = std::decay_t<T>;
+        return y + static_cast<F>(2.0)*(x-cem::exp(y))/(x+cem::exp(y));
+      }
+      template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
+      constexpr std::decay_t<T> logNewton(T x, T y) noexcept {
+        auto const result_iteration = logNewtonIteration(x, y);
+        return cem::nearlyEqual(y, result_iteration) ? y : logNewton(x, result_iteration);
+      }
+    }
+    // Numerical stability 0.25 to 1000: Break-down to numbers of adequate size: Not implemented
+    template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
+    constexpr std::decay_t<T> log(T x) noexcept {
+      using F = std::decay_t<T>;
+
+      if (x < 0) {
+        return std::numeric_limits<F>::quiet_NaN();
+      } else if (cem::nearlyEqual<F>(x, static_cast<F>(1.0))) {
+        return static_cast<F>(0.0);
+      } else if (cem::nearlyEqual<F>(x, cem::e<F>)) {
+        return static_cast<F>(1.0);
+      } else if (cem::isNegInf(x)) {
+        return std::numeric_limits<F>::quiet_NaN();
+      } else if (cem::isPosInf(x)) {
+        return std::numeric_limits<F>::infinity();
+      } else if (cem::isNan(x)) {
+        return std::numeric_limits<F>::quiet_NaN();
+      }
+
+      return cem::detail::logNewton(x, static_cast<F>(0.0));
+    }
+
+    // Implement another version for an integer exponent!
+    // x^y = exp(y*log(x))
+    template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
+    constexpr std::decay_t<T> pow(T x, T y) noexcept {
+      using F = std::decay_t<T>;
+
+      // 0 ^ NaN -> NaN
+      // 0 ^ 0 -> NaN
+      // Infinity ^ 0 -> NaN
+      // -Infinity ^ 0 -> NaN
+      // 0 ^ -Infinity -> Infinity
+      // 0 ^ Infinity -> NaN
+      // NaN ^ 0 -> 1
+      // NaN ^ NaN -> NaN
+      // 3.6 ^ NaN -> NaN
+      // NaN ^ 3.5 -> NaN
+      // -Infinity ^ NaN -> NaN
+      // Infinity ^ NaN -> NaN
+      // NaN ^ -Infinity -> NaN
+      // NaN ^ Infinity -> NaN
+      // -Infinity ^ 3.8 -> odd: negative infinity, even: positive infinity
+      // -Infinity ^ -3.8 -> 0
+      // Infinity ^ 2.1 -> Infinity
+      // 0.7 ^ -Infinity -> Infinity
+      // 4.3 ^ -Infinity -> 0
+      // 0.7 ^ Infinity -> 0
+      // 4.3 ^ Infinity -> Infinity
+      // 9.6 ^ -4 = 8493.4656
+      // Infinity ^ Infinity -> Infinity
+      // Infinity ^ 0 -> 1
+      // 0 ^ Infinity -> 0
+      // -Infinity ^ Infinity -> Infinity
+      // Infinity ^ -Infinity -> 0
+      // -Infinity ^ -Infinity -> 0
+      // -Infinity ^ 0 -> 1
+      // 0 ^ -Infinity -> Inf
+      // 0 ^ 0 -> NaN
+      // 7.3 ^ 0 -> 1
+      // 0 ^ 3.6 -> 0
+
+      if (cem::isNan(x) || cem::isNan(y)) {
+        return std::numeric_limits<F>::quiet_NaN();
+      }
+      else if (cem::nearlyEqual<F>(x, static_cast<F>(1.0))) {
+        return static_cast<F>(1.0);
+      } 
+      else if (x < 0) {
+        // Warning: Does not work with integer exponents!
+        return std::numeric_limits<F>::quiet_NaN();
+      } else if (cem::isNegInf(x)) {
+        return std::numeric_limits<F>::quiet_NaN();
+      } else if (cem::isPosInf(x)) {
+        return std::numeric_limits<F>::infinity();
+      }
+      
+      return cem::exp(y*cem::log(x));
+    }
+
   }
 }
 

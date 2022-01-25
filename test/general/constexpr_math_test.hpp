@@ -95,6 +95,26 @@ namespace lbt {
       }
     }
 
+    /// Test e defintion
+    template <typename T>
+    struct EulerNumberConstantTest: public ::testing::Test {
+    };
+
+    TYPED_TEST_SUITE(EulerNumberConstantTest, FloatingPointDataTypes);
+
+    TYPED_TEST(EulerNumberConstantTest, equalToStdEulerNumber) {
+      auto const result {lbt::cem::e<TypeParam>};
+      auto const expected_result {static_cast<TypeParam>(std::exp(1.0))};
+
+      if constexpr (std::is_same_v<TypeParam,float>) {
+        EXPECT_FLOAT_EQ(result, expected_result);
+      } else if constexpr (std::is_same_v<TypeParam,double>) {
+        EXPECT_DOUBLE_EQ(result, expected_result);
+      } else {
+        GTEST_SKIP() << "Test not implemented for given data type!";
+      }
+    }
+
     /// Test random number generator for floating point data types
     template <typename T>
     struct RandomFloatingPointNumberTest: public ::testing::Test {

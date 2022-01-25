@@ -30,19 +30,13 @@ namespace lbt {
         };
         static constexpr lbt::unit::KinematicViscosity kinematic_viscosity(lbt::unit::Temperature const t = 0.0_deg, 
                                                                            lbt::unit::Pressure const p = 1.0_atm) noexcept {
-          //return lbt::cem::pow(t.get(), 0.7355)*2.791e-7;
-          return lbt::unit::KinematicViscosity{std::pow(t.get(), 0.7355)*2.791e-7};
+          return lbt::unit::KinematicViscosity{lbt::cem::pow(t.get(), 0.7355L)*2.791e-7L};
         }
         // https://en.wikipedia.org/wiki/Viscosity#Air
         static constexpr lbt::unit::DynamicViscosity dynamic_viscosity(lbt::unit::Temperature const t = 0.0_deg, 
                                                                        lbt::unit::Pressure const p = 1.0_atm) noexcept {
           return kinematic_viscosity(t, p)*density(t, p);
         }
-        // Approximative implementations for pow, exp and log: exp(exponent*log(base))
-        // https://en.wikipedia.org/wiki/Exponential_function
-        // https://en.wikipedia.org/wiki/Natural_logarithm
-        // Use these implementations for calculating these formulas
-        // Add documentation and unit tests to corresponding formulas
     };
 
   }

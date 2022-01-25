@@ -38,8 +38,7 @@ namespace lbt {
           constexpr auto a = 0.02939_mPas;
           constexpr auto b = 507.88_K;
           constexpr auto c = 149.3_K;
-          //return lbt::cem::exp(b/(t-c))*a;
-        return std::exp(b/(t-c))*a;
+        return lbt::cem::exp(b/(t-c))*a;
         }
     };
 
