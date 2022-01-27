@@ -235,7 +235,7 @@ namespace lbt {
         return -std::numeric_limits<T>::infinity();
       } else if (cem::nearlyEqual<T>(x, static_cast<T>(1.0))) {
         return static_cast<T>(0.0);
-      } else if (x < 0) {
+      } else if (x < static_cast<T>(0.0)) {
         return std::numeric_limits<T>::quiet_NaN();
       } else if (cem::isNegInf(x)) {
         return std::numeric_limits<T>::quiet_NaN();
@@ -265,8 +265,8 @@ namespace lbt {
       auto constexpr nan {-std::numeric_limits<T>::quiet_NaN()};
 
       bool const is_base_nearly_zero {cem::nearlyEqual(x, static_cast<T>(0.0))};
-      bool const is_base_pos {(x > 0)};
-      bool const is_base_neg {(x < 0)};
+      bool const is_base_pos {(x > static_cast<T>(0.0))};
+      bool const is_base_neg {(x < static_cast<T>(0.0))};
       bool const is_base_neg_inf {cem::isNegInf(x)};
       bool const is_base_pos_inf {cem::isPosInf(x)};
       bool const is_base_nan {cem::isNan(x)};
@@ -282,25 +282,25 @@ namespace lbt {
       } else if (is_base_nearly_zero && is_exp_neg && !is_exp_odd) {
         return pos_inf;
       } else if (is_base_nearly_zero && is_base_pos && is_exp_pos && is_exp_odd) {
-        return static_cast<T>(+0);
+        return static_cast<T>(+0.0);
       } else if (is_base_nearly_zero && is_base_neg && is_exp_pos && is_exp_odd) {
-        return static_cast<T>(-0);
+        return static_cast<T>(-0.0);
       } else if (is_base_nearly_zero && is_exp_pos && !is_exp_odd) {
-        return static_cast<T>(+0);
-      } else if (x == 1) {
-        return static_cast<T>(1);
+        return static_cast<T>(+0.0);
+      } else if (cem::nearlyEqual(x, static_cast<T>(1.0))) {
+        return static_cast<T>(1.0);
       } else if (y == 0) {
-        return static_cast<T>(1);
+        return static_cast<T>(1.0);
       } else if (is_base_neg_inf && is_exp_neg && is_exp_odd) {
-        return static_cast<T>(-0);
+        return static_cast<T>(-0.0);
       } else if (is_base_neg_inf && is_exp_neg && !is_exp_odd) {
-        return static_cast<T>(+0);
+        return static_cast<T>(+0.0);
       } else if (is_base_neg_inf && is_exp_pos && is_exp_odd) {
         return neg_inf;
       } else if (is_base_neg_inf && is_exp_pos && !is_exp_odd) {
         return pos_inf;
       } else if (is_base_pos_inf && is_exp_neg) {
-        return static_cast<T>(+0);
+        return static_cast<T>(+0.0);
       } else if (is_base_pos_inf && is_exp_pos) {
         return pos_inf;
       } else if (is_base_nan) {
@@ -330,8 +330,8 @@ namespace lbt {
       }
 
       bool const is_base_nearly_zero {cem::nearlyEqual(x, static_cast<T>(0.0))};
-      bool const is_base_pos {(x > 0)};
-      bool const is_base_neg {(x < 0)};
+      bool const is_base_pos {(x > static_cast<T>(0.0))};
+      bool const is_base_neg {(x < static_cast<T>(0.0))};
       bool const is_base_neg_inf {cem::isNegInf(x)};
       bool const is_base_pos_inf {cem::isPosInf(x)};
       bool const is_base_inf {is_base_neg_inf || is_base_pos_inf};
@@ -339,8 +339,8 @@ namespace lbt {
       bool const is_base_finite {!is_base_nan && !is_base_inf};
 
       bool const is_exp_int {cem::nearlyEqual(y, cem::ceil(y))};
-      bool const is_exp_pos {(y > 0)};
-      bool const is_exp_neg {(y < 0)};
+      bool const is_exp_pos {(y > static_cast<T>(0.0))};
+      bool const is_exp_neg {(y < static_cast<T>(0.0))};
       bool const is_exp_neg_inf {cem::isNegInf(y)};
       bool const is_exp_pos_inf {cem::isPosInf(y)};
       bool const is_exp_inf {is_exp_neg_inf || is_exp_pos_inf};
@@ -354,29 +354,29 @@ namespace lbt {
       } else if (is_base_nearly_zero && is_exp_neg_inf) {
         return pos_inf;
       } else if (is_base_nearly_zero && is_exp_pos) {
-        return static_cast<T>(+0);
+        return static_cast<T>(+0.0);
       } else if (cem::nearlyEqual(x, static_cast<T>(-1.0)) && is_exp_inf) {
-        return static_cast<T>(1);
+        return static_cast<T>(1.0);
       } else if (cem::nearlyEqual(x, static_cast<T>(1.0))) {
-        return static_cast<T>(1);
+        return static_cast<T>(1.0);
       } else if (cem::nearlyEqual(y, static_cast<T>(0.0))) {
-        return static_cast<T>(1);
+        return static_cast<T>(1.0);
       } else if (is_base_finite && is_base_neg && is_exp_finite) {
         return nan;
-      } else if (cem::abs(x) < 1 && is_exp_neg_inf) {
+      } else if ((cem::abs(x) < static_cast<T>(1.0)) && is_exp_neg_inf) {
         return pos_inf;
-      } else if (cem::abs(x) > 1 && is_exp_neg_inf) {
+      } else if ((cem::abs(x) > static_cast<T>(1.0)) && is_exp_neg_inf) {
         return static_cast<T>(+0);
-      } else if (cem::abs(x) < 1 && is_exp_pos_inf) {
+      } else if ((cem::abs(x) < static_cast<T>(1.0)) && is_exp_pos_inf) {
         return static_cast<T>(+0);
-      } else if (cem::abs(x) > 1 && is_exp_pos_inf) {
+      } else if ((cem::abs(x) > static_cast<T>(1.0)) && is_exp_pos_inf) {
         return pos_inf;
       } else if (is_base_neg_inf && is_exp_neg) {
-        return static_cast<T>(+0);
+        return static_cast<T>(+0.0);
       } else if (is_base_neg_inf && is_exp_pos) {
         return pos_inf;
       } else if (is_base_pos_inf && is_exp_neg) {
-        return static_cast<T>(+0);
+        return static_cast<T>(+0.0);
       } else if (is_base_pos_inf && is_exp_pos) {
         return pos_inf;
       } else if (is_base_nan || is_exp_nan) {
