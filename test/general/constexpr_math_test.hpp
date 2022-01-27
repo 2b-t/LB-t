@@ -603,6 +603,43 @@ namespace lbt {
       }
     }
 
+    // pow
+    // Positive and negative values close to integer
+    // Force integer implementation
+    // 0 ^ NaN -> NaN
+    // 0 ^ 0 -> NaN
+    // Infinity ^ 0 -> NaN
+    // -Infinity ^ 0 -> NaN
+    // 0 ^ -Infinity -> Infinity
+    // 0 ^ Infinity -> NaN
+    // NaN ^ 0 -> 1
+    // NaN ^ NaN -> NaN
+    // 3.6 ^ NaN -> NaN
+    // NaN ^ 3.5 -> NaN
+    // -Infinity ^ NaN -> NaN
+    // Infinity ^ NaN -> NaN
+    // NaN ^ -Infinity -> NaN
+    // NaN ^ Infinity -> NaN
+    // -Infinity ^ 3.8 -> odd: negative infinity, even: positive infinity
+    // -Infinity ^ -3.8 -> 0
+    // Infinity ^ 2.1 -> Infinity
+    // 0.7 ^ -Infinity -> Infinity
+    // 4.3 ^ -Infinity -> 0
+    // 0.7 ^ Infinity -> 0
+    // 4.3 ^ Infinity -> Infinity
+    // 9.6 ^ -4 = 8493.4656
+    // Infinity ^ Infinity -> Infinity
+    // Infinity ^ 0 -> 1
+    // 0 ^ Infinity -> 0
+    // -Infinity ^ Infinity -> Infinity
+    // Infinity ^ -Infinity -> 0
+    // -Infinity ^ -Infinity -> 0
+    // -Infinity ^ 0 -> 1
+    // 0 ^ -Infinity -> Inf
+    // 0 ^ 0 -> NaN
+    // 7.3 ^ 0 -> 1
+    // 0 ^ 3.6 -> 0
+
   }
 }
 
