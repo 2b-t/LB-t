@@ -69,9 +69,7 @@ namespace lbt {
      * \return    The absolute value of \p x
     */
     template <typename T, typename std::enable_if_t<std::is_arithmetic_v<T>>* = nullptr>
-    constexpr std::decay_t<T> abs(T x) noexcept {
-      using F = std::decay_t<T>;
-
+    constexpr T abs(T x) noexcept {
       if constexpr (std::is_floating_point_v<T>) {
         if (cem::isNan(x)) {
           return x;
@@ -111,11 +109,10 @@ namespace lbt {
        * \return    The square root of \p x
       */
       template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
-      constexpr std::decay_t<T> sqrtNewton(T x, T curr, T prev) noexcept {
-        using F = std::decay_t<T>;
+      constexpr T sqrtNewton(T x, T curr, T prev) noexcept {
         return cem::nearlyEqual(curr, prev)
               ? curr
-              : sqrtNewton(x, static_cast<F>(0.5) * (curr + x / curr), curr);
+              : sqrtNewton(x, static_cast<T>(0.5) * (curr + x / curr), curr);
       }
     }
     /**\fn        cem::sqrt
@@ -127,9 +124,7 @@ namespace lbt {
      * \return    The square root of \p x
     */
     template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
-    constexpr std::decay_t<T> sqrt(T x) noexcept {
-      using F = std::decay_t<T>;
-
+    constexpr T sqrt(T x) noexcept {
       if (x < 0) {
         return std::numeric_limits<T>::quiet_NaN();
       } else if (cem::isNan(x)) {
@@ -140,9 +135,9 @@ namespace lbt {
         return std::numeric_limits<T>::quiet_NaN();
       }
 
-      return ((x >= static_cast<F>(0.0)) && (x < std::numeric_limits<F>::infinity()))
-             ? cem::detail::sqrtNewton<F>(x, x, static_cast<F>(0))
-             : std::numeric_limits<F>::quiet_NaN();
+      return ((x >= static_cast<T>(0.0)) && (x < std::numeric_limits<T>::infinity()))
+             ? cem::detail::sqrtNewton(x, x, static_cast<T>(0))
+             : std::numeric_limits<T>::quiet_NaN();
     }
 
     /**\fn        cem::ceil
@@ -154,16 +149,14 @@ namespace lbt {
      * \return    The ceiled number \p num
     */
     template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
-    constexpr std::decay_t<T> ceil(T x) noexcept {
-      using F = std::decay_t<T>;
-
+    constexpr T ceil(T x) noexcept {
       if (cem::isNan(x) || cem::isPosInf(x) || cem::isNegInf(x)) {
         return x;
       }
       
-      return cem::nearlyEqual(static_cast<F>(static_cast<std::int64_t>(x)), x)
-             ? static_cast<F>(static_cast<std::int64_t>(x))
-             : static_cast<F>(static_cast<std::int64_t>(x)) + ((x > 0) ? 1 : 0);
+      return cem::nearlyEqual(static_cast<T>(static_cast<std::int64_t>(x)), x)
+             ? static_cast<T>(static_cast<std::int64_t>(x))
+             : static_cast<T>(static_cast<std::int64_t>(x)) + ((x > 0) ? 1 : 0);
     }
 
     namespace detail {
@@ -180,7 +173,7 @@ namespace lbt {
        * \return    The sum of the Taylor terms up to the corresponding degree
       */
       template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
-      constexpr std::decay_t<T> expTaylor(T x, T sum, T prod, T n, int const i) noexcept {
+      constexpr T expTaylor(T x, T sum, T prod, T n, int const i) noexcept {
         auto const sum_iteration {sum + prod/n};
         return cem::nearlyEqual(sum, sum_iteration) ? sum : expTaylor(x, sum_iteration, prod*x, n*i, i+1);
       }
@@ -194,22 +187,20 @@ namespace lbt {
      * \return    The resulting exponential function evaluated at point \p x
     */
     template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
-    constexpr std::decay_t<T> exp(T x) noexcept {
-      using F = std::decay_t<T>;
-
-      if (cem::nearlyEqual<F>(x, static_cast<F>(0.0))) {
-        return static_cast<F>(1.0);
+    constexpr T exp(T x) noexcept {
+      if (cem::nearlyEqual<T>(x, static_cast<T>(0.0))) {
+        return static_cast<T>(1.0);
       } else if (cem::isNegInf(x)) {
-        return static_cast<F>(0.0);
+        return static_cast<T>(0.0);
       } else if (cem::isPosInf(x)) {
         return std::numeric_limits<T>::infinity();
       } else if (cem::isNan(x)) {
         return std::numeric_limits<T>::quiet_NaN();
-      } else if (cem::nearlyEqual<F>(x, static_cast<F>(1.0))) {
-        return cem::e<F>;
+      } else if (cem::nearlyEqual<T>(x, static_cast<T>(1.0))) {
+        return cem::e<T>;
       } 
 
-      return cem::detail::expTaylor<F>(x, static_cast<F>(1.0), x, static_cast<F>(1.0), 2);
+      return cem::detail::expTaylor(x, static_cast<T>(1.0), x, static_cast<T>(1.0), 2);
     }
 
     namespace detail {
@@ -223,9 +214,8 @@ namespace lbt {
        * \return    The result from the current iteration
       */
       template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
-      constexpr std::decay_t<T> logNewton(T x, T prev) noexcept {
-        using F = std::decay_t<T>;
-        auto const curr = prev + static_cast<F>(2.0)*(x-cem::exp(prev))/(x+cem::exp(prev));
+      constexpr T logNewton(T x, T prev) noexcept {
+        auto const curr = prev + static_cast<T>(2.0)*(x-cem::exp(prev))/(x+cem::exp(prev));
         return cem::nearlyEqual(prev, curr) ? curr : logNewton(x, curr);
       }
     }
@@ -240,26 +230,24 @@ namespace lbt {
      * \return    The logarithm evaluated at point \p x
     */
     template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
-    constexpr std::decay_t<T> log(T x) noexcept {
-      using F = std::decay_t<T>;
-
-      if (cem::nearlyEqual<F>(x, static_cast<F>(0.0))) {
-        return -std::numeric_limits<F>::infinity();
-      } else if (cem::nearlyEqual<F>(x, static_cast<F>(1.0))) {
-        return static_cast<F>(0.0);
+    constexpr T log(T x) noexcept {
+      if (cem::nearlyEqual<T>(x, static_cast<T>(0.0))) {
+        return -std::numeric_limits<T>::infinity();
+      } else if (cem::nearlyEqual<T>(x, static_cast<T>(1.0))) {
+        return static_cast<T>(0.0);
       } else if (x < 0) {
-        return std::numeric_limits<F>::quiet_NaN();
+        return std::numeric_limits<T>::quiet_NaN();
       } else if (cem::isNegInf(x)) {
-        return std::numeric_limits<F>::quiet_NaN();
+        return std::numeric_limits<T>::quiet_NaN();
       } else if (cem::isPosInf(x)) {
-        return std::numeric_limits<F>::infinity();
+        return std::numeric_limits<T>::infinity();
       } else if (cem::isNan(x)) {
-        return std::numeric_limits<F>::quiet_NaN();
-      } else if (cem::nearlyEqual<F>(x, cem::e<F>)) {
-        return static_cast<F>(1.0);
+        return std::numeric_limits<T>::quiet_NaN();
+      } else if (cem::nearlyEqual<T>(x, cem::e<T>)) {
+        return static_cast<T>(1.0);
       }
 
-      return cem::detail::logNewton(x, static_cast<F>(0.0));
+      return cem::detail::logNewton(x, static_cast<T>(0.0));
     }
 
     /**\fn        cem::pow
@@ -271,13 +259,12 @@ namespace lbt {
      * \return    The base \p x raised to the exponent \p y
     */
     template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
-    constexpr std::decay_t<T> pow(T x, std::int64_t y) noexcept {
-      using F = std::decay_t<T>;
-      auto constexpr pos_inf {std::numeric_limits<F>::infinity()};
-      auto constexpr neg_inf {-std::numeric_limits<F>::infinity()};
-      auto constexpr nan {-std::numeric_limits<F>::quiet_NaN()};
+    constexpr T pow(T x, std::int64_t y) noexcept {
+      auto constexpr pos_inf {std::numeric_limits<T>::infinity()};
+      auto constexpr neg_inf {-std::numeric_limits<T>::infinity()};
+      auto constexpr nan {-std::numeric_limits<T>::quiet_NaN()};
 
-      bool const is_base_nearly_zero {cem::nearlyEqual(x, static_cast<F>(0.0))};
+      bool const is_base_nearly_zero {cem::nearlyEqual(x, static_cast<T>(0.0))};
       bool const is_base_pos {(x > 0)};
       bool const is_base_neg {(x < 0)};
       bool const is_base_neg_inf {cem::isNegInf(x)};
@@ -295,21 +282,25 @@ namespace lbt {
       } else if (is_base_nearly_zero && is_exp_neg && !is_exp_odd) {
         return pos_inf;
       } else if (is_base_nearly_zero && is_base_pos && is_exp_pos && is_exp_odd) {
-        return static_cast<F>(+0);
+        return static_cast<T>(+0);
       } else if (is_base_nearly_zero && is_base_neg && is_exp_pos && is_exp_odd) {
-        return static_cast<F>(-0);
+        return static_cast<T>(-0);
       } else if (is_base_nearly_zero && is_exp_pos && !is_exp_odd) {
-        return static_cast<F>(+0);
+        return static_cast<T>(+0);
+      } else if (x == 1) {
+        return static_cast<T>(1);
+      } else if (y == 0) {
+        return static_cast<T>(1);
       } else if (is_base_neg_inf && is_exp_neg && is_exp_odd) {
-        return static_cast<F>(-0);
+        return static_cast<T>(-0);
       } else if (is_base_neg_inf && is_exp_neg && !is_exp_odd) {
-        return static_cast<F>(+0);
+        return static_cast<T>(+0);
       } else if (is_base_neg_inf && is_exp_pos && is_exp_odd) {
         return neg_inf;
       } else if (is_base_neg_inf && is_exp_pos && !is_exp_odd) {
         return pos_inf;
       } else if (is_base_pos_inf && is_exp_neg) {
-        return static_cast<F>(+0);
+        return static_cast<T>(+0);
       } else if (is_base_pos_inf && is_exp_pos) {
         return pos_inf;
       } else if (is_base_nan) {
@@ -326,20 +317,19 @@ namespace lbt {
       return is_exp_odd ? x*cem::pow(x, y-1) : cem::pow(x, y/2)*cem::pow(x, y/2);
     }
     template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
-    constexpr std::decay_t<T> pow(T x, T y) noexcept {
-      using F = std::decay_t<T>;
-      auto constexpr pos_inf {std::numeric_limits<F>::infinity()};
-      auto constexpr neg_inf {-std::numeric_limits<F>::infinity()};
-      auto constexpr nan {-std::numeric_limits<F>::quiet_NaN()};
+    constexpr T pow(T x, T y) noexcept {
+      auto constexpr pos_inf {std::numeric_limits<T>::infinity()};
+      auto constexpr neg_inf {-std::numeric_limits<T>::infinity()};
+      auto constexpr nan {-std::numeric_limits<T>::quiet_NaN()};
 
-      // Avoid overflow with integer version and ceil function
-      if (y > static_cast<F>(std::numeric_limits<std::int64_t>::max()-1)) {
+      // Avoid overflow with integer version and ceil function but reducing max and min!
+      if (y > static_cast<T>(std::numeric_limits<std::int64_t>::max()-1)) {
         return pow(x, pos_inf);
-      } else if (y < static_cast<F>(std::numeric_limits<std::int64_t>::min())) {
+      } else if (y < static_cast<T>(std::numeric_limits<std::int64_t>::min())) {
         return pow(x, neg_inf);
       }
 
-      bool const is_base_nearly_zero {cem::nearlyEqual(x, static_cast<F>(0.0))};
+      bool const is_base_nearly_zero {cem::nearlyEqual(x, static_cast<T>(0.0))};
       bool const is_base_pos {(x > 0)};
       bool const is_base_neg {(x < 0)};
       bool const is_base_neg_inf {cem::isNegInf(x)};
@@ -359,34 +349,34 @@ namespace lbt {
 
       if (is_exp_int) {
         return pow(x, static_cast<std::int64_t>(y));
-      } else if (is_base_nearly_zero && is_exp_neg, is_exp_inf) {
+      } else if (is_base_nearly_zero && is_exp_neg && is_exp_finite) {
         return pos_inf;
       } else if (is_base_nearly_zero && is_exp_neg_inf) {
         return pos_inf;
       } else if (is_base_nearly_zero && is_exp_pos) {
-        return static_cast<F>(+0);
-      } else if (cem::nearlyEqual(x, static_cast<F>(-1.0)) && is_exp_inf) {
-        return static_cast<F>(1);
-      } else if (cem::nearlyEqual(x, static_cast<F>(1.0))) {
-        return static_cast<F>(1);
-      } else if (cem::nearlyEqual(y, static_cast<F>(0.0))) {
-        return static_cast<F>(1);
+        return static_cast<T>(+0);
+      } else if (cem::nearlyEqual(x, static_cast<T>(-1.0)) && is_exp_inf) {
+        return static_cast<T>(1);
+      } else if (cem::nearlyEqual(x, static_cast<T>(1.0))) {
+        return static_cast<T>(1);
+      } else if (cem::nearlyEqual(y, static_cast<T>(0.0))) {
+        return static_cast<T>(1);
       } else if (is_base_finite && is_base_neg && is_exp_finite) {
         return nan;
       } else if (cem::abs(x) < 1 && is_exp_neg_inf) {
         return pos_inf;
       } else if (cem::abs(x) > 1 && is_exp_neg_inf) {
-        return static_cast<F>(+0);
+        return static_cast<T>(+0);
       } else if (cem::abs(x) < 1 && is_exp_pos_inf) {
-        return static_cast<F>(+0);
+        return static_cast<T>(+0);
       } else if (cem::abs(x) > 1 && is_exp_pos_inf) {
         return pos_inf;
       } else if (is_base_neg_inf && is_exp_neg) {
-        return static_cast<F>(+0);
+        return static_cast<T>(+0);
       } else if (is_base_neg_inf && is_exp_pos) {
         return pos_inf;
       } else if (is_base_pos_inf && is_exp_neg) {
-        return static_cast<F>(+0);
+        return static_cast<T>(+0);
       } else if (is_base_pos_inf && is_exp_pos) {
         return pos_inf;
       } else if (is_base_nan || is_exp_nan) {
