@@ -6,9 +6,9 @@
 
 #include <gtest/gtest.h>
 
-#include "continuum/simple_continuum_test.hpp"
+//#include "continuum/simple_continuum_test.hpp"
 #include "general/constexpr_math_test.hpp"
-#include "general/disclaimer_test.hpp"
+/*#include "general/disclaimer_test.hpp"
 #include "general/openmp_manager_test.hpp"
 #include "general/output_utilities_test.hpp"
 #include "general/stream_manager_test.hpp"
@@ -35,7 +35,7 @@
 // Only compiled if VTK is installed
 #include "continuum/vtk_continuum_test.hpp"
 #include "general/vtk_utilities_test.hpp"
-#include "geometry/vtk_import_test.hpp"
+#include "geometry/vtk_import_test.hpp"*/
 
 
 int main(int argc, char** argv) {

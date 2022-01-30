@@ -63,7 +63,7 @@ namespace lbt {
                   for(std::int32_t d = 0; d < LT::OFF; ++d) {
                     auto const expected_result = indices.at(i);
                     T const result = this->population.template read<!TS>(x,y,z,n,d,0);
-                    is_success &= lbt::cem::nearlyEqual(result, static_cast<T>(expected_result));
+                    is_success &= lbt::cem::isNearlyEqual(result, static_cast<T>(expected_result));
                     ++i;
                   }
                 }

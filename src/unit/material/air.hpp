@@ -3,7 +3,7 @@
 #pragma once
 
 /**\file     air.hpp
- * \mainpage Contains methods for calulcating physical properties of air
+ * \mainpage Contains methods for calculating physical properties of air
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 

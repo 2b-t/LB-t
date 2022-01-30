@@ -102,7 +102,7 @@ namespace lbt {
           for (std::int32_t x = 0; x < NX; ++x) {
             for (std::int32_t y = 0; y < NY; ++y) {
               for (std::int32_t z = 0; z < NZ; ++z) {
-                is_success &= lbt::cem::nearlyEqual(getter(x,y,z), static_cast<T>(i));
+                is_success &= lbt::cem::isNearlyEqual(getter(x,y,z), static_cast<T>(i));
                 ++i;
               }
             }

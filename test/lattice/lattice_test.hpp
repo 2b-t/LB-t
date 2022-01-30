@@ -104,9 +104,9 @@ namespace lbt {
         for (std::int32_t j = 0; j < TypeParam::HSPEED; ++j) {
           std::int32_t const index {i*TypeParam::OFF + j};
           if (index != hspeed) {
-            is_success &= lbt::cem::nearlyEqual(TypeParam::MASK.at(index), static_cast<typename TypeParam::type>(1));
+            is_success &= lbt::cem::isNearlyEqual(TypeParam::MASK.at(index), static_cast<typename TypeParam::type>(1));
           } else {
-            is_success &= lbt::cem::nearlyEqual(TypeParam::MASK.at(index), static_cast<typename TypeParam::type>(0));
+            is_success &= lbt::cem::isNearlyEqual(TypeParam::MASK.at(index), static_cast<typename TypeParam::type>(0));
           }
         }
       }
