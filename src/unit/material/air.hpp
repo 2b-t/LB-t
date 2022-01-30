@@ -14,6 +14,7 @@
 #include "../literals.hpp"
 #include "../units.hpp"
 #include "ideal_gas.hpp"
+#include "physical_constants.hpp"
 
 
 namespace lbt {
@@ -21,22 +22,21 @@ namespace lbt {
 
     using namespace lbt::literals;
 
-    class Air {
+    class Air: public IdealGas<physical_constant::Air> {
       public:
         // https://en.wikipedia.org/wiki/Density_of_air
-        static constexpr lbt::unit::Density density(lbt::unit::Temperature const t = 0.0_deg, 
-                                                    lbt::unit::Pressure const p = 1.0_atm) noexcept {
-          return ideal_gas::Air::density(t, p);
-        };
-        static constexpr lbt::unit::KinematicViscosity kinematic_viscosity(lbt::unit::Temperature const t = 0.0_deg, 
-                                                                           lbt::unit::Pressure const p = 1.0_atm) noexcept {
+
+        // https://en.wikipedia.org/wiki/Viscosity#Air
+        static constexpr lbt::unit::KinematicViscosity kinematicViscosity(lbt::unit::Temperature const t) noexcept {
           return lbt::unit::KinematicViscosity{lbt::cem::pow(t.get(), 0.7355L)*2.791e-7L};
         }
-        // https://en.wikipedia.org/wiki/Viscosity#Air
-        static constexpr lbt::unit::DynamicViscosity dynamic_viscosity(lbt::unit::Temperature const t = 0.0_deg, 
-                                                                       lbt::unit::Pressure const p = 1.0_atm) noexcept {
-          return kinematic_viscosity(t, p)*density(t, p);
+        static constexpr lbt::unit::DynamicViscosity dynamicViscosity(lbt::unit::Temperature const t, 
+                                                                       lbt::unit::Pressure const p) noexcept {
+          return kinematicViscosity(t)*IdealGas<physical_constant::Air>::equationOfState(t, p);
         }
+
+        // Inherit constructor
+        using IdealGas<physical_constant::Air>::IdealGas;
     };
 
   }

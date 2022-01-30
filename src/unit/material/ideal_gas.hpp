@@ -3,87 +3,69 @@
 #pragma once
 
 /**\file     ideal_gas.hpp
- * \mainpage Contains methods for calulcating physical properties of ideal gases
+ * \mainpage Contains methods for calculating physical properties of ideal gases
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
 
-#include <cmath>
-
 #include "../../general/constexpr_math.hpp"
 #include "../literals.hpp"
 #include "../units.hpp"
+#include "physical_constants.hpp"
 
 
 namespace lbt {
   namespace material {
-    namespace ideal_gas {
 
-      using namespace lbt::literals;
+    using namespace lbt::literals;
 
-      // Viscosity: Sutherland's law: https://de.wikipedia.org/wiki/Sutherland-Modell
+    // See https://en.wikipedia.org/wiki/Gas_constant and https://en.wikipedia.org/wiki/Kinetic_diameter
+    template <typename T>
+    constexpr T universal_gas_constant = static_cast<T>(8.31446261815324L); // In SI-units [J/(K mol)]
+    template <typename T>
+    constexpr T avogadro_constant = static_cast<T>(6.02214076e+23); // In SI-units [1/mol]
 
-      // TODO: Add unit and user-defined literal for individual gas constant
-      namespace physical_constant {
-        // See https://en.wikipedia.org/wiki/Gas_constant
-        template <typename T>
-        constexpr T universal_gas_constant = static_cast<T>(8.31446261815324L); // IN SI-units [J/(K mol)]
-
-        template <typename T = long double>
-        class Air {
-          public:
-            static constexpr T molar_mass = 28.966; // In SI-unit [kg/mol]
-            static constexpr T specific_gas_constant = universal_gas_constant<T>/molar_mass; // 287.05; // In SI-units [J/kg K]
+    // Viscosity: Sutherland's law: https://de.wikipedia.org/wiki/Sutherland-Modell
+    template <template <typename> typename T>
+    class IdealGas {
+      public:
+        // Calculated according to ideal gas law 
+        static constexpr lbt::unit::Density equationOfState(lbt::unit::Temperature const t, 
+                                                            lbt::unit::Pressure const p) noexcept {
+          return lbt::unit::Density{p.get()/(specific_gas_constant*t.get())};
+        };
+        static constexpr lbt::unit::Temperature equationOfState(lbt::unit::Density const rho, 
+                                                                lbt::unit::Pressure const p) noexcept {
+          return lbt::unit::Temperature{p.get()/(specific_gas_constant*rho.get())};
+        };
+        static constexpr lbt::unit::Pressure equationOfState(lbt::unit::Density const rho, 
+                                                             lbt::unit::Temperature const t) noexcept {
+          return lbt::unit::Pressure{specific_gas_constant*rho.get()*t.get()};
         };
 
-        template <typename T>
-        class CarbonDioxide {
-          public:
-            static constexpr T molar_mass = 44.01;
-            static constexpr T specific_gas_constant = universal_gas_constant<T>/molar_mass; // 188.92;
-        };
+        constexpr IdealGas(lbt::unit::Temperature const temperature = 0.0_deg, lbt::unit::Pressure const pressure = 1.0_atm) noexcept
+          : temperature{temperature}, pressure{pressure} {
+          density = equationOfState(temperature, pressure);
+          return;
+        }
+        constexpr IdealGas(lbt::unit::Density const density, lbt::unit::Pressure const pressure = 1.0_atm) noexcept
+          : pressure{pressure}, density{density} {
+          temperature = equationOfState(density, pressure);
+          return;
+        }
+        constexpr IdealGas(lbt::unit::Density const density, lbt::unit::Temperature const temperature = 0.0_deg) noexcept
+          : temperature{temperature}, density{density} {
+          pressure = equationOfState(density, temperature);
+          return;
+        }
 
-        template <typename T>
-        class Hydrogen {
-          public:
-            static constexpr T molar_mass = 2.016;
-            static constexpr T specific_gas_constant = universal_gas_constant<T>/molar_mass; // 4124.2;
-        };
+      protected:
+        static constexpr long double specific_gas_constant = universal_gas_constant<long double>/T<long double>::molecular_mass*10.0e+2; // In SI-units [J/kg K]
+        lbt::unit::Temperature temperature;
+        lbt::unit::Pressure pressure;
+        lbt::unit::Density density;
+    };
 
-        template <typename T>
-        class Oxygen {
-          public:
-            static constexpr T molar_mass = 31.9988;
-            static constexpr T specific_gas_constant = universal_gas_constant<T>/molar_mass; // 259.84;
-        };
-      }
-
-      template <template <typename> typename T>
-      class IdealGas {
-        public:
-          // Calculated according to ideal gas law 
-          static constexpr lbt::unit::Density density(lbt::unit::Temperature const t = 0.0_deg, 
-                                                      lbt::unit::Pressure const p = 1.0_atm) noexcept {
-            return lbt::unit::Density{p.get()/(T<long double>::specific_gas_constant*t.get())};
-          };
-          // Calculated according to Maxwell-Boltzmann distribution https://physics.stackexchange.com/a/510860/245414
-          static constexpr lbt::unit::KinematicViscosity kinematic_viscosity(lbt::unit::Temperature const t = 0.0_deg, 
-                                                                             lbt::unit::Pressure const p = 1.0_atm) noexcept {
-            return lbt::unit::KinematicViscosity{0.0};
-          }
-          static constexpr lbt::unit::DynamicViscosity dynamic_viscosity(lbt::unit::Temperature const t = 0.0_deg, 
-                                                                         lbt::unit::Pressure const p = 1.0_atm) noexcept {
-            return lbt::unit::DynamicViscosity{0.0};
-          }
-      };
-
-      /// Define convenient aliases for different ideal gases
-      using Air = IdealGas<physical_constant::Air>;
-      using CarbonDioxide = IdealGas<physical_constant::CarbonDioxide>;
-      using Hydrogen = IdealGas<physical_constant::Hydrogen>;
-      using Oxygen = IdealGas<physical_constant::Oxygen>;
-
-    }
   }
 }
 

@@ -70,6 +70,15 @@ namespace lbt {
     constexpr lbt::unit::Length operator "" _um(long double const u) noexcept {
       return u*lbt::unit::Length{1.0e-6};
     }
+    /**\fn        operator "" _pm
+     * \brief     User-defined literal for a length given in picometers
+     * 
+     * \param[in] u   The distance in picometers
+     * \return    A length in the base unit meters
+    */
+    constexpr lbt::unit::Length operator "" _pm(long double const u) noexcept {
+      return u*lbt::unit::Length{1.0e-12};
+    }
 
     /**\fn        operator "" _d
      * \brief     User-defined literal for a time given in days

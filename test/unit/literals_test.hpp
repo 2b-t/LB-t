@@ -44,7 +44,8 @@ namespace lbt {
           std::make_pair(9.9_dm, 9.9e-1L),
           std::make_pair(7.3_cm, 7.3e-2L),
           std::make_pair(2.6_mm, 2.6e-3L),
-          std::make_pair(8.9_um, 8.9e-6L)
+          std::make_pair(8.9_um, 8.9e-6L),
+          std::make_pair(2.9_pm, 2.9e-12L)
         )
       );
 

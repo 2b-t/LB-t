@@ -9,7 +9,7 @@
 
 
 #include "material/air.hpp"
-#include "material/ideal_gas.hpp"
+#include "material/pure_gas.hpp"
 #include "material/water.hpp"
 
 

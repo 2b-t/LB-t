@@ -26,10 +26,13 @@ int main(int argc, char* argv[]) {
 
   constexpr auto length = 1.2_m;
   constexpr auto velocity = 1.7_mps;
-  constexpr auto temperature = 20.0_deg;
+  constexpr auto temperature = 0.0_deg;
   constexpr auto pressure = 1.0_atm;
-  constexpr auto density = lbt::material::Air::density(temperature, pressure);
-  constexpr auto kinematic_viscosity = lbt::material::Air::kinematic_viscosity(temperature, pressure);
+  constexpr auto air = lbt::material::Air(temperature, pressure);
+  constexpr auto hydrogen = lbt::material::CarbonDioxide(temperature, pressure);
+  std::cout << hydrogen << std::endl;
+  std::cout << hydrogen.dynamicViscosity(temperature) << std::endl;
+  std::cout << air.dynamicViscosity(temperature, pressure) << std::endl;
 
   // Compute Reynolds number as well as conversion factors and pass them to the collision operator class
   // Let collision operator class handle unit conversion
