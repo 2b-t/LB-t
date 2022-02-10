@@ -85,18 +85,35 @@ namespace lbt {
       return (x < 0) ? -x : x;
     }
 
-    /**\fn        cem::nearlyEqual
-     * \brief     Constexpr function for comparing two floating point numbers with a given tolerance
+    /**\fn        cem::nearlyEqualEpsAbs
+     * \brief     Constexpr function for comparing two floating point numbers with a given absolute tolerance
      *
      * \tparam    T         Data type of the corresponding number
      * \param[in] a         The first number to be compared
      * \param[in] b         The second number to be compared
-     * \param[in] epsilon   The tolerance to be considered
-     * \return    The absolute value of \p x
+     * \param[in] epsilon   The absolute tolerance to be considered
+     * \return    Boolean value signaling whether the two values \p a and \p b are equal considering an absolute tolerance
     */
     template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
     constexpr bool isNearlyEqual(T const a, T const b, T epsilon = 10*std::numeric_limits<T>::epsilon()) noexcept {
       return (cem::abs(a - b) <= epsilon);
+    }
+    /**\fn        cem::nearlyEqualEpsRel
+     * \brief     Constexpr function for comparing two floating point numbers with a given relative (scaled) tolerance
+     *
+     * \tparam    T         Data type of the corresponding number
+     * \param[in] a         The first number to be compared
+     * \param[in] b         The second number to be compared
+     * \param[in] epsilon   The relative tolerance to be considered
+     * \return    Boolean value signaling whether the two values \p a and \p b are equal considering a relative tolerance
+    */
+    template <typename T>
+    constexpr bool isNearlyEqualEpsRel(T const a, T const b, T const epsilon = 128*std::numeric_limits<T>::epsilon()) noexcept {
+      auto const diff {cem::abs(a-b)};
+      auto const sum_mag {cem::abs(a) + cem::abs(b)};
+      constexpr auto max {std::numeric_limits<T>::max()};
+      auto const norm {sum_mag < max ? sum_mag : max};
+      return diff < epsilon*norm;
     }
 
     namespace detail {
@@ -118,7 +135,7 @@ namespace lbt {
           return curr;
         }
 
-        return cem::isNearlyEqual(curr, prev)
+        return cem::isNearlyEqualEpsRel(curr, prev)
               ? curr
               : sqrtNewton(x, static_cast<T>(0.5) * (curr + x / curr), curr, depth+1);
       }
@@ -141,6 +158,8 @@ namespace lbt {
         return x;
       } else if (cem::isNegInf(x)) {
         return std::numeric_limits<T>::quiet_NaN();
+      } else if (cem::isNearlyEqual(x, static_cast<T>(0.0))) {
+        return x;
       }
 
       return ((x >= static_cast<T>(0.0)) && (x < std::numeric_limits<T>::infinity()))
@@ -195,7 +214,7 @@ namespace lbt {
           n /= division_factor;
         }
         auto const sum_iteration {sum + prod/n};
-        return cem::isNearlyEqual(sum, sum_iteration) ? sum : expTaylor(x, sum_iteration, prod*x, n*i, i+1, depth+1);
+        return cem::isNearlyEqualEpsRel(sum, sum_iteration) ? sum : expTaylor(x, sum_iteration, prod*x, n*i, i+1, depth+1);
       }
     }
     /**\fn        cem::exp
@@ -241,7 +260,7 @@ namespace lbt {
           return prev;
         }
         auto const curr = prev + static_cast<T>(2.0)*(x-cem::exp(prev))/(x+cem::exp(prev));
-        return cem::isNearlyEqual(prev, curr) ? curr : logNewton(x, curr, depth+1);
+        return cem::isNearlyEqualEpsRel(prev, curr) ? curr : logNewton(x, curr, depth+1);
       }
     }
     /**\fn        cem::log

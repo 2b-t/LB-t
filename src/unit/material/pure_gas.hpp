@@ -24,13 +24,13 @@ namespace lbt {
     class PureGas: public IdealGas<T> {
       public:
         // Calculated according to Maxwell-Boltzmann distribution https://physics.stackexchange.com/a/510860/245414
-        static lbt::unit::KinematicViscosity kinematicViscosity(lbt::unit::Temperature const t, 
+        static constexpr lbt::unit::KinematicViscosity kinematicViscosity(lbt::unit::Temperature const t, 
                                                                            lbt::unit::Pressure const p) noexcept {
           return dynamicViscosity(t)/IdealGas<T>::equationOfState(t, p);
         }
-        static lbt::unit::DynamicViscosity dynamicViscosity(lbt::unit::Temperature const t) noexcept {
+        static constexpr lbt::unit::DynamicViscosity dynamicViscosity(lbt::unit::Temperature const t) noexcept {
           // TODO: Fix implementation of isNearlyEqual for very large and very small numbers
-          return lbt::unit::DynamicViscosity{5.0/16.0*std::sqrt(IdealGas<T>::specific_gas_constant*mass_single_molecule*mass_single_molecule*t.get()/lbt::cem::pi<long double>)/(kinetic_diameter*kinetic_diameter)*1.0_cP};
+          return lbt::unit::DynamicViscosity{5.0/16.0*lbt::cem::sqrt(IdealGas<T>::specific_gas_constant*mass_single_molecule*mass_single_molecule*t.get()/lbt::cem::pi<long double>)/(kinetic_diameter*kinetic_diameter)*1.0_cP};
         }
 
         using IdealGas<T>::IdealGas;
