@@ -14,7 +14,7 @@
 #include <numeric>
 #include <type_traits>
 
-#include "../../src/general/constexpr_math.hpp"
+#include "../../src/constexpr_math/constexpr_math.hpp"
 #include "../../src/general/type_definitions.hpp"
 
 

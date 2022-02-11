@@ -14,7 +14,7 @@
 #include <cstdint>
 #include <type_traits>
 
-#include "../general/constexpr_math.hpp"
+#include "../constexpr_math/constexpr_math.hpp"
 #include "../general/type_definitions.hpp"
 
 

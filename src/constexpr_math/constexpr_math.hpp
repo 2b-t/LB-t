@@ -107,7 +107,7 @@ namespace lbt {
      * \param[in] epsilon   The relative tolerance to be considered
      * \return    Boolean value signaling whether the two values \p a and \p b are equal considering a relative tolerance
     */
-    template <typename T>
+    template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
     constexpr bool isNearlyEqualEpsRel(T const a, T const b, T const epsilon = 128*std::numeric_limits<T>::epsilon()) noexcept {
       auto const diff {cem::abs(a-b)};
       auto const sum_mag {cem::abs(a) + cem::abs(b)};

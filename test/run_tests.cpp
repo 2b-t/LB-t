@@ -7,7 +7,7 @@
 #include <gtest/gtest.h>
 
 //#include "continuum/simple_continuum_test.hpp"
-#include "general/constexpr_math_test.hpp"
+#include "constexpr_math/constexpr_math_test.hpp"
 #include "general/disclaimer_test.hpp"
 #include "general/openmp_manager_test.hpp"
 #include "general/output_utilities_test.hpp"

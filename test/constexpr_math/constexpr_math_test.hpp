@@ -22,7 +22,7 @@
 
 #include <gtest/gtest.h>
 
-#include "../../src/general/constexpr_math.hpp"
+#include "../../src/constexpr_math/constexpr_math.hpp"
 
 
 namespace lbt {

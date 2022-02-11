@@ -10,7 +10,7 @@
 
 #include <cmath>
 
-#include "../../general/constexpr_math.hpp"
+#include "../../constexpr_math/constexpr_math.hpp"
 #include "../literals.hpp"
 #include "../units.hpp"
 
