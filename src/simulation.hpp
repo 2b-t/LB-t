@@ -1,12 +1,12 @@
-#ifndef LBT_SIMULATION
-#define LBT_SIMULATION
-#pragma once
-
-/**\file     simulation.hpp
+/**
+ * \file     simulation.hpp
  * \mainpage Contains the templated class for simulation
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_SIMULATION
+#define LBT_SIMULATION
+#pragma once
 
 #include <array>
 #include <cstdint>

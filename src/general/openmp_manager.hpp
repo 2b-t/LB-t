@@ -1,7 +1,3 @@
-#ifndef LBT_OPENMP_MANAGER
-#define LBT_OPENMP_MANAGER
-#pragma once
-
 /**
  * \file     openmp_manager.hpp
  * \brief    Class for parallel computing settings
@@ -10,6 +6,9 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_OPENMP_MANAGER
+#define LBT_OPENMP_MANAGER
+#pragma once
 
 #include <ostream>
 

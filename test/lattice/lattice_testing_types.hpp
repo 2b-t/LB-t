@@ -1,13 +1,12 @@
-#ifndef LBT_LATTICE_TESTING_TYPES
-#define LBT_LATTICE_TESTING_TYPES
-#pragma once
-
 /**
  * \file     lattice_testing_types.hpp
  * \mainpage Classes and type definitions for generating all the relevant lattices to be tested
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_LATTICE_TESTING_TYPES
+#define LBT_LATTICE_TESTING_TYPES
+#pragma once
 
 #include <tuple>
 

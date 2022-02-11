@@ -1,13 +1,12 @@
-#ifndef LBT_SIMULATION_UNITTEST
-#define LBT_SIMULATION_UNITTEST
-#pragma once
-
 /**
  * \file     simulation_test.hpp
  * \mainpage Tests for the main simulation class
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_SIMULATION_UNITTEST
+#define LBT_SIMULATION_UNITTEST
+#pragma once
 
 #include <cstdint>
 #include <string>

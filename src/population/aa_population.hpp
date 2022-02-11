@@ -1,13 +1,12 @@
-#ifndef LBT_AA_POPULATION
-#define LBT_AA_POPULATION
-#pragma once
-
 /**
  * \file     aa_population.hpp
  * \mainpage Class for microscopic populations based on a single population with the A-A access pattern
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_AA_POPULATION
+#define LBT_AA_POPULATION
+#pragma once
 
 #include <cassert>
 #include <cstdint>

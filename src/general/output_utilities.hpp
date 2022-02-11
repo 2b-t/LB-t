@@ -1,12 +1,11 @@
-#ifndef LBT_OUTPUT_UTILITIES
-#define LBT_OUTPUT_UTILITIES
-
 /**
  * \file     output_utilities.hpp
  * \mainpage Tools for console and file output
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_OUTPUT_UTILITIES
+#define LBT_OUTPUT_UTILITIES
 
 #include <iomanip>
 #include <sstream>

@@ -1,13 +1,13 @@
-#ifndef LBT_TESTING_UTILITIES_UNITTEST
-#define LBT_TESTING_UTILITIES_UNITTEST
-#pragma once
-
 /**
  * \file     testing_utilities_test.hpp
  * \mainpage Tests for utility tools related to googletest
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+
+#ifndef LBT_TESTING_UTILITIES_UNITTEST
+#define LBT_TESTING_UTILITIES_UNITTEST
+#pragma once
 
 #include <tuple>
 #include <type_traits>

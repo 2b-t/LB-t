@@ -1,12 +1,12 @@
-#ifndef LBT_TYPE_DEFINITIONS
-#define LBT_TYPE_DEFINITIONS
-#pragma once
-
-/**\file     type_definitions.hpp
+/**
+ * \file     type_definitions.hpp
  * \mainpage Contains general type definitions depending on the compiler and operating system
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_TYPE_DEFINITIONS
+#define LBT_TYPE_DEFINITIONS
+#pragma once
 
 #include <array>
 #include <cstdlib>

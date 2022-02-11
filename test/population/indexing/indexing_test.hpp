@@ -1,13 +1,12 @@
-#ifndef LBT_INDEXING_UNITTEST
-#define LBT_INDEXING_UNITTEST
-#pragma once
-
 /**
  * \file     indexing_test.hpp
  * \mainpage Tests for indexing of population
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_INDEXING_UNITTEST
+#define LBT_INDEXING_UNITTEST
+#pragma once
 
 #include <cstdint>
 #include <limits>

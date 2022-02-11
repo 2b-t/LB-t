@@ -1,13 +1,12 @@
-#ifndef LBT_VTK_CONTINUUM_UNITTEST
-#define LBT_VTK_CONTINUUM_UNITTEST
-#pragma once
-
 /**
  * \file     vtk_continuum_test.hpp
  * \mainpage Tests for continuum class based on VTK library
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_VTK_CONTINUUM_UNITTEST
+#define LBT_VTK_CONTINUUM_UNITTEST
+#pragma once
 
 #include "../../src/general/use_vtk.hpp"
 

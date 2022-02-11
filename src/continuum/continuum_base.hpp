@@ -1,12 +1,12 @@
-#ifndef LBT_CONTINUUM_BASE
-#define LBT_CONTINUUM_BASE
-#pragma once
-
 /**
  * \file     continuum_base.hpp
  * \mainpage Base class for continuum properties
  * \author   Tobit Flatscher (github.com/2b-t)
 */
+
+#ifndef LBT_CONTINUUM_BASE
+#define LBT_CONTINUUM_BASE
+#pragma once
 
 #include <cstdint>
 #include <filesystem>

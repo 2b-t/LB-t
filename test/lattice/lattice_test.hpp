@@ -1,13 +1,12 @@
-#ifndef LBT_LATTICE_UNITTEST
-#define LBT_LATTICE_UNITTEST
-#pragma once
-
 /**
  * \file     lattice_test.hpp
  * \mainpage Tests for different discretisation lattices
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_LATTICE_UNITTEST
+#define LBT_LATTICE_UNITTEST
+#pragma once
 
 #include <cstdint>
 #include <type_traits>

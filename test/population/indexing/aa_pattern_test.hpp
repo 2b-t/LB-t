@@ -1,13 +1,12 @@
-#ifndef LBT_AA_PATTERN_UNITTEST
-#define LBT_AA_PATTERN_UNITTEST
-#pragma once
-
 /**
  * \file     aa_pattern_test.hpp
  * \mainpage Tests for indexing of population via the one-population AA-access pattern
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_AA_PATTERN_UNITTEST
+#define LBT_AA_PATTERN_UNITTEST
+#pragma once
 
 #include <cstdint>
 #include <limits>

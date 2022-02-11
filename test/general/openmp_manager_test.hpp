@@ -1,7 +1,3 @@
-#ifndef LBT_OPENMP_MANAGER_UNITTEST
-#define LBT_OPENMP_MANAGER_UNITTEST
-#pragma once
-
 /**
  * \file     openmp_manager_test.hpp
  * \brief    Unit-test for parallel computing settings
@@ -9,6 +5,9 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_OPENMP_MANAGER_UNITTEST
+#define LBT_OPENMP_MANAGER_UNITTEST
+#pragma once
 
 #if __has_include (<omp.h>)
     #include <omp.h>

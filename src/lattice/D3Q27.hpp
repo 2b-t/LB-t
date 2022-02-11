@@ -1,7 +1,3 @@
-#ifndef LBT_D3Q27
-#define LBT_D3Q27
-#pragma once
-
 /**
  * \file     D3Q27.hpp
  * \mainpage Discretisation parameters for D3Q27-lattice
@@ -10,6 +6,9 @@
  * \warning  Static classes with more complex members such as std::vector and std::array require C++17
 */
 
+#ifndef LBT_D3Q27
+#define LBT_D3Q27
+#pragma once
 
 #include <cstdint>
 #include <type_traits>

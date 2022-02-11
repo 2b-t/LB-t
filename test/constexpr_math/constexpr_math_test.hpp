@@ -1,13 +1,12 @@
-#ifndef LBT_CONSTEXPR_MATH_UNITTEST
-#define LBT_CONSTEXPR_MATH_UNITTEST
-#pragma once
-
 /**
  * \file     constexpr_math_test.hpp
  * \mainpage Tests for constexpr math functions
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_CONSTEXPR_MATH_UNITTEST
+#define LBT_CONSTEXPR_MATH_UNITTEST
+#pragma once
 
 #include <cmath>
 #include <cstdint>

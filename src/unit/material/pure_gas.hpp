@@ -1,12 +1,12 @@
-#ifndef LBT_MATERIAL_PURE_GAS
-#define LBT_MATERIAL_PURE_GAS
-#pragma once
-
-/**\file     pure_gas.hpp
+/**
+ * \file     pure_gas.hpp
  * \mainpage Contains methods for calculating physical properties of ideal gases
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_MATERIAL_PURE_GAS
+#define LBT_MATERIAL_PURE_GAS
+#pragma once
 
 #include <ostream>
 

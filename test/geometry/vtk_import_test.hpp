@@ -1,12 +1,12 @@
-#ifndef LBT_VTK_IMPORT_UNITTEST
-#define LBT_VTK_IMPORT_UNITTEST
-#pragma once
-
-/**\file     vtk_import_test.hpp
+/**
+ * \file     vtk_import_test.hpp
  * \mainpage Functions for unit testing voxelising geometries
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_VTK_IMPORT_UNITTEST
+#define LBT_VTK_IMPORT_UNITTEST
+#pragma once
 
 #include "../../src/general/use_vtk.hpp"
 

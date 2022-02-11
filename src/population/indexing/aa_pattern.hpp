@@ -1,7 +1,3 @@
-#ifndef LBT_AA_PATTERN
-#define LBT_AA_PATTERN
-#pragma once
-
 /**
  * \file     aa_pattern.hpp
  * \brief    Class members for indexing of populations with A-A access pattern
@@ -16,6 +12,9 @@
  *           even and odd time steps.
 */
 
+#ifndef LBT_AA_PATTERN
+#define LBT_AA_PATTERN
+#pragma once
 
 #include <array>
 #include <cassert>

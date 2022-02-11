@@ -1,12 +1,12 @@
-#ifndef LBT_LITERALS
-#define LBT_LITERALS
-#pragma once
-
-/**\file     literals.hpp
+/**
+ * \file     literals.hpp
  * \mainpage Contains definitions for user-defined literals of different physical units
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_LITERALS
+#define LBT_LITERALS
+#pragma once
 
 #include <iostream>
 

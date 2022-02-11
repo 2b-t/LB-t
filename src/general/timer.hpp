@@ -1,13 +1,12 @@
-#ifndef LBT_TIMER
-#define LBT_TIMER
-#pragma once
-
 /**
  * \file     timer.hpp
  * \mainpage An artificial class that allows for a convenient usage of a stopwatch.
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_TIMER
+#define LBT_TIMER
+#pragma once
 
 #include <chrono>
 

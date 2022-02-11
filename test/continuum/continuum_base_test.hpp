@@ -1,13 +1,12 @@
-#ifndef LBT_CONTINUUM_BASE_UNITTEST
-#define LBT_CONTINUUM_BASE_UNITTEST
-#pragma once
-
 /**
  * \file     continuum_base_test.hpp
  * \mainpage Tests for continuum base class
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_CONTINUUM_BASE_UNITTEST
+#define LBT_CONTINUUM_BASE_UNITTEST
+#pragma once
 
 #include <cstdint>
 #include <filesystem>

@@ -1,13 +1,12 @@
-#ifndef LBT_POPULATION_BASE_UNITTEST
-#define LBT_POPULATION_BASE_UNITTEST
-#pragma once
-
 /**
  * \file     population_base_test.hpp
  * \mainpage Tests for a population with arbitrary access patterns and underlying memory layout
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_POPULATION_BASE_UNITTEST
+#define LBT_POPULATION_BASE_UNITTEST
+#pragma once
 
 #include <cstdint>
 #include <limits>

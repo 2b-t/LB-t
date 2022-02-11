@@ -1,7 +1,3 @@
-#ifndef LBT_D2Q9
-#define LBT_D2Q9
-#pragma once
-
 /**
  * \file     D2Q9.hpp
  * \mainpage Discretisation parameters for D2Q9-lattice
@@ -10,6 +6,9 @@
  * \warning  Static classes with more complex members such as std::vector and std::array require C++17
 */
 
+#ifndef LBT_D2Q9
+#define LBT_D2Q9
+#pragma once
 
 #include <cstdint>
 #include <type_traits>

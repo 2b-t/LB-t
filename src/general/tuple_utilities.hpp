@@ -1,13 +1,12 @@
-#ifndef LBT_TUPLE_UTILITIES
-#define LBT_TUPLE_UTILITIES
-#pragma once
-
 /**
  * \file     tuple_utilities.hpp
  * \mainpage Utility tools for std::tuple for convenient unit-testing
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_TUPLE_UTILITIES
+#define LBT_TUPLE_UTILITIES
+#pragma once
 
 #include <tuple>
 #include <type_traits>

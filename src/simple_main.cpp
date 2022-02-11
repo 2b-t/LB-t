@@ -1,8 +1,8 @@
-/**\file     main.cpp
+/**
+ * \file     main.cpp
  * \mainpage Mainpage of the LB-t computational fluid dynamics solver based on the incompressible Lattice-Boltzmann method
  * \author   Tobit Flatscher (github.com/2b-t)
 */
-
 
 #include <cmath>
 #include <cstdlib>

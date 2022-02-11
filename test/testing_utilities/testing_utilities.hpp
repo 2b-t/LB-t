@@ -1,13 +1,12 @@
-#ifndef LBT_TESTING_UTILITIES
-#define LBT_TESTING_UTILITIES
-#pragma once
-
 /**
  * \file     testing_utilities.hpp
  * \mainpage Utility tools related to googletest
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_TESTING_UTILITIES
+#define LBT_TESTING_UTILITIES
+#pragma once
 
 #include <type_traits>
 

@@ -1,13 +1,13 @@
-#ifndef LBT_VTK_IMPORT
-#define LBT_VTK_IMPORT
-#pragma once
-
-/**\file     vtk_import.hpp
+/**
+ * \file     vtk_import.hpp
  * \mainpage Functions for voxelising geometries given by a STL or OBJ file for further processing 
  *           in the LBM simulation.
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_VTK_IMPORT
+#define LBT_VTK_IMPORT
+#pragma once
 
 #include "../general/use_vtk.hpp"
 

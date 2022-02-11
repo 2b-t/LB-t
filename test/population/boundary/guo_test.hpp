@@ -1,13 +1,12 @@
-#ifndef LBT_BOUNDARY_GUO_UNITTEST
-#define LBT_BOUNDARY_GUO_UNITTEST
-#pragma once
-
 /**
  * \file     guo_test.hpp
  * \mainpage Tests for helper functions for boundary conditions
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_BOUNDARY_GUO_UNITTEST
+#define LBT_BOUNDARY_GUO_UNITTEST
+#pragma once
 
 #include <cstdint>
 #include <type_traits>

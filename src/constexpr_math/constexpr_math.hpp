@@ -1,7 +1,3 @@
-#ifndef LBT_CONSTEXPR_MATH
-#define LBT_CONSTEXPR_MATH
-#pragma once
-
 /**
  * \file     constexpr_math.hpp
  * \mainpage A series of functions that can evaluate to a constant expression and thus
@@ -9,6 +5,9 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_CONSTEXPR_MATH
+#define LBT_CONSTEXPR_MATH
+#pragma once
 
 #include <cassert>
 #include <cstdint>

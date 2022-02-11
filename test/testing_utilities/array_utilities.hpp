@@ -1,13 +1,12 @@
-#ifndef LBT_ARRAY_UTILITIES
-#define LBT_ARRAY_UTILITIES
-#pragma once
-
 /**
  * \file     array_utilities.hpp
  * \mainpage Utilities for arrays and memory alignment
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_ARRAY_UTILITIES
+#define LBT_ARRAY_UTILITIES
+#pragma once
 
 #include <cstdint>
 #include <limits>

@@ -1,13 +1,12 @@
-#ifndef LBT_STREAM_MANAGER
-#define LBT_STREAM_MANAGER
-#pragma once
-
 /**
  * \file     stream_manager.hpp
  * \mainpage Utilities for directing an output stream to a file or turning them off
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_STREAM_MANAGER
+#define LBT_STREAM_MANAGER
+#pragma once
 
 #include <ostream>
 

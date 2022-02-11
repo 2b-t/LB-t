@@ -1,12 +1,12 @@
-#ifndef LBT_MATERIAL_WATER
-#define LBT_MATERIAL_WATER
-#pragma once
-
-/**\file     water.hpp
+/**
+ * \file     water.hpp
  * \mainpage Contains methods for calculating physical properties of water
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_MATERIAL_WATER
+#define LBT_MATERIAL_WATER
+#pragma once
 
 #include <cmath>
 

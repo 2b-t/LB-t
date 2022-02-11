@@ -1,13 +1,13 @@
-#ifndef LBT_SIMPLE_CONTINUUM
-#define LBT_SIMPLE_CONTINUUM
-#pragma once
-
 /**
  * \file     simple_continuum.hpp
  * \mainpage Legacy class for continuum properties without any external library
  *           The population is exported in the VTK format. This is comparably slow but allows somebody to compile the code without VTK!
  * \author   Tobit Flatscher (github.com/2b-t)
 */
+
+#ifndef LBT_SIMPLE_CONTINUUM
+#define LBT_SIMPLE_CONTINUUM
+#pragma once
 
 #include <cinttypes>
 #include <cstdint>

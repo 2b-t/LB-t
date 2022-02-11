@@ -1,13 +1,12 @@
-#ifndef LBT_CONTINUUM
-#define LBT_CONTINUUM
-#pragma once
-
 /**
  * \file     continuum.hpp
  * \mainpage Class for continuum properties based
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_CONTINUUM
+#define LBT_CONTINUUM
+#pragma once
 
 #include "../general/use_vtk.hpp"
 

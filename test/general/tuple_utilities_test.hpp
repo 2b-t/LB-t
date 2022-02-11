@@ -1,13 +1,12 @@
-#ifndef LBT_TUPLE_UTILITIES_UNITTEST
-#define LBT_TUPLE_UTILITIES_UNITTEST
-#pragma once
-
 /**
  * \file     tuple_utilities_test.hpp
  * \mainpage Tests for utility tools for handling tuples
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_TUPLE_UTILITIES_UNITTEST
+#define LBT_TUPLE_UTILITIES_UNITTEST
+#pragma once
 
 #include <tuple>
 #include <type_traits>

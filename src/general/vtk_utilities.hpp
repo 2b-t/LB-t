@@ -1,12 +1,12 @@
-#ifndef LBT_VTK_UTILITITES
-#define LBT_VTK_UTILITITES
-#pragma once
-
-/**\file     vtk_utilities.hpp
+/**
+ * \file     vtk_utilities.hpp
  * \mainpage Functions for handling geometries with VTK
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_VTK_UTILITITES
+#define LBT_VTK_UTILITITES
+#pragma once
 
 #include "use_vtk.hpp"
 

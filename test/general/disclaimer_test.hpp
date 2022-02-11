@@ -1,13 +1,12 @@
-#ifndef LBT_DISCLAIMER_UNITTEST
-#define LBT_DISCLAIMER_UNITTEST
-#pragma once
-
 /**
  * \file     disclaimer_test.hpp
  * \mainpage Tests for printing the program's disclaimer
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_DISCLAIMER_UNITTEST
+#define LBT_DISCLAIMER_UNITTEST
+#pragma once
 
 #include <string>
 

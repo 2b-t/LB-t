@@ -5,6 +5,7 @@
  *           in the last place (ULP) similar to the implementation in GoogleTest but more modular and constexpr:
  *           https://github.com/google/googletest/blob/main/googletest/include/gtest/internal/gtest-internal.h
  * \warning  Requires C++20 for compilation
+ * \author   Tobit Flatscher (github.com/2b-t)
 */
 
 #ifndef LBT_CONSTEXPR_MATH_IS_NEARLY_EQUAL_ULPS

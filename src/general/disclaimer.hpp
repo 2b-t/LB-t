@@ -1,13 +1,12 @@
-#ifndef LBT_DISCLAIMER
-#define LBT_DISCLAIMER
-#pragma once
-
 /**
  * \file     disclaimer.hpp
  * \mainpage Get disclaimer and compiler settings
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_DISCLAIMER
+#define LBT_DISCLAIMER
+#pragma once
 
 #include <string>
 

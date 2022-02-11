@@ -1,13 +1,12 @@
-#ifndef LBT_BOUNDARY_NORMAL_UNITTEST
-#define LBT_BOUNDARY_NORMAL_UNITTEST
-#pragma once
-
 /**
  * \file     normal_test.hpp
  * \mainpage Tests for normal structs for boundary conditions
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_BOUNDARY_NORMAL_UNITTEST
+#define LBT_BOUNDARY_NORMAL_UNITTEST
+#pragma once
 
 #include <cstdint>
 #include <cmath>

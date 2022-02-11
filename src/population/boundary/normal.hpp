@@ -1,13 +1,12 @@
-#ifndef LBT_BOUNDARY_NORMAL
-#define LBT_BOUNDARY_NORMAL
-#pragma once
-
 /**
  * \file     normal.hpp
  * \mainpage Holds normal for boundary conditions
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_BOUNDARY_NORMAL
+#define LBT_BOUNDARY_NORMAL
+#pragma once
 
 #include <cstdint>
 #include <ostream>

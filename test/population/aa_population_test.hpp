@@ -1,13 +1,12 @@
-#ifndef LBT_AA_POPULATION_UNITTEST
-#define LBT_AA_POPULATION_UNITTEST
-#pragma once
-
 /**
  * \file     aa_population_test.hpp
  * \mainpage Tests for a population with A-A access pattern
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_AA_POPULATION_UNITTEST
+#define LBT_AA_POPULATION_UNITTEST
+#pragma once
 
 #include <cstdint>
 #include <limits>

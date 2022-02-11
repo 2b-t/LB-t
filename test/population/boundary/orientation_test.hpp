@@ -1,13 +1,12 @@
-#ifndef LBT_BOUNDARY_ORIENTATION_UNITTEST
-#define LBT_BOUNDARY_ORIENTATION_UNITTEST
-#pragma once
-
 /**
  * \file     orientation_test.hpp
  * \mainpage Tests for orientation structs for boundary conditions
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_BOUNDARY_ORIENTATION_UNITTEST
+#define LBT_BOUNDARY_ORIENTATION_UNITTEST
+#pragma once
 
 #include <utility>
 

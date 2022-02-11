@@ -1,13 +1,12 @@
-#ifndef LBT_AB_POPULATION
-#define LBT_AB_POPULATION
-#pragma once
-
 /**
  * \file     ab_population.hpp
  * \mainpage Class for microscopic populations based on two distinct populations
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_AB_POPULATION
+#define LBT_AB_POPULATION
+#pragma once
 
 #include <cassert>
 #include <cstdint>

@@ -1,13 +1,12 @@
-#ifndef LBT_BOUNDARY_GUO
-#define LBT_BOUNDARY_GUO
-#pragma once
-
 /**
  * \file     boundary_guo.hpp
  * \mainpage Interpolation boundary condition for pressure and velocity according to Guo
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_BOUNDARY_GUO
+#define LBT_BOUNDARY_GUO
+#pragma once
 
 #include <cstdint>
 

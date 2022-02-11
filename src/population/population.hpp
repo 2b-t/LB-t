@@ -1,13 +1,12 @@
-#ifndef LBT_POPULATION
-#define LBT_POPULATION
-#pragma once
-
 /**
  * \file     population.hpp
  * \mainpage Class for microscopic populations
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_POPULATION
+#define LBT_POPULATION
+#pragma once
 
 #include <cstdint>
 

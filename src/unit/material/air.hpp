@@ -1,12 +1,12 @@
-#ifndef LBT_MATERIAL_AIR
-#define LBT_MATERIAL_AIR
-#pragma once
-
-/**\file     air.hpp
+/**
+ * \file     air.hpp
  * \mainpage Contains methods for calculating physical properties of air
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_MATERIAL_AIR
+#define LBT_MATERIAL_AIR
+#pragma once
 
 #include <cmath>
 

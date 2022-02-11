@@ -1,13 +1,12 @@
-#ifndef LBT_VTK_CONTINUUM
-#define LBT_VTK_CONTINUUM
-#pragma once
-
 /**
  * \file     vtk_continuum.hpp
  * \mainpage Class for continuum properties based on VTK library
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_VTK_CONTINUUM
+#define LBT_VTK_CONTINUUM
+#pragma once
 
 #include "../general/use_vtk.hpp"
 

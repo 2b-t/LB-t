@@ -1,12 +1,12 @@
-#ifndef LBT_MATERIAL_WATER_UNITTEST
-#define LBT_MATERIAL_WATER_UNITTEST
-#pragma once
-
-/**\file     water_test.hpp
+/**
+ * \file     water_test.hpp
  * \mainpage Contains unit-tests for physical properties of water
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_MATERIAL_WATER_UNITTEST
+#define LBT_MATERIAL_WATER_UNITTEST
+#pragma once
 
 #include <gtest/gtest.h>
 

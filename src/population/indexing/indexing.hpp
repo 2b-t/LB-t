@@ -1,13 +1,12 @@
-#ifndef LBT_INDEXING
-#define LBT_INDEXING
-#pragma once
-
 /**
  * \file     indexing.hpp
  * \brief    Base class members for indexing of populations with different access patterns
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_INDEXING
+#define LBT_INDEXING
+#pragma once
 
 #include <cassert>
 #include <cstdint>

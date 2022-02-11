@@ -1,12 +1,12 @@
-#ifndef LBT_BOUNDARY_TYPE
-#define LBT_BOUNDARY_TYPE
-#pragma once
-
 /**
  * \file     type.hpp
  * \mainpage Holds enum for types of boundary conditions
  * \author   Tobit Flatscher (github.com/2b-t)
 */
+
+#ifndef LBT_BOUNDARY_TYPE
+#define LBT_BOUNDARY_TYPE
+#pragma once
 
 
 namespace lbt {

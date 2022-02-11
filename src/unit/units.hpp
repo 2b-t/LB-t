@@ -1,12 +1,12 @@
-#ifndef LBT_UNITS
-#define LBT_UNITS
-#pragma once
-
-/**\file     units.hpp
+/**
+ * \file     units.hpp
  * \mainpage Contains definitions for different physical units
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_UNITS
+#define LBT_UNITS
+#pragma once
 
 #include <iostream>
 #include <type_traits>

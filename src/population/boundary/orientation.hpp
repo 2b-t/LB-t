@@ -1,13 +1,12 @@
-#ifndef LBT_BOUNDARY_ORIENTATION
-#define LBT_BOUNDARY_ORIENTATION
-#pragma once
-
 /**
  * \file     orientation.hpp
  * \mainpage Holds orientation parameters for boundary conditions
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
+#ifndef LBT_BOUNDARY_ORIENTATION
+#define LBT_BOUNDARY_ORIENTATION
+#pragma once
 
 #include <cstdint>
 #include <ostream>
