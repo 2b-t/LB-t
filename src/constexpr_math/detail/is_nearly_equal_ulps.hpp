@@ -4,12 +4,12 @@
  * \mainpage Contains traits and a constexpr function for comparing two floating point numbers based on units 
  *           in the last place (ULP) similar to the implementation in GoogleTest but more modular and constexpr:
  *           https://github.com/google/googletest/blob/main/googletest/include/gtest/internal/gtest-internal.h
- * \warning  Requires C++20 for compilation
+ * \warning  Requires C++20 or later for compilation
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
-#ifndef LBT_CONSTEXPR_MATH_IS_NEARLY_EQUAL_ULPS
-#define LBT_CONSTEXPR_MATH_IS_NEARLY_EQUAL_ULPS
+#ifndef LBT_CEM_IS_NEARLY_EQUAL_ULPS
+#define LBT_CEM_IS_NEARLY_EQUAL_ULPS
 #pragma once
 
 #include <bit>
@@ -196,7 +196,7 @@ namespace lbt {
     }
 
     template <typename T>
-    constexpr bool isNearlyEqual(T const lhs, T const rhs, std::uint8_t const max_distance = 4) noexcept {
+    constexpr bool isNearlyEqualUlps(T const lhs, T const rhs, std::uint8_t const max_distance = 4) noexcept {
       detail::FloatView<T> const a {lhs};
       detail::FloatView<T> const b {rhs};
       return a.isNearlyEqual(b, max_distance);
@@ -205,4 +205,4 @@ namespace lbt {
   }
 }
 
-#endif // LBT_CONSTEXPR_MATH_IS_NEARLY_EQUAL_ULPS
+#endif // LBT_CEM_IS_NEARLY_EQUAL_ULPS
