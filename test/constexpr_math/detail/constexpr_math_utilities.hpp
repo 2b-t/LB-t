@@ -1,11 +1,11 @@
 /**
- * \file     constexpr_math_utils.hpp
+ * \file     constexpr_math_utilities.hpp
  * \mainpage Helper functions for generating random numbers for testing of constexpr functions
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
-#ifndef LBT_CEM_UTILS
-#define LBT_CEM_UTILS
+#ifndef LBT_CEM_UTILITIES
+#define LBT_CEM_UTILITIES
 #pragma once
 
 #include <random>
@@ -57,4 +57,4 @@ namespace lbt {
   }
 }
 
-#endif // LBT_CEM_UTILS
+#endif // LBT_CEM_UTILITIES

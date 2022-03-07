@@ -20,7 +20,7 @@
 #include "../../../src/constexpr_math/detail/is_nan.hpp"
 #include "../../../src/constexpr_math/detail/is_nearly_equal_eps_abs.hpp"
 #include "../../../src/constexpr_math/detail/sqrt.hpp"
-#include "constexpr_math_utils.hpp"
+#include "constexpr_math_utilities.hpp"
 #include "testing_types.hpp"
 
 

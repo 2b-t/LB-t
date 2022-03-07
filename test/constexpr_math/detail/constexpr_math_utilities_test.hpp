@@ -1,11 +1,11 @@
 /**
- * \file     constexpr_math_utils_test.hpp
+ * \file     constexpr_math_utilities_test.hpp
  * \mainpage Tests for testing utilities for the constexpr math library
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
-#ifndef LBT_CEM_UTILS_UNITTEST
-#define LBT_CEM_UTILS_UNITTEST
+#ifndef LBT_CEM_UTILITIES_UNITTEST
+#define LBT_CEM_UTILITIES_UNITTEST
 #pragma once
 
 #include <limits>
@@ -17,7 +17,7 @@
 
 #include <gtest/gtest.h>
 
-#include "constexpr_math_utils.hpp"
+#include "constexpr_math_utilities.hpp"
 #include "testing_types.hpp"
 
 
@@ -87,4 +87,4 @@ namespace lbt {
   }
 }
 
-#endif // LBT_CEM_UTILS_UNITTEST
+#endif // LBT_CEM_UTILITIES_UNITTEST

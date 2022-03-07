@@ -10,7 +10,7 @@
 
 #include "detail/abs_test.hpp"
 #include "detail/ceil_test.hpp"
-#include "detail/constexpr_math_utils_test.hpp"
+#include "detail/constexpr_math_utilities_test.hpp"
 #include "detail/exp_test.hpp"
 #include "detail/is_inf_test.hpp"
 #include "detail/is_nan_test.hpp"
