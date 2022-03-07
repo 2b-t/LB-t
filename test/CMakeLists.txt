@@ -25,7 +25,7 @@ endif()
 # Set compilation flags
 add_definitions(-DNDEBUG)
 set(CMAKE_BUILD_TYPE Release)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 17) # The vast majority of code is written for C++17 but certain features require C++20
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 

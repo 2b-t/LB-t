@@ -36,3 +36,13 @@ RUN apt-get -y update && apt-get -y install nlohmann-json3-dev
 
 # Install googletest
 RUN apt-get -y update && apt-get -y install libgtest-dev
+
+# Update to GCC 11 for C++20 support
+RUN apt-get -y update \
+    && apt-get -y install software-properties-common \
+    && add-apt-repository ppa:ubuntu-toolchain-r/test \
+    && apt-get -y install build-essential \
+    && apt-get -y install gcc-11 g++-11 \
+    && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 11 \
+    && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 11
+

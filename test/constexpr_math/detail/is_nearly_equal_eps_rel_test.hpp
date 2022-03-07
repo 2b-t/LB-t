@@ -15,7 +15,7 @@
 
 #include <gtest/gtest.h>
 
-#include "../../../src/constexpr_math/detail/abs.hpp"
+#include "../../../src/constexpr_math/detail/is_nearly_equal_eps_rel.hpp"
 #include "testing_types.hpp"
 
 
@@ -30,7 +30,7 @@ namespace lbt {
 
     TYPED_TEST(NearlyEqualEpsRelTest, closeNumberIsNearlyEqual) {
       std::vector<std::pair<TypeParam,TypeParam>> tests {};
-      std::vector<TypeParam> const numbers {-1, 0, 1};
+      std::vector<TypeParam> const numbers {-1, 1};
       for (auto const& n: numbers) {
         tests.emplace_back(n, std::nextafter(n, static_cast<TypeParam>(-1)));
         tests.emplace_back(n, std::nextafter(n, static_cast<TypeParam>(1)));
