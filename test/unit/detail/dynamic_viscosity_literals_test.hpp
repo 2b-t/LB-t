@@ -8,6 +8,8 @@
 #define LBT_UNIT_DYNAMIC_VISCOSITY_LITERALS_UNITTEST
 #pragma once
 
+#include <utility>
+
 #include <gtest/gtest.h>
 
 #include "../../../src/unit/detail/dynamic_viscosity.hpp"
