@@ -8,8 +8,8 @@
 #define LBT_MATERIAL_PHYSICAL_CONSTANTS
 #pragma once
 
-#include "../literals.hpp"
-#include "../units.hpp"
+#include "../../unit/literals.hpp"
+#include "../../unit/units.hpp"
 
 
 namespace lbt {

@@ -8,11 +8,9 @@
 #define LBT_MATERIAL_WATER
 #pragma once
 
-#include <cmath>
-
 #include "../../constexpr_math/constexpr_math.hpp"
-#include "../literals.hpp"
-#include "../units.hpp"
+#include "../../unit/literals.hpp"
+#include "../../unit/units.hpp"
 
 
 namespace lbt {

@@ -10,7 +10,7 @@
 
 #include <gtest/gtest.h>
 
-#include "../../../src/unit/material/ideal_gas.hpp"
+#include "../../../src/material/detail/ideal_gas.hpp"
 
 
 namespace lbt {

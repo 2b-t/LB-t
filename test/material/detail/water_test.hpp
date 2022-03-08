@@ -10,7 +10,7 @@
 
 #include <gtest/gtest.h>
 
-#include "../../../src/unit/material/water.hpp"
+#include "../../../src/material/detail/water.hpp"
 
 
 namespace lbt {

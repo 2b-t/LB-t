@@ -9,7 +9,7 @@
 #include <iostream>
 
 #include "unit/literals.hpp"
-#include "unit/materials.hpp"
+#include "material/materials.hpp"
 #include "general/openmp_manager.hpp"
 
 #include "lattice/lattice.hpp"

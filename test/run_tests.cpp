@@ -7,7 +7,7 @@
 
 #include <gtest/gtest.h>
 
-//#include "continuum/simple_continuum_test.hpp"
+#include "continuum/simple_continuum_test.hpp"
 #include "constexpr_math/constexpr_math_test.hpp"
 #include "general/disclaimer_test.hpp"
 #include "general/openmp_manager_test.hpp"
@@ -28,9 +28,7 @@
 #include "unit/characteristic_numbers_test.hpp"
 #include "unit/literals_test.hpp"
 #include "unit/units_test.hpp"
-#include "unit/material/air_test.hpp"
-#include "unit/material/ideal_gas_test.hpp"
-#include "unit/material/water_test.hpp"
+#include "material/materials_test.hpp"
 #include "simulation_test.hpp"
 
 // Only compiled if VTK is installed

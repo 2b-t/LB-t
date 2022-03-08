@@ -8,9 +8,9 @@
 #define LBT_MATERIALS
 #pragma once
 
-#include "material/air.hpp"
-#include "material/pure_gas.hpp"
-#include "material/water.hpp"
+#include "detail/air.hpp"
+#include "detail/pure_gas.hpp"
+#include "detail/water.hpp"
 
 
 #endif // LBT_MATERIALS
