@@ -18,7 +18,6 @@
 #include "ipow.hpp"
 #include "is_inf.hpp"
 #include "is_nan.hpp"
-#include "is_nearly_equal_eps_abs.hpp"
 #include "is_nearly_equal_eps_rel.hpp"
 #include "mathematical_constants.hpp"
 
@@ -37,7 +36,7 @@ namespace lbt {
     */
     template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
     constexpr T exp(T const x) noexcept {
-      if (cem::isNearlyEqualEpsAbs(x, static_cast<T>(0.0))) {
+      if (cem::isNearlyEqualEpsRel(x, static_cast<T>(0.0))) {
         return static_cast<T>(1.0);
       } else if (cem::isNegInf(x)) {
         return static_cast<T>(0.0);
@@ -45,7 +44,7 @@ namespace lbt {
         return std::numeric_limits<T>::infinity();
       } else if (cem::isNan(x)) {
         return std::numeric_limits<T>::quiet_NaN();
-      } else if (cem::isNearlyEqualEpsAbs(x, static_cast<T>(1.0))) {
+      } else if (cem::isNearlyEqualEpsRel(x, static_cast<T>(1.0))) {
         return cem::e<T>;
       } 
 

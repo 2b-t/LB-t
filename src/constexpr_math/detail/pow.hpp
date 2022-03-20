@@ -16,7 +16,7 @@
 #include "ipow.hpp"
 #include "is_inf.hpp"
 #include "is_nan.hpp"
-#include "is_nearly_equal_eps_abs.hpp"
+#include "is_nearly_equal_eps_rel.hpp"
 #include "log.hpp"
 
 
@@ -37,7 +37,7 @@ namespace lbt {
       auto constexpr neg_inf {-std::numeric_limits<T>::infinity()};
       auto constexpr nan {-std::numeric_limits<T>::quiet_NaN()};
       
-      bool const is_base_nearly_zero {cem::isNearlyEqualEpsAbs(x, static_cast<T>(0.0))};
+      bool const is_base_nearly_zero {cem::isNearlyEqualEpsRel(x, static_cast<T>(0.0))};
       bool const is_base_pos {(x > static_cast<T>(0.0))};
       bool const is_base_neg {(x < static_cast<T>(0.0))};
       bool const is_base_neg_inf {cem::isNegInf(x)};
@@ -53,7 +53,7 @@ namespace lbt {
       bool const is_exp_inf {is_exp_neg_inf || is_exp_pos_inf};
       bool const is_exp_nan {cem::isNan(y)};
       bool const is_exp_finite {!is_exp_nan && !is_exp_inf};
-      bool const is_exp_int {cem::isNearlyEqualEpsAbs(y, cem::ceil(y)) && is_exp_finite};
+      bool const is_exp_int {cem::isNearlyEqualEpsRel(y, cem::ceil(y)) && is_exp_finite};
 
       // Avoid overflow with integer version and ceil function but reducing possible max and min!
       if ((y > static_cast<T>(std::numeric_limits<std::int64_t>::max()-1)) && (!is_exp_pos_inf)) {
@@ -70,11 +70,11 @@ namespace lbt {
         return pos_inf;
       } else if (is_base_nearly_zero && is_exp_pos) {
         return static_cast<T>(+0.0);
-      } else if (cem::isNearlyEqualEpsAbs(x, static_cast<T>(-1.0)) && is_exp_inf) {
+      } else if (cem::isNearlyEqualEpsRel(x, static_cast<T>(-1.0)) && is_exp_inf) {
         return static_cast<T>(1.0);
-      } else if (cem::isNearlyEqualEpsAbs(x, static_cast<T>(1.0))) {
+      } else if (cem::isNearlyEqualEpsRel(x, static_cast<T>(1.0))) {
         return static_cast<T>(1.0);
-      } else if (cem::isNearlyEqualEpsAbs(y, static_cast<T>(0.0))) {
+      } else if (cem::isNearlyEqualEpsRel(y, static_cast<T>(0.0))) {
         return static_cast<T>(1.0);
       } else if (is_base_finite && is_base_neg && is_exp_finite) {
         return nan;

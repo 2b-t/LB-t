@@ -14,7 +14,7 @@
 
 #include "is_inf.hpp"
 #include "is_nan.hpp"
-#include "is_nearly_equal.hpp"
+#include "is_nearly_equal_eps_rel.hpp"
 
 
 namespace lbt {
@@ -34,7 +34,7 @@ namespace lbt {
         return x;
       }
 
-      return cem::isNearlyEqualEpsAbs(static_cast<T>(static_cast<std::int64_t>(x)), x)
+      return cem::isNearlyEqualEpsRel(static_cast<T>(static_cast<std::int64_t>(x)), x)
              ? static_cast<T>(static_cast<std::int64_t>(x))
              : static_cast<T>(static_cast<std::int64_t>(x)) + ((x > 0) ? 1 : 0);
     }

@@ -15,7 +15,6 @@
 #include "definitions.hpp"
 #include "is_inf.hpp"
 #include "is_nan.hpp"
-#include "is_nearly_equal_eps_abs.hpp"
 #include "is_nearly_equal_eps_rel.hpp"
 
 
@@ -65,9 +64,9 @@ namespace lbt {
         return x;
       } else if (cem::isNegInf(x)) {
         return std::numeric_limits<T>::quiet_NaN();
-      } else if (cem::isNearlyEqualEpsAbs(x, static_cast<T>(0.0), std::numeric_limits<T>::min())) {
+      } else if (cem::isNearlyEqualEpsRel(x, static_cast<T>(0.0))) {
         return 0.0;
-      } else if (cem::isNearlyEqualEpsAbs(x, static_cast<T>(1.0))) {
+      } else if (cem::isNearlyEqualEpsRel(x, static_cast<T>(1.0))) {
         return 1.0;
       }
 

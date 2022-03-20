@@ -16,7 +16,6 @@
 #include "exp.hpp"
 #include "is_inf.hpp"
 #include "is_nan.hpp"
-#include "is_nearly_equal_eps_abs.hpp"
 #include "is_nearly_equal_eps_rel.hpp"
 #include "mathematical_constants.hpp"
 
@@ -58,9 +57,9 @@ namespace lbt {
     */
     template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
     constexpr T log(T const x) noexcept {
-      if (cem::isNearlyEqualEpsAbs<T>(x, static_cast<T>(0.0))) {
+      if (cem::isNearlyEqualEpsRel<T>(x, static_cast<T>(0.0))) {
         return -std::numeric_limits<T>::infinity();
-      } else if (cem::isNearlyEqualEpsAbs<T>(x, static_cast<T>(1.0))) {
+      } else if (cem::isNearlyEqualEpsRel<T>(x, static_cast<T>(1.0))) {
         return static_cast<T>(0.0);
       } else if (x < static_cast<T>(0.0)) {
         return std::numeric_limits<T>::quiet_NaN();
@@ -70,7 +69,7 @@ namespace lbt {
         return std::numeric_limits<T>::infinity();
       } else if (cem::isNan(x)) {
         return std::numeric_limits<T>::quiet_NaN();
-      } else if (cem::isNearlyEqualEpsAbs<T>(x, cem::e<T>)) {
+      } else if (cem::isNearlyEqualEpsRel<T>(x, cem::e<T>)) {
         return static_cast<T>(1.0);
       }
 
