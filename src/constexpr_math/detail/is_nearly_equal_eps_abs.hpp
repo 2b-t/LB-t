@@ -28,7 +28,7 @@ namespace lbt {
     */
     template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
     constexpr bool isNearlyEqualEpsAbs(T const a, T const b, T epsilon = 10*std::numeric_limits<T>::epsilon()) noexcept {
-      return (cem::abs(a - b) <= epsilon);
+      return (cem::abs(a - b) < epsilon);
     }
 
   }

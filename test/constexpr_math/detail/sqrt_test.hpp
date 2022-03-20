@@ -99,7 +99,12 @@ namespace lbt {
     }
 
     TYPED_TEST(SqrtTest, positiveNumbersCorrectSqrt) {
-      std::vector<std::pair<TypeParam,TypeParam>> const tests = { {4.0, 2.0}, {9.8596, 3.14}, {100.0, 10.0} };
+      std::vector<std::pair<TypeParam,TypeParam>> const tests = { {5.0e-13,7.0710678118654752440084436210484903928483593768847403e-7}, 
+                                                                  {4.0, 2.0}, 
+                                                                  {9.8596, 3.14}, 
+                                                                  {100.0, 10.0}, 
+                                                                  {5.0e13, 7.07106781186547524400844362104849039284835937688474036e6}
+                                                                };
       for (auto const& [n, solution]: tests) {
         if constexpr (std::is_same_v<TypeParam,float>) {
           EXPECT_FLOAT_EQ(lbt::cem::sqrt(n), solution);
@@ -112,7 +117,7 @@ namespace lbt {
     }
 
     TYPED_TEST(SqrtTest, positiveNumbersEqualToStdSqrt) {
-      std::vector<TypeParam> const tests = { {4.0}, {9.8596}, {100.0} };
+      std::vector<TypeParam> const tests = { 5.0e-13, 4.0, 9.8596, 100.0, 5.0e13 };
       for (auto const& n: tests) {
         if constexpr (std::is_same_v<TypeParam,float>) {
           EXPECT_FLOAT_EQ(lbt::cem::sqrt(n), std::sqrt(n));

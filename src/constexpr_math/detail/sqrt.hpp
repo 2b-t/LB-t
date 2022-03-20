@@ -65,13 +65,13 @@ namespace lbt {
         return x;
       } else if (cem::isNegInf(x)) {
         return std::numeric_limits<T>::quiet_NaN();
-      } else if (cem::isNearlyEqualEpsAbs(x, static_cast<T>(0.0))) {
-        return x;
+      } else if (cem::isNearlyEqualEpsAbs(x, static_cast<T>(0.0), std::numeric_limits<T>::min())) {
+        return 0.0;
+      } else if (cem::isNearlyEqualEpsAbs(x, static_cast<T>(1.0), std::numeric_limits<T>::epsilon())) {
+        return 1.0;
       }
 
-      return ((x >= static_cast<T>(0.0)) && (x < std::numeric_limits<T>::infinity()))
-             ? cem::detail::sqrtNewton(x, x, static_cast<T>(0), 0)
-             : std::numeric_limits<T>::quiet_NaN();
+      return cem::detail::sqrtNewton(x, x, static_cast<T>(0), 0);
     }
 
   }
