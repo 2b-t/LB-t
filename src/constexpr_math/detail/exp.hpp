@@ -13,7 +13,9 @@
 #include <limits>
 #include <type_traits>
 
-#include "definitions.hpp"
+#include "abs.hpp"
+#include "ceil.hpp"
+#include "ipow.hpp"
 #include "is_inf.hpp"
 #include "is_nan.hpp"
 #include "is_nearly_equal_eps_abs.hpp"
@@ -24,40 +26,10 @@
 namespace lbt {
   namespace cem {
 
-    namespace detail {
-      /**\fn        cem::detail::expTaylor
-       * \brief     Exponential function https://en.wikipedia.org/wiki/Exponential_function calculated by Taylor series expansion 
-       *            to be evaluated as a constant expression at compile time
-       * \warning   Implementation does not work well for negative numbers yet
-       *
-       * \tparam    T       Floating point data type of the corresponding number
-       * \tparam    RD      Maximum recursion depth
-       * \param[in] x       The number of interest
-       * \param[in] sum     The sum of the different Taylor terms
-       * \param[in] prod    The product of the point of reference
-       * \param[in] n       The factorial for the current term
-       * \param[in] i       The product of the point of reference
-       * \param[in] depth   Current recursion depth
-       * \return    The sum of the Taylor terms up to the corresponding degree
-      */
-      template <typename T, std::int64_t RD = cem::default_max_recursion_depth, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
-      constexpr T expTaylor(T const x, T const sum, T prod, T n, std::int64_t const i, std::int64_t const depth = 0) noexcept {
-        if ((depth >= RD) || cem::isPosInf(prod) || cem::isNegInf(prod)) {
-          return sum;
-        }
-        // Dirty hack: Avoid drifting away to infinity individually
-        constexpr T division_factor {1e4};
-        if ((prod > division_factor) && (n > division_factor)) {
-          prod /= division_factor;
-          n /= division_factor;
-        }
-        auto const sum_iteration {sum + prod/n};
-        return cem::isNearlyEqualEpsRel(sum, sum_iteration) ? sum : expTaylor(x, sum_iteration, prod*x, n*i, i+1, depth+1);
-      }
-    }
     /**\fn        cem::exp
-     * \brief     Exponential function calculated by Taylor series expansion that can
-     *            be evaluated as a constant expression at compile time
+     * \brief     Exponential function https://en.wikipedia.org/wiki/Exponential_function calculated by Taylor series expansion 
+     *            with Horner's method https://www.pseudorandom.com/implementing-exp#section-7 that can be evaluated as a 
+     *            constant expression at compile time
      *
      * \tparam    T   Floating point data type of the corresponding number
      * \param[in] x   The number of interest
@@ -77,7 +49,17 @@ namespace lbt {
         return cem::e<T>;
       } 
 
-      return cem::detail::expTaylor(x, static_cast<T>(1.0), x, static_cast<T>(1.0), 2, 0);
+      T const abs_x {cem::abs(x)};
+      constexpr std::int64_t multiplier {12}; // Heuristic constant
+      std::int64_t const n {static_cast<std::int64_t>(cem::ceil(abs_x*cem::e<T>)*multiplier)};
+      T taylor_series {1.0};
+      for (std::int64_t i = n; i > 0; --i) {
+        taylor_series = taylor_series*(abs_x / static_cast<T>(i)) + 1.0;
+      };
+      if (x < 0.0) {
+        return 1.0 / taylor_series;
+      }
+      return taylor_series;
     }
 
   }

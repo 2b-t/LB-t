@@ -180,7 +180,13 @@ namespace lbt {
                                                                                               { 2.7, 4.0, 53.1441 }
                                                                                             };
       for (auto const& [base, exponent, solution]: base_exponent_solution) {
-        EXPECT_NEAR(lbt::cem::pow(base, exponent), solution, 0.0005);
+        if constexpr (std::is_same_v<TypeParam,float>) {
+          EXPECT_FLOAT_EQ(lbt::cem::pow(base, exponent), solution);
+        } else if constexpr (std::is_same_v<TypeParam,double>) {
+          EXPECT_DOUBLE_EQ(lbt::cem::pow(base, exponent), solution);
+        } else {
+          GTEST_SKIP() << "Test not implemented for given data type!";
+        }
       }
     }
     
@@ -193,7 +199,13 @@ namespace lbt {
                                                                                               { 2.7, -4.0,   0.0188167642315892074567073296941711309439806112061357704806366087 }
                                                                                             };
       for (auto const& [base, exponent, solution]: base_exponent_solution) {
-        EXPECT_NEAR(lbt::cem::pow(base, exponent), solution, 0.0005);
+        if constexpr (std::is_same_v<TypeParam,float>) {
+          EXPECT_FLOAT_EQ(lbt::cem::pow(base, exponent), solution);
+        } else if constexpr (std::is_same_v<TypeParam,double>) {
+          EXPECT_DOUBLE_EQ(lbt::cem::pow(base, exponent), solution);
+        } else {
+          GTEST_SKIP() << "Test not implemented for given data type!";
+        }
       }
     }
 
@@ -202,7 +214,13 @@ namespace lbt {
                                                                                               { -2.7, 4.0, 53.1441 }
                                                                                             };
       for (auto const& [base, exponent, solution]: base_exponent_solution) {
-        EXPECT_NEAR(lbt::cem::pow(base, exponent), solution, 0.0005);
+        if constexpr (std::is_same_v<TypeParam,float>) {
+          EXPECT_FLOAT_EQ(lbt::cem::pow(base, exponent), solution);
+        } else if constexpr (std::is_same_v<TypeParam,double>) {
+          EXPECT_DOUBLE_EQ(lbt::cem::pow(base, exponent), solution);
+        } else {
+          GTEST_SKIP() << "Test not implemented for given data type!";
+        }
       }
     }
     
@@ -211,7 +229,81 @@ namespace lbt {
                                                                                               { -2.7, -4.0, 0.0188167642315892074567073296941711309439806112061357704806366087 }
                                                                                             };
       for (auto const& [base, exponent, solution]: base_exponent_solution) {
-        EXPECT_NEAR(lbt::cem::pow(base, exponent), solution, 0.0005);
+        if constexpr (std::is_same_v<TypeParam,float>) {
+          EXPECT_FLOAT_EQ(lbt::cem::pow(base, exponent), solution);
+        } else if constexpr (std::is_same_v<TypeParam,double>) {
+          EXPECT_DOUBLE_EQ(lbt::cem::pow(base, exponent), solution);
+        } else {
+          GTEST_SKIP() << "Test not implemented for given data type!";
+        }
+      }
+    }
+
+    TYPED_TEST(PowTest, positiveBasePositiveExponentEqualToStdPow) {
+      std::vector<std::tuple<TypeParam,TypeParam>> const base_exponent = { { 0.7, 0.6 },
+                                                                           { 0.3, 5.0 },
+                                                                           { 0.5, 3.2 },
+                                                                           { 1.3, 0.5 },
+                                                                           { 1.7, 3.5 }, 
+                                                                           { 2.7, 4.0 }
+                                                                         };
+      for (auto const& [base, exponent]: base_exponent) {
+        if constexpr (std::is_same_v<TypeParam,float>) {
+          EXPECT_FLOAT_EQ(lbt::cem::pow(base, exponent), std::pow(base, exponent));
+        } else if constexpr (std::is_same_v<TypeParam,double>) {
+          EXPECT_DOUBLE_EQ(lbt::cem::pow(base, exponent), std::pow(base, exponent));
+        } else {
+          GTEST_SKIP() << "Test not implemented for given data type!";
+        }
+      }
+    }
+    
+    TYPED_TEST(PowTest, positiveBaseNegativeExponentEqualToStdPow) {
+      std::vector<std::tuple<TypeParam,TypeParam>> const base_exponent = { { 0.7, -0.6 },
+                                                                           { 0.3, -5.0 },
+                                                                           { 0.5, -3.2 },
+                                                                           { 1.3, -0.5 },
+                                                                           { 1.7, -3.5 },
+                                                                           { 2.7, -4.0 }
+                                                                         };
+      for (auto const& [base, exponent]: base_exponent) {
+        if constexpr (std::is_same_v<TypeParam,float>) {
+          EXPECT_FLOAT_EQ(lbt::cem::pow(base, exponent), std::pow(base, exponent));
+        } else if constexpr (std::is_same_v<TypeParam,double>) {
+          EXPECT_DOUBLE_EQ(lbt::cem::pow(base, exponent), std::pow(base, exponent));
+        } else {
+          GTEST_SKIP() << "Test not implemented for given data type!";
+        }
+      }
+    }
+
+    TYPED_TEST(PowTest, negativeBasePositiveExponentEqualToStdPow) {
+      std::vector<std::tuple<TypeParam,TypeParam>> const base_exponent = { { -0.3, 5.0 },
+                                                                           { -2.7, 4.0 }
+                                                                         };
+      for (auto const& [base, exponent]: base_exponent) {
+        if constexpr (std::is_same_v<TypeParam,float>) {
+          EXPECT_FLOAT_EQ(lbt::cem::pow(base, exponent), std::pow(base, exponent));
+        } else if constexpr (std::is_same_v<TypeParam,double>) {
+          EXPECT_DOUBLE_EQ(lbt::cem::pow(base, exponent), std::pow(base, exponent));
+        } else {
+          GTEST_SKIP() << "Test not implemented for given data type!";
+        }
+      }
+    }
+    
+    TYPED_TEST(PowTest, negativeBaseNegativeExponentEqualToStdPow) {
+      std::vector<std::tuple<TypeParam,TypeParam>> const base_exponent = { { -0.3, -5.0 },
+                                                                           { -2.7, -4.0 }
+                                                                         };
+      for (auto const& [base, exponent]: base_exponent) {
+        if constexpr (std::is_same_v<TypeParam,float>) {
+          EXPECT_FLOAT_EQ(lbt::cem::pow(base, exponent), std::pow(base, exponent));
+        } else if constexpr (std::is_same_v<TypeParam,double>) {
+          EXPECT_DOUBLE_EQ(lbt::cem::pow(base, exponent), std::pow(base, exponent));
+        } else {
+          GTEST_SKIP() << "Test not implemented for given data type!";
+        }
       }
     }
 

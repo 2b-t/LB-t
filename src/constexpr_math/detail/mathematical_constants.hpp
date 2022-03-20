@@ -22,6 +22,10 @@ namespace lbt {
     template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
     inline constexpr T e = static_cast<T>(2.71828182845904523536L);
 
+    /// Variable templates for natural logarithm of two
+    template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
+    inline constexpr T ln2 = static_cast<T>(0.69314718055994530942L);
+
   }
 }
 

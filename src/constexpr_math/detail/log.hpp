@@ -27,7 +27,7 @@ namespace lbt {
     namespace detail {
       /**\fn        cem::detail::logNewton
        * \brief     Natural logarithm https://en.wikipedia.org/wiki/Natural_logarithm#High_precision calculated by means of 
-       *            Newton method to be evaluated as a constant expression at compile time
+       *            Halley-Newton approximation method to be evaluated as a constant expression at compile time
        *
        * \tparam    T       Floating point data type of the corresponding number
        * \tparam    RD      Maximum recursion depth

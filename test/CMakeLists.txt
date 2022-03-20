@@ -27,7 +27,7 @@ add_definitions(-DNDEBUG)
 set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_CXX_STANDARD 17) # The vast majority of code is written for C++17 but certain features require C++20
 set(CMAKE_CXX_STANDARD_REQUIRED True)
-set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+# set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 if(VTK_VERSION VERSION_LESS "8.90.0")
   include(${VTK_USE_FILE})

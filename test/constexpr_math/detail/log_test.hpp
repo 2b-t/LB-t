@@ -79,14 +79,26 @@ namespace lbt {
                                                                   {325.4, static_cast<TypeParam>(5.7850551947849374239386534894581251752940419349976263065587)}
                                                                 };
       for (auto const& [n, solution]: tests) {
-        EXPECT_NEAR(lbt::cem::log(n), solution, 0.0005);
+        if constexpr (std::is_same_v<TypeParam,float>) {
+          EXPECT_FLOAT_EQ(lbt::cem::log(n), solution);
+        } else if constexpr (std::is_same_v<TypeParam,double>) {
+          EXPECT_DOUBLE_EQ(lbt::cem::log(n), solution);
+        } else {
+          GTEST_SKIP() << "Test not implemented for given data type!";
+        }
       }
     }
 
     TYPED_TEST(LogTest, positiveNumbersEqualToStdLog) {
       std::vector<TypeParam> const tests = { 0.2, 1.5, 21.0, 325.4 };
       for (auto const& n: tests) {
-        EXPECT_NEAR(lbt::cem::log(n), std::log(n), 0.0005);
+        if constexpr (std::is_same_v<TypeParam,float>) {
+          EXPECT_FLOAT_EQ(lbt::cem::log(n), std::log(n));
+        } else if constexpr (std::is_same_v<TypeParam,double>) {
+          EXPECT_DOUBLE_EQ(lbt::cem::log(n), std::log(n));
+        } else {
+          GTEST_SKIP() << "Test not implemented for given data type!";
+        }
       }
     }
 

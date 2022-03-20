@@ -71,7 +71,12 @@
       "valarray": "cpp",
       "*.txx": "cpp",
       "*.tpp": "cpp",
-      "filesystem": "cpp"
+      "filesystem": "cpp",
+      "compare": "cpp",
+      "concepts": "cpp",
+      "numbers": "cpp",
+      "semaphore": "cpp",
+      "stop_token": "cpp"
     },
     "cmake.configureOnOpen": false
 }

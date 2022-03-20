@@ -13,10 +13,10 @@
 #include <type_traits>
 
 #include "exp.hpp"
+#include "ipow.hpp"
 #include "is_inf.hpp"
 #include "is_nan.hpp"
 #include "is_nearly_equal_eps_abs.hpp"
-#include "is_nearly_equal_eps_rel.hpp"
 #include "log.hpp"
 
 
@@ -31,65 +31,6 @@ namespace lbt {
      * \param[in] y   The exponent of the exponentiation
      * \return    The base \p x raised to the exponent \p y
     */
-    template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
-    constexpr T pow(T const x, std::int64_t const y) noexcept {
-      auto constexpr pos_inf {std::numeric_limits<T>::infinity()};
-      auto constexpr neg_inf {-std::numeric_limits<T>::infinity()};
-      auto constexpr nan {-std::numeric_limits<T>::quiet_NaN()};
-
-      bool const is_base_nearly_zero {cem::isNearlyEqualEpsAbs(x, static_cast<T>(0.0))};
-      bool const is_base_pos {(x > static_cast<T>(0.0))};
-      bool const is_base_neg {(x < static_cast<T>(0.0))};
-      bool const is_base_neg_inf {cem::isNegInf(x)};
-      bool const is_base_pos_inf {cem::isPosInf(x)};
-      bool const is_base_nan {cem::isNan(x)};
-
-      bool const is_exp_odd = (y & 1);
-      bool const is_exp_pos = (y > 0);
-      bool const is_exp_neg = (y < 0);
-
-      if (is_base_nearly_zero && is_base_pos && is_exp_neg && is_exp_odd) {
-        return pos_inf;
-      } else if (is_base_nearly_zero && is_base_neg && is_exp_neg && is_exp_odd) {
-        return neg_inf;
-      } else if (is_base_nearly_zero && is_exp_neg && !is_exp_odd) {
-        return pos_inf;
-      } else if (is_base_nearly_zero && is_base_pos && is_exp_pos && is_exp_odd) {
-        return static_cast<T>(+0.0);
-      } else if (is_base_nearly_zero && is_base_neg && is_exp_pos && is_exp_odd) {
-        return static_cast<T>(-0.0);
-      } else if (is_base_nearly_zero && is_exp_pos && !is_exp_odd) {
-        return static_cast<T>(+0.0);
-      } else if (cem::isNearlyEqualEpsAbs(x, static_cast<T>(1.0))) {
-        return static_cast<T>(1.0);
-      } else if (y == 0) {
-        return static_cast<T>(1.0);
-      } else if (is_base_neg_inf && is_exp_neg && is_exp_odd) {
-        return static_cast<T>(-0.0);
-      } else if (is_base_neg_inf && is_exp_neg && !is_exp_odd) {
-        return static_cast<T>(+0.0);
-      } else if (is_base_neg_inf && is_exp_pos && is_exp_odd) {
-        return neg_inf;
-      } else if (is_base_neg_inf && is_exp_pos && !is_exp_odd) {
-        return pos_inf;
-      } else if (is_base_pos_inf && is_exp_neg) {
-        return static_cast<T>(+0.0);
-      } else if (is_base_pos_inf && is_exp_pos) {
-        return pos_inf;
-      } else if (is_base_nan) {
-        return nan;
-      }
-
-      if (is_exp_neg) {
-        return static_cast<T>(1.0) / cem::pow(x, -y);
-      } else if (y == 0) {
-        return static_cast<T>(1.0);
-      } else if (y == 1) {
-        return x;
-      }
-      return is_exp_odd ? x*cem::pow(x, y-1) : cem::pow(x, y/2)*cem::pow(x, y/2);
-    }
-
     template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
     constexpr T pow(T const x, T const y) noexcept {
       auto constexpr pos_inf {std::numeric_limits<T>::infinity()};
@@ -122,7 +63,7 @@ namespace lbt {
       }
 
       if (is_exp_int) {
-        return pow(x, static_cast<std::int64_t>(y));
+        return cem::ipow(x, static_cast<std::int64_t>(y));
       } else if (is_base_nearly_zero && is_exp_neg && is_exp_finite) {
         return pos_inf;
       } else if (is_base_nearly_zero && is_exp_neg_inf) {
