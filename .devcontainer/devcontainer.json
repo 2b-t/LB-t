@@ -1,7 +1,7 @@
 {
   "name": "LB-t Docker Compose",
   "dockerComposeFile": [
-    "../docker-compose.yml" // Alternatives: "../docker-compose-gui.yml", "../docker-compose-gui-nvidia.yml", "../docker-compose-nvidia.yml"
+    "../docker/docker-compose.yml" // Alternatives: "../docker/docker-compose-gui.yml", "../docker/docker-compose-gui-nvidia.yml", "../docker/docker-compose-nvidia.yml"
   ],
   "service": "lbt_docker",
 	"workspaceFolder": "/code/lbt",

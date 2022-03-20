@@ -7,7 +7,7 @@ services:
     #stdin_open: true # Docker run -i
     tty: true        # Docker run -t
     volumes: # Mount relevant folders into container
-      - ./.vscode:/code/lbt/.vscode # Necessary for using VS Code Tasks inside container
-      - ./src:/code/lbt/src
-      - ./test:/code/lbt/test
-      - ./examples:/code/lbt/examples
+      - ../.vscode:/code/lbt/.vscode # Necessary for using VS Code Tasks inside container
+      - ../src:/code/lbt/src
+      - ../test:/code/lbt/test
+      - ../examples:/code/lbt/examples

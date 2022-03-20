@@ -6,13 +6,13 @@ Author: [Tobit Flatscher](https://github.com/2b-t)
 
 This code is shipped with a [Docker](https://www.docker.com/) that allows the software to be run without having to install all the dependencies. For this one has to [set-up Docker](https://docs.docker.com/get-docker/) (select your operating system and follow the steps) as well as [Docker Compose](https://docs.docker.com/compose/install/) ideally with `$ sudo pip3 install docker-compose`.
 
-Open a console and start the docker with
+Then browse the `docker` folder containing all the different Docker files, open a console and start the docker with
 
 ```bash
 $ sudo docker-compose up
 ```
 
-then open another terminal and connect to the Docker
+and then - after the container had been compiled - open another terminal and connect to the Docker
 
 ```bash
 $ sudo docker-compose exec lbt_docker sh
@@ -42,7 +42,7 @@ $ docker-compose -f docker-compose-gui.yml up
 
 Another problem emerges when wanting to use hardware acceleration such as with OpenGL. In such a case one has to allow the Docker to access the host graphics card. This can be achieved with the [`nvidia-docker`]()https://github.com/NVIDIA/nvidia-docker) or alternatively with the [`nvidia-container-runtime`](https://github.com/NVIDIA/nvidia-container-runtime).
 
-Latter was chosen for this Docker: The configuration files `docker-compose-gui-nvidia.yml` and `docker-compose-nvidia.yml` contain Docker Compose configurations for accessing the hardware accelerators inside the Docker. Former is useful when running hardware-accelerated graphic user interfaces while the latter can be used to run CUDA inside the Docker.
+Latter was chosen for this Docker: The configuration files `docker-compose-gui-nvidia.yml` and `docker-compose-nvidia.yml` inside the `docker` folder contain Docker Compose configurations for accessing the hardware accelerators inside the Docker. Former is useful when running hardware-accelerated graphic user interfaces while the latter can be used to run CUDA inside the Docker.
 
 For this start by launching `docker info` and check if the field `runtime` additionally to the default `runc` also holds an `nvidia` runtime. If not please follow the [installation guide](https://github.com/NVIDIA/nvidia-container-runtime#installation) as well as the [engine setup](https://github.com/NVIDIA/nvidia-container-runtime#docker-engine-setup) (and then restart your computer).
 
@@ -78,7 +78,7 @@ The Docker Compose file can be changed inside `.devcontainer/devcontainers.json`
 {
   "name": "LB-t Docker Compose",
   "dockerComposeFile": [
-    "../docker-compose.yml" // Change Docker Compose file here
+    "../docker/docker-compose.yml" // Change Docker Compose file here
   ],
 ```
 
