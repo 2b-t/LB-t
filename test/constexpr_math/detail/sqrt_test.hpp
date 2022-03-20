@@ -152,19 +152,13 @@ namespace lbt {
     }
 
     TYPED_TEST(SqrtTest, smallestPositiveNumberLargerSqrt) {
-      std::vector<TypeParam> const zeros {static_cast<TypeParam>(-0), static_cast<TypeParam>(+0)};
-      for (auto const& z: zeros) {
-        auto const smallest_positive_number {std::nextafter(z, static_cast<TypeParam>(1))};
-        EXPECT_GT(lbt::cem::sqrt(smallest_positive_number), z);
-      }
+      auto const smallest_positive_number {std::numeric_limits<TypeParam>::min()};
+      EXPECT_GT(lbt::cem::sqrt(smallest_positive_number), smallest_positive_number);
     }
 
     TYPED_TEST(SqrtTest, smallestNegativeNumberIsNan) {
-      std::vector<TypeParam> const zeros {static_cast<TypeParam>(-0), static_cast<TypeParam>(+0)};
-      for (auto const& z: zeros) {
-        auto const smallest_negative_number {std::nextafter(z, static_cast<TypeParam>(-1))};
-        EXPECT_TRUE(std::isnan(lbt::cem::sqrt(smallest_negative_number)));
-      }
+      auto const smallest_negative_number {-std::numeric_limits<TypeParam>::min()};
+      EXPECT_TRUE(std::isnan(lbt::cem::sqrt(smallest_negative_number)));
     }
 
   }
