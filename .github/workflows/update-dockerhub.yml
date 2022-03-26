@@ -25,6 +25,7 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v2
         with:
-          context: "{{defaultContext}}:docker"
+          context: ./docker
+          file: ./docker/Dockerfile
           push: true
           tags: tobitflatscher/lbt:latest
