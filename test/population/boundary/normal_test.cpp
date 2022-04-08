@@ -4,10 +4,6 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
-#ifndef LBT_BOUNDARY_NORMAL_UNITTEST
-#define LBT_BOUNDARY_NORMAL_UNITTEST
-#pragma once
-
 #include <cstdint>
 #include <cmath>
 #include <utility>
@@ -91,5 +87,3 @@ namespace lbt {
 
   }
 }
-
-#endif // LBT_BOUNDARY_NORMAL_UNITTEST

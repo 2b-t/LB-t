@@ -4,11 +4,6 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
-
-#ifndef LBT_TESTING_UTILITIES_UNITTEST
-#define LBT_TESTING_UTILITIES_UNITTEST
-#pragma once
-
 #include <tuple>
 #include <type_traits>
 
@@ -36,5 +31,3 @@ namespace lbt {
     }
   }
 }
-
-#endif // LBT_TESTING_UTILITIES_UNITTEST

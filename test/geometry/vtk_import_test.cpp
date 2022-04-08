@@ -1,12 +1,8 @@
 /**
- * \file     vtk_import_test.hpp
+ * \file     vtk_import_test.cpp
  * \mainpage Functions for unit testing voxelising geometries
  * \author   Tobit Flatscher (github.com/2b-t)
 */
-
-#ifndef LBT_VTK_IMPORT_UNITTEST
-#define LBT_VTK_IMPORT_UNITTEST
-#pragma once
 
 #include "../../src/general/use_vtk.hpp"
 
@@ -351,5 +347,3 @@
     }
   }
 #endif // LBT_USE_VTK
-
-#endif // LBT_VTK_IMPORT_UNITTEST

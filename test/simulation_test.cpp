@@ -4,10 +4,6 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
-#ifndef LBT_SIMULATION_UNITTEST
-#define LBT_SIMULATION_UNITTEST
-#pragma once
-
 #include <cstdint>
 #include <string>
 
@@ -99,5 +95,3 @@ namespace lbt {
 
   }
 }
-
-#endif // LBT_SIMULATION_UNITTEST

@@ -99,7 +99,7 @@ namespace lbt {
    * 
    * \param[in] ptr   The pointer to the heap-allocated memory that should be freed
   */
-  void aligned_free(void* ptr) noexcept {
+  inline void aligned_free(void* ptr) noexcept {
     #ifdef _WIN32
       _aligned_free(ptr);
     #else

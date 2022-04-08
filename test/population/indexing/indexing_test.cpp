@@ -4,10 +4,6 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
-#ifndef LBT_INDEXING_UNITTEST
-#define LBT_INDEXING_UNITTEST
-#pragma once
-
 #include <cstdint>
 #include <limits>
 #include <utility>
@@ -191,5 +187,3 @@ namespace lbt {
 
   }
 }
-
-#endif // LBT_INDEXING_UNITTEST

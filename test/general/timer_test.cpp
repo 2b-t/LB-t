@@ -1,12 +1,8 @@
 /**
- * \file     timer_test.hpp
+ * \file     timer_test.cpp
  * \mainpage Tests for output stream manager
  * \author   Tobit Flatscher (github.com/2b-t)
 */
-
-#ifndef LBT_TIMER_UNITTEST
-#define LBT_TIMER_UNITTEST
-#pragma once
 
 #include <chrono>
 #include <thread>
@@ -52,5 +48,3 @@ namespace lbt {
 
   }
 }
-
-#endif // LBT_TIMER_UNITTEST

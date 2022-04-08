@@ -1,12 +1,8 @@
 /**
- * \file     tuple_utilities_test.hpp
+ * \file     tuple_utilities_test.cpp
  * \mainpage Tests for utility tools for handling tuples
  * \author   Tobit Flatscher (github.com/2b-t)
 */
-
-#ifndef LBT_TUPLE_UTILITIES_UNITTEST
-#define LBT_TUPLE_UTILITIES_UNITTEST
-#pragma once
 
 #include <tuple>
 #include <type_traits>
@@ -80,5 +76,3 @@ namespace lbt {
 
   }
 }
-
-#endif // LBT_TUPLE_UTILITIES_UNITTEST

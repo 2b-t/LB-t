@@ -4,10 +4,6 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
-#ifndef LBT_AB_POPULATION_UNITTEST
-#define LBT_AB_POPULATION_UNITTEST
-#pragma once
-
 #include <cstdint>
 #include <limits>
 #include <utility>
@@ -59,5 +55,3 @@ namespace lbt {
 
   }
 }
-
-#endif // LBT_AB_POPULATION_UNITTEST

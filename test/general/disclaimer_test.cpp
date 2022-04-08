@@ -1,12 +1,8 @@
 /**
- * \file     disclaimer_test.hpp
+ * \file     disclaimer_test.cpp
  * \mainpage Tests for printing the program's disclaimer
  * \author   Tobit Flatscher (github.com/2b-t)
 */
-
-#ifndef LBT_DISCLAIMER_UNITTEST
-#define LBT_DISCLAIMER_UNITTEST
-#pragma once
 
 #include <string>
 
@@ -25,5 +21,3 @@ namespace lbt {
 
   }
 }
-
-#endif // LBT_DISCLAIMER_UNITTEST

@@ -4,10 +4,6 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
-#ifndef LBT_AA_PATTERN_UNITTEST
-#define LBT_AA_PATTERN_UNITTEST
-#pragma once
-
 #include <cstdint>
 #include <limits>
 #include <utility>
@@ -136,5 +132,3 @@ namespace lbt {
 
   }
 }
-
-#endif // LBT_AA_PATTERN_UNITTEST

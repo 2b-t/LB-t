@@ -1,12 +1,8 @@
 /**
- * \file     type_defintions_test.hpp
+ * \file     type_defintions_test.cpp
  * \mainpage Contains unit-tests for type and function definitions that depend on the compiler
  * \author   Tobit Flatscher (github.com/2b-t)
 */
-
-#ifndef LBT_TYPE_DEFINITIONS_UNITTEST
-#define LBT_TYPE_DEFINITIONS_UNITTEST
-#pragma once
 
 #include <cstdint>
 #include <type_traits>
@@ -96,5 +92,3 @@ namespace lbt {
     }
   }
 }
-
-#endif // LBT_TYPE_DEFINITIONS_UNITTEST

@@ -4,10 +4,6 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
-#ifndef LBT_VTK_CONTINUUM_UNITTEST
-#define LBT_VTK_CONTINUUM_UNITTEST
-#pragma once
-
 #include "../../src/general/use_vtk.hpp"
 
 #ifdef LBT_USE_VTK
@@ -67,5 +63,3 @@
   }
 
 #endif // LBT_USE_VTK
-
-#endif // LBT_VTK_CONTINUUM_UNITTEST

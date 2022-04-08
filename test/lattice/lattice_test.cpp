@@ -4,10 +4,6 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
-#ifndef LBT_LATTICE_UNITTEST
-#define LBT_LATTICE_UNITTEST
-#pragma once
-
 #include <cstdint>
 #include <type_traits>
 
@@ -130,5 +126,3 @@ namespace lbt {
 
   }
 }
-
-#endif // LBT_LATTICE_UNITTEST

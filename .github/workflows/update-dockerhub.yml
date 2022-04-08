@@ -1,4 +1,4 @@
-name: update-dockerhub
+name: dockerhub
 
 on:
   push:

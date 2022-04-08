@@ -1,12 +1,8 @@
 /**
- * \file     vtk_utilities_test.hpp
+ * \file     vtk_utilities_test.cpp
  * \mainpage Unit tests for handling geometries with VTK
  * \author   Tobit Flatscher (github.com/2b-t)
 */
-
-#ifndef LBT_VTK_UTILITITES_UNITTEST
-#define LBT_VTK_UTILITITES_UNITTEST
-#pragma once
 
 #include "../../src/general/use_vtk.hpp"
 
@@ -30,5 +26,3 @@
     }
   }
 #endif // LBT_USE_VTK
-
-#endif // LBT_VTK_UTILITITES_UNITTEST

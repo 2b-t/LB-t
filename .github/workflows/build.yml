@@ -1,0 +1,22 @@
+name: build
+
+on:
+  push
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    container:
+      image: tobitflatscher/lbt
+      volumes:
+        - ${{ github.workspace }}:/code/lbt
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Create build folder
+        run: mkdir build
+      - name: Run CMake
+        run: cmake -B/code/lbt/build -S/code/lbt/src -DVTK_DIR=/code/lbt/../VTK-build
+      - name: Compile with Make
+        run: make -j$(nproc) -C/code/lbt/build
+

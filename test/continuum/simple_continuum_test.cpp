@@ -4,10 +4,6 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
-#ifndef LBT_SIMPLE_CONTINUUM_UNITTEST
-#define LBT_SIMPLE_CONTINUUM_UNITTEST
-#pragma once
-
 #include <cstdint>
 #include <filesystem>
 #include <ostream>
@@ -59,5 +55,3 @@ namespace lbt {
     }
   }
 }
-
-#endif // LBT_SIMPLE_CONTINUUM_UNITTEST

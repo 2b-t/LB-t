@@ -1,12 +1,8 @@
 /**
- * \file     constexpr_math_test.hpp
+ * \file     constexpr_math_test.cpp
  * \mainpage Tests for constexpr math functions
  * \author   Tobit Flatscher (github.com/2b-t)
 */
-
-#ifndef LBT_CONSTEXPR_MATH_UNITTEST
-#define LBT_CONSTEXPR_MATH_UNITTEST
-#pragma once
 
 #include "detail/abs_test.hpp"
 #include "detail/ceil_test.hpp"
@@ -19,5 +15,3 @@
 #include "detail/mathematical_constants_test.hpp"
 #include "detail/pow_test.hpp"
 #include "detail/sqrt_test.hpp"
-
-#endif // LBT_CONSTEXPR_MATH_UNITTEST

@@ -1,13 +1,9 @@
 /**
- * \file     openmp_manager_test.hpp
+ * \file     openmp_manager_test.cpp
  * \brief    Unit-test for parallel computing settings
  *
  * \author   Tobit Flatscher (github.com/2b-t)
 */
-
-#ifndef LBT_OPENMP_MANAGER_UNITTEST
-#define LBT_OPENMP_MANAGER_UNITTEST
-#pragma once
 
 #if __has_include (<omp.h>)
     #include <omp.h>
@@ -79,5 +75,3 @@ namespace lbt {
 
   }
 }
-
-#endif // LBT_OPENMP_MANAGER_UNITTEST
