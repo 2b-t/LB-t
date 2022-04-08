@@ -1,3 +1,5 @@
+[![build](https://github.com/2b-t/lbt_prototype/actions/workflows/build.yml/badge.svg)](https://github.com/2b-t/lbt_prototype/actions/workflows/build.yml) [![tests](https://github.com/2b-t/lbt_prototype/actions/workflows/run-tests.yml/badge.svg)](https://github.com/2b-t/lbt_prototype/actions/workflows/run-tests.yml) [![dockerhub](https://github.com/2b-t/lbt_prototype/actions/workflows/update-dockerhub.yml/badge.svg)](https://github.com/2b-t/lbt_prototype/actions/workflows/update-dockerhub.yml)
+
 # LB-t - A parallel 3D lattice-Boltzmann CFD solver
 
 Author: [Tobit Flatscher](https://github.com/2b-t)

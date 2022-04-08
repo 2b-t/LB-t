@@ -1,7 +1,10 @@
 name: tests
 
 on:
-  push
+  push:
+    paths:
+      - 'src/**'
+      - 'test/**'
 
 jobs:
   unit-tests:
