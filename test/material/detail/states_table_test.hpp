@@ -94,7 +94,7 @@ namespace lbt {
                                                                 lbt::material::State{36.63_Pa,  56.74_K, lbt::unit::Density{15.32L}} };
       };
 
-      TEST(LinearMaterialX, linearMaterialXIsIndependentOfY) {
+      TEST(StatesTableTest, linearMaterialXIsIndependentOfY) {
         // Inside of quadrilateral (determined manually)
         constexpr auto pressure_limits {std::make_pair<lbt::unit::Pressure, lbt::unit::Pressure>(16.63_Pa, 25.34_Pa)};
         constexpr auto temperature_limits {std::make_pair<lbt::unit::Temperature, lbt::unit::Temperature>(56.74_K, 92.76_K)};
@@ -145,7 +145,7 @@ namespace lbt {
                                                                 lbt::material::State{ 56.74_Pa, 36.63_K, lbt::unit::Density{15.32L}} };
       };
 
-      TEST(LinearMaterialY, linearMaterialYIsIndependentOfX) {
+      TEST(StatesTableTest, linearMaterialYIsIndependentOfX) {
         // Inside of quadrilateral (determined manually)
         constexpr auto pressure_limits {std::make_pair<lbt::unit::Pressure, lbt::unit::Pressure>(56.74_Pa, 92.76_Pa)};
         constexpr auto temperature_limits {std::make_pair<lbt::unit::Temperature, lbt::unit::Temperature>(16.63_K, 25.34_K)};
@@ -197,7 +197,7 @@ namespace lbt {
                                                                 lbt::material::State{37.43_Pa, 215.36_K, lbt::unit::Density{18.49L}} };
       };
 
-      TEST(AxisAlignedMaterial, equalToLinearInterpolation) {
+      TEST(StatesTableTest, equalToManualBilinearInterpolation) {
         // Inside of quadrilateral (determined manually)
         constexpr auto pressure_limits {std::make_pair<lbt::unit::Pressure, lbt::unit::Pressure>(23.54_Pa, 37.43_Pa)};
         constexpr auto temperature_limits {std::make_pair<lbt::unit::Temperature, lbt::unit::Temperature>(95.73_K, 215.36_K)};
