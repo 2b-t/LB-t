@@ -24,7 +24,7 @@ namespace lbt {
          * 
          * \param[in] value   The value to be stored inside the class in the base unit meter squared per second
         */
-        constexpr KinematicViscosity(long double const value = 0.0) noexcept
+        explicit constexpr KinematicViscosity(long double const value = 0.0) noexcept
           : UnitBase{value} {
           return;
         }

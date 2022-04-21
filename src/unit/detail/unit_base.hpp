@@ -28,6 +28,16 @@ namespace lbt {
         public:
           /// All the operators for the derived class
 
+          /**\fn    operator-
+           * \brief Operator for inverting sign
+           * 
+           * \param[in] a   The derived unit class
+           * \return A new unit class of the same type holding a value with inverted sign
+          */
+          friend constexpr T operator- (T const& a) noexcept {
+            return T{-a.value};
+          }
+
           /**\fn    operator+
            * \brief Addition operator between two derived unit classes of the same type
            * 
@@ -69,6 +79,9 @@ namespace lbt {
            * \return The derived class scaled by the constant
           */
           friend constexpr T operator* (long double const c, T const& t) noexcept {
+            return T{c*t.value};
+          }
+          friend constexpr T operator* (T const& t, long double const c) noexcept {
             return T{c*t.value};
           }
 

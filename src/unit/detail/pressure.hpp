@@ -24,7 +24,7 @@ namespace lbt {
          * 
          * \param[in] value   The value to be stored inside the class in Pascal
         */
-        constexpr Pressure(long double const value = 101325) noexcept
+        explicit constexpr Pressure(long double const value = 101325) noexcept
           : UnitBase{value} {
           return;
         }

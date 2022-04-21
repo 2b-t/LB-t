@@ -36,6 +36,14 @@ namespace lbt {
         // Inherit constructor
         using IdealGas<physical_constant::Air>::IdealGas;
     };
+    
+    // Use table like (e.g. https://www.engineeringtoolbox.com/air-temperature-pressure-density-d_771.html)
+    // template <>
+    // constexpr States<4> StatesTable<Material::Air,4>::states_ = { State{ 1.0, 1.0f, 1.0L},
+    //                                                               State{-1.0, 1.0f, 1.0L},
+    //                                                               State{-1.0,-1.0f, 2.0L},
+    //                                                               State{ 1.0,-1.0f, 2.0L} };
+    // using Air = StatesTable<Material::Air,4>;
 
   }
 }
