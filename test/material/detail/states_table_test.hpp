@@ -42,7 +42,7 @@ namespace lbt {
                                                                 lbt::material::State{37.93_Pa, 18.21_K, lbt::unit::Density{7.12L}} };
       };
 
-      TEST(StatesTableTest, uniformMaterialIsUnityInside) {
+      TEST(StatesTableTest, uniformIsUniformInside) {
         constexpr lbt::unit::Density expected_density {7.12L};
         // Inside of quadrilateral (determined manually)
         constexpr auto pressure_limits {std::make_pair<lbt::unit::Pressure, lbt::unit::Pressure>(16.81_Pa, 33.14_Pa)};
@@ -61,7 +61,7 @@ namespace lbt {
         }
       }
 
-      TEST(StatesTableTest, uniformMaterialIsNanOutside) {
+      TEST(StatesTableTest, uniformIsNanOutside) {
         // Random points outside of quadrilateral
         std::vector<lbt::unit::Pressure> const pressures = {2.65_Pa, 16.80_Pa, 33.15_Pa, 54.56_Pa};
         std::vector<lbt::unit::Temperature> const temperatures = {12.10_K, 18.20_K, 30.98_K, 41.83_K};
@@ -94,7 +94,7 @@ namespace lbt {
                                                                 lbt::material::State{36.63_Pa,  56.74_K, lbt::unit::Density{15.32L}} };
       };
 
-      TEST(StatesTableTest, linearMaterialXIsIndependentOfY) {
+      TEST(StatesTableTest, gradientXIsIndependentOfY) {
         // Inside of quadrilateral (determined manually)
         constexpr auto pressure_limits {std::make_pair<lbt::unit::Pressure, lbt::unit::Pressure>(16.63_Pa, 25.34_Pa)};
         constexpr auto temperature_limits {std::make_pair<lbt::unit::Temperature, lbt::unit::Temperature>(56.74_K, 92.76_K)};
@@ -145,7 +145,7 @@ namespace lbt {
                                                                 lbt::material::State{ 56.74_Pa, 36.63_K, lbt::unit::Density{15.32L}} };
       };
 
-      TEST(StatesTableTest, linearMaterialYIsIndependentOfX) {
+      TEST(StatesTableTest, gradientYIsIndependentOfX) {
         // Inside of quadrilateral (determined manually)
         constexpr auto pressure_limits {std::make_pair<lbt::unit::Pressure, lbt::unit::Pressure>(56.74_Pa, 92.76_Pa)};
         constexpr auto temperature_limits {std::make_pair<lbt::unit::Temperature, lbt::unit::Temperature>(16.63_K, 25.34_K)};
@@ -197,7 +197,7 @@ namespace lbt {
                                                                 lbt::material::State{37.43_Pa, 215.36_K, lbt::unit::Density{18.49L}} };
       };
 
-      TEST(StatesTableTest, equalToManualBilinearInterpolation) {
+      TEST(StatesTableTest, axisAlignedEqualToManualBilinearInterpolation) {
         // Inside of quadrilateral (determined manually)
         constexpr auto pressure_limits {std::make_pair<lbt::unit::Pressure, lbt::unit::Pressure>(23.54_Pa, 37.43_Pa)};
         constexpr auto temperature_limits {std::make_pair<lbt::unit::Temperature, lbt::unit::Temperature>(95.73_K, 215.36_K)};
