@@ -1,4 +1,4 @@
-[![build](https://github.com/2b-t/lbt_prototype/workflows/build/badge.svg)](https://github.com/2b-t/lbt_prototype/actions/workflows/build.yml) [![tests](https://github.com/2b-t/lbt_prototype/workflows/run-tests/badge.svg)](https://github.com/2b-t/lbt_prototype/actions/workflows/run-tests.yml) [![dockerhub](https://github.com/2b-t/lbt_prototype/workflows/update-dockerhub/badge.svg)](https://github.com/2b-t/lbt_prototype/actions/workflows/update-dockerhub.yml)
+[![build](https://github.com/2b-t/lbt_prototype/workflows/build/badge.svg)](https://github.com/2b-t/lbt_prototype/actions/workflows/build.yml) [![tests](https://github.com/2b-t/lbt_prototype/workflows/tests/badge.svg)](https://github.com/2b-t/lbt_prototype/actions/workflows/run-tests.yml) [![dockerhub](https://github.com/2b-t/lbt_prototype/workflows/update-dockerhub/badge.svg)](https://github.com/2b-t/lbt_prototype/actions/workflows/update-dockerhub.yml)
 
 # LB-t - A parallel 3D lattice-Boltzmann CFD solver
 
