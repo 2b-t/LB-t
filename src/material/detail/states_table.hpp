@@ -49,15 +49,12 @@ namespace lbt {
         static constexpr Z equationOfState(X const x, Y const y) noexcept = delete;
         /// Has to be done without specialisation due to GCC non-conformity
         //  See: https://stackoverflow.com/questions/50638053/constexpr-static-data-member-without-initializer
-
         /*static constexpr lbt::unit::Density equationOfState(lbt::unit::Pressure const p, lbt::unit::Temperature const t) noexcept {
           return interpolate<lbt::unit::Density>(p, t, UniformMaterial::states_);
         }
-
         static constexpr lbt::unit::Pressure equationOfState(lbt::unit::Temperature const t, lbt::unit::Density const d) noexcept {
           return interpolate<lbt::unit::Pressure>(t, d, UniformMaterial::states_);
         }
-
         static constexpr lbt::unit::Temperature equationOfState(lbt::unit::Pressure const p, lbt::unit::Density const d) noexcept {
           return interpolate<lbt::unit::Temperature>(p, d, UniformMaterial::states_);
         }*/
@@ -148,44 +145,6 @@ namespace lbt {
             }
           }
           Z const z {(1.0L - alpha)*((1.0L - beta)*xn_yn.z + beta*xn_yp.z) + alpha*((1.0L - beta)*xp_yn.z + beta*xp_yp.z)};
-          /*auto const& p_1 = xn_yn;
-          auto const& p_2 = xn_yp;
-          auto const& p_3 = xp_yn;
-          auto const& p_4 = xp_yp;
-
-          auto const a_x {p_2.x - p_1.x};
-          auto const a_y {p_2.y - p_1.y};
-          auto const b_x {p_3.x - p_1.x};
-          auto const b_y {p_3.y - p_1.y};
-          auto const c_x {p_4.x - p_2.x};
-          auto const c_y {p_4.y - p_2.y};
-
-          // We exclude any degenerations to a triangle or a line and assume that the points are correct
-          auto alpha {(x - p_1.x)/b_x};
-          auto beta {(y - p_1.y - alpha*b_y)/(alpha*(c_y - b_y) + a_y)};
-
-          if (!lbt::cem::isNearlyEqualEpsRel((a_x + alpha*c_x).get(), (x - p_1.x).get())) {
-            auto const d {-c_x.get()*b_y.get() + b_x.get()*c_y.get()};
-            auto const e {-b_x.get()*y.get() + b_x.get()*p_1.y.get() - a_x.get()*b_y.get() + c_x.get()*y.get() - c_x.get()*p_1.y.get() + 
-                           x.get()*b_y.get() - p_1.x.get()*b_y.get() + b_x.get()*a_y.get() - x.get()*c_y.get() + p_1.x.get()*c_y.get()};
-            auto const f {a_x.get()*y.get() - a_x.get()*p_1.y.get() - x.get()*a_y.get() + p_1.x.get()*a_y.get()};
-
-            if (lbt::cem::isNearlyEqualEpsAbs(d, 0.0L)) {
-              // Special case of an axis-aligned quadrilateral
-              alpha = -f/e;
-            } else {
-              // Solve quadratic equation in alpha
-              auto const g {lbt::cem::sqrt(lbt::cem::ipow(e, 2) - 4.0L*d*f)};
-              alpha = (-e + g)/(2.0L*d);
-              if ((alpha > 1) || (alpha < 0)) {
-                alpha = (-e - g)/(2.0L*d);
-              }
-            }
-
-            beta = (x - p_1.x - alpha*b_x)/(-alpha*b_x + a_x + alpha*c_x);
-          }
-
-          auto const z {p_1.z + alpha*(p_3.z - p_1.z) + beta*(-alpha*(p_3.z - p_1.z) + (p_2.z - p_1.z) + alpha*(p_4.z - p_2.z))};*/
           return z;
         }
 
@@ -195,8 +154,7 @@ namespace lbt {
         StatesTable(StatesTable&&) = default;
         StatesTable& operator= (StatesTable&&) = default;
 
-        /// static constexpr States<N> states_;
-        //  Table containing given states to interpolate between, needs to be specialised for every material M!
+        // static constexpr States<N> states_; // Table containing given states to interpolate between, needs to be specialised for every material M!
     };
 
   }
