@@ -37,8 +37,8 @@ namespace lbt {
           UniformMaterial& operator= (UniformMaterial&&) = default;
 
           static constexpr lbt::material::States<4> states_ = { lbt::material::State{33.14_Pa, 31.46_K, lbt::unit::Density{7.12L}},
-                                                                lbt::material::State{16.81_Pa, 30.97_K, lbt::unit::Density{7.12L}},
-                                                                lbt::material::State{12.09_Pa, 15.67_K, lbt::unit::Density{7.12L}},
+                                                                lbt::material::State{12.09_Pa, 30.97_K, lbt::unit::Density{7.12L}},
+                                                                lbt::material::State{16.81_Pa, 15.67_K, lbt::unit::Density{7.12L}},
                                                                 lbt::material::State{37.93_Pa, 18.21_K, lbt::unit::Density{7.12L}} };
       };
 
@@ -56,7 +56,7 @@ namespace lbt {
             lbt::unit::Temperature const temperature {temperature_limits.first + (temperature_limits.second - temperature_limits.first)*
                                                       static_cast<long double>(j+1)/(number_of_tests_per_dimension+1)};
             auto const density = UniformMaterial::equationOfState(pressure, temperature);
-            EXPECT_EQ(density.get(), expected_density.get());
+            EXPECT_DOUBLE_EQ(density.get(), expected_density.get());
           }
         }
       }
