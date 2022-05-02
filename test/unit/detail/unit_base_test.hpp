@@ -31,11 +31,12 @@ namespace lbt {
     }
 
     using UnitTestingTypes = ::testing::Types<lbt::unit::Length, lbt::unit::Distance,
-                                              lbt::unit::Time, lbt::unit::Duration,
+                                              lbt::unit::Time, lbt::unit::Duration, 
                                               lbt::unit::Mass, lbt::unit::Area, lbt::unit::Volume,
                                               lbt::unit::Velocity, lbt::unit::Density, 
                                               lbt::unit::Temperature, lbt::unit::Pressure, 
-                                              lbt::unit::KinematicViscosity, lbt::unit::DynamicViscosity>;
+                                              lbt::unit::KinematicViscosity, lbt::unit::DynamicViscosity,
+                                              lbt::unit::MolarMass, lbt::unit::AmountOfSubstance>;
 
     /**\class PhysicalUnitTest
      * \brief Helper class for the tests of the lbt::unit::detail::UnitBase class

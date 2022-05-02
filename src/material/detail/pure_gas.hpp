@@ -20,7 +20,7 @@
 namespace lbt {
   namespace material {
 
-    template <template <typename> typename T>
+    template <typename T>
     class PureGas: public IdealGas<T> {
       public:
         // Calculated according to Maxwell-Boltzmann distribution https://physics.stackexchange.com/a/510860/245414
@@ -29,14 +29,13 @@ namespace lbt {
           return dynamicViscosity(t)/IdealGas<T>::equationOfState(t, p);
         }
         static constexpr lbt::unit::DynamicViscosity dynamicViscosity(lbt::unit::Temperature const t) noexcept {
-          // TODO: Fix implementation of isNearlyEqual for very large and very small numbers
           return lbt::unit::DynamicViscosity{5.0/16.0*lbt::cem::sqrt(IdealGas<T>::specific_gas_constant*mass_single_molecule*mass_single_molecule*t.get()/lbt::cem::pi<long double>)/(kinetic_diameter*kinetic_diameter)*1.0_cP};
         }
 
         using IdealGas<T>::IdealGas;
 
         friend std::ostream& operator<< (std::ostream& os, PureGas const& pure_gas) noexcept {
-          os << "Molecular mass: " << molecular_mass << std::endl;
+          os << "Molecular mass: " << molecular_weight << std::endl;
           os << "Kinetic diameter: " << kinetic_diameter << std::endl;
           os << "Mass of a single molecule: " << mass_single_molecule << std::endl;
           os << "Specific gas constant: " << IdealGas<T>::specific_gas_constant << std::endl;
@@ -44,9 +43,9 @@ namespace lbt {
         }
 
       protected:
-        static constexpr long double molecular_mass = T<long double>::molecular_mass;
-        static constexpr long double kinetic_diameter = T<long double>::kinetic_diameter.get();
-        static constexpr long double mass_single_molecule = molecular_mass/avogadro_constant<long double>;
+        static constexpr long double molecular_weight = T::molecular_weight.get();
+        static constexpr long double kinetic_diameter = T::kinetic_diameter.get();
+        static constexpr long double mass_single_molecule = molecular_weight/avogadro_constant<long double>;
     };
 
     /// Define convenient aliases for different ideal gases

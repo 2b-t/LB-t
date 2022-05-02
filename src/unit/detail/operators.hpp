@@ -8,12 +8,14 @@
 #define LBT_UNIT_OPERATORS
 #pragma once
 
+#include "amount_of_substance.hpp"
 #include "area.hpp"
 #include "density.hpp"
 #include "dynamic_viscosity.hpp"
 #include "kinematic_viscosity.hpp"
 #include "length.hpp"
 #include "mass.hpp"
+#include "molar_mass.hpp"
 #include "pressure.hpp"
 #include "time.hpp"
 #include "unit_base.hpp"
@@ -143,6 +145,18 @@ namespace lbt {
     constexpr DynamicViscosity operator* (Density const& rho, KinematicViscosity const& nu) noexcept {
       return DynamicViscosity{nu.get()*rho.get()};
     }
+
+    /**\fn        operator/
+     * \brief     Division operator between a mass and an amount of substance resulting in a molar mass
+     * 
+     * \param[in] m   A mass
+     * \param[in] a   An amount of substance
+     * \return    The molar mass resulting from the division of an amount of substance and a molar mass
+    */
+    constexpr MolarMass operator/ (Mass const& m, AmountOfSubstance const& a) noexcept {
+      return MolarMass{m.get()/a.get()};
+    }
+
   }
 }
 

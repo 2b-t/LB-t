@@ -14,6 +14,7 @@
 #include "detail/kinematic_viscosity.hpp"
 #include "detail/length.hpp"
 #include "detail/mass.hpp"
+#include "detail/molar_mass.hpp"
 #include "detail/operators.hpp"
 #include "detail/pressure.hpp"
 #include "detail/temperature.hpp"

@@ -96,6 +96,14 @@ namespace lbt {
       EXPECT_DOUBLE_EQ(dynamic_viscosity.get(), expected_result);
     }
 
+    TEST(MolarMassTest, massDividedByAmountOfSubstanceIsMolarMass) {
+      lbt::unit::Mass const mass {2.0};
+      lbt::unit::AmountOfSubstance const amount_of_substance {3.5};
+      long double const expected_result {mass.get()/amount_of_substance.get()};
+      lbt::unit::MolarMass const molar_mass {mass/amount_of_substance};
+      EXPECT_DOUBLE_EQ(molar_mass.get(), expected_result);
+    }
+
   }
 }
 

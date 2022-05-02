@@ -17,7 +17,7 @@ namespace lbt {
     /**\fn        operator "" _t
      * \brief     User-defined literal for a mass given in tons
      * 
-     * \param[in] h   The mass in tons
+     * \param[in] t   The mass in tons
      * \return    A mass in the base unit kilograms
     */
     constexpr lbt::unit::Mass operator "" _t(long double const t) noexcept {
@@ -26,7 +26,7 @@ namespace lbt {
     /**\fn        operator "" _kg
      * \brief     User-defined literal for a mass given in kilograms
      * 
-     * \param[in] h   The mass in kilograms
+     * \param[in] k   The mass in kilograms
      * \return    A mass in the base unit kilograms
     */
     constexpr lbt::unit::Mass operator "" _kg(long double const k) noexcept {
@@ -35,7 +35,7 @@ namespace lbt {
     /**\fn        operator "" _g
      * \brief     User-defined literal for a mass given in grams
      * 
-     * \param[in] h   The mass in grams
+     * \param[in] g   The mass in grams
      * \return    A mass in the base unit kilograms
     */
     constexpr lbt::unit::Mass operator "" _g(long double const g) noexcept {
