@@ -8,8 +8,7 @@
 #define LBT_MATERIALS
 #pragma once
 
-#include "detail/air.hpp"
-#include "detail/pure_gas.hpp"
+#include "detail/ideal_gas.hpp"
 #include "detail/water.hpp"
 
 

@@ -4,7 +4,6 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
-#include "detail/air_test.hpp"
 #include "detail/ideal_gas_test.hpp"
 #include "detail/states_table_test.hpp"
 #include "detail/water_test.hpp"
