@@ -21,7 +21,9 @@ namespace lbt {
     */
     class Water {
       public:
-        // According to Tait's equation: https://de.wikipedia.org/wiki/Taitsche_Gleichung
+        /**\fn    equationOfState
+         * \brief Calculate the missing state variable from the other two using Tait's equation (https://de.wikipedia.org/wiki/Taitsche_Gleichung)
+        */
         static constexpr lbt::unit::Density equationOfState(lbt::unit::Pressure const p) noexcept {
           using namespace lbt::literals;
           constexpr auto b {0.3214_GPa};

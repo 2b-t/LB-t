@@ -15,7 +15,18 @@
 
 namespace lbt {
   namespace test {
-    // TODO: Add unit tests for different ideal gases
+    // TODO(tobit): Add unit tests for different ideal gases
+    // Air
+    // CarbonDioxide
+    // Hydrogen
+    // Oxygen
+    // Calculate the following values:
+    // Density
+    // Temperature
+    // Pressure
+    // Kinematic viscosity
+    // Dynamic viscosity
+
   }
 }
 

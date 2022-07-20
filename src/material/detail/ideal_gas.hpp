@@ -98,6 +98,7 @@ namespace lbt {
         }
 
       protected:
+        // TODO(tobit): Introduce remaining SI-units
         // See https://en.wikipedia.org/wiki/Gas_constant
         static constexpr long double universal_gas_constant {8.31446261815324L}; // In SI-units [J/(K mol)]
         static constexpr long double avogadro_constant {6.02214076e+23L}; // In SI-units [1/mol]
