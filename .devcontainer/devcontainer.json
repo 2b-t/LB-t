@@ -1,0 +1,18 @@
+{
+  "name": "LB-t Docker Compose",
+  "dockerComposeFile": [
+    "../docker/docker-compose.yml" // Alternatives: "../docker/docker-compose-gui.yml", "../docker/docker-compose-gui-nvidia.yml", "../docker/docker-compose-nvidia.yml"
+  ],
+  "service": "lbt_docker",
+	"workspaceFolder": "/code/lbt",
+  "shutdownAction": "stopCompose",
+  "extensions": [
+    "zachflower.uncrustify",
+    "ms-azuretools.vscode-docker",
+    "ms-vscode.cpptools",
+    "redhat.vscode-yaml",
+    "streetsidesoftware.code-spell-checker",
+    "twxs.cmake",
+    "yzhang.markdown-all-in-one"
+  ]
+}
