@@ -1,6 +1,0 @@
-dist: focal
-
-language: cpp
-
-script:
-  - make
