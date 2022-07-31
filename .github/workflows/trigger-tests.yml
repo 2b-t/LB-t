@@ -1,0 +1,19 @@
+name: Trigger tests
+
+on:
+  push:
+    paths:
+      - 'src/**'
+      - 'test/**'
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger run-tests workflow
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          repository: ${{ github.repository }}
+          event-type: trigger-tests
+

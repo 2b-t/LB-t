@@ -1,9 +1,8 @@
-name: build
+name: Build
 
 on:
-  push:
-    paths:
-      - 'src/**'
+  repository_dispatch:
+    types: [trigger-build]
 
 jobs:
   unit-tests:
