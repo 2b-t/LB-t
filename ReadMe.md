@@ -2,7 +2,7 @@
 
 # LB-t - A parallel 3D lattice-Boltzmann CFD solver
 
-Author: [Tobit Flatscher](https://github.com/2b-t)
+Author: [Tobit Flatscher](https://github.com/2b-t) (December 2019 - July 2022)
 
 [![Turbulent gaseous flow in porous media](doc/PorousMedia_Re3750Sc1.jpeg)](https://www.youtube.com/watch?v=7SR4vhMnWZc "Turbulent gaseous flow in porous media")
 
