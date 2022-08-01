@@ -5,7 +5,7 @@ on:
     types: [trigger-build]
 
 jobs:
-  unit-tests:
+  build-code:
     runs-on: ubuntu-latest
     container:
       image: tobitflatscher/lbt
