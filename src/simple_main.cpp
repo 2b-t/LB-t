@@ -8,11 +8,11 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "unit/literals.hpp"
-#include "material/materials.hpp"
 #include "general/openmp_manager.hpp"
-
 #include "lattice/lattice.hpp"
+#include "material/materials.hpp"
+#include "unit/literals.hpp"
+
 
 
 int main(int argc, char* argv[]) {
