@@ -46,3 +46,5 @@ RUN apt-get -y update \
     && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 11 \
     && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 11
 
+ENV DEBIAN_FRONTEND=dialog
+
