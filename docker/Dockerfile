@@ -34,7 +34,7 @@ RUN git clone https://gitlab.kitware.com/vtk/vtk.git VTK \
 # Install nlohmann-json
 RUN apt-get -y update && apt-get -y install nlohmann-json3-dev
 
-# Install googletest
+# Install GTest
 RUN apt-get -y update && apt-get -y install libgtest-dev
 
 # Update to GCC 11 for C++20 support
