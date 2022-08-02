@@ -1,6 +1,6 @@
 /**
  * \file     ideal_gas.hpp
- * \mainpage Contains methods for calculating physical properties of ideal gases
+ * \mainpage Contains methods for calculating physical properties of an ideal gases
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
@@ -17,47 +17,24 @@ namespace lbt {
   namespace material {
 
     /// Traits with physical constants
+    /*
     namespace physical_constants {
       using namespace lbt::literals;
 
-      class Air {
+      class SomeGas {
         public:
-          static constexpr auto molecular_weight = 28.966_gpmol;
-          static constexpr auto c = 120.0_K; // Constants for Sutherland's model: https://de.wikipedia.org/wiki/Sutherland-Modell
-          static constexpr auto t_0 = 291.15_K;
-          static constexpr auto mu_0 = 18.27_Pas;
+          static constexpr auto molecular_weight = 0.0_gpmol;
+          static constexpr auto c = 0.0_K; // Constants for Sutherland's model: https://de.wikipedia.org/wiki/Sutherland-Modell
+          static constexpr auto t_0 = 0.0_K;
+          static constexpr auto mu_0 = 0.0_Pas;
       };
-
-      class CarbonDioxide {
-        public:
-          static constexpr auto molecular_weight = 44.01_gpmol;
-          static constexpr auto c = 240.0_K;
-          static constexpr auto t_0 = 293.15_K;
-          static constexpr auto mu_0 = 14.8_Pas;
-      };
-
-      class Hydrogen {
-        public:
-          static constexpr auto molecular_weight = 2.016_gpmol;
-          static constexpr auto c = 72.0_K;
-          static constexpr auto t_0 = 293.85_K;
-          static constexpr auto mu_0 = 8.76_Pas;
-      };
-
-      class Oxygen {
-        public:
-          static constexpr auto molecular_weight = 31.9988_gpmol;
-          static constexpr auto c = 127.0_K;
-          static constexpr auto t_0 = 292.25_K;
-          static constexpr auto mu_0 = 20.18_Pas;
-      };
-
     }
+    */
 
     /**\class  IdealGas
      * \brief  Class for calculating the equation of state according to the ideal gas law
      *
-     * \tparam T   The struct containing the material parameters that the equation of state should be calculated for
+     * \tparam T   The struct containing the material parameters that the equation of state should be calculated for, see the struct above
     */
     template <typename T>
     class IdealGas {
@@ -94,7 +71,7 @@ namespace lbt {
          * \brief Calculate the dynamic viscosity with Sutherland's model (https://de.wikipedia.org/wiki/Sutherland-Modell)
         */
         static constexpr lbt::unit::DynamicViscosity dynamicViscosity(lbt::unit::Temperature const t) noexcept {
-          return T::mu_0*(T::t_0 + T::c)/(t + T::c)*cem::pow(t/T::t_0, 3/2);
+          return T::mu_0*((T::t_0 + T::c)/(t + T::c)*cem::pow(t/T::t_0, 3.0L/2.0L));
         }
 
       protected:
@@ -104,11 +81,6 @@ namespace lbt {
         static constexpr long double avogadro_constant {6.02214076e+23L}; // In SI-units [1/mol]
         static constexpr long double specific_gas_constant {universal_gas_constant/T::molecular_weight.get()}; // In SI-units [J/(kg K)]
     };
-
-    using Air = IdealGas<physical_constants::Air>;
-    using CarbonDioxide = IdealGas<physical_constants::CarbonDioxide>;
-    using Hydrogen = IdealGas<physical_constants::Hydrogen>;
-    using Oxygen = IdealGas<physical_constants::Oxygen>;
 
   }
 }
