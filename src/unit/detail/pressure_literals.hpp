@@ -41,6 +41,15 @@ namespace lbt {
     constexpr lbt::unit::Pressure operator "" _mPa(long double const m) noexcept {
       return m*lbt::unit::Pressure{1.0e-3};
     }
+    /**\fn        operator "" _uPa
+     * \brief     User-defined literal for a pressure given in micro-Pascal
+     * 
+     * \param[in] p   The pressure in micro-Pascal
+     * \return    A pressure in the base unit Pascal
+    */
+    constexpr lbt::unit::Pressure operator "" _uPa(long double const m) noexcept {
+      return m*lbt::unit::Pressure{1.0e-6};
+    }
     /**\fn        operator "" _hPa
      * \brief     User-defined literal for a pressure given in hecto-Pascal
      * 

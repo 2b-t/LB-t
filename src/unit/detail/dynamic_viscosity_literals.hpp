@@ -37,6 +37,15 @@ namespace lbt {
     constexpr lbt::unit::DynamicViscosity operator "" _mPas(long double const c) noexcept {
       return c*lbt::unit::DynamicViscosity{1.0_mPa*1.0_s};
     }
+    /**\fn        operator "" _uPas
+     * \brief     User-defined literal for a dynamic viscosity given in micro Pascal seconds
+     * 
+     * \param[in] p   The dynamic viscosity in micro Pascal seconds
+     * \return    A dynamic viscosity in the base unit Pascal seconds
+    */
+    constexpr lbt::unit::DynamicViscosity operator "" _uPas(long double const c) noexcept {
+      return c*lbt::unit::DynamicViscosity{1.0_uPa*1.0_s};
+    }
     /**\fn        operator "" _P
      * \brief     User-defined literal for a dynamic viscosity given in Poise
      * 

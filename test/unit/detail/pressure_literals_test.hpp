@@ -31,8 +31,9 @@ namespace lbt {
 
       INSTANTIATE_TEST_SUITE_P(PressureLiteralsTest, PressureLiteralsHelper, ::testing::Values(
           std::make_pair(0.3_Pa,  0.3L),
-          std::make_pair(3.2_GPa,  3.2e+9L),
+          std::make_pair(3.2_GPa, 3.2e+9L),
           std::make_pair(3.4_mPa, 3.4e-3L),
+          std::make_pair(6.3_uPa, 6.3e-6L),
           std::make_pair(2.3_hPa, 2.3e+2L),
           std::make_pair(1.2_bar, 1.2e+5L),
           std::make_pair(1.4_atm, 141855L)
