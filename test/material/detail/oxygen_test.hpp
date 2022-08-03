@@ -32,13 +32,13 @@ namespace lbt {
       TEST_P(OxygenTestHelper, temperatureFromDensityAndPressure) {
         [[maybe_unused]] auto const [pressure, expected_temperature, density, dynamic_viscosity, kinematic_viscosity] = GetParam();
         auto const temperature {lbt::material::Oxygen::equationOfState(density, pressure)};
-        EXPECT_NEAR(temperature.get(), expected_temperature.get(), (2.0_K).get());
+        EXPECT_NEAR(temperature.get(), expected_temperature.get(), (6.0_K).get());
       }
 
       TEST_P(OxygenTestHelper, pressureFromDensityAndTemperature) {
         [[maybe_unused]] auto const [expected_pressure, temperature, density, dynamic_viscosity, kinematic_viscosity] = GetParam();
         auto const pressure {lbt::material::Oxygen::equationOfState(density, temperature)};
-        EXPECT_NEAR(pressure.get(), expected_pressure.get(), (0.01_bar).get());
+        EXPECT_NEAR(pressure.get(), expected_pressure.get(), (0.02_bar).get());
       }
 
       TEST_P(OxygenTestHelper, dynamicViscosityFromTemperature) {
