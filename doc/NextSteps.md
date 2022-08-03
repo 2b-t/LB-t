@@ -4,4 +4,14 @@ Author: [Tobit Flatscher](https://github.com/2b-t)
 
 ## A. Next steps
 
-TO DO: Potential features (GPU support, compressible lattices), not feasible features: grid refinement and moving boundaries
+TODO
+
+Future features:
+
+- GPU support
+- Compressible lattices
+
+Features that are not feasible by design:
+
+- Grid refinement
+- Moving boundaries

@@ -4,10 +4,4 @@ Author: [Tobit Flatscher](https://github.com/2b-t)
 
 ## 4. Verify physics
 
-TO DO: Add tests for physics
-
-Velocity
-
-Pressure
-
-Force
+TODO: Add tests for physics - Velocity, pressure, force

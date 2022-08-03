@@ -4,6 +4,13 @@ Author: [Tobit Flatscher](https://github.com/2b-t)
 
 ## Code design
 
-How designed: Abstraction of memory and access patterns, one and two populations, separate static and dynamic interface, allow code to be compiled without VTK but with same functionality
+TODO
 
-Program all boundary conditions only once for all orientations and lattices, program collision operators once for all lattices: Templated
+- Explain abstraction of memory and access patterns
+- One and two populations
+- Separate static and dynamic interface
+- Allow code to be compiled without VTK
+- Program all boundary conditions only once for all orientations and lattices
+- Program collision operators once for all lattices
+
+Detail architecture with PlantUML

@@ -2,9 +2,11 @@
 
 Author: [Tobit Flatscher](https://github.com/2b-t)
 
+
+
 ## 2. Run from Docker
 
-This code is shipped with a [Docker](https://www.docker.com/) that allows the software to be run without having to install all the dependencies. For this one has to [set-up Docker](https://docs.docker.com/get-docker/) (select your operating system and follow the steps) as well as [Docker Compose](https://docs.docker.com/compose/install/) ideally with `$ sudo pip3 install docker-compose`.
+This code is shipped with a **[Docker](https://www.docker.com/) that allows the software to be run without having to install all the dependencies**. For this one has to [set-up Docker](https://docs.docker.com/get-docker/) (select your operating system and follow the steps) as well as [Docker Compose](https://docs.docker.com/compose/install/) ideally with `$ sudo pip3 install docker-compose`.
 
 Then browse the `docker` folder containing all the different Docker files, open a console and start the docker with
 
@@ -18,13 +20,11 @@ and then - after the container had been compiled - open another terminal and con
 $ sudo docker-compose exec lbt_docker sh
 ```
 
-Now you can work inside the Docker as if it was your own machine. Later it is discussed how one can use Visual Studio Code as an IDE and not having to launch the Docker from the console.
-
-Advantages of Docker compared to an installation on the host system are discussed in more detail [here](https://hentsu.com/docker-containers-top-7-benefits/).
+Now you can work inside the Docker as if it was your own machine. In the following paragraphs it is discussed how one can use [Visual Studio Code](https://code.visualstudio.com/) as an IDE in order to have a more convenient access. Advantages of Docker compared to an installation on the host system are discussed in more detail [here](https://hentsu.com/docker-containers-top-7-benefits/).
 
 ### 2.1 Graphic user interfaces inside the Docker
 
-Docker was actually not designed to be used with a graphic user interface. There are several workarounds for this, most of them mount relevant X11 folders from the host system into the Docker. In our case this is achieved by a corresponding Docker Compose file `docker-compose-gui.yml` that [extends](https://docs.docker.com/compose/extends/) the basic `docker-compose.yml` file.
+Docker was actually not designed to be used with a graphic user interface. There are several workarounds for this on Linux operating systems, most of them mount relevant X11 folders from the host system into the Docker. In our case this is achieved by a corresponding Docker Compose file `docker-compose-gui.yml` that [extends](https://docs.docker.com/compose/extends/) the basic `docker-compose.yml` file.
 
 Before launching it one has to allow the user to access the X server from within the Docker with
 
@@ -60,7 +60,7 @@ $ nvidia-smi
 
 ### 2.2 Docker inside Visual Studio Code
 
-Additionally this repository comes with a Visual Studio Code project. The following sections will walk you through how this can be set-up.
+Additionally this repository comes with a [Visual Studio Code](https://code.visualstudio.com/) project. The following sections will walk you through how this can be set-up.
 
 #### 2.2.1 Set-up
 
@@ -72,7 +72,7 @@ More information about Docker with Visual Studio Code can be found [here](https:
 
 #### 2.2.3 Change the Docker Compose file
 
-The Docker Compose file can be changed inside `.devcontainer/devcontainers.json`:
+The Docker-Compose file can be changed inside `.devcontainer/devcontainers.json`:
 
 ```json
 {
@@ -82,6 +82,8 @@ The Docker Compose file can be changed inside `.devcontainer/devcontainers.json`
   ],
 ```
 
+This can be used to switch to a Docker with graphic output and/or hardware acceleration.
+
 ### 2.3 Performance with Docker
 
-TO DO: Evaluate performance loss/overhead
+As can be seen from this [IBM Research report](https://dominoweb.draco.res.ibm.com/reports/rc25482.pdf) the performance overhead of using containers should be negligible when compared to running it directly on the host system.
