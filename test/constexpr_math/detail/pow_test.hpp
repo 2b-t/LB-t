@@ -18,7 +18,7 @@
 
 #include "../../../src/constexpr_math/detail/is_inf.hpp"
 #include "../../../src/constexpr_math/detail/is_nan.hpp"
-#include "../../../src/constexpr_math/detail/is_nearly_equal_eps_abs.hpp"
+#include "../../../src/constexpr_math/detail/is_almost_equal_eps_abs.hpp"
 #include "../../../src/constexpr_math/detail/pow.hpp"
 #include "testing_types.hpp"
 
@@ -46,7 +46,7 @@ namespace lbt {
       constexpr auto zero {static_cast<TypeParam>(0.0)};
       constexpr auto unity {static_cast<TypeParam>(1.0)};
       for (auto const& b: bases) {
-        EXPECT_TRUE(lbt::cem::isNearlyEqualEpsAbs(lbt::cem::pow(b, zero), unity));
+        EXPECT_TRUE(lbt::cem::isAlmostEqualEpsAbs(lbt::cem::pow(b, zero), unity));
       }
     }
 
@@ -59,7 +59,7 @@ namespace lbt {
     TYPED_TEST(PowTest, zeroToThePowerOfPositiveInfinityIsZero) {
       constexpr auto zero {static_cast<TypeParam>(0.0)};
       constexpr auto inf {std::numeric_limits<TypeParam>::infinity()};
-      EXPECT_TRUE(lbt::cem::isNearlyEqualEpsAbs(lbt::cem::pow(zero, inf), zero));
+      EXPECT_TRUE(lbt::cem::isAlmostEqualEpsAbs(lbt::cem::pow(zero, inf), zero));
     }
 
     TYPED_TEST(PowTest, anythingElseInvolvingNanIsNan) {
@@ -110,7 +110,7 @@ namespace lbt {
       constexpr auto zero {static_cast<TypeParam>(0.0)};
       std::vector<TypeParam> const exponents { -3.0, -4.0, -2.3 };
       for (auto const& e: exponents) {
-        EXPECT_TRUE(lbt::cem::isNearlyEqualEpsAbs(lbt::cem::pow(inf, e), zero));
+        EXPECT_TRUE(lbt::cem::isAlmostEqualEpsAbs(lbt::cem::pow(inf, e), zero));
       }
     }
 
@@ -139,7 +139,7 @@ namespace lbt {
                                                                           { 0.7,     pos_inf }
                                                                         };
       for (auto const& [base, exponent]: base_exponent) {
-        EXPECT_TRUE(lbt::cem::isNearlyEqualEpsAbs(lbt::cem::pow(base, exponent), zero));
+        EXPECT_TRUE(lbt::cem::isAlmostEqualEpsAbs(lbt::cem::pow(base, exponent), zero));
       }
     }
 
@@ -159,7 +159,7 @@ namespace lbt {
       constexpr auto zero {static_cast<TypeParam>(0.0)};
       std::vector<TypeParam> const exponents = { 0.9, 4.0, 6.3};
       for (auto const& e: exponents) {
-        EXPECT_TRUE(lbt::cem::isNearlyEqualEpsAbs(lbt::cem::pow(zero, e), zero));
+        EXPECT_TRUE(lbt::cem::isAlmostEqualEpsAbs(lbt::cem::pow(zero, e), zero));
       }
     }
 

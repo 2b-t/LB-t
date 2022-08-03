@@ -1,5 +1,5 @@
 /**
- * \file     is_nearly_equal_ulps.hpp
+ * \file     is_almost_equal_ulps.hpp
  * \brief    Constexpr implementation of a floating number point comparison based on units in the last place (ULPs)
  * \mainpage Contains traits and a constexpr function for comparing two floating point numbers based on units 
  *           in the last place (ULP) similar to the implementation in GoogleTest but more modular and constexpr:
@@ -8,8 +8,8 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
-#ifndef LBT_CEM_IS_NEARLY_EQUAL_ULPS
-#define LBT_CEM_IS_NEARLY_EQUAL_ULPS
+#ifndef LBT_CEM_IS_ALMOST_EQUAL_ULPS
+#define LBT_CEM_IS_ALMOST_EQUAL_ULPS
 #pragma once
 
 #include <bit>
@@ -245,7 +245,7 @@ namespace lbt {
           FloatView& operator= (FloatView const&) = default;
           FloatView& operator= (FloatView&&) = default;
 
-          /**\fn        isNearlyEqual
+          /**\fn        isAlmostEqual
            * \brief     Function for comparing if the floating-point number represented by the float view is equal to another representation according to the
            *            units in last place (ULPs) criterion https://en.wikipedia.org/wiki/Unit_in_the_last_place
            * 
@@ -253,7 +253,7 @@ namespace lbt {
            * \param[in] max_distance   Maximum units in the last place (ULPs) to be tolerated
            * \return    Boolean value corresponding to true if the internally saved number corresponds to \p rhs under the given \p max_distance, false else
           */
-          constexpr bool isNearlyEqual(FloatView const rhs, std::uint8_t const max_distance = 4) const noexcept {
+          constexpr bool isAlmostEqual(FloatView const rhs, std::uint8_t const max_distance = 4) const noexcept {
             if (Trait::isNan(value) || Trait::isNan(rhs.value)) {
               return false;
             // Forces infinity to only be equal to infinity and not also to very large numbers
@@ -299,7 +299,7 @@ namespace lbt {
 
     }
 
-    /**\fn        isNearlyEqualUlps
+    /**\fn        isAlmostEqualUlps
      * \brief     Function for comparing two floating point numbers according to the units in the last place (ULPs)
      * 
      * \param[in] lhs            A floating point number to be compared for equality
@@ -308,13 +308,13 @@ namespace lbt {
      * \return    Boolean value corresponding to true if the two numbers \p lhs and \p rhs are equal under the given \p max_distance, false else
     */
     template <typename T>
-    constexpr bool isNearlyEqualUlps(T const lhs, T const rhs, std::uint8_t const max_distance = 4) noexcept {
+    constexpr bool isAlmostEqualUlps(T const lhs, T const rhs, std::uint8_t const max_distance = 4) noexcept {
       detail::FloatView<T> const a {lhs};
       detail::FloatView<T> const b {rhs};
-      return a.isNearlyEqual(b, max_distance);
+      return a.isAlmostEqual(b, max_distance);
     }
 
   }
 }
 
-#endif // LBT_CEM_IS_NEARLY_EQUAL_ULPS
+#endif // LBT_CEM_IS_ALMOST_EQUAL_ULPS

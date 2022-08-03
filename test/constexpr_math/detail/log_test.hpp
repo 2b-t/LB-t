@@ -18,7 +18,7 @@
 
 #include "../../../src/constexpr_math/detail/is_inf.hpp"
 #include "../../../src/constexpr_math/detail/is_nan.hpp"
-#include "../../../src/constexpr_math/detail/is_nearly_equal_eps_abs.hpp"
+#include "../../../src/constexpr_math/detail/is_almost_equal_eps_abs.hpp"
 #include "../../../src/constexpr_math/detail/log.hpp"
 #include "../../../src/constexpr_math/detail/mathematical_constants.hpp"
 #include "testing_types.hpp"
@@ -41,7 +41,7 @@ namespace lbt {
     TYPED_TEST(LogTest, unityIsZero) {
       constexpr auto unity {static_cast<TypeParam>(1.0)};
       constexpr auto zero {static_cast<TypeParam>(0.0)};
-      EXPECT_TRUE(lbt::cem::isNearlyEqualEpsAbs(lbt::cem::log(unity), zero));
+      EXPECT_TRUE(lbt::cem::isAlmostEqualEpsAbs(lbt::cem::log(unity), zero));
     }
 
     TYPED_TEST(LogTest, smallerThanZeroIsNan) {
@@ -69,7 +69,7 @@ namespace lbt {
     TYPED_TEST(LogTest, eulersNumberIsUnity) {
       constexpr auto eulers_number {lbt::cem::e<TypeParam>};
       constexpr auto unity {static_cast<TypeParam>(1.0)};
-      EXPECT_TRUE(lbt::cem::isNearlyEqualEpsAbs(lbt::cem::log(eulers_number), unity));
+      EXPECT_TRUE(lbt::cem::isAlmostEqualEpsAbs(lbt::cem::log(eulers_number), unity));
     }
 
     TYPED_TEST(LogTest, positiveNumbersAreCorrect) {

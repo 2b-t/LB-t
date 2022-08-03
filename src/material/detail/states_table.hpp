@@ -110,7 +110,7 @@ namespace lbt {
             X const dx {x - xs};
             Y const dy {y - ys};
             long double const distance {lbt::cem::sqrt(lbt::cem::ipow(dx.get(), 2) + lbt::cem::ipow(dy.get(), 2))};
-            if (lbt::cem::isNearlyEqualEpsRel(x.get(), xs.get()) && lbt::cem::isNearlyEqualEpsRel(y.get(), ys.get())) {
+            if (lbt::cem::isAlmostEqualEpsRel(x.get(), xs.get()) && lbt::cem::isAlmostEqualEpsRel(y.get(), ys.get())) {
               return zs;
             } else if ((dx.get() > 0.0L) && (dy.get() > 0.0L) && (distance < xn_yn.distance)) {
               xn_yn = InterpolationPoint(xs, ys, zs, distance);
@@ -135,7 +135,7 @@ namespace lbt {
           long double alpha {(x - xn_yn.x).get()/a};
           long double beta {(y - xn_yn.y).get()/f};
           // Non-degenerate cases
-          if (!lbt::cem::isNearlyEqualEpsRel(c*e, - a*g) && !lbt::cem::isNearlyEqualEpsRel(c*f, - b*g)) {
+          if (!lbt::cem::isAlmostEqualEpsRel(c*e, - a*g) && !lbt::cem::isAlmostEqualEpsRel(c*f, - b*g)) {
             long double const i {lbt::cem::sqrt(-4.0L*(c*e - a*g)*(d*f - b*h) + lbt::cem::ipow(b*e - a*f + d*g - c*h, 2))};
             alpha = -(b*e - a*f + d*g - c*h + i)/(2.0L*c*e - 2.0L*a*g);
             beta = (b*e - a*f - d*g + c*h + i)/(2.0L*c*f - 2.0L*b*g);

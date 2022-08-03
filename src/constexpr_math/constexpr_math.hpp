@@ -14,7 +14,7 @@
 #include "detail/exp.hpp"
 #include "detail/is_inf.hpp"
 #include "detail/is_nan.hpp"
-#include "detail/is_nearly_equal.hpp"
+#include "detail/is_almost_equal.hpp"
 #include "detail/log.hpp"
 #include "detail/mathematical_constants.hpp"
 #include "detail/pow.hpp"

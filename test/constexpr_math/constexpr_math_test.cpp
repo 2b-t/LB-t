@@ -10,7 +10,7 @@
 #include "detail/exp_test.hpp"
 #include "detail/is_inf_test.hpp"
 #include "detail/is_nan_test.hpp"
-#include "detail/is_nearly_equal_test.hpp"
+#include "detail/is_almost_equal_test.hpp"
 #include "detail/log_test.hpp"
 #include "detail/mathematical_constants_test.hpp"
 #include "detail/pow_test.hpp"

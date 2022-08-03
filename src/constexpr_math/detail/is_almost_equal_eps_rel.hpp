@@ -1,11 +1,11 @@
 /**
- * \file     is_nearly_equal_eps_rel.hpp
+ * \file     is_almost_equal_eps_rel.hpp
  * \mainpage Constexpr functions for floating-point number comparison at compile-time with a relative epsilon.
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
-#ifndef LBT_CEM_IS_NEARLY_EQUAL_EPS_REL
-#define LBT_CEM_IS_NEARLY_EQUAL_EPS_REL
+#ifndef LBT_CEM_IS_ALMOST_EQUAL_EPS_REL
+#define LBT_CEM_IS_ALMOST_EQUAL_EPS_REL
 #pragma once
 
 #include <cstdint>
@@ -18,7 +18,7 @@
 namespace lbt {
   namespace cem {
 
-    /**\fn        cem::nearlyEqualEpsRel
+    /**\fn        cem::isAlmostEqualEpsRel
      * \brief     Constexpr function for comparing two floating point numbers with a given relative (scaled) tolerance
      *            For more information see https://en.cppreference.com/w/cpp/types/numeric_limits/epsilon
      *
@@ -29,7 +29,7 @@ namespace lbt {
      * \return    Boolean value signaling whether the two values \p a and \p b are equal considering a scaled relative tolerance
     */
     template <typename T, typename std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
-    constexpr bool isNearlyEqualEpsRel(T const a, T const b, std::uint8_t const max_distance = 4) noexcept {
+    constexpr bool isAlmostEqualEpsRel(T const a, T const b, std::uint8_t const max_distance = 4) noexcept {
       auto const diff {cem::abs(a-b)};
       auto const sum {cem::abs(a+b)};
       // Required for correct handling of infinity values
@@ -42,4 +42,4 @@ namespace lbt {
   }
 }
 
-#endif // LBT_CEM_IS_NEARLY_EQUAL_EPS_REL
+#endif // LBT_CEM_IS_ALMOST_EQUAL_EPS_REL
