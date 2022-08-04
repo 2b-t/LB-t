@@ -4,7 +4,11 @@
 
 Author: [Tobit Flatscher](https://github.com/2b-t) (December 2019 - August 2022)
 
+**This branch (`main`) is currently work in progress - for the functional and tested version refer to the legacy `main` branch!**
+
 [![Turbulent gaseous flow in porous media](doc/img/PorousMedia_Re3750Sc1.jpeg)](https://www.youtube.com/watch?v=7SR4vhMnWZc "Turbulent gaseous flow in porous media")
+
+
 
 ## Overview
 
