@@ -15,7 +15,7 @@
 
 namespace lbt {
   // Convenient alias for population based on A-A access pattern
-  template <class LT, std::int32_t NP>
+  template <class LT, std::int32_t NP = 1>
   using Population = AaPopulation<LT, NP>;
 }
 
