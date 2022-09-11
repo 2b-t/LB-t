@@ -6,48 +6,78 @@
 
 #include <cmath>
 #include <cstdlib>
+#include <filesystem>
 #include <iostream>
+#include <memory>
 
+#include "continuum/continuum.hpp"
 #include "general/openmp_manager.hpp"
-#include "lattice/lattice.hpp"
+#include "lattice/lattices.hpp"
 #include "material/materials.hpp"
+#include "population/collision_operators.hpp"
+#include "population/population.hpp"
+#include "unit/characteristic_numbers.hpp"
 #include "unit/literals.hpp"
-
+#include "converter.hpp"
 
 
 int main(int argc, char* argv[]) {
   using namespace lbt::literals;
 
-  // Decide on floating type, lattice and collision operator
+  // Flow and material properties
+  constexpr auto velocity = 1.7_mps;
+  constexpr auto length = 1.2_m;
+  using Material = lbt::material::Air;
+  constexpr auto temperature = 20.0_deg;
+  constexpr auto pressure = 1.0_atm;
+  constexpr auto density {Material::equationOfState(temperature, pressure)};
+  constexpr auto kinematic_viscosity {Material::kinematicViscosity(temperature, pressure)};
+  constexpr lbt::unit::ReynoldsNumber reynolds_number {velocity, length, kinematic_viscosity};
+
+  // Solver settings: Floating type, lattice and collision operator
+  constexpr auto simulation_time {3.0_min};
   using T = double;
   using Lattice = lbt::lattice::D2Q9<T>;
-  // using CollisionOperator = lbt::collision::Bgk
-  // Solver settings: Microscopic velocity: Set manually
+  using CollisionOperator = lbt::collision::Bgk<Lattice>;
+  constexpr auto lbm_speed_of_sound {lbt::lattice::D2Q9<T>::CS};
+  constexpr auto lbm_velocity = 0.5*lbm_speed_of_sound;
+  constexpr long double lbm_density {1.0};
+  constexpr std::int32_t NX {100};
+  constexpr std::int32_t NY {100};
+  constexpr std::int32_t NZ {100};
+  auto const output_path {std::filesystem::current_path()};
+  constexpr lbt::Converter unit_converter {length, static_cast<long double>(NX), velocity, lbm_velocity, density, lbm_density};
 
-  constexpr auto length = 1.2_m;
-  constexpr auto velocity = 1.7_mps;
-  constexpr auto temperature = 0.0_deg;
-  constexpr auto pressure = 1.0_atm;
-  constexpr auto air = lbt::material::Air(temperature, pressure);
-  constexpr auto hydrogen = lbt::material::CarbonDioxide(temperature, pressure);
-  std::cout << hydrogen << std::endl;
-  std::cout << hydrogen.dynamicViscosity(temperature) << std::endl;
-  std::cout << air.dynamicViscosity(temperature, pressure) << std::endl;
-
-  // Compute Reynolds number as well as conversion factors and pass them to the collision operator class
-  // Let collision operator class handle unit conversion
-
+  // Multi-threading
   auto& omp_manager = lbt::OpenMpManager::getInstance();
-  //omp_manager.setThreadsNum(2);
-  std::cout << omp_manager << std::endl;
+  omp_manager.setThreadsNum(lbt::OpenMpManager::getThreadsMax());
 
-  // Geometry: Determine boundary conditions either from analytical geometry description
+  // Geometry and boundary conditions
+  // TODO(tobit): Add boundary conditions
 
-  // Create continuum
+  // Continuum, population and collision operator
+  auto continuum {std::make_shared<lbt::Continuum<T>>(NX, NY, NZ, output_path)};
+  auto population {std::make_shared<lbt::Population<Lattice>>(NX, NY, NZ)};
+  // auto CollisionOperator collision_operator {continuum, population, reynolds_number, lbm_velocity, lbm_length};
+  // collision_operator.initialize<lbt::Timestep::Even>({u, v, w}, lbm_density);
 
-  // Create population
+  // Convert time-steps to simulation time
+  constexpr auto NT {static_cast<std::int64_t>(unit_converter.toLbm(simulation_time))};
+  for (std::int64_t i = 0; i < NT; i += 2) {
+    // Loop performs two combined iterations at once
 
-  // Collision operator
+    // TODO(tobit): Currently saving every 100th step
+    bool const is_save {i % (NT/100)};
+
+    // collision_operator.collideAndStream<lbt::Timestep::Even>(is_save);
+    // collision_operator.collideAndStream<lbt::Timestep::Odd>(is_save);
+
+    if (is_save) {
+      // Enforce boundary condition on continuum
+      auto const simulation_time {unit_converter.toPhysical<lbt::unit::Time>(i)};
+      continuum->save(static_cast<double>(simulation_time.get()));
+    }
+  }
 
   return EXIT_SUCCESS;
 }

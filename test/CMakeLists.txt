@@ -68,6 +68,7 @@ if (NOT GTest_FOUND)
                  unit/characteristic_numbers_test.cpp
                  unit/literals_test.cpp
                  unit/units_test.cpp
+                 converter_test.cpp
                  simulation_test.cpp
                  run_tests.cpp
   )
