@@ -75,6 +75,12 @@ namespace lbt {
         }
 
       protected:
+        IdealGas() = default;
+        IdealGas(IdealGas const&) = default;
+        IdealGas& operator= (IdealGas const&) = default;
+        IdealGas(IdealGas&&) = default;
+        IdealGas& operator= (IdealGas&&) = default;
+
         // TODO(tobit): Introduce remaining SI-units
         // See https://en.wikipedia.org/wiki/Gas_constant
         static constexpr long double universal_gas_constant {8.31446261815324L}; // In SI-units [J/(K mol)]

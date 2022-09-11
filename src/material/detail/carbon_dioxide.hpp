@@ -25,6 +25,13 @@ namespace lbt {
           static constexpr auto c = 240.0_K;
           static constexpr auto t_0 = 293.15_K;
           static constexpr auto mu_0 = 14.8_uPas;
+
+        protected:
+          CarbonDioxide() = default;
+          CarbonDioxide(CarbonDioxide const&) = default;
+          CarbonDioxide& operator= (CarbonDioxide const&) = default;
+          CarbonDioxide(CarbonDioxide&&) = default;
+          CarbonDioxide& operator= (CarbonDioxide&&) = default;
       };
 
     }

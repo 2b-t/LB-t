@@ -25,6 +25,13 @@ namespace lbt {
           static constexpr auto c = 127.0_K;
           static constexpr auto t_0 = 292.25_K;
           static constexpr auto mu_0 = 20.18_uPas;
+
+        protected:
+          Oxygen() = default;
+          Oxygen(Oxygen const&) = default;
+          Oxygen& operator= (Oxygen const&) = default;
+          Oxygen(Oxygen&&) = default;
+          Oxygen& operator= (Oxygen&&) = default;
       };
 
     }

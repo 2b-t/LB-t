@@ -58,6 +58,13 @@ namespace lbt {
           constexpr auto c {149.3_K};
           return lbt::cem::exp(b/(t-c))*a;
         }
+
+      protected:
+        Water() = default;
+        Water(Water const&) = default;
+        Water& operator= (Water const&) = default;
+        Water(Water&&) = default;
+        Water& operator= (Water&&) = default;
     };
 
   }

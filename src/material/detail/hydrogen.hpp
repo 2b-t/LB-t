@@ -25,6 +25,13 @@ namespace lbt {
           static constexpr auto c = 72.0_K;
           static constexpr auto t_0 = 293.85_K;
           static constexpr auto mu_0 = 8.76_uPas;
+
+        protected:
+          Hydrogen() = default;
+          Hydrogen(Hydrogen const&) = default;
+          Hydrogen& operator= (Hydrogen const&) = default;
+          Hydrogen(Hydrogen&&) = default;
+          Hydrogen& operator= (Hydrogen&&) = default;
       };
 
     }

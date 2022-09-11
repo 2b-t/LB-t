@@ -25,6 +25,13 @@ namespace lbt {
           static constexpr auto c = 120.0_K;
           static constexpr auto t_0 = 291.15_K;
           static constexpr auto mu_0 = 18.27_uPas;
+
+        protected:
+          Air() = default;
+          Air(Air const&) = default;
+          Air& operator= (Air const&) = default;
+          Air(Air&&) = default;
+          Air& operator= (Air&&) = default;
       };
 
     }
