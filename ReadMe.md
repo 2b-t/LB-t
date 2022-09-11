@@ -2,7 +2,7 @@
 
 # LB-t - A parallel 3D lattice-Boltzmann CFD solver
 
-Author: [Tobit Flatscher](https://github.com/2b-t) (December 2019 - August 2022)
+Author: [Tobit Flatscher](https://github.com/2b-t) (December 2019 - September 2022)
 
 **This branch (`devel`) is currently work in progress - for the functional and tested version refer to the legacy `main` branch!**
 
