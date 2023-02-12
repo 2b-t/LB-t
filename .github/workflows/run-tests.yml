@@ -17,7 +17,7 @@ jobs:
       - name: Create build folder
         run: mkdir build
       - name: Run CMake
-        run: cmake -B /code/lbt/build -S /code/lbt/test -D VTK_DIR=/code/lbt/../VTK-build -D ENABLE_COVERAGE=True
+        run: cmake -B /code/lbt/build -S /code/lbt -D VTK_DIR=/code/lbt/../VTK-build -D ENABLE_COVERAGE=True
       - name: Compile with Make
         run: make -j $(nproc) -C /code/lbt/build
       - name: Run unit tests
