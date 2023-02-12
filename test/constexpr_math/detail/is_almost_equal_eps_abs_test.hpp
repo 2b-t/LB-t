@@ -15,7 +15,7 @@
 
 #include <gtest/gtest.h>
 
-#include "../../../src/constexpr_math/detail/is_almost_equal_eps_abs.hpp"
+#include "constexpr_math/detail/is_almost_equal_eps_abs.hpp"
 #include "testing_types.hpp"
 
 

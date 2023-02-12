@@ -13,7 +13,7 @@
 
 #include <gtest/gtest.h>
 
-#include "../../../src/constexpr_math/detail/mathematical_constants.hpp"
+#include "constexpr_math/detail/mathematical_constants.hpp"
 #include "testing_types.hpp"
 
 

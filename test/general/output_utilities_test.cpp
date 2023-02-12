@@ -9,7 +9,7 @@
 
 #include <gtest/gtest.h>
 
-#include "../../src/general/output_utilities.hpp"
+#include "general/output_utilities.hpp"
 
 
 namespace lbt {

@@ -16,7 +16,7 @@
 #include <tuple>
 #include <type_traits>
 
-#include "../../src/constexpr_math/constexpr_math.hpp"
+#include "constexpr_math/constexpr_math.hpp"
 #include "../testing_utilities/testing_utilities.hpp"
 
 

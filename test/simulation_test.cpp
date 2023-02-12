@@ -10,7 +10,7 @@
 #include <gtest/gtest.h>
 #include <nlohmann/json.hpp>
 
-#include "../src/simulation.hpp"
+#include "simulation.hpp"
 
 
 namespace lbt {

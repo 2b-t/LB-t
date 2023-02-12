@@ -15,7 +15,7 @@
 
 #include <gtest/gtest.h>
 
-#include "../../../src/constexpr_math/detail/is_almost_equal_ulps.hpp"
+#include "constexpr_math/detail/is_almost_equal_ulps.hpp"
 #include "testing_types.hpp"
 
 

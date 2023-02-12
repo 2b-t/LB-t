@@ -10,7 +10,7 @@
 
 #include <gtest/gtest.h>
 
-#include "../../../src/material/detail/air.hpp"
+#include "material/detail/air.hpp"
 
 
 namespace lbt {

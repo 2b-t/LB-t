@@ -1,6 +1,6 @@
-#include "vtk_utilities.hpp"
+#include "general/vtk_utilities.hpp"
 
-#include "use_vtk.hpp"
+#include "general/use_vtk.hpp"
 
 #ifdef LBT_USE_VTK
   #include <cstdlib>

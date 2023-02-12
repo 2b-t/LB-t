@@ -12,8 +12,8 @@
 
 #include <gtest/gtest.h>
 
-#include "../../../src/unit/detail/volume.hpp"
-#include "../../../src/unit/detail/volume_literals.hpp"
+#include "unit/detail/volume.hpp"
+#include "unit/detail/volume_literals.hpp"
 #include "unit_literals_helper.hpp"
 
 

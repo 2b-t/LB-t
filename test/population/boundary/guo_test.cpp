@@ -9,7 +9,7 @@
 
 #include <gtest/gtest.h>
 
-#include "../../../src/population/boundary/guo.hpp"
+#include "population/boundary/guo.hpp"
 
 
 namespace lbt {

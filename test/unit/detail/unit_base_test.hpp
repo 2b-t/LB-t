@@ -12,8 +12,8 @@
 
 #include <gtest/gtest.h>
 
-#include "../../../src/unit/detail/unit_base.hpp"
-#include "../../../src/unit/units.hpp"
+#include "unit/detail/unit_base.hpp"
+#include "unit/units.hpp"
 
 
 namespace lbt {

@@ -12,8 +12,8 @@
 
 #include <gtest/gtest.h>
 
-#include "../../../src/unit/detail/pressure.hpp"
-#include "../../../src/unit/detail/pressure_literals.hpp"
+#include "unit/detail/pressure.hpp"
+#include "unit/detail/pressure_literals.hpp"
 #include "unit_literals_helper.hpp"
 
 

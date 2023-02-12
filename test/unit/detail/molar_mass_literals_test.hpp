@@ -12,8 +12,8 @@
 
 #include <gtest/gtest.h>
 
-#include "../../../src/unit/detail/molar_mass.hpp"
-#include "../../../src/unit/detail/molar_mass_literals.hpp"
+#include "unit/detail/molar_mass.hpp"
+#include "unit/detail/molar_mass_literals.hpp"
 #include "unit_literals_helper.hpp"
 
 

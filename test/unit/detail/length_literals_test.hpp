@@ -12,8 +12,8 @@
 
 #include <gtest/gtest.h>
 
-#include "../../../src/unit/detail/length.hpp"
-#include "../../../src/unit/detail/length_literals.hpp"
+#include "unit/detail/length.hpp"
+#include "unit/detail/length_literals.hpp"
 #include "unit_literals_helper.hpp"
 
 

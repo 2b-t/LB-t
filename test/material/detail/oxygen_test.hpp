@@ -10,7 +10,7 @@
 
 #include <gtest/gtest.h>
 
-#include "../../../src/material/detail/oxygen.hpp"
+#include "material/detail/oxygen.hpp"
 
 
 namespace lbt {

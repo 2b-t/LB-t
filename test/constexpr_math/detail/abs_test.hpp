@@ -15,7 +15,7 @@
 
 #include <gtest/gtest.h>
 
-#include "../../../src/constexpr_math/detail/abs.hpp"
+#include "constexpr_math/detail/abs.hpp"
 #include "testing_types.hpp"
 
 

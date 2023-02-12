@@ -10,7 +10,7 @@
 
 #include <gtest/gtest.h>
 
-#include "../../../src/population/boundary/normal.hpp"
+#include "population/boundary/normal.hpp"
 
 
 namespace lbt {

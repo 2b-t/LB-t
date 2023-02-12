@@ -14,7 +14,7 @@
 
 #include <gtest/gtest.h>
 
-#include "../../src/constexpr_math/constexpr_math.hpp"
+#include "constexpr_math/constexpr_math.hpp"
 #include "../lattice/lattice_testing_types.hpp"
 
 

@@ -12,8 +12,8 @@
 
 #include <gtest/gtest.h>
 
-#include "../../../src/unit/detail/dynamic_viscosity.hpp"
-#include "../../../src/unit/detail/dynamic_viscosity_literals.hpp"
+#include "unit/detail/dynamic_viscosity.hpp"
+#include "unit/detail/dynamic_viscosity_literals.hpp"
 #include "unit_literals_helper.hpp"
 
 

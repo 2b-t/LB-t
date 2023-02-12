@@ -8,7 +8,7 @@
 
 #include <gtest/gtest.h>
 
-#include "../../src/general/disclaimer.hpp"
+#include "general/disclaimer.hpp"
  
 
 namespace lbt {

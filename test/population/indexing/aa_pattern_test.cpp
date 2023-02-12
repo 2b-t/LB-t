@@ -10,8 +10,8 @@
 
 #include <gtest/gtest.h>
 
-#include "../../../src/general/type_definitions.hpp"
-#include "../../../src/population/indexing/aa_pattern.hpp"
+#include "general/type_definitions.hpp"
+#include "population/indexing/aa_pattern.hpp"
 #include "../../lattice/lattice_testing_types.hpp"
 
 

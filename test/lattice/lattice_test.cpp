@@ -9,7 +9,7 @@
 
 #include <gtest/gtest.h>
 
-#include "../../src/constexpr_math/constexpr_math.hpp"
+#include "constexpr_math/constexpr_math.hpp"
 #include "../testing_utilities/array_utilities.hpp"
 #include "lattice_testing_types.hpp"
 

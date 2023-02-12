@@ -10,7 +10,7 @@
 
 #include <gtest/gtest.h>
 
-#include "../../src/general/tuple_utilities.hpp"
+#include "general/tuple_utilities.hpp"
 
 
 namespace lbt {

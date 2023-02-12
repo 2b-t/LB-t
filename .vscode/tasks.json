@@ -6,10 +6,8 @@
       "detail": "Build workspace",
       "type": "shell",
       "command": [
-        "cmake -B${workspaceFolder}/build -S${workspaceFolder}/src -DVTK_DIR=${workspaceFolder}/../VTK-build &&",
-        "make -j$(nproc) -C${workspaceFolder}/build &&",
-        "cmake -B${workspaceFolder}/build-test -S${workspaceFolder}/test -DVTK_DIR=${workspaceFolder}/../VTK-build &&",
-        "make -j$(nproc) -C${workspaceFolder}/build-test"
+        "cmake -B ${workspaceFolder}/build -S ${workspaceFolder} -D VTK_DIR=${workspaceFolder}/../VTK-build -D ENABLE_COVERAGE=True",
+        "&& make -j $(nproc) -C ${workspaceFolder}/build"
       ],
       "problemMatcher": "$gcc"
     },
@@ -30,7 +28,7 @@
       "label": "test",
       "detail": "Run all unit tests and show results.",
       "type": "process",
-      "command": "${workspaceFolder}/build-test/run_lbt_tests",
+      "command": "${workspaceFolder}/build/run_lbt_tests",
       "group": {
         "kind": "test",
         "isDefault": true
@@ -44,14 +42,14 @@
       "label": "clean",
       "detail": "Run the clean target",
       "type": "shell",
-      "command": "make clean -C${workspaceFolder}/build && make clean -C${workspaceFolder}/build-test",
+      "command": "make clean -C ${workspaceFolder}/build",
       "problemMatcher": "$gcc"
     },
     {
       "label": "purge",
       "detail": "Purge workspace by deleting all generated files.",
       "type": "shell",
-      "command": "rm -fr ${workspaceFolder}/build ${workspaceFolder}/build-test",
+      "command": "rm -fr ${workspaceFolder}/build",
       "problemMatcher": []
     }
   ]

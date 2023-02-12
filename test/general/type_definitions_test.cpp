@@ -9,7 +9,7 @@
 
 #include <gtest/gtest.h>
 
-#include "../../src/general/type_definitions.hpp"
+#include "general/type_definitions.hpp"
 #include "../testing_utilities/array_utilities.hpp"
 
 

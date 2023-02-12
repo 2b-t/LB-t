@@ -16,9 +16,9 @@
 
 #include <gtest/gtest.h>
 
-#include "../../../src/constexpr_math/detail/is_inf.hpp"
-#include "../../../src/constexpr_math/detail/is_nan.hpp"
-#include "../../../src/constexpr_math/detail/sqrt.hpp"
+#include "constexpr_math/detail/is_inf.hpp"
+#include "constexpr_math/detail/is_nan.hpp"
+#include "constexpr_math/detail/sqrt.hpp"
 #include "constexpr_math_utilities.hpp"
 #include "testing_types.hpp"
 

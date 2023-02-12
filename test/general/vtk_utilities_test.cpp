@@ -4,12 +4,12 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
-#include "../../src/general/use_vtk.hpp"
+#include "general/use_vtk.hpp"
 
 #ifdef LBT_USE_VTK
   #include <gtest/gtest.h>
 
-  #include "../../src/general/vtk_utilities.hpp"
+  #include "general/vtk_utilities.hpp"
 
 
   namespace lbt {

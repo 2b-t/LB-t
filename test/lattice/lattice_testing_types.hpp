@@ -12,11 +12,11 @@
 
 #include <gtest/gtest.h>
 
-#include "../../src/lattice/D2Q9.hpp"
-#include "../../src/lattice/D3Q15.hpp"
-#include "../../src/lattice/D3Q19.hpp"
-#include "../../src/lattice/D3Q27.hpp"
-#include "../../src/general/tuple_utilities.hpp"
+#include "lattice/D2Q9.hpp"
+#include "lattice/D3Q15.hpp"
+#include "lattice/D3Q19.hpp"
+#include "lattice/D3Q27.hpp"
+#include "general/tuple_utilities.hpp"
 #include "../testing_utilities/testing_utilities.hpp"
 
 

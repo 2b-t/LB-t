@@ -12,8 +12,8 @@
 
 #include <gtest/gtest.h>
 
-#include "../../../src/unit/detail/temperature.hpp"
-#include "../../../src/unit/detail/temperature_literals.hpp"
+#include "unit/detail/temperature.hpp"
+#include "unit/detail/temperature_literals.hpp"
 #include "unit_literals_helper.hpp"
 
 

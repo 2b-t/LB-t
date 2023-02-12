@@ -14,7 +14,7 @@
 
 #include <gtest/gtest.h>
 
-#include "../../../src/material/detail/states_table.hpp"
+#include "material/detail/states_table.hpp"
 
 
 namespace lbt {

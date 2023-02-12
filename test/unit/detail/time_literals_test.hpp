@@ -12,8 +12,8 @@
 
 #include <gtest/gtest.h>
 
-#include "../../../src/unit/detail/time.hpp"
-#include "../../../src/unit/detail/time_literals.hpp"
+#include "unit/detail/time.hpp"
+#include "unit/detail/time_literals.hpp"
 #include "unit_literals_helper.hpp"
 
 

@@ -15,13 +15,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Create build folder
-        run: mkdir build-test
+        run: mkdir build
       - name: Run CMake
-        run: cmake -B/code/lbt/build-test -S/code/lbt/test -DVTK_DIR=/code/lbt/../VTK-build
+        run: cmake -B /code/lbt/build -S /code/lbt/test -D VTK_DIR=/code/lbt/../VTK-build -D ENABLE_COVERAGE=True
       - name: Compile with Make
-        run: make -j$(nproc) -C/code/lbt/build-test
+        run: make -j $(nproc) -C /code/lbt/build
       - name: Run unit tests
-        run: (cd /code/lbt/build-test && ctest)
+        run: (cd /code/lbt/build && ctest)
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
 

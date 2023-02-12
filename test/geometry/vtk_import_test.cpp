@@ -4,7 +4,7 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
-#include "../../src/general/use_vtk.hpp"
+#include "general/use_vtk.hpp"
 
 #ifdef LBT_USE_VTK
   #include <type_traits>
@@ -15,7 +15,7 @@
 
   #include <gtest/gtest.h>
 
-  #include "../../src/geometry/vtk_import.hpp"
+  #include "geometry/vtk_import.hpp"
 
 
   namespace lbt {

@@ -15,7 +15,7 @@
 
 #include <gtest/gtest.h>
 
-#include "../../../src/constexpr_math/detail/is_inf.hpp"
+#include "constexpr_math/detail/is_inf.hpp"
 #include "testing_types.hpp"
 
 

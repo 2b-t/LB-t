@@ -13,8 +13,8 @@
 
 #include <gtest/gtest.h>
 
-#include "../../src/continuum/simple_continuum.hpp"
-#include "../../src/general/tuple_utilities.hpp"
+#include "continuum/simple_continuum.hpp"
+#include "general/tuple_utilities.hpp"
 #include "../testing_utilities/testing_utilities.hpp"
 #include "continuum_base_test.hpp"
 

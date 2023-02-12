@@ -10,7 +10,7 @@
 
 #include <gtest/gtest.h>
 
-#include "../../../src/population/indexing/indexing.hpp"
+#include "population/indexing/indexing.hpp"
 #include "../../lattice/lattice_testing_types.hpp"
 
 
