@@ -22,4 +22,6 @@ jobs:
         run: make -j$(nproc) -C/code/lbt/build-test
       - name: Run unit tests
         run: (cd /code/lbt/build-test && ctest)
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
 

@@ -5,6 +5,7 @@ on:
     paths:
       - 'src/**'
       - 'test/**'
+  workflow_dispatch:
 
 jobs:
   tests:
