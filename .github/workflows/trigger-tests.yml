@@ -3,6 +3,7 @@ name: Trigger tests
 on:
   push:
     paths:
+      - 'include/**'
       - 'src/**'
       - 'test/**'
   workflow_dispatch:

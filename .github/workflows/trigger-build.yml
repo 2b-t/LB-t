@@ -3,6 +3,7 @@ name: Trigger build
 on:
   push:
     paths:
+      - 'include/**'
       - 'src/**'
   workflow_dispatch:
 
