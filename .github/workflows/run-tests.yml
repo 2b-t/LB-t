@@ -14,6 +14,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Install gcovr
+        run: |
+          apt-get update
+          apt-get install -y gcovr
       - name: Create build folder
         run: mkdir build
       - name: Run CMake
@@ -21,7 +25,10 @@ jobs:
       - name: Compile with Make
         run: make -j $(nproc) -C /code/lbt/build
       - name: Run unit tests
-        run: (cd /code/lbt/build && ctest)
-      - name: Upload coverage reports to Codecov
+        run: (cd /code/lbt/build/ && ctest -j $(nproc))
+      - name: Generate code coverage report
+        run: gcovr -j $(nproc) --filter /code/lbt/include --filter /code/lbt/src --print-summary --xml-pretty --xml /code/lbt/coverage.xml
+      - name: Update Codecov code coverage report
         uses: codecov/codecov-action@v3
-
+        with:
+          files: /code/lbt/coverage.xml

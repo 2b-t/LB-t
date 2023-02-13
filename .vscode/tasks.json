@@ -6,7 +6,7 @@
       "detail": "Build workspace",
       "type": "shell",
       "command": [
-        "cmake -B ${workspaceFolder}/build -S ${workspaceFolder} -D VTK_DIR=${workspaceFolder}/../VTK-build -D ENABLE_COVERAGE=True",
+        "cmake -B ${workspaceFolder}/build -S ${workspaceFolder} -D VTK_DIR=${workspaceFolder}/../VTK-build",
         "&& make -j $(nproc) -C ${workspaceFolder}/build"
       ],
       "problemMatcher": "$gcc"
