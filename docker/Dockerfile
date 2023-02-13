@@ -54,17 +54,18 @@ RUN apt-get update \
     libgtest-dev \
  && rm -rf /var/lib/apt/lists/*
 
+# Attention, this breaks gcovr!
 # Update to GCC 11 for C++20 support
-RUN apt-get update \
- && apt-get install -y  \
-    software-properties-common \
- && add-apt-repository ppa:ubuntu-toolchain-r/test \
- && apt-get install -y \
-    gcc-11 \
-    g++-11 \
- && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 11 \
- && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 11 \
- && rm -rf /var/lib/apt/lists/*
+#RUN apt-get update \
+# && apt-get install -y  \
+#    software-properties-common \
+# && add-apt-repository ppa:ubuntu-toolchain-r/test \
+# && apt-get install -y \
+#    gcc-11 \
+#    g++-11 \
+# && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 11 \
+# && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 11 \
+# && rm -rf /var/lib/apt/lists/*
 
 ENV DEBIAN_FRONTEND=dialog
 
