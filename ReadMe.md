@@ -2,7 +2,7 @@
 
 Author: [Tobit Flatscher](https://github.com/2b-t) (December 2019 - September 2022)
 
-[![Dockerhub](https://github.com/2b-t/LB-t/actions/workflows/update-dockerhub.yml/badge.svg?branch=devel)](https://github.com/2b-t/LB-t/actions/workflows/update-dockerhub.yml) [![Build](https://github.com/2b-t/LB-t/actions/workflows/build.yml/badge.svg?branch=devel)](https://github.com/2b-t/LB-t/actions/workflows/build.yml) [![Tests](https://github.com/2b-t/LB-t/actions/workflows/run-tests.yml/badge.svg?branch=devel)](https://github.com/2b-t/LB-t/actions/workflows/run-tests.yml) [![C++17 Standard](https://img.shields.io/badge/Standard-C++17-yellow.svg?style=flat&logo=c%2B%2B)](https://isocpp.org/std/the-standard) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Dockerhub](https://github.com/2b-t/LB-t/actions/workflows/update-dockerhub.yml/badge.svg?branch=devel)](https://github.com/2b-t/LB-t/actions/workflows/update-dockerhub.yml) [![Build](https://github.com/2b-t/LB-t/actions/workflows/build.yml/badge.svg?branch=devel)](https://github.com/2b-t/LB-t/actions/workflows/build.yml) [![Tests](https://github.com/2b-t/LB-t/actions/workflows/run-tests.yml/badge.svg?branch=devel)](https://github.com/2b-t/LB-t/actions/workflows/run-tests.yml) [![codecov](https://codecov.io/gh/2b-t/LB-t/branch/devel/graph/badge.svg?token=C6HIQIBRDM)](https://codecov.io/gh/2b-t/LB-t) [![C++17 Standard](https://img.shields.io/badge/Standard-C++17-yellow.svg?style=flat&logo=c%2B%2B)](https://isocpp.org/std/the-standard) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 
 
