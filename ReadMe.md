@@ -55,7 +55,7 @@ This is a library for **computational fluid mechanics (CFD) based on the lattice
   - The framework leverages on **`constexpr` mathematical calculations** at compile-time in particular for the type traits. For this purpose it includes an own small `constexpr` mathematical library that is also fully unit-tested.
   - The framework includes own **classes for physical units** and **user-defined literals**.
   - It also includes a simple **fluid material library** that can estimate density and viscosity of various gases.
-  - The code is **fully unit-tested** with a coverage of nearly 100%. This is achieved by over 200 parameterised and templated test suits resulting in over 1000 individual automated unit tests.
+  - The code aims at being **fully unit-tested**. Currently this is achieved by over 200 parameterised and templated test suits resulting in over 1000 individual automated unit tests.
   - The code comes with a **Docker** container and a corresponding CI toolchain. This simplifies execution and testing on a new system while having virtually no overhead.
   - The code is **fully documented with Doxygen** that includes references to literature and relevant papers.
 
