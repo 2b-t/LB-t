@@ -22,6 +22,81 @@ $ sudo docker-compose exec lbt_docker sh
 
 Now you can work inside the Docker as if it was your own machine. In the following paragraphs it is discussed how one can use [Visual Studio Code](https://code.visualstudio.com/) as an IDE in order to have a more convenient access. Advantages of Docker compared to an installation on the host system are discussed in more detail [here](https://hentsu.com/docker-containers-top-7-benefits/).
 
+The current Dockerfile installs all dependencies from Debian packages. In case you would like to install them from source instead (e.g. in order to have the latest bug fixes) use the following Dockerfile:
+
+```dockerfile
+FROM ubuntu:20.04
+
+WORKDIR /code
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+# Install general tools: Git, Cmake, GCC, OpenMP
+RUN apt-get update \
+ && apt-get install -y \
+    build-essential \
+    cmake \
+    git-all \
+    libomp-dev \
+ && rm -rf /var/lib/apt/lists/*
+
+# Install VTK dependencies: libglvnd
+RUN apt-get update \
+ && apt-get install -y \
+    libxext-dev \
+    libx11-dev \
+    x11proto-gl-dev \
+ && git clone https://github.com/NVIDIA/libglvnd \
+ && cd libglvnd \
+ && apt-get install -y \
+    autoconf \
+    autogen \
+    libtool \
+    pkg-config \
+ && ./autogen.sh \
+ && autoreconf --install \
+ && ./configure \
+ && make install \
+ && cd .. \
+ && rm -rf /var/lib/apt/lists/*
+
+# Compile VTK library
+RUN apt-get update \
+ && git clone https://gitlab.kitware.com/vtk/vtk.git VTK \
+ && mkdir VTK-build \
+ && cd VTK-build \
+ && cmake -DCMAKE_BUILD_TYPE:STRING=Release ../VTK \
+ && make -j$(nproc) \
+ && cd ..
+
+# Install nlohmann-json
+RUN apt-get -y update \
+ && apt-get install -y \
+    nlohmann-json3-dev \
+ && rm -rf /var/lib/apt/lists/*
+
+# Install GTest
+RUN apt-get update \
+ && apt-get install -y  \
+    libgtest-dev \
+ && rm -rf /var/lib/apt/lists/*
+
+# Attention, this breaks gcovr!
+# Update to GCC 11 for C++20 support
+#RUN apt-get update \
+# && apt-get install -y  \
+#    software-properties-common \
+# && add-apt-repository ppa:ubuntu-toolchain-r/test \
+# && apt-get install -y \
+#    gcc-11 \
+#    g++-11 \
+# && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 11 \
+# && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 11 \
+# && rm -rf /var/lib/apt/lists/*
+
+ENV DEBIAN_FRONTEND=dialog
+```
+
 ### 2.1 Graphic user interfaces inside the Docker
 
 Docker was actually not designed to be used with a graphic user interface. There are several workarounds for this on Linux operating systems, most of them mount relevant X11 folders from the host system into the Docker. In our case this is achieved by a corresponding Docker Compose file `docker-compose-gui.yml` that [extends](https://docs.docker.com/compose/extends/) the basic `docker-compose.yml` file.
