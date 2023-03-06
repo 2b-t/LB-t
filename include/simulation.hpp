@@ -24,6 +24,7 @@
 #include "population/population.hpp"
 #include "general/openmp_manager.hpp"
 #include "general/output_utilities.hpp"*/
+#include "general/vtk_utilities.hpp"
 #include "geometry/vtk_import.hpp"
 #include "base_simulation.hpp"
 
@@ -427,14 +428,14 @@ namespace lbt {
         /**\fn    Output
          * \brief Constructor of Output class that parses the settings from a Json string
          * 
-         * \param[in] format           File format of the output
+         * \param[in] data_type        File format of the output
          * \param[in] folder           Folder name where the files should be written to
          * \param[in] first_output     First time step where a file should be outputted
          * \param[in] write_interval   Interval in between writing time steps
         */
-        Output(DataType const format, std::string const& folder, double const first_output, 
+        Output(DataType const data_type, std::string const& folder, double const first_output, 
               double const write_interval) noexcept 
-          : format{format}, folder{folder}, first_output{first_output}, write_interval{write_interval} {
+          : data_type{data_type}, folder{folder}, first_output{first_output}, write_interval{write_interval} {
           return;
         }
 
@@ -444,9 +445,9 @@ namespace lbt {
          * \param[in] j   The Json string to be parsed
         */
         Output(json const& j) {
-          format = DataType::MHD;
+          data_type = DataType::MHD;
           if (j["dataFormat"] == "vtk") {
-            format = DataType::VTK;
+            data_type = DataType::VTK;
           }
           folder = j["outputFolder"].get<std::string>();
           first_output = j["firstOutput"].get<double>();
@@ -461,9 +462,9 @@ namespace lbt {
         */
         json toJson() const noexcept {
           json j {};
-          if (format == DataType::VTK) {
+          if (data_type == DataType::VTK) {
             j["dataFormat"] = "vtk";
-          } else if (format == DataType::MHD) {
+          } else if (data_type == DataType::MHD) {
             j["dataFormat"] == "mhd";
           }
           j["outputFolder"] = folder;
@@ -489,7 +490,7 @@ namespace lbt {
          * \return Used export file format
         */
         constexpr auto getFormat() const noexcept {
-          return format;
+          return data_type;
         }
 
         /**\fn    getFirstOutput
@@ -511,7 +512,7 @@ namespace lbt {
         }
 
       protected:
-        DataType format; // File format of the output
+        DataType data_type; // File format of the output
         std::string folder; // Folder name where the files should be written to
         double first_output; // First time step where a file should be outputted
         double write_interval; // Interval in between writing time steps
