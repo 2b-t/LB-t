@@ -21,14 +21,7 @@ set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_CXX_STANDARD 17) # The vast majority of code is written for C++17 but certain tests require C++20
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# Libraries: OpenMP (optional), VTK, nlohmann_json
-find_package(OpenMP)
-if(OpenMP_CXX_FOUND)
-  message(STATUS "OpenMP version " ${OpenMP_VERSION} " found!")
-else()
-  message(WARNING "OpenMP not found: Multi-threading disabled!")
-endif()
-
+# Libraries: VTK, nlohmann_json, OpenMP (optional)
 find_package(VTK REQUIRED)
 if(NOT VTK_FOUND)
   message(FATAL_ERROR "VTK library not found!")
@@ -46,23 +39,37 @@ else()
   message(STATUS "nlohmann-json version: " ${nlohmann_json_VERSION})
 endif()
 
-include_directories(include)
+find_package(OpenMP)
+if(OpenMP_CXX_FOUND)
+  message(STATUS "OpenMP version " ${OpenMP_VERSION} " found!")
+else()
+  message(WARNING "OpenMP not found: Multi-threading disabled!")
+endif()
+
+include_directories(
+  include
+)
 
 # Add executable
-add_executable(lbt 
+add_library(lbt_obj OBJECT
   src/general/disclaimer.cpp
   src/general/openmp_manager.cpp
   src/general/timer.cpp
   src/general/vtk_utilities.cpp 
   src/geometry/vtk_import.cpp
+)
+add_executable(lbt 
+  $<TARGET_OBJECTS:lbt_obj>
   src/main.cpp
 )
 
 # Link executable to libraries
-target_link_libraries(lbt ${VTK_LIBRARIES} nlohmann_json::nlohmann_json)
+set(LBT_LIBRARIES ${VTK_LIBRARIES} nlohmann_json::nlohmann_json)
 if(OpenMP_CXX_FOUND)
-  target_link_libraries(lbt OpenMP::OpenMP_CXX)
+  set(LBT_LIBRARIES ${LBT_LIBRARIES} OpenMP::OpenMP_CXX)
 endif()
+target_link_libraries(lbt_obj ${LBT_LIBRARIES})
+target_link_libraries(lbt ${LBT_LIBRARIES})
 
 
 # Testing
@@ -70,13 +77,10 @@ enable_testing()
 
 include(GoogleTest)
 if (NOT GTest_FOUND)
+  set(LBT_TEST_LIBRARIES ${LBT_LIBRARIES} gtest pthread)
+
   # Add executable
-  add_executable(run_lbt_tests
-    src/general/disclaimer.cpp
-    src/general/openmp_manager.cpp
-    src/general/timer.cpp
-    src/general/vtk_utilities.cpp
-    src/geometry/vtk_import.cpp
+  add_library(lbt_test_obj OBJECT
     test/constexpr_math/constexpr_math_test.cpp
     test/continuum/simple_continuum_test.cpp
     test/continuum/vtk_continuum_test.cpp
@@ -104,6 +108,10 @@ if (NOT GTest_FOUND)
     test/unit/units_test.cpp
     test/converter_test.cpp
     test/simulation_test.cpp
+  )
+  add_executable(run_lbt_tests
+    $<TARGET_OBJECTS:lbt_obj>
+    $<TARGET_OBJECTS:lbt_test_obj>
     test/run_tests.cpp
   )
 
@@ -116,10 +124,8 @@ if (NOT GTest_FOUND)
   set_tests_properties(${noArgsTests} PROPERTIES TIMEOUT 10)
 
   # Link executable to libraries
-  target_link_libraries(run_lbt_tests gtest pthread ${VTK_LIBRARIES} nlohmann_json::nlohmann_json)
-  if(OpenMP_CXX_FOUND)
-    target_link_libraries(run_lbt_tests OpenMP::OpenMP_CXX)
-  endif()
+  target_link_libraries(lbt_test_obj ${LBT_TEST_LIBRARIES})
+  target_link_libraries(run_lbt_tests ${LBT_TEST_LIBRARIES})
 else()
   message(FATAL_ERROR "GoogleTest not found!")
 endif()
