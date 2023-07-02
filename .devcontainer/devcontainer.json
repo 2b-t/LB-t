@@ -4,7 +4,7 @@
     "../docker/docker-compose.yml" // Alternatives: "../docker/docker-compose-gui.yml", "../docker/docker-compose-gui-nvidia.yml", "../docker/docker-compose-nvidia.yml"
   ],
   "service": "lbt_docker",
-	"workspaceFolder": "/code/lbt",
+  "workspaceFolder": "/code/lbt",
   "shutdownAction": "stopCompose",
   "extensions": [
     "zachflower.uncrustify",
