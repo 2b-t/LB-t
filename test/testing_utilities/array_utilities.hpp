@@ -13,8 +13,8 @@
 #include <numeric>
 #include <type_traits>
 
-#include "constexpr_math/constexpr_math.hpp"
-#include "general/type_definitions.hpp"
+#include "lbt/constexpr_math/constexpr_math.hpp"
+#include "lbt/general/type_definitions.hpp"
 
 
 namespace lbt {

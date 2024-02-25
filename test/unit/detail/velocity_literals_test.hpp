@@ -12,8 +12,8 @@
 
 #include <gtest/gtest.h>
 
-#include "unit/detail/velocity.hpp"
-#include "unit/detail/velocity_literals.hpp"
+#include "lbt/unit/detail/velocity.hpp"
+#include "lbt/unit/detail/velocity_literals.hpp"
 #include "unit_literals_helper.hpp"
 
 

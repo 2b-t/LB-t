@@ -9,7 +9,7 @@
 
 #include <gtest/gtest.h>
 
-#include "general/timer.hpp"
+#include "lbt/general/timer.hpp"
  
 
 namespace lbt {

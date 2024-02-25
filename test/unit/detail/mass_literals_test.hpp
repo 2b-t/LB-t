@@ -12,8 +12,8 @@
 
 #include <gtest/gtest.h>
 
-#include "unit/detail/mass.hpp"
-#include "unit/detail/mass_literals.hpp"
+#include "lbt/unit/detail/mass.hpp"
+#include "lbt/unit/detail/mass_literals.hpp"
 #include "unit_literals_helper.hpp"
 
 

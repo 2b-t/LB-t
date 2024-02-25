@@ -6,9 +6,9 @@
 
 #include <gtest/gtest.h>
 
-#include "converter.hpp"
-#include "unit/literals.hpp"
-#include "unit/units.hpp"
+#include "lbt/unit/literals.hpp"
+#include "lbt/unit/units.hpp"
+#include "lbt/converter.hpp"
 
 
 namespace lbt {

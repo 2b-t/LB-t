@@ -14,10 +14,10 @@
 
 #include <nlohmann/json.hpp>
 
-#include "general/disclaimer.hpp"
-#include "general/openmp_manager.hpp"
-#include "lattice/D3Q15.hpp"
-#include "simulation.hpp"
+#include "lbt/general/disclaimer.hpp"
+#include "lbt/general/openmp_manager.hpp"
+#include "lbt/lattice/D3Q15.hpp"
+#include "lbt/simulation.hpp"
 
 
 int main(int argc, char* argv[]) {

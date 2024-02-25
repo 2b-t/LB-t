@@ -10,15 +10,15 @@
 #include <iostream>
 #include <memory>
 
-#include "continuum/continuum.hpp"
-#include "general/openmp_manager.hpp"
-#include "lattice/lattices.hpp"
-#include "material/materials.hpp"
-#include "population/collision_operators.hpp"
-#include "population/population.hpp"
-#include "unit/characteristic_numbers.hpp"
-#include "unit/literals.hpp"
-#include "converter.hpp"
+#include "lbt/continuum/continuum.hpp"
+#include "lbt/general/openmp_manager.hpp"
+#include "lbt/lattice/lattices.hpp"
+#include "lbt/material/materials.hpp"
+#include "lbt/population/collision_operators.hpp"
+#include "lbt/population/population.hpp"
+#include "lbt/unit/characteristic_numbers.hpp"
+#include "lbt/unit/literals.hpp"
+#include "lbt/converter.hpp"
 
 
 int main(int argc, char* argv[]) {

@@ -12,8 +12,8 @@
 
 #include <gtest/gtest.h>
 
-#include "unit/detail/area.hpp"
-#include "unit/detail/area_literals.hpp"
+#include "lbt/unit/detail/area.hpp"
+#include "lbt/unit/detail/area_literals.hpp"
 #include "unit_literals_helper.hpp"
 
 

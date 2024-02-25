@@ -10,7 +10,7 @@
 
 #include <gtest/gtest.h>
 
-#include "general/stream_manager.hpp"
+#include "lbt/general/stream_manager.hpp"
 
 
 namespace lbt {

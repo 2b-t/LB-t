@@ -10,10 +10,10 @@
 
 #include <gtest/gtest.h>
 
-#include "unit/detail/kinematic_viscosity.hpp"
-#include "unit/detail/length.hpp"
-#include "unit/detail/reynolds_number.hpp"
-#include "unit/detail/velocity.hpp"
+#include "lbt/unit/detail/kinematic_viscosity.hpp"
+#include "lbt/unit/detail/length.hpp"
+#include "lbt/unit/detail/reynolds_number.hpp"
+#include "lbt/unit/detail/velocity.hpp"
 
 
 namespace lbt {

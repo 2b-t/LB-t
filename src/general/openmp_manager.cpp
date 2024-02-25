@@ -1,4 +1,4 @@
-#include "general/openmp_manager.hpp"
+#include "lbt/general/openmp_manager.hpp"
 
 #include <ostream>
 

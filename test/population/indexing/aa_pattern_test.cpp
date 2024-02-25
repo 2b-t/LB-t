@@ -10,8 +10,8 @@
 
 #include <gtest/gtest.h>
 
-#include "general/type_definitions.hpp"
-#include "population/indexing/aa_pattern.hpp"
+#include "lbt/general/type_definitions.hpp"
+#include "lbt/population/indexing/aa_pattern.hpp"
 #include "../../lattice/lattice_testing_types.hpp"
 
 
@@ -21,11 +21,8 @@ namespace lbt {
     template <typename LT, std::int32_t NP = 1>
     class AaPatternTest: public ::testing::Test {
       public:
-        AaPatternTest(std::int32_t const NX = 7, std::int32_t const NY = 9, std::int32_t const NZ = 11) noexcept
-          : NX{NX}, NY{NY}, NZ{NZ}, aa_pattern{NX,NY,NZ} {
-          if constexpr (LT::DIM == 2) {
-            this->NZ = 1;
-          }
+        AaPatternTest(std::int32_t const NX_ = 7, std::int32_t const NY_ = 9, std::int32_t const NZ_ = 11) noexcept
+          : NX{NX_}, NY{NY_}, NZ{LT::DIM != 2 ? NZ_ : 1}, aa_pattern{NX,NY,NZ} {
           return;
         }
       protected:

@@ -10,7 +10,7 @@
 
 #include <gtest/gtest.h>
 
-#include "population/aa_population.hpp"
+#include "lbt/population/aa_population.hpp"
 #include "../lattice/lattice_testing_types.hpp"
 #include "population_base_test.hpp"
 

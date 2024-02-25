@@ -10,7 +10,7 @@
 
 #include <gtest/gtest.h>
 
-#include "population/indexing/indexing.hpp"
+#include "lbt/population/indexing/indexing.hpp"
 #include "../../lattice/lattice_testing_types.hpp"
 
 
@@ -28,7 +28,7 @@ namespace lbt {
       // Make sure that final index succeeds the numeric limit of the int32_t
       constexpr std::int32_t NX {1};
       constexpr std::int32_t NY {std::numeric_limits<std::int32_t>::max()};
-      constexpr std::int32_t NZ {0};
+      constexpr std::int32_t NZ {1};
       constexpr std::int32_t NP {1};
       lbt::Indexing<TypeParam,1> const indexing {NX, NY, NZ};
       constexpr std::int32_t x {0};
@@ -47,11 +47,8 @@ namespace lbt {
     class IndexingTest : public ::testing::Test {
       public:
         // Initialise with arbitrary resolution
-        constexpr IndexingTest(std::int32_t const NX = 9, std::int32_t const NY = 11, std::int32_t const NZ = 21) noexcept
-          : NX{NX}, NY{NY}, NZ{NZ}, indexing{NX,NY,NZ} {
-          if constexpr (LT::DIM == 2) {
-            this->NZ = 1;
-          }
+        constexpr IndexingTest(std::int32_t const NX_ = 9, std::int32_t const NY_ = 11, std::int32_t const NZ_ = 21) noexcept
+          : NX{NX_}, NY{NY_}, NZ{LT::DIM != 2 ? NZ_ : 1}, indexing{NX,NY,NZ} {
           return;
         }
       protected:

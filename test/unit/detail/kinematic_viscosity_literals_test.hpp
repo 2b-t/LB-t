@@ -12,8 +12,8 @@
 
 #include <gtest/gtest.h>
 
-#include "unit/detail/kinematic_viscosity.hpp"
-#include "unit/detail/kinematic_viscosity_literals.hpp"
+#include "lbt/unit/detail/kinematic_viscosity.hpp"
+#include "lbt/unit/detail/kinematic_viscosity_literals.hpp"
 #include "unit_literals_helper.hpp"
 
 

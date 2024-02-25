@@ -10,7 +10,7 @@
 
 #include <gtest/gtest.h>
 
-#include "unit/detail/operators.hpp"
+#include "lbt/unit/detail/operators.hpp"
 
 
 namespace lbt {

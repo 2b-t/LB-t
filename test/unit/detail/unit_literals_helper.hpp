@@ -13,7 +13,7 @@
 
 #include <gtest/gtest.h>
 
-#include "unit/detail/unit_base.hpp"
+#include "lbt/unit/detail/unit_base.hpp"
 
 
 namespace lbt {

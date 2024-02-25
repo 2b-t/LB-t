@@ -16,10 +16,10 @@
 
 #include <gtest/gtest.h>
 
-#include "constexpr_math/detail/is_inf.hpp"
-#include "constexpr_math/detail/is_nan.hpp"
-#include "constexpr_math/detail/is_almost_equal_eps_abs.hpp"
-#include "constexpr_math/detail/pow.hpp"
+#include "lbt/constexpr_math/detail/is_inf.hpp"
+#include "lbt/constexpr_math/detail/is_nan.hpp"
+#include "lbt/constexpr_math/detail/is_almost_equal_eps_abs.hpp"
+#include "lbt/constexpr_math/detail/pow.hpp"
 #include "testing_types.hpp"
 
 

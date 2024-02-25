@@ -8,7 +8,7 @@
 
 #include <gtest/gtest.h>
 
-#include "population/boundary/orientation.hpp"
+#include "lbt/population/boundary/orientation.hpp"
 
 
 namespace lbt {

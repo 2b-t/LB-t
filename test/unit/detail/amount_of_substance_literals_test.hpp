@@ -12,8 +12,8 @@
 
 #include <gtest/gtest.h>
 
-#include "unit/detail/amount_of_substance.hpp"
-#include "unit/detail/amount_of_substance_literals.hpp"
+#include "lbt/unit/detail/amount_of_substance.hpp"
+#include "lbt/unit/detail/amount_of_substance_literals.hpp"
 #include "unit_literals_helper.hpp"
 
 

@@ -16,7 +16,6 @@ else()
   set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 endif()
 
-# Set compilation flags
 set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_CXX_STANDARD 17) # The vast majority of code is written for C++17 but certain tests require C++20
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -46,11 +45,6 @@ else()
   message(WARNING "OpenMP not found: Multi-threading disabled!")
 endif()
 
-include_directories(
-  include
-)
-
-# Add executable
 add_library(lbt_obj OBJECT
   src/general/disclaimer.cpp
   src/general/openmp_manager.cpp
@@ -58,12 +52,19 @@ add_library(lbt_obj OBJECT
   src/general/vtk_utilities.cpp 
   src/geometry/vtk_import.cpp
 )
+target_include_directories(lbt_obj PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+
 add_executable(lbt 
   $<TARGET_OBJECTS:lbt_obj>
   src/main.cpp
 )
-
-# Link executable to libraries
+target_include_directories(lbt PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
 set(LBT_LIBRARIES ${VTK_LIBRARIES} nlohmann_json::nlohmann_json)
 if(OpenMP_CXX_FOUND)
   set(LBT_LIBRARIES ${LBT_LIBRARIES} OpenMP::OpenMP_CXX)
@@ -79,7 +80,6 @@ include(GoogleTest)
 if (NOT GTest_FOUND)
   set(LBT_TEST_LIBRARIES ${LBT_LIBRARIES} gtest pthread)
 
-  # Add executable
   add_library(lbt_test_obj OBJECT
     test/constexpr_math/constexpr_math_test.cpp
     test/continuum/simple_continuum_test.cpp
@@ -109,6 +109,10 @@ if (NOT GTest_FOUND)
     test/converter_test.cpp
     test/simulation_test.cpp
   )
+  target_include_directories(lbt_test_obj PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+  )
   add_executable(run_lbt_tests
     $<TARGET_OBJECTS:lbt_obj>
     $<TARGET_OBJECTS:lbt_test_obj>
@@ -123,7 +127,6 @@ if (NOT GTest_FOUND)
   )
   set_tests_properties(${noArgsTests} PROPERTIES TIMEOUT 10)
 
-  # Link executable to libraries
   target_link_libraries(lbt_test_obj ${LBT_TEST_LIBRARIES})
   target_link_libraries(run_lbt_tests ${LBT_TEST_LIBRARIES})
 else()

@@ -14,7 +14,7 @@
 
 #include <gtest/gtest.h>
 
-#include "constexpr_math/constexpr_math.hpp"
+#include "lbt/constexpr_math/constexpr_math.hpp"
 #include "../lattice/lattice_testing_types.hpp"
 
 
@@ -24,11 +24,8 @@ namespace lbt {
     template <template <typename, std::int32_t> typename P, typename LT, std::int32_t NP = 1>
     class PopulationTest: public ::testing::Test {
       public:
-        PopulationTest(std::int32_t const NX = 7, std::int32_t const NY = 9, std::int32_t const NZ = 11) noexcept
-          : NX{NX}, NY{NY}, NZ{NZ}, population{NX,NY,NZ}, expected_size{static_cast<std::int64_t>(NZ)*NY*NX*NP*LT::ND} {
-          if constexpr (LT::DIM == 2) {
-            this->NZ = 1;
-          }
+        PopulationTest(std::int32_t const NX_ = 7, std::int32_t const NY_ = 9, std::int32_t const NZ_ = 13) noexcept
+          : NX{NX_}, NY{NY_}, NZ{LT::DIM != 2 ? NZ_ : 1}, population{NX,NY,NZ}, expected_size{static_cast<std::int64_t>(NZ)*NY*NX*NP*LT::ND} {
           return;
         }
 

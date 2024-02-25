@@ -10,7 +10,7 @@
 
 #include <gtest/gtest.h>
 
-#include "material/detail/carbon_dioxide.hpp"
+#include "lbt/material/detail/carbon_dioxide.hpp"
 
 
 namespace lbt {

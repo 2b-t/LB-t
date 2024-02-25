@@ -11,7 +11,7 @@
 
 #include <gtest/gtest.h>
 
-#include "general/openmp_manager.hpp"
+#include "lbt/general/openmp_manager.hpp"
 
 
 namespace lbt {

@@ -4,7 +4,7 @@
  * \author   Tobit Flatscher (github.com/2b-t)
 */
 
-#include "general/use_vtk.hpp"
+#include "lbt/general/use_vtk.hpp"
 
 #ifdef LBT_USE_VTK
   #include <cstdint>
@@ -16,8 +16,8 @@
 
   #include <gtest/gtest.h>
 
-  #include "continuum/vtk_continuum.hpp"
-  #include "general/tuple_utilities.hpp"
+  #include "lbt/continuum/vtk_continuum.hpp"
+  #include "lbt/general/tuple_utilities.hpp"
   #include "../testing_utilities/testing_utilities.hpp"
   #include "continuum_base_test.hpp"
 

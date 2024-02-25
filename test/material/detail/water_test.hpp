@@ -12,9 +12,9 @@
 
 #include <gtest/gtest.h>
 
-#include "material/detail/water.hpp"
-#include "unit/literals.hpp"
-#include "unit/units.hpp"
+#include "lbt/material/detail/water.hpp"
+#include "lbt/unit/literals.hpp"
+#include "lbt/unit/units.hpp"
 
 
 namespace lbt {
